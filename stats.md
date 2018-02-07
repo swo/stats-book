@@ -4,7 +4,6 @@
 - Simulation in general
 - Bayesian as the mystical: the only way to say the probability about the truth is to assert what you think is the truth
 - Frequentist as a weird subset of the Bayesian
-- Confidence intervals as confidence about how, if this is right, the future will unfold
 - Variance (shape) as more important than mean (location). If you have variance, it's pretty easy to measure the mean and get a sense of things. If you have the other way, it's a lot more murky.
 - Inference vs. decision-making under uncertainty. How are these two things different? (e.g., what's the "cost" of making an incorrect scientific conclusion?)
 
@@ -347,6 +346,49 @@ $x_j \sum_i w_i^2 = w_j \sum_i w_i x_i$, which $w_i = x_i$ for all $i$ satisfies
 So those weights are the best way to get a large statistic if you think that
 there actually is a linear test.
 
+# Estimators
+
+## Motivating example: uniform distribution
+
+Consider a uniform distribution from zero up to some number $M$. What's the
+maximum of this distribution? Well, if you know it, it's easy: it's just $M$.
+It's also easy if you can sample a zillion times from the distribution: you are
+very likely at some point to get a value very close to $M$, so you can just use
+that as your estimate.
+
+But what if you only drew one point? Then clearly the maximum of the drawn
+values, just that point, is a pretty bad estimate for the upper limit. If you
+draw 3 points, then the maximum is a little better, but you can feel pretty
+sure that estimating the *population* maximum using your *sample* maximum is
+biased: you're always going to underestimate the population maximum.
+
+This brings up two new ideas: *estimators* and their *biases*. The most
+important thing to understand is that an estimator is some function of your
+data that we're using as an informed guess about the true population parameter.
+
+Maybe do some math about how to compute the expected value of the estimator,
+and show it doesn't work? Maybe that's what the German tank problem is good
+for.
+
+## Variance
+
+The place this confusion with estimators arises for students is in the
+population variance versus the sample variance, versus the sample *estimator*
+of the population variance. Confusingly, it is so standard to use this
+particular estimator of the population variance that people will refer to it as
+the sample variance.
+
+Figure out how to show the math of Bessel's correction. An introduction to the
+idea that the definition of the thing is *not* a good way for us to figure out
+what the best estimate of that thing is.
+
+## Means
+
+We showed that there's something nice about *unbiased* estimators. What's
+another way we can think about estimators?
+
+Is it the case that a maximum likelihood estimator is also unbiased?
+
 # Confidence intervals
 
 Confidence intervals are very slippery things. It's tempting to say that "I am
@@ -425,7 +467,6 @@ $$
 where the (badly named) "degrees of freedom" $\nu$ is $n-1$ for our purposes. I
 write this out fully because it is one of the things we will *not* derive in
 this book.
-
 
 # Bayesian
 
