@@ -11,12 +11,22 @@
 
 # Why a book?
 
+## Construction
+
 In a mathematical introduction, a random variable is a function that maps
 events to some measurable space. This mathematical approach is powerful but not
 intuitive. I think the contructivist approach is better: if you can say how
 this thing would arise, I think you are in a better place as a scientist and
 modeler (but not necessarily as a mathematician).
 
+## History
+
+I don't like that statistics textbooks present results like their are from
+stone tablets: "And professor said, 'This is the correct test to use for this
+kind of data.'" This approach insults the curiosity of students (who might also
+want to learn some history), it blinds students to the possibility that we have
+the approaches we have because of historical accident and the imperfections of
+our forebears, and dulls their ability to reason and think statistically.
 
 # Summary statistics
 
@@ -142,6 +152,12 @@ So the statistic for this test is just the observation over its variance:
 $$
 t = \frac{\overline{X}_1 - \overline{X}_2}{s_p \sqrt{\frac{1}{n_1} + \frac{1}{n_2}}}.
 $$
+
+The confusing thing is that $\overline{X}_1$, $\overline{X}_2$, and $s_p$ are
+all random variables. We know how to take the sum (or difference) of two random
+variables (i.e., how to figure out the distribution of the numerator), but
+it's not immediately obvious how to find the distribution of the whole thing,
+which has a different random variable in its denominator.
 
 ### Computational approach
 
@@ -330,6 +346,86 @@ taking a derivative with respect to $w_j$ shows that, at the extremum,
 $x_j \sum_i w_i^2 = w_j \sum_i w_i x_i$, which $w_i = x_i$ for all $i$ satisfies.
 So those weights are the best way to get a large statistic if you think that
 there actually is a linear test.
+
+# Confidence intervals
+
+Confidence intervals are very slippery things. It's tempting to say that "I am
+95% confident" that the true value of a quantity lies within the 95% confidence
+interval. In frequentist statistics, "I am *X*% confident" has no meaning. The
+probability that the true value lies within an interval is either 0 or 1, since
+if you repeat the world-experiment many times, the true value will always be
+the same.  In other words, "confidence" is a Bayesian notion of probability.
+The interval that you are 95% confident that something falls in is therefore a
+Bayesian concept (and it gets the confusing name of "credible interval"). So
+forget that "confidence interval" has anything to do with confidence.
+
+Here's how things actually work:
+
+1. You get some data that has some parameters (e.g., a sample mean and sample variance).
+1. You *guess* that your observed sample mean and variance are the *true* mean and variance.
+1. You ask, "If someone else sampled from this true distribution many times, and they got all kinds of sample means and variances, what method could they use to construct, from the values they observed, an interval that would, in 95% of cases, include the true value?"
+1. Then you forget that you are omniscient and know the true value and instead use the methodology that these ignorant people would use, but you use it on your own data.
+
+Now the crazy Bayesian switch comes in: you conflate the frequency of cases
+with your confidence that you are in the 95% of cases.
+
+*N.B.*: For the *t*-distribution, there's this "pivotal quantity" thing, which
+means that the true $\mu$ and $\sigma$ drop out, which is very luck, and it
+means that we *don't* need to make a parametric assumption about how things
+work.
+
+## *t*-distribution
+
+Let's think about how to construct that method. Say you knew the true variance
+$\sigma^2$. Then we know that the sample means are drawn from $\mathcal{N}(0, \sigma^2/n)$.
+So it's pretty easy to see that $(\overline{x} - \mu) / (\sigma^2) \sim \mathcal{N}(0, 1)$,
+from which the familiar $1.96$, etc. come.
+
+What if you *don't* know the true variance? The means are still drawn from $\mathcal{N}(0, \sigma^2/n)$,
+but now the sample variance is also a random variable.
+
+We know the confidence interval is some function of the sample mean and
+variance, and let's guess that it's symmetric about the sample mean and is some
+linear function of sample variance:
+$$
+\mathrm{CI}_\pm(\overline{x}, s) = \overline{x} \pm A s.
+$$
+We want to find $A$ such that
+$$
+\mathbb{P}\left[ \mathrm{CI}_- < \mu < \mathrm{CI}_+ \right] = 95\%,
+$$
+or, if we're willing to trust in symmetry,
+$$
+2.5\% = \mathbb{P}\left[ \mathrm{CI}_- > \mu \right] = \mathbb{P}\left[ \frac{\overline{x} - \mu}{A} - s > 0 \right].
+$$
+We know the distribution of the first thing:
+$$
+(\overline{x}-\mu)/A \sim \mathcal{N}\left(0, \frac{\sigma^2}{n A^2}\right).
+$$
+Some math shows that
+$$
+\frac{(n-1) s^2}{\sigma^2} \sim \chi^2(n-1).
+$$
+
+Call the first thing $K$ and the second $L$. We're interested in the
+distribution of $M \equiv K - L$:
+$$
+f_M(m) = \int_0^\infty f_K(m + l) f_L(l) \,\mathrm{d}l,
+$$
+
+where the limits come from the fact that variance is positive. You're probably
+not excited to do this integral, which was considered a major achievement
+(well, it was the thought leading up to the integral, which we've just
+outlined, but whatever). This major achievement was made by William Sealy Gosset,
+who made it while he was a researcher for Guinness ensuring the quality of their beer. Guinness had a policy of not allowing its employee to publish their results, so Gosset signed his paper "a student", so the result of that integral is now called Student's *t*-distribution:
+$$
+f_t(x; \nu) = \frac{\Gamma(\frac{\nu+1}{2})}{\sqrt{\nu\pi} \Gamma\left(\frac{\nu}{2}\right)}
+  \left(1+ \frac{x^2}{\nu}\right)^{-\frac{\nu+1}{2}},
+$$
+where the (badly named) "degrees of freedom" $\nu$ is $n-1$ for our purposes. I
+write this out fully because it is one of the things we will *not* derive in
+this book.
+
 
 # Bayesian
 
