@@ -7,7 +7,6 @@
 - Variance (shape) as more important than mean (location). If you have variance, it's pretty easy to measure the mean and get a sense of things. If you have the other way, it's a lot more murky.
 - Inference vs. decision-making under uncertainty. How are these two things different? (e.g., what's the "cost" of making an incorrect scientific conclusion?)
 
-
 # Why a book?
 
 ## Construction
@@ -214,11 +213,20 @@ plant, but don't assign any meaning beyond that. Then the data are effectively
 dichotomized: you get some number of cases in which one is taller and some
 number of cases in which the other is taller.
 
+Better to say that we're sampling from any distribution that has zero median.
+You could even say you're sampling from *all* distributions. That's confusing,
+mathematically, because there are infinitely many distributions, and it's not
+obvious how you should sample from that functional space, but it works out,
+because all those distributions will have the same distribution of pluses and
+minuses.
+
 This is now just a binomial test.
 
 ## Rank test (Mann-Whitney *U*)
 
 Assume that the *ranks* of the differences are meaningful.
+
+Now you're sampling from any distribution that is symmetric about zero. That means it has zero median also.
 
 ## Fisher's weird sum test
 
