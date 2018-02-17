@@ -1,13 +1,19 @@
 # Things to include
 
-- Poisson as horse kicks
+- Poisson as horse kicks. Or as drops with cells (a la Weitz, etc.)
 - Simulation in general
 - Bayesian as the mystical: the only way to say the probability about the truth is to assert what you think is the truth
 - Frequentist as a weird subset of the Bayesian
 - Variance (shape) as more important than mean (location). If you have variance, it's pretty easy to measure the mean and get a sense of things. If you have the other way, it's a lot more murky.
 - Inference vs. decision-making under uncertainty. How are these two things different? (e.g., what's the "cost" of making an incorrect scientific conclusion?)
+- Simpson's paradox: why two-way associations are confusing
 
 # Why a book?
+
+## Personal
+
+This is all the stuff that I felt like I didn't know after a few stats classes
+in college. It's gaps that didn't get filled in.
 
 ## Construction
 
@@ -25,6 +31,103 @@ kind of data.'" This approach insults the curiosity of students (who might also
 want to learn some history), it blinds students to the possibility that we have
 the approaches we have because of historical accident and the imperfections of
 our forebears, and dulls their ability to reason and think statistically.
+
+# Intellectual tools
+
+To understand the stuff in this book, you'll need three major toolkits:
+algebra, probability, and optimization. These aren't what statistical thinking
+is about, but they are really handy ways to talk about what we'll learn.
+
+# Probability
+
+This part will have some math jargon, but you can handle it.
+
+In probability, we're interested in a *sample space* of *outcomes*. If I'm
+drawing a card from a shuffled deck, the outcomes are each of the 52 cards I
+could draw. Outcomes get combined into *events*, like "drew a red card". Every
+outcome has an associated *probability*, usually written $P$, always in the
+range $[0, 1]$, and each event has a probability that is the sum of the
+probabilities of its constituent outcomes. Of the 52 cards in the deck, 26 are
+red, and the probability of drawing any particular card is $\tfrac{1}{52}$, so
+the probability of drawing a red card is $\tfrac{26}{52} = \tfrac{1}{2}$.
+
+There is a sophisticated mathematical theory about outcomes, events, and
+probabilities called *measure theory*. The simple definitions I gave here are
+not sufficient for a complete theory of probability[^measure], but they will work well
+enough for our purposes.
+
+[^measure]: For example, what's the probability of flipping heads on a fair an
+  infinite number of times? To say "zero" makes it sound like it's impossible,
+  but to say anything other than zero is even more confusing.
+
+The really interesting quantity here is "probability". In math world,
+probability is just an abstract concept. In the real world, it's something that
+we think about every day. For the first part of the book, we'll use the
+*frequentist* definition of probability: if an event has probability $p$, it
+means that, if we repeated whatever situation led to the possibility of that
+event very many times, the proportion of situations leading to that event would
+approach $p$. For example, if I flip a fair coin very many times, I expect the
+proportion of heads to approach $\tfrac{1}{2}$, so the "probability" of heads
+is $\tfrac{1}{2}$.
+
+This frequentist definition will lead us into confusing problems later on,
+which will lead to the other major definition of probability, *Bayesian*
+probability[^bayes1], which is a subject of a later chapter.
+
+[^bayes1]: The fundamental notion in Bayesian probability is that "probability"
+  should mean something about confidence. Intuitively, we say that
+  "probability" of heads is $\tfrac{1}{2}$ not because we're thinking of an
+  infinite number of flips, but because we think that heads is 50% "likely".
+  (Confusing, "likelihood" has a specific technical definition that we will get
+  to later.) The problem in frequentist probability is that some things cannot
+  be expressed as frequencies of many repeated trials. See the Bayesian chapter
+  for more.
+
+## Random variables
+
+We can associated this space of outcomes and events with *random variables*,
+which are functions of the event space that return numbers. For the coin flip,
+the only interesting random variable is: if the flip is heads, the value is
+one; if tails, then zero. For a dice roll, the easy-to-think-of random variable
+is the number of dots that came up: if the dice rolls one, the value is 1; if
+two, then 2; etc. You could think up other variables: maybe you get 1 on even
+dice rolls and 0 on odds.
+
+To a scientist, this sounds really abstract, which it is, but it lets us write
+something that feels more natural: for a random variable $X$, what's the
+probability that $X$ is less than some particular value $x$? I'll write this
+$\mathbb{P}[X < x]$. This is called the *cumulative distribution function*, of
+cdf, of $X$. Traditionally it's written as $F_X$:
+$$
+F_X(x) \equiv \mathbb{P}[X < x].
+$$
+
+If $X$ is a finite, discrete function (that can take on only particular
+values), then $F_X$ is zero for the smallest $x$ supported by $X$ (although
+it's less than 1 for the highest $x$). For a function that can take on
+arbitrarily large or small values, we can see that
+$$
+\lim_{x \to -\infty} F_X(x) = 0 \text{ and } \lim_{x \to \infty} F_X(x) = 1.
+$$
+
+In the finite, discrete case, like a dice roll, it's straightforward to compute
+the cumulative distribution function from the *probability mass function*,
+which is just the probability that $X$ takes on any particular value. For other
+kinds of random variables, the corresponding concept is the *probability
+distribution function*, or pdf, traditionally written $f_X$, which is actually
+derived from the cumulative distribution function:
+$$
+f_X(x) \equiv \frac{d}{dx} F_X(x), \text{ or equivalently } F_X(x) = \int_{-\infty}^x f_X(x') dx'.
+$$
+
+## Detritus
+
+I'll need an introduction to some basic ideas: events, unions, conditional
+probability, expected values, variance, pdf, cdf. I think that's most of what
+you need to get the basic gist. (As an aside, you might need some really
+complicated stuff to answer the finer point questions, like what's the space of
+rational "coin flips"?)
+
 
 # Summary statistics
 
@@ -167,7 +270,13 @@ which has a different random variable in its denominator.
 
 ## Unequal variance (Welch's)
 
-Do the math for this one!
+This is the Behrens-Fisher problem. It stumped Fisher! He came up with a weird
+statistic with a weird distribution (Behrens-Fisher), but it didn't really
+stick, since he couldn't calculate confidence intervals (?).
+
+Instead, people went for the Welch-Satterthwaite equation, which approximates
+the interesting distribution using a more handy one by matching the first and
+second moments. (Maybe worth discussing those? Or just say mean and variance?)
 
 # anova
 
@@ -635,6 +744,23 @@ guess that most people won't know the difference.[^comfort]
 
 [^comfort]: Comfortingly, as $n$ grows, the difference between the sample
   variance and the "sample variance" becomes negligible.
+
+# Bootstrapping
+
+What do you do when you want to compute the variance of some statistic that's not easy to compute? Or you don't know what distribution you're sampling from? Then you permute your own data. How do we relate:
+
+- permutation tests
+- bootstrapping (and jack-knifing, etc.)
+- nonparametric (which I know is different)
+
+# What does it mean to "sample"?
+
+Does it make sense to compute a confidence interval when you're sampled all the
+50 United States?
+
+**Finite correction factor** to point out that there's a difference between
+simple random sampling and something else. Then need to explain what simple
+random sampling is!
 
 # Confidence intervals
 
