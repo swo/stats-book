@@ -8,6 +8,27 @@
 - Inference vs. decision-making under uncertainty. How are these two things different? (e.g., what's the "cost" of making an incorrect scientific conclusion?)
 - Simpson's paradox: why two-way associations are confusing
 
+## Game plan
+
+- What do I want people to be able to end up doing at the end? Probably come up with their own tests, and derive anything about it.
+- For tests, two goals: first to understand where the "classic" tests come from, and second, and more important, to show how you can manipulate them.
+- Maybe put the derivations in an appendix or something.
+
+## Audience
+
+- People who know something about numbers
+- Probably practicing scientists, like graduate students, who are interested in the conceptual origins of some stuff
+- *Not* for people with no statistics, or people who are interested in the deep maths
+- Something about statistical thinking, rather than turning the crank
+- Maybe with a focus on the biological sciences, since we are the ones that are often dealing with complex data and situations, or at least because that's my area of expertise
+- Something between the babying Stats 101 and the hardcore, math-focused statistics textbook. Neither a plug-and-chug practitioner's guide to statistical tests nor a derivation of everything in mathematically robust terms.
+
+## Titles
+
+- Stats for people who already know something about numbers
+- Stats on the fly
+- Learn you a stats for great good
+
 # Why a book?
 
 ## Personal
@@ -405,14 +426,64 @@ those. Voila.
 Note that, if you fix $n_1$, then you don't have to subtract the $n_1(n_1+1)/2$
 to get the right $p$-value.
 
-# Cochrane-Armitage test
+# Statistical power: Cochrane-Armitage test
 
-A $\chi^2$ tests for *any* difference between the cell values and the expected.
-This test asks whether there is some kind of pattern. Essentially, this is a
-weighted binomial.
+We never want to run just any test: we want to use the test that is most
+capable of distinguishing between the scenarios we're interested in. Usually
+this is a matter of choosing the test that has the right assumptions: the
+one-sample *t*-test is more powerful than the Wilcoxon test if the data come
+from a truly normally-distributed population.
 
-Each flip $y_i$ gets some associated weight $w_i$. The naive statistic is
-$\sum_i w_i y_i$. It would be nice to have this be zero-centered:
+In other cases, you might have more flexibility. There's a somewhat obscure
+test that is, I think, a great illustration of this.
+
+Imagine that you have some data with a dichotomous outcome for some categorical
+predictor value. One classic example is drug dosing: you think that, as the
+dosage of the drug goes up, you have more good outcomes than bad outcomes. Did
+a greater proportion of people on board the Titanic survive as you go up from
+crew to Third Class to Second to First? Did the proportion of some kind of
+event increase over years? Technically, this means you have a $2 \times k$
+table of counts, with two outcomes and $k$ predictor categories.
+
+Outcome Dose 1 Dose 2 Dose 3
+------- ------ ------ ------
+Good    1      5      9
+Bad     9      4      1
+
+You could use a $\chi^2$ test with equal expected frequencies across the
+columns. In other words, there might be more "good" than "bad" outcomes, but
+you don't expect that proportion to differ meaningfully across categories. You
+would pool the data across categories, use the observed proportion of good
+outcomes as you best guess of the true proportion $f$, and compare the actual
+data with you expectation that a fraction $f$ of the counts in each column are
+"good".
+
+In our examples, we think the data have some *particular* kind of pattern. The
+$\chi^2$ test doesn't look for any particular pattern; it just looks for any
+deviation from the null. The test statistic for the $\chi^2$ distribution is
+based around the sum of the square deviations from the expected values, usually
+written $\sum_i (O_i - E_i)^2$, with some stuff in the denominator to make the
+distribution of the statistic easier to work with. If the sum of the squared
+deviations is too large, then we have evidence that the observed values are not
+"sticking to" the expected frequencies.
+
+The trick I'm going to show you is to keep the same null hypothesis---that
+outcome doesn't depend on dose---but adjust the test so that it's more
+sensitive to particular kinds of dependencies.
+
+This is a fair approach because we're still just trying to say, "OK, say you
+(the nameless antagonist) were right, and there really was no pattern in the
+data. Then I'm free to make up any test statistic, so long as, if you're right,
+we can show that the observed data were likely to have arisen by chance."
+
+To start constructing the test, think about each flip as a weighted binomial
+trial. We'll use these weights to adjust the test statistic to be more
+sensitive to what we suspect the true pattern in the data is, but we'll need to
+derive the distribution of the test statistic so that we can satisfy the
+nameless antagonist.
+
+Say each flip $y_i$, which is in some category $x_i$, gets some associated weight $w_i$. A really simple statistic would be
+$\sum_i w_i y_i$, the sum of the weights of the "successful" trials. It would be nice to have this be zero-centered:
 $$
 \sum_i \left\{ w_i y_i - \mathbb{E}\left[ w_i y_i \right] \right\} = \sum_i w_i (y_i - \overline{p}),
 $$
