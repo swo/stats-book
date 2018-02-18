@@ -7,6 +7,7 @@
 - Variance (shape) as more important than mean (location). If you have variance, it's pretty easy to measure the mean and get a sense of things. If you have the other way, it's a lot more murky.
 - Inference vs. decision-making under uncertainty. How are these two things different? (e.g., what's the "cost" of making an incorrect scientific conclusion?)
 - Simpson's paradox: why two-way associations are confusing
+- Random number generation
 
 ## Game plan
 
@@ -22,6 +23,8 @@
 - Something about statistical thinking, rather than turning the crank
 - Maybe with a focus on the biological sciences, since we are the ones that are often dealing with complex data and situations, or at least because that's my area of expertise
 - Something between the babying Stats 101 and the hardcore, math-focused statistics textbook. Neither a plug-and-chug practitioner's guide to statistical tests nor a derivation of everything in mathematically robust terms.
+
+Inspirations include Learn You a Haskell and think Stats.
 
 ## Titles
 
@@ -103,6 +106,35 @@ probability[^bayes1], which is a subject of a later chapter.
   to later.) The problem in frequentist probability is that some things cannot
   be expressed as frequencies of many repeated trials. See the Bayesian chapter
   for more.
+
+## Manipulating probabilities
+
+A core concept that presented a lot of theoretical confusion in the development
+of statistics is *conditional probability*: what is the probability of $A$
+"given that" $B$ is true?
+
+This feels like a natural concept: given that I drew a Jack from the deck,
+what's the probability I drew the Jack of Hearts? Clearly $\tfrac{1}{4}$.
+What's the chance I drew the Queen of Spades? Clearly zero.[^freq]
+
+[^freq]: Those who took note of the frequentist definition will say that I'm
+  not being accurate with my language, and they'd be right. I should say,
+  "Among trials in which a Jack is drawn, in what proportion was the Jack of
+  Hearts drawn?" This idea of "the chance that" is clearly more in the Bayesian
+  vein.
+
+Mathematically, we write $A | B$ to mean "$A$ given that $B$". The definition
+of conditional probability is
+$$
+\mathbb{P}[A | B] \equiv \frac{\mathbb{P}[A \cap B]}{\mathbb{P}[B]}.
+$$
+I think the best way to read this is: rather than considering the entire
+universe of possible events, go into the smaller universe of events $B$, and
+calculate probabilities there. Then the denominator is just the "size" of the
+universe, and the numerator is the "size" of the event of interest within the
+scope of the universe I'm thinking about.
+
+**independence**
 
 ## Random variables
 
@@ -918,16 +950,103 @@ One of the biggest sticking points about a Bayesian analysis is that it requires
 It can be thought of as an advantage or a disadvantage, but I think it's better to think of it as a responsibility.
 Let me tell you an allegory.
 
-Once, a young statistician lived in her parents' house. She paid no rent and simply never considered her orientation in the world.
-Some year later, she left the home and had to do statistics in the wide world.
-Where would she live? How would she pay rent?
-These decisions brought power, since she was free to do things she couldn't do at home.
-She could live a life that was more accurate to the real world.
-This allegory is too long and rambly. But there's something in here.
+Once, a young statistician lived in her parents' house. She paid no rent and
+simply never considered her orientation in the world.  Some year later, she
+left the home and had to do statistics in the wide world.  Where would she
+live? How would she pay rent?  These decisions brought power, since she was
+free to do things she couldn't do at home.  She could live a life that was more
+accurate to the real world.  This allegory is too long and rambly. But there's
+something in here.
 
-Frequentist statistics is correct so long as you use it exactly for what it is designed to do.
-The trouble is that we *want* statistics to answer the kinds of questions that *only* Bayesian statistics can answer.
-For example, how likely is it that this hypothesis is true?
-If you perfectly adhere to the frequentist interpretation, then you are in good shape.
-But if you deviate, if you start to say, "Oh, the p-value is kind-of like the probability my hypothesis is false."
-Then you have SCREWED UP son.
+Frequentist statistics is correct so long as you use it exactly for what it is
+designed to do.  The trouble is that we *want* statistics to answer the kinds
+of questions that *only* Bayesian statistics can answer.  For example, how
+likely is it that this hypothesis is true?  If you perfectly adhere to the
+frequentist interpretation, then you are in good shape.  But if you deviate, if
+you start to say, "Oh, the p-value is kind-of like the probability my
+hypothesis is false." Then you have SCREWED UP son.
+
+# Appendix
+
+## Random number generation
+
+### Generating numbers with different distributions
+
+Drawing numbers from $[0, 1]$ usually isn't that interesting. We want to draw
+numbers from other distributions. There are two main approaches:
+
+1. Clever transformations
+1. Various forms of *rejection sampling*
+
+**inverse transform, ziggurat, rejection, Metropolis-Hastings and other Monte carlo mcmc stuff**
+
+Clever transformations are nice when you can do them, but it's unlikely you'll
+derive one for yourself. Basically, if a run-of-the-mill random number
+generation function in some software purports to be able to sample numbers from
+some distribution, it's doing this transformation. I don't think there's
+anything really practical to be gained from knowing these transformations, but
+they're fun, so I put them here.
+
+Rejection sampling is a big class of approaches, and they are very useful for
+the practical scientist.
+
+#### Clever transformations
+
+The idea is to generate random numbers from the uniform distribution and
+somehow turn them into random numbers distributed according to some other
+distribution.
+
+##### Normal distribution: Box-Muller transformation
+
+To generate normally-distributed numbers from uniformly distributed numbers,
+consider this trick.
+
+Think about a pair of independent, normally-distributed variables $Z_1$ and
+$Z_2$. Their joint pdf will be
+$$
+\begin{aligned}
+f_{Z_1,Z_2}(z_1, z_2) &=
+  \frac{1}{\sqrt{2\pi}} \exp\left\{ -\frac{z_1^2}{2} \right\} \times
+  \text{same thing for $z_2$} \\
+  &= \frac{1}{2\pi} \exp\left\{ -\frac{1}{2} \left( z_1^2 + z_2^2 \right) \right\}.
+\end{aligned}
+$$
+The trick is to think of $z_1$ and $z_2$ as Cartesian coordinates like $x$ and
+$y$, from which it's very natural to replace $z_1^2 + z_2^2$ with $r^2$ and
+define some $\theta$ such that $z_1 = r \sin \theta$ and $z_2 = r \cos \theta$.
+My claim is that we'll be able to generate $r$ and $\theta$ from independent,
+uniform random variables.
+
+Because $f_{Z_1,Z_2}$ is symmetric with respect to $z_1$ and $z_2$ (i.e., you
+could swap that subscripts and come out with the same expression), it must be
+that there isn't anything special about having sine versus cosine. In other
+words, there mustn't be anything special about $\theta = 0$ versus $\theta =
+\pi$. The origin can't matter. Thus, it must be that $\theta$ is uniformly
+distributed over $[0, 2\pi]$. Any other distribution would end up treating
+$z_1$ and $z_2$ differently, which would break their independence.
+
+Generating $r$ is a little more tricky. Let's look at the cumulative
+distribution function of the random variable $R$:
+$$
+\begin{aligned}
+\mathbb{P}[R < r] &= \int_0^{2\pi} \int_0^r f_{Z_1, Z_2}
+    \,\mathrm{d}z_1 \, \mathrm{d}z_2 \\
+  &= \int_0^{2\pi} \int_0^r \frac{1}{2\pi} \exp\left\{-\frac{1}{2} r'^2\right\}
+    r' \,\mathrm{d}{r'} \,\mathrm{d}\theta \\
+  &= \int_0^r \exp\left\{-\frac{1}{2} r'^2\right\}
+    r' \,\mathrm{d}{r'} \,\mathrm{d}\theta \\
+  &= \int_0^{\tfrac{1}{2} r^2} \exp\left\{-s\right\} \,\mathrm{d}s,
+    \text{where $s = \tfrac{1}{2} r'^2$} \\
+  &= 1 - \exp\left\{ -\frac{1}{2} r^2 \right\}.
+\end{aligned}
+$$
+If we define $r = \sqrt{-2 \log u}$, then $\mathbb{P}[R < r] = 1 - u$, which is
+just the cdf for a uniformly distributed variable $U$ on $[0, 1]$. So we generate
+$r$ using that formula.
+
+It may seem a little strange that we can generate independent $z_1$ and $z_2$
+using $r$ and $\theta$. You might think that if I know $z_1$, then I can guess
+something about $r$ or $\theta$ and use that information to make a guess about
+the value of $z_2$. However, because the Cartesian and polar coordinate systems
+encode exactly the same information, that argument is like saying that, because
+I told you $x$, you might be able to guess $y$, which is clearly impossible.
