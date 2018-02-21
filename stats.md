@@ -412,6 +412,8 @@ Nowadays it's gotten pretty easy to do the other thing!, so it's
 
 # Wilcox test and Mann-Whitney test
 
+**Walsh averages and confidence intervals**, from [here](http://www.stat.umn.edu/geyer/old03/5102/notes/rank.pdf)
+
 There a few different names for these things:
 
 - One-sample test: is this distribution symmetric about zero (or whatever)?
@@ -944,6 +946,192 @@ where the (badly named) "degrees of freedom" $\nu$ is $n-1$ for our purposes. I
 write this out fully because it is one of the things we will *not* derive in
 this book.
 
+# Contingency tables
+
+These are nice examples for how to do statistical thinking.
+
+## Barnard's test
+
+The classic example is whether a certain treatment causes more of the outcome
+of interest than just doing nothing. In medicine, that means splitting your
+participants into a placebo group and a treatment group and asking what
+fraction of each gets well. In a biology experiment, you might split your mice
+into a treatment group and a control group and ask what proportion of the mice
+in each group get cancer.
+
+In statistics jargon, this is called a $2 \times 2$ contingency table:
+
+Group       Outcome $p$ Outcome not-$p$ Row sums
+----------- ----------- --------------- --------
+A           $a$         $c$             $m$
+B           $b$         $d$             $n$
+Column sums $r$         $s$             $N$
+
+Because we picked $m$ and $n$, the sizes of the two groups, those are fixed
+parameters. The question is whether the way that $m$ gets distributed into $a$
+and $c$ (and that way that the $n$ get put into the $b$ and $d$) is consistent
+with there being a common probability $p$ of the outcome of interest.
+
+So we might say that $a$ is distributed like a binomial distribution with $m$
+draws and probability $p_a$ of success, and $b$ is distributed like a binomial
+with $n$ draws and a probability of $p_b$ of success. The null hypothesis is
+that $p_a = p_b$. What's the likelihood of the data given the null?
+
+If we didn't assume the null, and gave the two binomials their own
+probabilities, the likelihood of the data would be:
+$$
+P(a, b | p_a, p_b) = \mathrm{Bin}(a; m, p_a) \times \mathrm{Bin}(b; n, p_b).
+$$
+But, given that the probabilities are the same, we can collapse it:
+$$
+\begin{aligned}
+\mathcal{P}[a, b | p_a = p_b = p] &= \mathrm{Bin}(a; m, p) \times \mathrm{Bin}(b; n, p) \\
+  &= \binom{m}{a} p^a (1-p)^{m-a} \times \binom{n}{b} p^b (1-p)^{n-b} \\
+  &= \binom{m}{a} \binom{n}{b} p^{a+b} (1-p)^{m+n-(a+b)} \\
+  &= \frac{m! \, n!}{a! \, b! \, c! \, d!} p^r (1-p)^s.
+\end{aligned}
+$$
+
+This result is a little confusing[^confuse], for two reasons:
+
+1. The probability $p$ of the outcome of interest might be interesting to design a later experiment, but it's *not* interesting for designing a test. We certainly don't want to deliver a result like, "Well, if the null hypothesis is true, *and* $p$ happens to be exactly such-and-such, then your $p$-value is so-and-so." The value $p$ is called a *nuisance parameter* since we don't actually care about its value.
+1. We're usually not interested in the likelihood of exactly this data, but rather in the likelihood of data *at least this extreme*. We usually measure "extremeness" using a statistic---a single number---so it's clear that "more extreme" means "bigger" (or "smaller" or "bigger or smaller", depending on if it's a one-sided or two-sided test). Here, we have two numbers, $a$ and $b$, so there aren't two "sides" to the distribution: there are four!
+
+[^confuse]: I trotted out this test because these two confusions are actually
+  great learning opportunities.
+
+To resolve the first point, we say that the null hypothesis $p_a = p_b = p$
+doesn't restrict us to a particular value of $p$. In other words, the null
+hypothesis, which functions as a sort of Annoying Skeptic, is free to pick $p$
+to make our results as uninteresting as possible. Mathematically, this means
+that, when computing the $p$-value, we should optimize over all values of $p$,
+choosing the one that makes our results as uninteresting as possible (i.e.,
+which maximizes the $p$-value).
+
+We can't really "resolve" the second point, since it demonstrates that our
+previous way of thinking about extremeness was not sufficient for all cases. As
+Barnard notes in his original paper[^barnard], there are actually many ways to
+choose the pairs $(a, b)$ that produce a $p$-value more than our threshold.
+This gets into some fancy footwork to articulate exactly how you should pick
+this area, but the basic results are pretty intuitive: when $a/m$ and $b/n$ are
+similar, you tend to be under the rejection threshold; when they are far apart,
+you tend to be over.
+
+[^barnard]: Barnard conceived of the $(a, b)$ as points "in a plane lattice
+  diagram of points with integer co-ordinates", that is, that $a$ is like the
+  $x$-axis and $b$ is like the $y$-axis. Then the possible outcomes of the
+  experiment are the points in the rectangle bounded by the horizontal lines
+  $a = 0$ and $a = m$ and the vertical lines $b = 0$ and $b = n$. He then said
+  that you should pick the non-extremal points (i.e., the values of $(a, b)$
+  for which you would not reject the null) such that they "consist of as many
+  points as possible, and should like away from that diagonal of the rectangle
+  which passes through the origin. Formulated mathematically, these latter
+  requirements mean that the [points for which you would reject the null] must
+  in a certain sense be convex, symmetrical and minimal."
+
+The interesting point here is that, whatever fancy footwork you pick to choose
+that region, and no matter how "reasonable" your footwork is, it's still
+footwork that doesn't obviously follow from the simple definition of a
+hypothesis test. We'll encounter this problem again in Bayesian statistics,
+when we find that the Bayesian analog of a confidence interval is not unique:
+there are many ranges of values that are compatible with our ignorance.
+
+## Fisher's test to the rescue(?)
+
+If you've worked with contingency tables, you're probably saying, "I've never
+heard of this crazy Bernard's test, with its weird multi-sided rejection space
+and its requirement to maximize over $p$. We have Fisher's exact test, which is
+the exactly right test to use here!"
+
+Looking at the same contingency table, Fisher's test asks, given the row
+marginals $m$ and $n$, the first column marginal $r$, and the grand total $N$,
+what is the probability of a table at least this extreme?
+
+This is just a combinatoric problem: if you're as likely to assign items in $m$
+to $a$ as to $c$ (and, analogously, to assign items from $n$ to $b$ or $d$),
+then "what's the probability of this table" is equivalent to asking "given the
+marginals, how many ways are there to choose this table?". More specifically,
+how many ways are there to choose $a$ items from a bank of $m$ items and $b$
+items from a bank of $n$, given that we chose $r = a + b$ items from the total
+$N$? Mathematically:
+$$
+\mathbb{P}[a | m, n, r, s] = \frac{\binom{m}{a} \binom{n}{b}}{\binom{N}{r}} = \frac{m! \, n! \, r! \, s!}{N! \, a! \, b! \, c! \, d!}.
+$$
+
+Computing the $p$-value is easier here than with Barnard's test because we need
+to keep the row *and column* marginals the same. In Barnard's test, we just
+kept the row marginals constant, because we considered those as fixed
+parameters, corresponding to things like the number of patients we assigned to
+each of the placebo and treatment groups. It doesn't make sense to allow the
+Annoying Skeptic to fiddle with those values.
+
+In Banard's test, we *did* allow the Annoying Skeptic to fiddle with the column
+marginals, since it wasn't clear, before the experiment began, that $r$ would
+have the outcome of interest. In other words, we didn't know that $r$ people in
+both the placebo and treatment groups would get well.
+
+Fisher's test, however, *does* keep the column marginal constant. This makes it
+a lot easier to compute the $p$-value. First, the nuisance parameter $p$
+doesn't appear in the likelihood, so we don't need to do the weird
+maximization. Second, we only need to vary one value, $a$ (or, equivalently,
+$b$), since, if you know the marginals, there is only one axis along which to
+change the values in the table. In other words, if you know
+$$
+\begin{aligned}
+a + c &= m \\
+b + d &= n \\
+a + b &= r,
+\end{aligned}
+$$
+then that's three equations with four unknowns ($a$, $b$, $c$, $d$), so
+specifying any one of $a$, $b$, $c$, or $d$ specifies all the others. (You
+might be looking for a fourth equation $c + d = s$, but you can get that by
+adding the first two equations and subtracting the third.)
+
+Here's an example:
+
+Group       Success Failure Row sums
+----------- ------- ------- --------
+A           1       9       10
+B           11      3       14
+Column sums 12      12      14
+
+There's only one way to make this table more "extreme" without changing the
+marginals: you can take the one group A success and make it a group A failure
+and simultaneously make a group B failure into a group B success. Similarly,
+there's only one way to make this table less extreme: turn a group A failure
+into success, and turn a group B success into failure.
+
+So keeping the column sums constant made it way easier to compute the
+$p$-value: count this table and all the tables with a more extreme upper-left
+or bottom-right and see if your summed probability hits the rejection
+threshold.
+
+However, this simplicity came at a cost, which you may have noticed: does it
+make sense to keep the columns constant? Experimentally, this means that you're
+restricting the Annoying Skeptic to only consider cases in which, say, the
+number of patients who got well *in both groups* is equal to the experimentally
+observed value. This is a little weird. It suggest that your experimental design was like this:
+
+1. Pick $m$, $n$, and $r$.
+1. Assign $m$ patients to placebo and $n$ to treatment.
+1. Wait until $r$ patients *across both groups* have gotten well.
+1. Stop the experiment.
+
+This is almost certainly not reflective of how typical experiments are run[^tea].
+
+[^tea]: It is, however, the way the famous "lady tea tasting" experiment was
+  designed. The myth is that Fisher didn't believe it when a high-class lady
+  told him that she could detect whether tea was added to a cup with milk in it
+  or whether the milk was added to the tea. He designed an experiment with $m$
+  cups prepared one way, $n$ prepared the other, and told her to detect the
+  $r = m$ cups that were prepared the first way. A Barnard-style experiment, in
+  which the same $m$ and $n$ cups
+
+**Fisherian small data**
+
+**What happens if I use the "wrong" test? Chi-square as an example of wrongness**
+
 # Bayesian
 
 One of the biggest sticking points about a Bayesian analysis is that it requires specification of a prior.
@@ -970,13 +1158,87 @@ hypothesis is false." Then you have SCREWED UP son.
 
 ## Random number generation
 
-### Generating numbers with different distributions
+In many places in this book, we've relied on the ability to generate "random"
+numbers. However, computers (in the sense of logical machines) have no way to
+generate truly random numbers. Instead, we have clever methods that get us
+something that's a pretty good approximation of random numbers.
+
+It's worth noting that a lot of the historical, conceptual directions in
+statistics are due to the fact that doing any kind of Monte Carlo methodology
+without computers is really onerous. Before we had today's technology
+(pseudorandom number generators, to be discussed below), we had tables of
+random numbers, the most notable being the hefty *A Million Random Digits with
+100,000 Normal Deviates* (where "normal deviate" means "random number drawn
+from a standard normal distribution), published by the (coincidentally-named)
+RAND Corporation.[^rand] RAND published this book because they had a lot of
+engineers and researchers using Monte Carlo methods. Before the tables of
+random numbers, you had to generate the random numbers yourself, which was
+basically infeasible.[^buffon]
+
+[^rand]: You can still get this book [on RAND's
+  website](https://www.rand.org/pubs/monograph_reports/MR1418.html) or [in
+  paperback](https://www.amazon.com/Million-Random-Digits-Normal-Deviates/dp/0833030477/).
+  The numbers were generated using an electronic device, specifically designed
+  to shuffle a sort-of random table of numbers, attached to a computer. See the
+  text about hardware random number generators.
+
+[^buffon]: In 1777, Georges-Louis Leclerc, Comte de Buffon posed a math problem
+  that included probability and geometry: if you throw needles (or matchsticks)
+  onto a surface with parallel stripes whose widths are equal to the length of
+  the needles, what fraction of the needles touch two stripes? It turns out
+  that the answer has $\pi$ in it. So in 1901, Mario Lazzarini published that
+  he had tossed a needle 3,408 times and, using the analytical solution,
+  back-calculated $\pi$ as $\tfrac{355}{113}$. This estimate of $\pi$ was
+  already known, and the fact that Lazzarini came up with exactly that value is
+  taken as strong evidence that he faked the experiment. In other words, we
+  have a pretty strong prior against believing that someone in 1901 even
+  bothered to throw a needle 3,000 times, much less the many more times than
+  that that would be required for random number generation for more interesting
+  Monte Carlo problems!
+
+As mentioned, now we have *pseudorandom number generators*[^pseudo]. These rely
+on some input *seed*, which is the (hopefully) truly random thing, and from
+that seed it generates a deterministic list of numbers that, in the absence of
+knowing the seed, appear random.[^seed] Usually this seed comes from one of the
+many "entropy sources" that a computer has access to, things like the time
+between keystrokes, the time at which a process was started, time between
+network pings, etc.
+
+[^pseudo]: There is such a thing as a "hardware" random number generator, which
+  is some kind of device that measures something that we think is truly noisy
+  in the real world, like thermal noise or (what we believe are truly random)
+  quantum phenomena like beamsplitting.
+
+[^seed]: It may seem weird that, given a seed, you get a deterministic set of
+  numbers.  Most software with (pseudo)random number generators pick a seed
+  using whatever entropy they have access to when you boot up the program, so
+  you never notice that the seed is different each time you run a simulation.
+  You can, however, always *pick* the seed, which is nice, because it lets you
+  repeat code with a Monte Carlo method in it and always get the same result,
+  which is nice for testing and debugging.
+
+The pseudorandom number generator in most software now is the Mersenne Twister.
+This algorithm is remarkable for having a long *period* of $2^{19937} - 1$.
+(All pseudorandom number generators, started with with some seed, will
+eventually end up repeating their output. The period is the number of outputs
+you get before closing the loop.) The random things produced by the generators
+are typically mapped into uniformly distribution varibles over $[0, 1]$.
+
+### Generating non-uniformly-distributed numbers
 
 Drawing numbers from $[0, 1]$ usually isn't that interesting. We want to draw
 numbers from other distributions. There are two main approaches:
 
 1. Clever transformations
 1. Various forms of *rejection sampling*
+
+The idea with clever transformations is to generate random numbers from the
+uniform distribution and somehow turn them into random numbers distributed
+according to some other distribution.
+
+Rejection sampling is a big class of approaches, including such notables as
+"Metropolis-Hastings" and "Markov chain Monte Carlo" (MCMC). They are very
+useful for the practical scientist.
 
 **inverse transform, ziggurat, rejection, Metropolis-Hastings and other Monte carlo mcmc stuff**
 
@@ -987,14 +1249,12 @@ some distribution, it's doing this transformation. I don't think there's
 anything really practical to be gained from knowing these transformations, but
 they're fun, so I put them here.
 
-Rejection sampling is a big class of approaches, and they are very useful for
-the practical scientist.
-
 #### Clever transformations
 
-The idea is to generate random numbers from the uniform distribution and
-somehow turn them into random numbers distributed according to some other
-distribution.
+If you can write the cdf of your distribution of interest, say $F_X(x)$ and you
+invert it (i.e., solve for $x$ in terms of $F_X$), then you can use a nice
+trick called *inverse transform sampling*.
+
 
 ##### Normal distribution: Box-Muller transformation
 
