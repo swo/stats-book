@@ -8,6 +8,7 @@
 - Inference vs. decision-making under uncertainty. How are these two things different? (e.g., what's the "cost" of making an incorrect scientific conclusion?)
 - Simpson's paradox: why two-way associations are confusing
 - Random number generation
+- Most textbooks are boring, and they just present a parade of stuff. I want to use those things that are probably familiar as entry points for learning. E.g., the difference between descriptive statistics and inferential statistics is what those statistics are used for. In one, they are used a estimators of population parameters. In the other, they are summed over the ask about the likelihood of data.
 
 ## Game plan
 
@@ -31,6 +32,7 @@ Inspirations include Learn You a Haskell and think Stats.
 - Stats for people who already know something about numbers
 - Stats on the fly
 - Learn you a stats for great good
+- An engineering approach to statistics
 
 # Why a book?
 
@@ -591,8 +593,8 @@ Estimators are typically written with a hat (because you
 use a cone hat to communicate with the mothership?), so $\hat{B}$ is an
 estimator for $B$. Of course, there isn't just one estimator for a value. I
 know plenty of people who are perfectly happy to guess that 3 is the right
-answer in statistics, so for them we might write $\hat{B} = 3$. (This is
-clearly a bad estimator, but we'll get to what "bad" means later.)
+answer in statistics, so for them we might write $\hat{B} = 3$. This is
+clearly a bad estimator, but what does "bad" mean?
 
 [^systematically]: Why the scare quotes? Like in all frequentist statistics,
   we're stuck with assuming that we know the truth, finding the best answer
@@ -601,22 +603,54 @@ clearly a bad estimator, but we'll get to what "bad" means later.)
   value, evaluate the behavior of the estimator knowing the truth, and then
   forget you know the truth.
 
-Estimators usually get subscripts to differentiate them from one another, so
-I'll write our naive estimator as:
+To answer that, let's consider some of the properties of different estimators.
+To keep the different estimators straight, let's put subscripts on them. I'll
+call the clearly bad estimator $\hat{B}_\mathrm{bad} = 3$ and I'll call our
+naive estimator
 $$
 \hat{B}_1 = \max_i X_i,
 $$
-where I called it "1" because it was our first guess, and I called the variables
-we're drawing from the uniform distribution as $X_i$.
+where I called it "1" because it was our first guess. I also called the
+variables we're drawing from the uniform distribution as $X_i$.
 
-$\hat{B}_1$ is clearly *biased*: we will always get a smaller value than the
-true $B$. Mathematically, we might write $\mathbb{E}[\hat{B}_1] < B$.
+### Consistent estimators
 
-Because it feels natural to expect that the expected value of your estimator
-will be the true value, an estimator $\hat{B}$ for which $\mathbb{E}[\hat{B}] = B$
-is called *unbiased*.
+One reason that $\hat{B}_\mathrm{bad}$ seems bad is that it doesn't change. It
+won't ever get more "right", no matter how much data we collect. On the other
+hand, $\hat{B}_1$ will get better. In fact, the more data we take, the closer
+we expect $\hat{B}_1$ to get to the true maximum.
+
+Estimators whose expected value approach the true value as the number of points
+approaches infinity is called *consistent*. Call $M$ the true value and $n$ the
+number of points we drew. Then $\hat{B}_1$ is consistent because
+$$
+\lim_{n \to \infty} \hat{B}_1 = M.
+$$
+In other words, if you specify an error threshold (e.g., you want an estimate
+within 10% of the true value), then I can tell you what $n$ you need to pick in
+order to get an estimate within that threshold (with some finite probability).
+In contrast, with $\hat{B}_\mathrm{bad}$, there's no $n$ you can pick that will
+get you arbitrarily close to the true value.
 
 ### Unbiased estimators
+
+Clearly, though, $\hat{B}_1$ is not perfect. No matter how many $n$ we draw,
+$\hat{B}_1$ will always be less than $M$. We therefore say that $\hat{B}_1$ is
+*biased*. Mathematically, we might write $\mathbb{E}[\hat{B}_1] < B$.
+Because it feels natural to expect that the expected value of your estimator
+will be the true value, an estimator $\hat{B}$ for which $\mathbb{E}[\hat{B}] = B$
+is called *unbiased*.[^blue]
+
+[^blue]: Another standard for "good" estimators is the *best linear unbiased*
+  estimator (BLUE). "Linear" means that the estimator is a linear function of
+  the data. (You could maybe imagine that there is some wacky, convoluted
+  function that's a better estimator, but we stick with linear.) The final
+  qualifier, "best", means that the variance of the estimator is the minimum of
+  all other linear unbiased estimators. Here "variance of the estimator" is
+  computed in the same sense that the expected value of the estimator is
+  computed for determining bias. In other words, "best unbiased" means its
+  centered on the true value with the smallest variance possible.
+
 
 Let's try to salvage our naive estimator $\hat{B}_1$ and make an unbiased
 estimator $\hat{B}_\mathrm{ub}$ instead.
@@ -624,20 +658,12 @@ estimator $\hat{B}_\mathrm{ub}$ instead.
 Where to start? It's likely that there are many unbiased operators, so we need
 to pick the form of the operator we want to look for. It seems likely that all
 our observed $X_i$ only have two interesting things about them: their maximum,
-and how many of them there are. Like we said before, if we have very many $X_i$,
-we expect that their maximum (I'll write it as $M \equiv \max_i X_i$) approaches
-$B$:
-$$
-\lim_{n \to \infty} M = B,
-$$
-where $n$ is the number of the $X_i$ I drew.
-
-It's also sufficient to just keep the maximum $M$ and ignore the values of all
-the other points. If my first draw was $1.0$, then I don't learn that much if I
-draw $0.1$ the next five times, because I know that $B > 1.0$, and so it's just
-as likely that I drew $0.1$ and $1.0$. If I draw many values below $1.0$, I
-only learn that the maximum is probably not far above $1.0$, which is already
-encoded in the number of points $n$.
+and how many of them there are. For example, if my first draw was $1.0$, then I
+don't learn that much if I draw $0.1$ the next five times, because I know that
+$M > 1.0$, and, because it's a uniform distribution, I was just as likely to
+draw $0.1$ as $1.0$. If I draw many values below $1.0$, I only learn that the
+maximum is probably not far above $1.0$, which is already encoded in the number
+of points $n$.
 
 So I want $\hat{B}_\mathrm{ub}$ to be some function of $n$, which is fixed, and
 $M$, which is a random variable, such that $\mathbb{E}[\hat{B}_\mathrm{ub}] = B$.
@@ -1131,6 +1157,27 @@ This is almost certainly not reflective of how typical experiments are run[^tea]
 **Fisherian small data**
 
 **What happens if I use the "wrong" test? Chi-square as an example of wrongness**
+
+# Regression
+
+Hardin pages 56-57 talks about the difference between the normal
+(subject-specific) and the generalized (population-average) estimating
+equations. E.g., second-hand smoking: what's the odds of a kid having a
+respiratory illness given that mom smokes? SS parameters give the OR for *each
+individual child* having the illness, so it's what we would expect would happen
+if particular moms stopped smoking. PA parameters give the OR *across the
+population*, so it explains the difference in prevalence we expect in the two
+groups. The first one is:
+$$
+\mathrm{OR}^\mathrm{SS} = \frac{P(Y_{it}=1 | X_{it}=1, \nu_i) / P(Y_{it}=0 | X_{it}=1, \nu_i)}{P(Y_{it}=1 | X_{it}=0, \nu_i) / P(Y_{it}=0 | X_{it}=0, \nu_i)}
+$$
+and the second is
+$$
+\mathrm{OR}^\mathrm{PA} = \frac{P(Y_{it}=1 | X_{it}=1) / P(Y_{it}=0 | X_{it}=1)}{P(Y_{it}=1 | X_{it}=0) / P(Y_{it}=0 | X_{it}=0)}.
+$$
+The difference, in case you didn't catch it, is whether you condition on the
+random effect $\nu_i$. The SS estimate is for these particular people; the PA
+estimate marginalizes over the random effects.
 
 # Bayesian
 
