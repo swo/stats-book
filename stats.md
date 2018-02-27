@@ -9,6 +9,8 @@
 - Simpson's paradox: why two-way associations are confusing
 - Random number generation
 - Most textbooks are boring, and they just present a parade of stuff. I want to use those things that are probably familiar as entry points for learning. E.g., the difference between descriptive statistics and inferential statistics is what those statistics are used for. In one, they are used a estimators of population parameters. In the other, they are summed over the ask about the likelihood of data.
+- ABC as super hacky thing!
+- Finite population correction: $\sigma_{\overline{X}} = \frac{\sigma}{\sqrt{n}} \sqrt{\frac{N - n}{n - 1}}$
 
 ## Game plan
 
@@ -666,8 +668,11 @@ maximum is probably not far above $1.0$, which is already encoded in the number
 of points $n$.
 
 So I want $\hat{B}_\mathrm{ub}$ to be some function of $n$, which is fixed, and
-$M$, which is a random variable, such that $\mathbb{E}[\hat{B}_\mathrm{ub}] = B$.
+$M$, which is a random variable[^wtf], such that $\mathbb{E}[\hat{B}_\mathrm{ub}] = M$.
 That will require knowing the distribution of $M$.
+
+**swo** I mixed a lot of this up. I called $B$ the true value, which got
+confusing. I should just use $M$ and $\hat{M}$.
 
 The cumulative distribution function, the probability that the observed maximum is
 less than some $m$, is just the probability that there is no point that is above $m$:
@@ -876,7 +881,93 @@ guess that most people won't know the difference.[^comfort]
 [^comfort]: Comfortingly, as $n$ grows, the difference between the sample
   variance and the "sample variance" becomes negligible.
 
-# Bootstrapping
+## Estimators about estimators
+
+### Jackknife
+
+You have $n$ data points and compute an estimator $\hat{\theta}$ for some
+population parameter $\theta$. If you don't know how the population is
+structured, then it's not clear what you expect the variance of $\hat{\theta}$
+to be. How sure can you be of this value? In terms of inference, can you make
+any inference with it?
+
+Compute the *jackknife replicates*[^jackname] $\hat{\theta}_j$, which are the estimators
+computed using all the data points except the $j$-th one.
+
+That seems like a weird thing to have done, but you can use them to compute two handy things:
+
+1. An estimate of the variance of the estimator. This can help you for description---by giving a confidence interval(?)---and for inference---by giving you a sense of the "random" ranges you would expect from two samples.
+1. An estimate of the bias in the estimator. This is helpful if you don't want want your estimator to be biased but you don't know how to fix it.
+
+[^jackname]: The "jackknife" method is so called because Tukey compared the
+  method, which is "rough-and-ready", to another rough-and-ready tool, the
+  pocket knife, also known as a jackknife. Although this name has the
+  disadvantage of giving you no clue what it is about, it had the advantage of
+  having more brevity and vivacity than "delete-1 resampling", which is
+  probably the more accurate name.
+
+#### Jackknife variance estimator
+
+The variance estimator is
+$$
+\widehat{\mathrm{Var}}_\mathrm{jk}[\hat{\theta}] := \frac{n-1}{n}  \sum_j \left( \hat{\theta}_j - \hat{\theta}_{(\cdot)} \right)^2,
+$$
+where $\hat{\theta}_{(\cdot)}$ is the average of the jackknife replicates:
+$$
+\hat{\theta}_{(\cdot)} := \frac{1}{n} \sum_j \hat{\theta}_j.
+$$
+In other words, it's the variance of the jackknife replicates with some rescaling:
+$$
+\mathrm{Var}[\hat{\theta}_j] = \frac{1}{n-1} \sum_j \left( \hat{\theta}_j - \hat{\theta}_{(\cdot)} \right)^2 \implies
+  \widehat{\mathrm{Var}}_\mathrm{jk}[\hat{\theta}] = \frac{(n-1)^2}{n} \mathrm{Var}[\hat{\theta}_j].
+$$
+
+The reason for that scaling factor is beyond the scope of this book (Efron &
+Stein 1981?), but the exercise gives you a sense of why it has to be true for a
+specific case.
+
+Some other work, also beyond the scope of this book, shows that the jackknife
+estimate of variance is biased: it tends to overestimate the true variance.
+This makes the jackknife a conservative tool.
+
+**Exercise**. Let $\theta$ be the mean. Show that the scaling factor is what we think. Hints:
+
+- Show that $\hat{\theta}_{(\cdot)}$ is the sample mean.
+- Show that $\hat{\theta}_j - \hat{\theta}_{(\cdot)} = (n \overline{x} - x_j) / (n - 1)$.
+- Show that that value is equal to $(\overline{x} - x_j) / (n - 1)$.
+
+That exercise is from McIntosh's bioRxiv about jackknife resampling.
+
+#### Jackknife bias estimator
+
+The jackknife estimate of bias is $(n-1) \left( \hat{\theta}_{(\cdot)} - \theta \right)$.
+This is the sum of the deviations of the jackknife replicates from the observed
+value $\hat{\theta}$. Again, the reason that you would take the average
+deviation and scale it up to the sum is beyond the scope.
+
+However, if you have an expectation about the bias in an estimator, you can
+make an unbiased estimator by subtracting out that bias:
+$$
+\hat{\theta}_\mathrm{jk} := \hat{\theta} - \widehat{\mathrm{Bias}}_\mathrm{jk}[\theta].
+$$
+
+**Exercise**. Show that the jackknife estimate of bias for the variance gives
+you the familiar unbiased variance estimator.
+
+**Exercise**. Something about the maximum estimator?
+
+#### Pros and cons of the jackknife
+
+It's a piece of cake to implement. There are only $n$ replicates to do, so it's
+tractable. Those replicates are deterministic, so you only run it once.
+
+The cons are that it doesn't always work. For example, a jackknife estimate of
+the variance of a median (**swo check Knight**) is not consistent. It's also
+overly conservative: it's biased toward higher variances. You can rescue some
+properties if you move to a delete-$d$ resampling and pick $d$ from the correct
+range.
+
+### Bootstrap
 
 What do you do when you want to compute the variance of some statistic that's not easy to compute? Or you don't know what distribution you're sampling from? Then you permute your own data. How do we relate:
 
