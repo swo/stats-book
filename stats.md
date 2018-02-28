@@ -1,3 +1,8 @@
+---
+header-includes:
+    - \usepackage{bm}
+---
+
 # Things to include
 
 - Poisson as horse kicks. Or as drops with cells (a la Weitz, etc.)
@@ -11,6 +16,7 @@
 - Most textbooks are boring, and they just present a parade of stuff. I want to use those things that are probably familiar as entry points for learning. E.g., the difference between descriptive statistics and inferential statistics is what those statistics are used for. In one, they are used a estimators of population parameters. In the other, they are summed over the ask about the likelihood of data.
 - ABC as super hacky thing!
 - Finite population correction: $\sigma_{\overline{X}} = \frac{\sigma}{\sqrt{n}} \sqrt{\frac{N - n}{n - 1}}$
+- Wilk's theorem for likelihood ratio tests
 
 ## Game plan
 
@@ -35,6 +41,57 @@ Inspirations include Learn You a Haskell and think Stats.
 - Stats on the fly
 - Learn you a stats for great good
 - An engineering approach to statistics
+
+# GEE notes
+
+The estimator for the covariance matrix of the estimator for the parameters
+$\bm{\theta}$ has typical element
+$$
+\widehat{\mathrm{Cov}}[\hat{\bm{\theta}}]_{i,j} =
+  \left[ \left( -\frac{\partial^2 \mathcal{L}}{\partial \theta_u \, \partial \theta_v} \right) \right]^{-1}_{i,j}.
+$$
+The inverse is a matrix inverse. This is weird notation.
+
+For example, consider the easy case with just one parameter, so that
+$$
+\widehat{\mathrm{Var}}[\hat{\theta}] = 
+  -\left( \frac{\partial^2 \mathcal{L}}{\partial \theta^2} \right)^{-1}.
+$$
+
+Then try the easy example where we're looking at the sample mean, which is
+the estimator $\hat{\mu}$ for some population with unknown mean $\mu$ and
+known variance $\sigma^2$. Then the log likelihood is
+$$
+\mathcal{L}(\theta) = \sum_i \left\{ -\frac{1}{2} \log (2 \pi \sigma^2) -
+  \frac{(x_i - \mu)^2}{2 \sigma^2} \right\}
+$$
+and the second derivative is just
+$$
+\frac{\partial^2 \mathcal{L}}{\partial \mu^2} = -\frac{n}{\sigma^2},
+$$
+from which it's clear that
+$\widehat{\mathrm{Var}}[\hat{\mu}] = \sigma^2/n$. This is just the result
+that we got from our more straightforward approach, where we asked about
+the variance of the estimator, before we had called it that.
+
+Note, however, that this estimate depends on $\sigma^2$, the *true*
+population variance. In an exercise, you'll compute the estimator
+covariance matrix for the estimator of $\bm{\theta} = (\mu, \sigma^2)$.
+That will show that there is some estimated covariance between
+$\hat{\mu}$ and $\hat{\sigma}^2$, but you find that each of
+$\widehat{\mathrm{Var}}[\hat{\mu}]$, 
+$\widehat{\mathrm{Var}}[\hat{\sigma}^2]$, and
+$\widehat{\mathrm{Cov}}[\hat{\mu}, \hat{\sigma}^2]$ depend on the
+true values, not on the estimates themselves. This isn't unreasonable:
+each of these thing is a well-defined random variable that will have a
+real, honest, true distribution, and we're deriving its properties.
+Clearly the true properties of these random variables should depend on
+the true values, but it leaves us in a pickle when we're doing estimation:
+when computing the standard errors on our estimators, we need to use
+our points estimates as the true values!
+
+**Relationship between "sampling distribution" and estimator. "Standard
+error" as SD of sampling distribution OR estimate of standard deviation.**
 
 # Why a book?
 
@@ -1448,3 +1505,40 @@ something about $r$ or $\theta$ and use that information to make a guess about
 the value of $z_2$. However, because the Cartesian and polar coordinate systems
 encode exactly the same information, that argument is like saying that, because
 I told you $x$, you might be able to guess $y$, which is clearly impossible.
+
+# Chebyshev's inequality
+
+What's the relationship between confidence intervals and variance? We all
+know the relationship for the normal distribution.
+
+As a lemma, consider a random variable $X$ that only takes on nonnegative
+values. Then
+$$
+\mathbb{E}[X] = \sum_{k=0}^\infty k \, f_X(k) \geq \sum_{k=1}^\infty f_X(k) = \mathbb{P}[X \geq 1].
+$$
+(To see the middle inequality, note that you can drop $k=0$, and then, for
+all the $k \geq 1$, you can replace $k$ with $1$, which makes that term in
+the sum smaller than it might be.) We'll use the reversed version:
+$\mathbb{P}[X \geq 1] \leq \mathbb{E}[X]$.
+
+Now, Chebyshev's inequality is easy. Use the
+$$
+\begin{aligned}
+\mathbb{P}\left[|X - \mu| \geq k \sigma\right]
+  &= \mathbb{P}\left[ \frac{(X - \mu)^2}{k^2 \sigma^2} \geq 1 \right] \\
+  &\leq \mathbb{E}\left[ \frac{(X - \mu)^2}{k^2 \sigma^2} \right]
+    \quad \text{(by the lemma)} \\
+  &= \frac{1}{k^2 \sigma^2} \mathbb{E}\left[(X-\mu)^2\right] \\
+  &= \frac{1}{k^2}. \quad \text{(since that expected value is $\sigma^2$ by definition)}
+\end{aligned}
+$$
+
+For $k=1$, we result is trivial: at most 100% of values fall outside 1
+standard deviation from the mean. (An upper bound of 100% tells us nothing.)
+For $k=2$, at most $1/4 = 25\%$ of values fall outside 2 standard deviations.
+That is, 75% fall inside. For $k=3$, 89% fall inside. These are much more
+conservative results than for the normal distribution, for which 95% of
+values fall within 2 standard deviations and 99.7% fall within 3.
+
+I'm not sure of the practical utility of this inequality. It requires
+knowing the true variance, which already requires a whole bunch of data.
