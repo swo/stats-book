@@ -16,7 +16,9 @@ header-includes:
 - Most textbooks are boring, and they just present a parade of stuff. I want to use those things that are probably familiar as entry points for learning. E.g., the difference between descriptive statistics and inferential statistics is what those statistics are used for. In one, they are used a estimators of population parameters. In the other, they are summed over the ask about the likelihood of data.
 - ABC as super hacky thing!
 - Finite population correction: $\sigma_{\overline{X}} = \frac{\sigma}{\sqrt{n}} \sqrt{\frac{N - n}{n - 1}}$
-- Wilk's theorem for likelihood ratio tests
+- Wilk's theorem for likelihood ratio tests!
+- Cramer-Rao bound: inverse of Fisher information matrix is the lower bound for the variance of unbiased estimators. An estimator that hits this bound is minimum variance unbiased (MVU). (BLUE as a weird name, since B and MV mean the same thing?) Not *a priori* clear that some estimator is an MVU.
+- Start with Bayesian, because that's how scientists are used to thinking, and then go onto frequentist, because that's how it's easier to do the math, and then return to Bayes.
 
 ## Game plan
 
@@ -42,6 +44,27 @@ Inspirations include Learn You a Haskell and think Stats.
 - Learn you a stats for great good
 - An engineering approach to statistics
 
+# Preface
+
+The word "statistics" is confusing, because it refers both to a specific
+mathematical object as well as to the study of those objects.
+
+A *statistic* is some function of the sample data. Although the field of
+statistics is often described as consisting of "descriptive statistics" and
+"inferential statistics"---that is, the study of mathematical objects used to
+describe data and to make inferences about the populations the data were taken
+from---in this book I want to emphasize that, for both purposes, we are
+interested in the properties of statistics.
+
+The most interesting statistics are the ones that are used to estimate some
+property of the population. These kinds of statistics are sensibly called
+*estimators*. Most of the study of statistics comes down to figuring out things
+about estimators. One of the most critical is understanding the variance of
+estimators, which is essential for both descriptive statistics---so that you
+can put error bars on your measurements---and inferential statistics---so you
+can make a guess about how probable it is that your data arose under some null
+hypothesis. All of this is about estimators and their variance.
+
 # GEE notes
 
 The estimator for the covariance matrix of the estimator for the parameters
@@ -54,7 +77,7 @@ The inverse is a matrix inverse. This is weird notation.
 
 For example, consider the easy case with just one parameter, so that
 $$
-\widehat{\mathrm{Var}}[\hat{\theta}] = 
+\widehat{\mathrm{Var}}[\hat{\theta}] =
   -\left( \frac{\partial^2 \mathcal{L}}{\partial \theta^2} \right)^{-1}.
 $$
 
@@ -79,7 +102,7 @@ population variance. In an exercise, you'll compute the estimator
 covariance matrix for the estimator of $\bm{\theta} = (\mu, \sigma^2)$.
 That will show that there is some estimated covariance between
 $\hat{\mu}$ and $\hat{\sigma}^2$, but you find that each of
-$\widehat{\mathrm{Var}}[\hat{\mu}]$, 
+$\widehat{\mathrm{Var}}[\hat{\mu}]$,
 $\widehat{\mathrm{Var}}[\hat{\sigma}^2]$, and
 $\widehat{\mathrm{Cov}}[\hat{\mu}, \hat{\sigma}^2]$ depend on the
 true values, not on the estimates themselves. This isn't unreasonable:
@@ -1053,7 +1076,69 @@ The interval that you are 95% confident that something falls in is therefore a
 Bayesian concept (and it gets the confusing name of "credible interval"). So
 forget that "confidence interval" has anything to do with confidence.
 
-Here's how things actually work:
+Here's how things actually work: before you collect any data, you develop a
+*method* for generating the upper and lower confidence intervals, which are a
+pair of statistics, that is, functions of the data. This method has the
+property that the statistics it generates an interval that, in 95% of cases,
+contains the true value.
+
+Here's the slippery part: the confidence interval is generated so that, in 95%
+of cases, they are "correct" in that they contain the true value. In the other
+5% of cases, they don't include the true value. Strictly speaking, they can't
+tell you anything about the probability that the value is in the range.
+
+**What's the easy way to explain the Bayesian link?** The typical frequentist
+answer is really pedantic.
+
+## Binomial test example
+
+We set $N$ and observe $X$ to guess $p$:
+$$
+P[p \in \mathrm{CI} | X] \propto P[X | p \in \mathrm{CI}] \times P[p \in \mathrm{CI}].
+$$
+
+Confidence intervals don't actually do any of these. E.g., Clopper-Pearson
+guarantees that, given any $p$, 95% of the outcomes will include the true
+value. The actual ranges included depend on $p$! This isn't the case for the
+normal distribution, because it has all these amazing properties about scaling
+and so forth. I think this is the best example.
+
+For example, start with the super dorpy confidence interval $[0, 1]$. This is
+always true, but it's way too conservative. Then say something else dorpy like
+a constant range, and show that this won't work if $N$ is too small.
+
+Let's look at a real example. The Clopper-Pearson interval are the limits of
+the range of values of $p$ such that $P[x < X | p] > 2.5\%$ and
+$P[x > X | p] > 2.5\%$. The first inequality is fulfilled by smaller values of
+$p$ (e.g., if $p$ is zero, then $x$ has to be zero), so the *upper* confidence
+limit is determined by the greatest $p$ that satisfies that inequality. The
+second inequality is fulfilled by larger $p$ (e.g., if $p$ is 1 then $x=N$), so
+the *lower* confidence limit is determined by the smallest $p$ that satisfies
+this inequality.
+
+How can we tell that this is a confidence interval? Given any true $p$ and $N$,
+if I make draws $x$ from $\mathrm{Bin}(p, N)$, will this confidence interval
+include $p$ in 95% of cases?
+
+## Comparison to $p$-value
+
+Given $N$, and having observed $X$, we want to test the hypothesis that $p$
+equals some $p_0$ (typically $\tfrac{1}{2}$).
+
+The nonrejection interval is the range of $x$ such that $x\N$ is close enough
+to $p_0$ that the probability that $x$ arose from $p_0$ is above some
+threshold. The lower limit is the lowest $x$ that would have arisen from $p_0$
+with some probability $\alpha/2$, that is, the smallest $x$ such that
+$P[x | p_0] > (1-\alpha)/2$. This means that we take the state of nature $p_0$
+as given and scan over the possible data values, comparing our data to those values.
+
+In contrast, in a confidence interval, we take the data as given and scan over
+the possible states of nature **in some way**. For the binomial, it's obvious that
+the confidence intervals and the nonrejection intervals are not the same thing,
+since it the one is discrete and the other is continuous. Only in the normal (**???**)
+can we assume they are the same thing.
+
+## Returning
 
 1. You get some data that has some parameters (e.g., a sample mean and sample variance).
 1. You *guess* that your observed sample mean and variance are the *true* mean and variance.
