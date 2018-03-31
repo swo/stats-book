@@ -1,7 +1,6 @@
 \documentclass{book}
 
-\usepackage{amsmath}
-\usepackage{amsfonts}
+\usepackage{amsmath,amsfonts,amssymb}
 \usepackage{bm}
 \usepackage{hyperref}
 \usepackage{longtable}
@@ -9,6 +8,8 @@
 
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+ \newcommand{\prob}[1]{\mathbb{P}\left[{#1}\right]}
 
 \title{Statistic for people who do numbers and science}
 \author{Scott W. Olesen}
@@ -22,166 +23,10 @@
 
 \mainmatter
 
-\chapter{What is statistics?}
+\include{chapter_statistics}
 
-"Statistics" is confusing because it means two things. It's a plural noun that
-refers to multiple things, each of which is called a "statistic". It's also a
-singular noun that refers to the study of these mathematical objects.
+\include{chapter_probability}
 
-Statistics is a tool.\footnote{I really enjoyed reading this anecdote from a
-paper by Gene Glass, the inventor of meta-analysis (doi:10.1002/jrsm.1133).
-Glass. He ends up sitting on the plane next to the famous statistician
-Tukey. Tukey asks, "Along which dimension do you see the greatest
-variability in effects?" By investigator. "Then jackknife on investigator."
-The point is that there's a wide gap between being able to understand what
-the jackknife is in a mathematical sense (i.e., how to compute it, whether
-it's an unbiased way to determine the variance in the median) and how to apply
-it. It also goes to show that "real" statisticians can be pretty hacky!}
-
-A \emph{statistic} is some function of the sample data. Although the field of
-statistics is often described as consisting of "descriptive statistics" and
-"inferential statistics"---that is, the study of mathematical objects used to
-describe data and to make inferences about the populations the data were taken
-from---in this book I want to emphasize that, for both purposes, we are
-interested in the properties of statistics.
-
-The most interesting statistics are the ones that are used to estimate some
-property of the population. These kinds of statistics are sensibly called
-\emph{estimators}. Most of the study of statistics comes down to figuring out things
-about estimators. One of the most critical is understanding the variance of
-estimators, which is essential for both descriptive statistics---so that you
-can put error bars on your measurements---and inferential statistics---so you
-can make a guess about how probable it is that your data arose under some null
-hypothesis. All of this is about estimators and their variance.
-
-\chapter{Probability: statistics's toolkit}
-
-To understand the stuff in this book, you'll need three major toolkits:
-algebra, probability, and optimization. These aren't what statistical thinking
-is about, but they are really handy ways to talk about what we'll learn.
-
-In a mathematical introduction, a random variable is a function that maps
-events to some measurable space. This mathematical approach is powerful but not
-intuitive. I think the contructivist approach is better: if you can say how
-this thing would arise, I think you are in a better place as a scientist and
-modeler (but not necessarily as a mathematician).
-
-This part will have some math jargon, but you can handle it.
-
-In probability, we're interested in a \emph{sample space} of
-\emph{outcomes}. If I'm drawing a card from a shuffled deck, the
-outcomes are each of the 52 cards I could draw. Outcomes get combined
-into \emph{events}, like ``drew a red card''. Every outcome has an
-associated \emph{probability}, usually written $P$, always in the
-range $[0, 1]$, and each event has a probability that is the sum of
-the probabilities of its constituent outcomes. Of the 52 cards in the
-deck, 26 are red, and the probability of drawing any particular card is
-$\tfrac{1}{52}$, so the probability of drawing a red card is
-$\tfrac{26}{52} = \tfrac{1}{2}$.
-
-There is a sophisticated mathematical theory about outcomes, events, and
-probabilities called \emph{measure theory}. The simple definitions I
-gave here are not sufficient for a complete theory of
-probability\footnote{For example, what's the probability of flipping
-  heads on a fair an infinite number of times? To say ``zero'' makes it
-  sound like it's impossible, but to say anything other than zero is
-  even more confusing.}, but they will work well enough for our
-purposes.
-
-The really interesting quantity here is ``probability''. In math world,
-probability is just an abstract concept. In the real world, it's
-something that we think about every day. For the first part of the book,
-we'll use the \emph{frequentist} definition of probability: if an event
-has probability $p$, it means that, if we repeated whatever situation
-led to the possibility of that event very many times, the proportion of
-situations leading to that event would approach $p$. For example, if I
-flip a fair coin very many times, I expect the proportion of heads to
-approach $\tfrac{1}{2}$, so the ``probability'' of heads is
-$\tfrac{1}{2}$.
-
-This frequentist definition will lead us into confusing problems later
-on, which will lead to the other major definition of probability,
-\emph{Bayesian} probability\footnote{The fundamental notion in Bayesian
-probability is that ``probability'' should mean something about
-confidence. Intuitively, we say that ``probability'' of heads is
-$\tfrac{1}{2}$ not because we're thinking of an infinite number of
-flips, but because we think that heads is 50\% ``likely''. (Confusing,
-``likelihood'' has a specific technical definition that we will get to
-later.) The problem in frequentist probability is that some things
-cannot be expressed as frequencies of many repeated trials. See the
-Bayesian chapter for more.}, which is a subject of a later chapter.
-
-\subsection{Manipulating probabilities}
-
-A core concept that presented a lot of theoretical confusion in the
-development of statistics is \emph{conditional probability}: what is the
-probability of \(A\) ``given that'' \(B\) is true?
-
-This feels like a natural concept: given that I drew a Jack from the
-deck, what's the probability I drew the Jack of Hearts? Clearly
-\(\tfrac{1}{4}\). What's the chance I drew the Queen of Spades? Clearly
-zero.\footnote{Those who took note of the frequentist definition will
-  say that I'm not being accurate with my language, and they'd be right.
-  I should say, ``Among trials in which a Jack is drawn, in what
-  proportion was the Jack of Hearts drawn?'' This idea of ``the chance
-  that'' is clearly more in the Bayesian vein.}
-
-Mathematically, we write \(A | B\) to mean ``\(A\) given that \(B\)''.
-The definition of conditional probability is \[
-\mathbb{P}[A | B] \equiv \frac{\mathbb{P}[A \cap B]}{\mathbb{P}[B]}.
-\] I think the best way to read this is: rather than considering the
-entire universe of possible events, go into the smaller universe of
-events \(B\), and calculate probabilities there. Then the denominator is
-just the ``size'' of the universe, and the numerator is the ``size'' of
-the event of interest within the scope of the universe I'm thinking
-about.
-
-\textbf{independence}
-
-\subsection{Random variables}\label{random-variables}
-
-We can associated this space of outcomes and events with \emph{random
-variables}, which are functions of the event space that return numbers.
-For the coin flip, the only interesting random variable is: if the flip
-is heads, the value is one; if tails, then zero. For a dice roll, the
-easy-to-think-of random variable is the number of dots that came up: if
-the dice rolls one, the value is 1; if two, then 2; etc. You could think
-up other variables: maybe you get 1 on even dice rolls and 0 on odds.
-
-To a scientist, this sounds really abstract, which it is, but it lets us
-write something that feels more natural: for a random variable \(X\),
-what's the probability that \(X\) is less than some particular value
-\(x\)? I'll write this \(\mathbb{P}[X < x]\). This is called the
-\emph{cumulative distribution function}, of cdf, of \(X\). Traditionally
-it's written as \(F_X\): \[
-F_X(x) \equiv \mathbb{P}[X < x].
-\]
-
-If \(X\) is a finite, discrete function (that can take on only
-particular values), then \(F_X\) is zero for the smallest \(x\)
-supported by \(X\) (although it's less than 1 for the highest \(x\)).
-For a function that can take on arbitrarily large or small values, we
-can see that \[
-\lim_{x \to -\infty} F_X(x) = 0 \text{ and } \lim_{x \to \infty} F_X(x) = 1.
-\]
-
-In the finite, discrete case, like a dice roll, it's straightforward to
-compute the cumulative distribution function from the \emph{probability
-mass function}, which is just the probability that \(X\) takes on any
-particular value. For other kinds of random variables, the corresponding
-concept is the \emph{probability distribution function}, or pdf,
-traditionally written \(f_X\), which is actually derived from the
-cumulative distribution function: \[
-f_X(x) \equiv \frac{d}{dx} F_X(x), \text{ or equivalently } F_X(x) = \int_{-\infty}^x f_X(x') dx'.
-\]
-
-\subsection{Detritus}\label{detritus}
-
-I'll need an introduction to some basic ideas: events, unions,
-conditional probability, expected values, variance, pdf, cdf. I think
-that's most of what you need to get the basic gist. (As an aside, you
-might need some really complicated stuff to answer the finer point
-questions, like what's the space of rational ``coin flips''?)
 
 \chapter{copied material}
 
