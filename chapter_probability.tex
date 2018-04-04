@@ -1,4 +1,4 @@
-%!TEX root = stats.tex
+%!TEX root = main.tex
 
 \chapter{Probability theory: statistics's toolkit}
 
@@ -68,7 +68,7 @@ concepts called \emph{measure theory}. Although fascinating, it's pretty heavy
 lifting, so I'll aim to use definitions that will give us a lot of practical
 benefit, albeit at the cost of creating a mathematically incomplete theory.
 
-To start, we define \emph{outcomes} as the set of all things that could happen
+To start, we define \emph{outcomes} (or the \emph{sample space}) as the set of all things that could happen
 when we run some trial. For example, if I draw a single card from a shuffled
 deck, there are 52 possible outcomes, one for each card. The collection of all
 possible combinations of outcomes are the possible
@@ -82,10 +82,21 @@ combinations''. The ``right'' way to do things is with a
 individual outcomes (e.g., the Jack of Diamonds) and combinations of outcomes
 (e.g., any Diamond), including the ``everything'' outcome (drew any card).
 
-We associate events with probability values using a function that is,
-confusing, also called ``probability''. Let $\Omega$ represent the set of all
-possible events, and let $\omega$ be some particular event (e.g., drew a
-Diamond). Then the probability function looks like:
+The difference between \emph{outcomes} and \emph{events} might seem trivial,
+but it will come up a few times, so I'll repeat that \emph{outcomes} are
+individual, granular things that might happen, while \emph{events} are
+groupings of outcomes. (I might have picked other words, but those are the
+ones we have to roll with.)
+
+We associate events with probability values using a function\footnote{When
+first learning probability, I found it confusing that ``probability'' and
+``random variables'', which will come up later, are (in mathematical terms)
+functions. In common parlance I think we talk about the \emph{values} of these
+functions as ``the probability'' or ``the random variable'', so think of these
+functions as the things that produce those values.} that is, confusing, also
+called ``probability''. Let $\Omega$ represent the set of all possible events,
+and let $\omega$ be some particular event (e.g., drew a Diamond). Then the
+probability function looks like:
 $$
 \mathbb{P} : \Omega \to [0, 1],
 $$
@@ -110,87 +121,82 @@ that is, the probability of \emph{something} happening is 1. It's also a
 requirement that it can't be that nothing happens: $\prob{\varnothing} = 0$,
 where the empty set $\varnothing$ is, weirdly, an event.
 
-\subsection{Manipulating probabilities}
+\section{Manipulating probabilities}
 
 We're often interested in the relationships between events, and the math
 behind this should be pretty intuitive.
 
+\subsection{``Adding'' events}
+
 If $A$ and $B$ are two events that don't have any constituent outcomes in
 common, we call then \emph{disjoint}, and their probabilities add. For
-example, the probability of drawing a Queen \emph{or} a King is just the sum
-of the probabilities of drawing a Queen plus the probability of drawing a
-King. Mathematically we write this as
+example, the probability of drawing a Queen \emph{or} a King is the
+probability of drawing a Queen plus the probability of drawing a King.
+Mathematically we write this as
 $$
-A \cap B = \varnothing \implies \prob{A \cap B} = \prob{A} + \prob{B}.
+A \cap B = \varnothing \implies \prob{A \cup B} = \prob{A} + \prob{B},
+$$
+where the ``cap'' means \emph{intersection} (``and'') and the ``cup'' means
+\emph{union} (``or''), so this reads ``if no outcomes are in both $A$ and $B$,
+then the probability of $A$ or $B$ is the sum of their individual probabilities.''
+
+If $A$ and $B$ do have some overlap, you need to trot out some fun little
+rules called \emph{De Morgan's laws} to figure things out. Consider the event
+of drawing a Jack \emph{or} a Diamond. If you add up the probability of
+drawing a Jack and the probability of drawing a Diamond, you end up double-counting
+the Jack of Diamonds event, so the solution is to subtract out the
+double-counted event:
+$$
+\prob{A \cup B} = \prob{A} + \prob{B} - \prob{A \cap B}.
+$$
+We mostly deal with disjoint events, so I won't belabor this point.
+
+\subsection{``Multiplying'' events}
+
+If ``or'' for disjoint events adds probabilities, what does taking the ``and''
+of events do? Say I shuffle, draw one card, then reshuffle everthing, and draw
+again. What's the probability that I draw the Jack of Diamonds \emph{and then}
+the Queen of Spades? If $A$ and $B$ are \emph{independent}, then their
+probabilities multiply. In my reshuffling example, the drawing of the two
+cards are independent, so the probability of drawing two particular cards in a
+particular order is $\tfrac{1}{52} \times \tfrac{1}{52}$.
+
+The mathematical definition of independence might feel a little circular: two
+events are independent if their probabilities multiply. Intuitively,
+independence means that the events can't depend on each other: because I
+reshuffle the deck in between, what card I drew the first time can't affect
+what card I draw the second time.
+
+``Depends on'' also has a mathematical notation. \emph{Conditional
+probability} is a function that takes two events and returns a probability:
+$$
+\mathbb{P}_\mathrm{conditional} : \Omega \times \Omega \to [0, 1].
 $$
 
+The standard notation uses a vertical bar, which is confusing because it will
+be used for other stuff: $\prob{A | B}$ is read as ``the probability of $A$
+given $B$''. In a frequesting mindset, where probabilities are proportions,
+$\prob{A | B}$ is, of trials in which $B$ happened, the proportion in which
+$A$ also happened.\footnote{This is another place in which my simple
+definition hides controversy and subtlety. I'm using the ``Kolmogorov
+definition'' of conditional probability, but there's more than one way to
+approach it. The Borel-Kolmogorov paradox shows you that you can get weird
+situations when apparently dividing by zero.} Say $N_B$ is the number of
+trials in which $B$ happened, $N_{AB}$ is the number of trials in which $A$
+and $B$ happened, and $N$ is the total number of trials. Then the proportion
+we're talking about is $N_{AB} / N_B$. Divide top and bottom by $N$ to get
+$(N_{AB}/N) / (N_B/N)$ so that the top and bottom are themselves proportions,
+which are frequentist probabilities, from which I hope it's easy to see that
+the definition of conditional probability is
+$$
+\prob{A | B} \equiv \frac{\prob{A \cap B}}{\prob{B}}.
+$$
 
-A core concept that presented a lot of theoretical confusion in the
-development of statistics is \emph{conditional probability}: what is the
-probability of \(A\) ``given that'' \(B\) is true?
+A pictoral way of thinking about conditional probabilities is to say you're
+from your original universe of events $\Omega$ into the smaller universe of
+events $B$.
 
-This feels like a natural concept: given that I drew a Jack from the
-deck, what's the probability I drew the Jack of Hearts? Clearly
-\(\tfrac{1}{4}\). What's the chance I drew the Queen of Spades? Clearly
-zero.\footnote{Those who took note of the frequentist definition will
-  say that I'm not being accurate with my language, and they'd be right.
-  I should say, ``Among trials in which a Jack is drawn, in what
-  proportion was the Jack of Hearts drawn?'' This idea of ``the chance
-  that'' is clearly more in the Bayesian vein.}
-
-Mathematically, we write \(A | B\) to mean ``\(A\) given that \(B\)''.
-The definition of conditional probability is \[
-\mathbb{P}[A | B] \equiv \frac{\mathbb{P}[A \cap B]}{\mathbb{P}[B]}.
-\] I think the best way to read this is: rather than considering the
-entire universe of possible events, go into the smaller universe of
-events \(B\), and calculate probabilities there. Then the denominator is
-just the ``size'' of the universe, and the numerator is the ``size'' of
-the event of interest within the scope of the universe I'm thinking
-about.
-
-\textbf{independence}
-
-\subsection{Random variables}\label{random-variables}
-
-We can associated this space of outcomes and events with \emph{random
-variables}, which are functions of the event space that return numbers.
-For the coin flip, the only interesting random variable is: if the flip
-is heads, the value is one; if tails, then zero. For a dice roll, the
-easy-to-think-of random variable is the number of dots that came up: if
-the dice rolls one, the value is 1; if two, then 2; etc. You could think
-up other variables: maybe you get 1 on even dice rolls and 0 on odds.
-
-To a scientist, this sounds really abstract, which it is, but it lets us
-write something that feels more natural: for a random variable \(X\),
-what's the probability that \(X\) is less than some particular value
-\(x\)? I'll write this \(\mathbb{P}[X < x]\). This is called the
-\emph{cumulative distribution function}, of cdf, of \(X\). Traditionally
-it's written as \(F_X\): \[
-F_X(x) \equiv \mathbb{P}[X < x].
-\]
-
-If \(X\) is a finite, discrete function (that can take on only
-particular values), then \(F_X\) is zero for the smallest \(x\)
-supported by \(X\) (although it's less than 1 for the highest \(x\)).
-For a function that can take on arbitrarily large or small values, we
-can see that \[
-\lim_{x \to -\infty} F_X(x) = 0 \text{ and } \lim_{x \to \infty} F_X(x) = 1.
-\]
-
-In the finite, discrete case, like a dice roll, it's straightforward to
-compute the cumulative distribution function from the \emph{probability
-mass function}, which is just the probability that \(X\) takes on any
-particular value. For other kinds of random variables, the corresponding
-concept is the \emph{probability distribution function}, or pdf,
-traditionally written \(f_X\), which is actually derived from the
-cumulative distribution function: \[
-f_X(x) \equiv \frac{d}{dx} F_X(x), \text{ or equivalently } F_X(x) = \int_{-\infty}^x f_X(x') dx'.
-\]
-
-\subsection{Detritus}\label{detritus}
-
-I'll need an introduction to some basic ideas: events, unions,
-conditional probability, expected values, variance, pdf, cdf. I think
-that's most of what you need to get the basic gist. (As an aside, you
-might need some really complicated stuff to answer the finer point
-questions, like what's the space of rational ``coin flips''?)
+This notation clarifies our definition of independence. If $A$ and $B$ are
+independent, then $\prob{A \cap B} = \prob{A} \times \prob{B}$, so, by the
+definition, $\prob{A | B} = \prob{A}$. In other words, independence means that
+the probability of one event doesn't depend on the other.
