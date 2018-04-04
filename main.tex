@@ -2,14 +2,20 @@
 
 \usepackage{amsmath,amsfonts,amssymb}
 \usepackage{bm}
+\usepackage{mathtools} % for dcases
 \usepackage{hyperref}
 \usepackage{longtable}
 \usepackage{booktabs}
+\usepackage{color,soul} % for hl
 
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
  \newcommand{\prob}[1]{\mathbb{P}\left[{#1}\right]}
+ \newcommand{\expect}[1]{\mathbb{E}\!\left[{#1}\right]}
+ \newcommand{\var}[1]{\mathbb{V}\left[{#1}\right]}
+ \newcommand{\cov}[1]{\mathrm{Cov}\!\left[{#1}\right]}
+ \newcommand{\defeq}{\stackrel{\text{def}}{=}}
 
 \title{Statistic for people who do numbers and science}
 \author{Scott W. Olesen}
@@ -24,8 +30,9 @@
 \mainmatter
 
 \include{chapter_statistics}
-
 \include{chapter_probability}
+\include{chapter_randomvars}
+\include{chapter_estimators}
 
 
 \chapter{copied material}
@@ -1726,33 +1733,6 @@ and 99.7\% fall within 3.
 I'm not sure of the practical utility of this inequality. It requires
 knowing the true variance, which already requires a whole bunch of data.
 
-\subsection{Pearson's correlation}\label{pearsons-correlation}
-
-Take the original variables and standardize them to make \(X\) and
-\(Y\). A way to measure how they ``go together'' is \(\rho = E[XY]\).
-This might be more familiar to you as \[
-\rho = \frac{1}{n} \frac{\sum_i (x_i - \overline{x})(y_i - \overline{y})}{\sigma_X \sigma_Y}.
-\] To show that this is in the range \([-1, 1]\), consider a new
-variable \(Z \equiv X - \rho Y\). The variance of \(Z\) is \[
-\begin{aligned}
-\mathbb{V}\left[ (X - \rho Y)^2 \right]
-  &= \mathbb{E}[X^2] - 2 \rho \mathbb{E}[XY] + \rho^2 \mathbb{E}[Y^2] \\
-  &= 1 - 2 \rho^2 + \rho^2 \\
-  &= 1 - \rho^2.
-\end{aligned}
-\] But the expectation of a square is at least zero, so
-\(0 \leq 1 - \rho^2\), which implies that \(-1 \leq \rho \leq 1\).
-
-This arises naturally if you're thinking that \(X\) and \(Y\) are both
-normally distributed.
-
-And this connects to the regression coefficient. This is why the
-``fraction of variance explained'' is related to a regression.
-
-How to show that \(\mathrm{max} \sum x_i y_i\) subject to \(Ex=0\),
-\(Ey=0\), \(Vx=1\), and \(Vy=1\) is 1 and occurs for \(Y = \rho X\),
-i.e., the two are linearly related?
-
 \subsection{\texorpdfstring{Visualiztion of how \(\hat{p}\) changes with
 \(n\)}{Visualiztion of how \textbackslash{}hat\{p\} changes with n}}\label{visualiztion-of-how-hatp-changes-with-n}
 
@@ -1773,5 +1753,71 @@ data_frame(flip=x, phat, cil, ciu) %>%
   geom_line() +
   geom_hline(yintercept=p, linetype=2)
 \end{verbatim}
+
+\section{$\chi^2$ test}
+
+Say you have $k$ iid standard normal random variables:
+\begin{equation}
+X_i \stackrel{\text{iid}}{\sim} \mathcal{N}(0, 1).
+\end{equation}
+Then $Y = \sum_{i=1}^k$ is $\chi^2$-distributed with $k$ degrees of freedom.
+
+Let's start with a simple case where you have a table with two cells with
+expected probabilities $p_1$ or $p_2 = 1-p_1$. We got $n$ total observations,
+with $O_1$ in the first cell and $O_2 = n - O_1$ in the second. You probably
+remember how to compute the test statistic from Stats 101:
+\begin{equation}
+\chi^2 = \sum_{k=1}^2 \frac{(O_i - E_i)^2}{E_i} = \frac{(O_1 - np_1)^2}{np_1} + \frac{(O_2 - np_2)^2}{np_2},
+\end{equation}
+where $E_i$ is the ``expected'' number of counts in each cell.
+
+Consider the numerator of the second term:
+\begin{equation*}
+(O_2 - np_2)^2 = \left[(n - O_1) - n(1 - p_1)\right]^2 = (-O_1 + np_1)^2 = (O_1 - np_1)^2.
+\end{equation*}
+Handy, that's the same as numerator of the first term! That means we can re-write things:
+\begin{equation*}
+\chi^2 = \frac{(O_1 - np_1)^2}{n}\left( \frac{1}{p_1} + \frac{1}{p_2}\right).
+\end{equation*}
+A little algebra shows that $1/p_1 + 1/p_2 = 1/p_1(1-p_1)$, so that
+\begin{equation}
+\chi^2 = \frac{(O_1 - np_1)^2}{np_1(1-p_1)} = \left( \frac{O_1-np_1}{\sqrt{np_1(1-p_1)}} \right)^2.
+\end{equation}
+That might look terrible, but it's actually pretty cool. Here's why: $O_1$ is the observed value, $np_1$ is the expected mean, and $\sqrt{np_1(1-p_1)}$ is the standard deviation of the binomial distribution. I'll re-write that last equation with more suggestive notation:
+\begin{equation}
+\chi^2 = \left( \frac{x_1 - \mu_1}{\sigma_1} \right)^2
+\end{equation}
+
+This certainly \emph{looks} like a $\mathcal{N}(0, 1)$ variable, although we
+said previously that the counts in the two cells follow a binomial
+distribution. This is where the central limit theorem comes in: the sum of any
+large set of (well-behaved) iid random variables approaches a normal
+distribution. The binomial distribution approaches the normal distribution
+particularly quickly such that (if the distribution is not highly skewed) you
+only need about 5 counts for the normal approximation to be pretty
+good.\footnote{The normal approximation to the binomial was proved long before
+the central limit theorem. This special case, called the \emph{de Moive-Laplace 
+theorem}, was first published by de Moivre in 1738. Laplace published
+the reverse result, that the binomial approximates the normal, 75 years later,
+in 1812. The general central limit theorem was proven, more than 150 years
+after de Moivre's original result only, in 1901 by Lyapunov.}
+
+So, so long as each cell has (ish) 5 or more counts, then we can approximate
+the binomial variables with normal variables, which means that the test
+statistic $\chi^2$ that I wrote is actually just the square of a single,
+standard normal variable, which happens to be $\chi^2$-square distributed with
+1 degree of freedom. Two cells in the table ($k=2$) meant $k-1=1$ degrees of
+for the $\chi^2$ distribution.
+
+The same result holds, that the sum of the $(O_i - E_i)^2/E_i$ values follows
+a $\chi^2$ distribution with $k-1$ degrees of freedom, for $k>2$. The math is
+a lot more involved because the $k$ cells in the table are distributed
+according to a multinomial distribution. In other words, conditioned on the
+total number $n$ of counts, the values in the different cells are not
+independent: if cell 1 has a lot of counts, cells 2, 3, etc. can't have that
+many cells. Like we've seen before, covariance makes the calculations hard!
+Nevertheless, the same restrictions apply: you can only count on the normal
+approximation working if you have enough counts in every cell.
+
 
 \end{document}
