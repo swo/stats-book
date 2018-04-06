@@ -446,6 +446,13 @@ correlation coefficient, usually written $\rho$, which is
 \begin{equation}
 \rho[X, Y] \defeq \frac{\cov{X, Y}}{\sqrt{\var{X} \var{Y}}}.
 \end{equation}
+I want to emphasize that we're still talking about random variables, which are
+functions, and not numbers, the ``realizations'' of random variables. So, as I
+wrote it, $\rho$ is a \emph{function} that takes two random variables, which
+are themselves functions, and returns a number.\footnote{This is different
+from the correlation coefficient as you're probably used to it, which is
+computed as a number from a set of numbers. If you find this curious, don't
+worry, that's what the next chapter is about!}
 
 To see how covariance and correlation are related, think about a correlated
 $X$ and $Y$, like a simple bivariate normal distribution. \hl{figure} In
