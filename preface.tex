@@ -1,3 +1,5 @@
+%!TEX root=main.tex
+
 \chapter{Preface}
 
 \section*{Who this book is for}
@@ -78,3 +80,47 @@ My principal sources of motivation for this book were Allen Downey's
 \textit{Think Stats} and \textit{Think Bayes}, Miran Lipva\v{c}a's
 \textit{Learn You a Haskell for Great Good}, and Stephen Stigler's
 \textit{History of Statistics}. That order is probably the most profitable.
+
+\section*{Notes on notation}
+
+\paragraph{Functions} When introducing a function $f$ that maps things in a domain
+$D$ to things in a range $R$, I write that as
+$$
+f : D \to R.
+$$
+When writing a function $f$ that takes numbers, I use normal parentheses:
+$f(x)$. When writing a function that takes things that aren't numbers, I use
+square brackets: $\prob{A}$. My idea is to emphasize that which functions
+are number-taking and which are something-else-taking.
+
+When a function takes multiple inputs, I use a semicolon to distinguish
+between the input(s) that, in that context, we think of as changing and the
+input(s) that we think of as fixed. I put the ``variables'' before the
+semicolon and the ``parameters'' after. So I would write the probability of
+getting $x$ successes out of $n$ trials each with probability $p$ of success
+as $f(x; n, p)$. Other people might write this as $f(x | n, p)$, especially
+for likelihood, but I like to reserve the bar specifically for conditional
+probabilities $\prob{A | B}$.
+
+\paragraph{Probability} When probability is a function, I use the
+``blackboard'' letter $\mathbb{P}$. When probability is a number---that is, an
+output of the function $\mathbb{P}$---I write $p$. I try to avoid capital
+$P$, because I think it's not clear whether that's a function or a number.
+
+\paragraph{Expected value} When expected value is a function, I use the
+``blackboard'' letter $\mathbb{E}$. I use an ``overline'' to write the arithmetic
+mean of a group of numbers: $\overline{x} = (1/n)\sum_i x_i$. I try to avoid
+using the overline with random variables and use, say, $\mu$ as the true mean
+and, as per the note below, $\hat{\mu}$ as an estimator of the mean (which,
+incidentally, $\bar{x}$ is).
+
+\paragraph{Variance} When variance is a function, I use the ``blackboard''
+letter $\mathbb{V}$. As per the note below, I write the estimated variance
+as $\hat{\mathbb{V}}$ but the sample variance as $\sigma^2$. I do this in
+part to clarify why we use $n$ in the denominator of $\sigma^2$ and $n-1$
+in the denominator of $\hat{\mathbb{V}}$.
+
+\paragraph{Estimators} I use ``hats'' for estimators, so $\hat{X}$ is an
+estimator for $X$. When it's important to distinguish between estimators,
+I use subscripts, so maybe $\hat{X}_\mathrm{ML}$ is the maximum likelihood
+estimator for $X$.

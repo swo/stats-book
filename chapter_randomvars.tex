@@ -92,7 +92,9 @@ inequality with two numbers (e.g., $1 \leq 2$).\footnote{Indeed, $\prob{1 \leq
 2} = 1$!} This may seem pedantic, but I think having a really good grasp of
 the notation will help you articulate correct thoughts more clearly. Things
 will quickly get confusing if you think that $X \leq x$ means the same thing
-as $x \leq x$!
+as $x \leq x$! Again, $1 \leq 2$ is a Boolean value---true or false---but
+$X \leq x$ is an \emph{event}, all the parts of the univese of outcomes for
+which the random variable $X$ takes on values less than the number $x$.
 
 If the number of outcomes is finite (e.g., for a die roll, there are six
 outcomes), then $X$ takes on a finite number of values (at most, the number of
@@ -170,7 +172,7 @@ The other name for the pdf is the probability \emph{density} function, which I
 actually like a little better, because it emphasizes that the pdf is something
 that, when integrated, gives probabilities:
 \begin{equation}\label{eq:integrated_pdf}
-\prob{x_0 < X \leq x_1} = \int_{x_0}^{x_1} f_X(x') \,dx'
+\int_{x_0}^{x_1} f_X(x') \,dx' = F_X(x_1) - F_X(x_0) = \prob{x_0 < X \leq x_1}
 \end{equation}
 If $X$ can take on any value, then it follows from the definition of the cdf and
 some fundamental calculus that
@@ -187,7 +189,7 @@ deal with more complicated functions.\footnote{For example, if the cdf has
 discontinuities, then you need to be more careful with the limits on the
 integrals. That's why there's one ``$<$'' and one ``$\leq$'' in \eqref{eq:integrated_pdf}.}
 
-\subsection{Examples of distributions}
+\subsection{Known distributions}
 
 In yet more notation, we use a tilde to denote that a random variable
 ``follows'' a certain distribution, that is, that it has a pdf and cdf that
@@ -206,26 +208,36 @@ We'll come back to these distributions and their pdf's later; I just want to
 you understand that, when we say that ``$X$ is normally distributed'', we
 making a mathematically precise statement about $X$'s pdf and cdf.
 
+\subsection{Independent, identically-distributed random variables}
+
 A common construct is to consider \emph{independent, identically-distributed}
-(or iid) variables. This means you have a collection of random variables $X_i$
+(or iid) random variables. This means you have a collection of random variables $X_i$
 that are all independent of one another but follow the same distribution. This
 might be written as
 \begin{equation*}
 X \stackrel{\text{iid}}{\sim} \mathcal{N}(0, 1)
 \end{equation*}
 to mean that $f_{X_i}(x)$ is the standard normal pdf for every random variable
-$X_i$ and that all the $X_i$ and $X_j$ are independent for all $i \neq j$. For
-example, in my card drawing example, if I draw one card, shuffle the deck, and
-draw another card, any random variable associated with the cards in the two
-draws will be independent and identically distributed.
+$X_i$ and that all the $X_i$ and $X_j$ are independent for all $i \neq j$.
+For example, in my card drawing example, if I draw one card, shuffle the deck,
+and draw another card, any random variable associated with the cards in the
+two draws will be independent and identically distributed.\footnote{I hope
+it's clear that ``independent'' and ``identically-distributed'' are not
+contradictory: the only knowledge you could potentially get from the outcomes
+$X_1, X_2, \ldots X_n$ that would tell you something about the as-of-yet
+hidden value of $X_{n+1}$ is what distribution the $X_i$ are drawn from. This,
+however, is not a secrete when you say that ``the $X_i$ are iid standard
+normal variables''. Later on we will definitely get into how you use the
+values taken on by $X_i$ to try to guess what distribution they come. That's
+the point of inferential statistics!}
 
 If some random variables are independent and indentically distributed, then
 their histogram approximates the probability distribution function. To see why
 this is, remember that, at least in the frequentist scheme, the proportion of
 ``trials'', which we can now more concretely associate with the individual
 random variables in this group of iid random variables, that fall into some
-range $[a, b]$ is the probability of \emph{each} of the identically-
-distributed random variables taking on values in that range, which is $\prob{a
+range $[a, b]$ is the probability of \emph{each} of the identically-distributed
+random variables taking on values in that range, which is $\prob{a
 < X \leq b} = \int_a^b f_X(x') \,dx'$. When we talk about ``drawing from a
 normal distribution'', what we're talking about in a rigorous mathematical
 sense is examining a collection of iid variables with that distribution.
@@ -251,7 +263,9 @@ so the plus sign in $X + Y$ doesn't mean the same thing as the plus sign in $1
 Z = X + Y \implies Z[\omega] = X[\omega] + Y[\omega],
 \end{equation}
 that is, for every outcome $\omega$, $Z$ takes on the sum of the values that
-$X$ and $Y$ take on.
+$X$ and $Y$ take on. More pedantically, $Z$ is a function that, for every input
+$\omega$, outputs the sum of the outputs of $X$ and $Y$ when they in turns are
+fed the input $\omega$.
 
 This means that, for some event, if $X$ takes on the value $x$ and $Y$ takes
 on the value $y$, then $Z$ takes on $x+y$. Reversing that, we can say that, if
@@ -272,14 +286,22 @@ summing over all the outcomes in which $X$ takes on certain values, we integrate
 \begin{equation}
 f_Z(z) = \int f_X(x') f_Y(z - x') \,dx'
 \end{equation}
-The right way to derive this is to go back to the cdf for $Z$, but you can
-trust that it works out.
+The right way to derive this is to start with the cdf for $Z$, but it's pretty
+boring algebraic manipulation, so you can trust that it works out.
 
 The process is similar for a product of random variables $Z = XY$, expect
 that, if $Z = z$ and $X = x$, then it must be that $Y = z/x$. You can also
 take a ratio of random variables $Z = X/Y$, which will have terms where $Y =
-zx$. The math behind all these can be a real pain, but I want you to see that
-there's nothing mysterious about it.
+zx$. The math behind all these can be a real pain, and cases in which there is
+a nice syllogism like ``if $X$ is whatever distributed and $Y$ is whatever
+distributed, then $Z = X + Y$ is whatever distributed'' are glorious
+exceptions.
+
+I want you to see that, even if the math showing some fact about the sum,
+product, or ratio of random variables is hard---for example, the ratio of two
+normally distributed variables is \emph{not} normally distributed---there's
+nothing mysterious about where the fact comes from, or how you could derive
+your own facts like that yourself, if you had the time and algebraic ability.
 
 \section{Properties of random variables}
 
