@@ -399,7 +399,9 @@ same integer twice is really small and you can treat the separate draws as
 independent. The expected value will be tough to calculate, so just do it for
 drawing one point. Then, do everything with a computer.
 
-\section{Estimating the mean}
+\section{Descriptive estimators}
+
+\subsection{The arithmetic mean: a first estimator of central tendency}
 
 One of the crucial misunderstandings in pre-statistical experimentation was
 that the amount of information you had---or, similarly, the precision of your
@@ -474,7 +476,7 @@ just went through: $s$ is some estimate of the standard deviation of the true
 population---that is, of the variation inherent in the thing being
 sampled---and $s/\sqrt{n}$ is the variation inherent in the arithmetic mean.
 
-\section{Estimating the variance}
+\subsection{Variance: a first estimator of spread}
 
 You may have been disappointed by $\eqref{eq:sem}$: when you asked me about
 the variance in my estimate of the expected value, I told you that it had to
@@ -525,7 +527,7 @@ random variables:
 \begin{equation}
 Z_i = \frac{X_i - \mu}{\sqrt{\var{X}}} \implies X_i = \sqrt{\var{X}} Z_i + \mu
 \end{equation}
-It should be easy to see that $Z_i$ has expected value 0 and variance \expect{Z_i^2} = 1$,
+It should be easy to see that $Z_i$ has expected value 0 and variance $\expect{Z_i^2} = 1$,
 and $\overline{Z}$ has expected value
 0 and variance $\expect{\overline{Z}^2} = 1/n$. Now I'll rewrite \eqref{eq:estimator-vx1}
 so it has $Z_i$ instead of $X_i$:
@@ -546,64 +548,63 @@ Thus, the expected value of this estimator is
   &= \expect{\frac{\var{X}}{n} \sum_i \left( Z_i - \overline{Z} \right)^2} \\
   &= \frac{\var{X}}{n} \expect{\sum_i Z_i^2 - n \overline{Z}^2} \\
   &= \frac{\var{X}}{n} \left( \sum_i \expect{Z_i^2} - n \expect{\overline{Z}^2} \right)\\
-  &= \frac{\var{X}}{n} (n - 1) \quad{\text{(using those \\
+  &= \frac{\var{X}}{n} (n - 1) \quad\text{(using the little identities)} \\
   &= \frac{n-1}{n} \var{X}.
 \end{align*}
-where I chose $Z_1$ arbitrarily. All the $Z_i$ are identically distributed, so
-I just picked that one.
+Note that the expected value of our estimator is not equal to the thing we're
+trying to estimate, so this estimator is biased! It systematically \emph{underestimate}
+the true variance. Interestingly, like when we tried to cook up
+an estimator for the upper limit of a uniform distribution, we ended up with
+something that was off by a multiplicative factor. The solution is to make a new
+estimator that has the inverse, cancelling factor out front:
+\begin{equation}
+\hat{\mathbb{V}}_{X,\mathrm{unbiased}}
+  = \frac{n}{n-1} \times \frac{1}{n} \sum_i \left(X_i - \overline{X}\right)^2
+  = \frac{1}{n-1} \sum_i \left(X_i - \overline{X}\right)^2.
+\end{equation}
+Using $n-1$ instead of $n$ in the denominator is known as Bessel's
+correction.\footnote{Gauss was using the correction before Bessel discovered
+it, as early as 1823. I hope the late date, 1823, impresses upon you how
+subtle this reasoning must be. The ancient Greeks were using the arithmetic
+mean, but an unbiased estimator for standard deviation took thousands of
+years.}
+
+This equation may look familiar as the ``sample variance'', typically written
+\begin{equation}
+s^2 = \frac{1}{n-1} \sum_i \left(x_i - \overline{x}\right)^2.
+\end{equation}
+I always wondered why, in Stats 101, I was told that the mean had $n$ in the
+denominator but variance had $n-1$.\footnote{The traditional answer says that it's
+about ``degrees of freedom'': you're ``using up'' one ``degree of freedom''
+when computing $\overline{x}$, so you only have $n-1$ to compute $s^2$.
+``Degrees of freedom'' is an ill-defined concept that I don't think it useful.
+Explaining one mystery in terms of another mystery is not good pedagogy!}
+This is why! The point is to make an unbiased estimator.
+
+Here's the intuitive explanation. Remember that we previously derived that, if
+we know $\mu$, then the equation $(1/n) \sum_i (x_i-\mu)^2$ works just fine:
+we get an unbiased estimator for $\var{X}$. The trouble, then, is simultaneously
+estimating $\expect{X}$ and $\var{X}$. Our estimate $\overline{x}$---although unbiased,
+so not systematically above or below the true $\expect{X}$---will always be in the
+middle of the our data $x_i$. Therefore, the distance between each $x_i$ and our
+estimated $\overline{x}$ will be systematically smaller than the distance between
+each $x_i$ and the true $\expect{X}$. By how much? Well, that's asking about how
+much larger, on average, $(x_i - \overline{x})^2$ is smaller than $(x_i - \mu)^2$.
+We did just that calculation: the typical values for $(x_i - \overline{x})^2$ are
+part of our estimate $\hat{\mathbb{V}}_X$, while the typical values for
+$(x_i - \mu)^2$ come from the true variance $\var{X}$. The difference between those
+values is the bias, which we can correct for with that factor of $n/(n-1)$.
+
+Comfortingly, as $n$ grows, the difference between using $n$ and $n-1$ in the
+denominator becomes unimportant. If you're a big data person, then there's
+really no need to worry about Bessel's correction. The point of all this was
+to show the logic of looking for unbiased estimators, and to show you that
+there's a good example of a bias-corrected estimator right under all our
+noses.
 
 \hl{consistency?}
 
-Let's check that this estimator meets some of our standard criteria. Is it
-unbiased?
-\begin{align*}
-\expect{\hat{\mathbb{V}}[\{X_i\}]} =
-  \frac{1}{N} \left(  \right)^2
-\end{align*}
-
-The definition of sample variance is the average square deviation from
-the mean: \[
-s^2 \equiv \frac{1}{n} \sum_i (x_i - \overline{x})^2,
-\] where \(\overline{x}\) is just the normal arithmetic mean. Because
-we're used to estimators, it's a nice question to ask, is this a
-``good'' estimator of the true variance \(\sigma^2\)?
-
-\textbf{Some math} will show that
-\(\mathbb{E}[s^2] = \tfrac{n-1}{n} \sigma^2\), that is, that the sample
-variance is a biased (underestimating) estimator for the true variance.
-Happily, it requires merely multiplying by \(\tfrac{n}{n-1}\) (called
-``Bessel's correction''), so that the unbiased estimator is: \[
-\hat{\sigma^2} = \frac{1}{n-1} \sum_i (x_i - \overline{x})^2.
-\]
-
-This estimator is so commonly used that it is often simply referred to
-as ``sample variance'', leaving students to wonder why the variance is
-one thing for ``true distributions'' and another thing for samples. To
-be clear, the sum of square deviations divided by \(n-1\) is an unbiased
-\emph{estimator} for the population variance.
-
-Unfortunately, the words ``sample variance'' are used to refer to the
-actual sample variance (sum of square deviations divided by \(n\)) as
-well as to this estimator. There's often no way to tell. I'm sorry. You
-should probably guess that people mean the \(n-1\) denominator
-\emph{estimator}, and you should probably guess that most people won't
-know the difference.\footnote{Comfortingly, as \(n\) grows, the
-  difference between the sample variance and the ``sample variance''
-  becomes negligible.}
-
-\section{The mean}
-
-
-\section{Summary statistics}\label{summary-statistics}
-
-It is so critical to look
-at the distribution of your data \emph{before} selecting summary
-statistics.
-
-\subsection{The (arithmetic) mean}\label{the-arithmetic-mean}
-
-Everyone knows the average: take your numbers, sum them, and divide by
-the number of numbers.
+\subsection{Maximum likelihood estimate of the mean of a normal distribution}
 
 Why is this a good idea? Early thinkers in statistics---who thought
 about it before it had a name---were curious about the same thing. The
@@ -616,22 +617,19 @@ guessed it, the normal distribution. In fact, we'll show that it is a
 certain kind of ``best way'' to guess the true, population mean from our
 sample mean. (It's the maximum likelihood estimator.)
 
-\subsection{The ``average''}
+\subsection{Median and mode: other estimators of central tendency}
 
 In typical speech, we say something like, ``The average family has two
 children'', by which we mean that a typical family has two children.
 This is confusing because we also use the word ``average'' to refer to
 the arithmetic mean. These two things are similar only in special cases,
-including (you guessed it!) the normal distribution.
+including---you guessed it---the normal distribution.
 
 The arithmetic mean of number of children in families is somewhere
 between 2 and 3 (let's say 2.5), but it's clear that no ``average
 family'' has 2.5 children. Similarly, it's confusing that the mean
 salary in the US is whatever, even thought that is above what whatever
 percent of people get paid.
-
-\subsection{Mode, median, and
-percentiles}\label{mode-median-and-percentiles}
 
 Typical can mean ``common'', so we might say, in a sense, that an
 ``average'' family has two children. Of the number of children you can
