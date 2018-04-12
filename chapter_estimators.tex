@@ -149,25 +149,44 @@ Let's get to it! What are these estimators? What do they do? Rather than give
 some dry definitions, I'll use a motivating example, from which the
 definitions will arise (I hope) naturally.
 
-\subsection{A motivating example: the maximum of a uniform distribution}
+\subsection{A motivating example: the German tank problem}
 
-Imagine you're doing an experiment where you get numbers that are uniformly
-distributed between some $A$ and $B$. For simplicity, let's set $A=0$ so that
-the probability distribution function for a random variable $X$ that follows
-this distribution is:
+During World War II, it was important to the Allies to know how many tanks
+Germany was producing. One way to find this out was with spies, aerial
+reconnaissance, etc. The other way---you guessed it!---was with statistics.
+
+The German tanks had sequential serial numbers for various parts of the tank.
+This means, if you had a list of all the serial numbers, you could figure out
+easily figure out how many tanks there were, since they would go from 1 up to
+the number of tanks. Of course, if you had all the serial numbers, you
+probably got them from the tanks, and you could probably just count the tanks.
+
+Consider this simplified problem: say you know the serial numbers go from 1 up
+to $N$, the actual number of tanks produced, and say you capture a few tanks
+with serial numbers $x_1, x_2,$ etc. How many tanks do you think there
+are?
+
+It turns out that the math will be simpler for the continuous case, in which
+we draw numbers from some continuous, uniform distribution between $A=0$ and
+$B>A$. The probability distribution function for a random variable $X$ that
+follows this distribution is:
 \begin{equation}\label{eq:uniform_pdf}
 f_X(x) = \begin{cases}
   1/B &\text{if $0 \leq x \leq B$} \\
   0 &\text{otherwise}
 \end{cases}
 \end{equation}
-Imagine that you don't know $B$, and you're trying to figure it out, and the
-way you've decided to do that it draw many iid variables $X$. (I know this sounds
-like a silly experiment.)
+The idea is, if you don't know $B$, we'll draw many data points from this
+distribution and use them to make guesses about the value of $B$.\footnote{The math
+of the German tank problem, with integers, is very similar, except that a
+certain sum over integers is hard and the corresponding integral over
+continuous numbers is easy.}
 
 The idea is to generate an estimator, a function of our data that will
 approximate the true value $B$. It's typical to write estimators as the
 true value with a ``hat'', so we're interested in making a function $\hat{B}$.
+
+\subsection{Consistent estimators}
 
 Let me start with what will seem like a very inane example.\footnote{Perhaps
 this sounds silly, and it is, but I've more than once heard respected and
@@ -175,20 +194,19 @@ well-meaning scientists say that the answer to statistical questions is ``3'',
 just 3.}  Say I draw $n$ data points, and then I ignore all of them and just
 pick 3:
 \begin{equation}
-\hat{B}_\mathrm{inane}(\{x_i : i \in 1, \ldots, n \}) \defeq 3.
+\hat{B}_\mathrm{inane}(\{x_i\}) \defeq 3,
 \end{equation}
-Now, this is technically an estimator: it's a function of the
+where $\{x_i\}$ means that $x_i$ for $i = 1, \ldots, n$.
+Now, this technically is an estimator: it's a function of the
 data alone, only it just so happens to not use any of that data. It's also,
 and not just technically, not a good estimator at all. The main problem is
 that, no matter how much data I accumulate, it's not guaranteed to be right.
 (In fact, it's guaranteed to be right only if $B=3.000\ldots$ just by sheer luck.)
 
-\subsection{Consistent estimators}
-
 A very valuable improvement presents itself: if I drew $n$ data points, why not
 just take the maximum of those data points? I'll call this $\hat{B}_1$ since
 it's our first reasonable guess:
-\begin{equation}
+\begin{equation}\label{eq:hatb1}
 \hat{B}_1\left( \{x_i : i \in 1, \ldots, n\} \right) \defeq \max_i x_i
 \end{equation}
 Note that $\hat{B}_1$ is a function only of our data, the sampled numbers $x_i$.
@@ -196,34 +214,61 @@ Note that $\hat{B}_1$ is a function only of our data, the sampled numbers $x_i$.
 This new estimator has the crucial property of being \emph{consistent}, which
 means that, as you collect more and more data, the value of the estimator
 approaches the true value of the thing being estimated:
-\begin{equation}
+\begin{equation}\label{eq:consistent-estimator}
 \text{$\hat{B}$ is a consistent estimator for $B$}
   \implies \lim_{n\to\infty} \hat{B}(\{x_i : i \in 1,\ldots,n\}) = B
 \end{equation}
 
-If you're a math wizzkid you'll have pounced on my use of ``limit''. To say that
-a sequence of numbers has a limit means that, for any threshold difference
+\subsection{Estimators are random variables}
+
+I pulled two fast tricks in \eqref{eq:consistent-estimator} that I should explain.
+
+First, I said that an estimator is a function of the data. That's true, from a
+certain point of view: you can think of an estimator that takes numbers and
+gives back another number. Analogously, you can think of an estimator as a
+random variable that takes on values in the same way that the function-of-
+numbers estimator takes numbers as input. In other words, I could write \eqref{eq:hatb1}
+as
+\begin{equation}
+\hat{B}_1\left( \{X_i\} \right) \defeq \max_i X_i.
+\end{equation}
+That's right: I just changed the lowercase $x_i$ to uppercase $X_i$. So what?
+
+The point is that, so long as we think of $\hat{B}_1$ as a function that just
+takes numbers, we can't do anything about probability with it. However, it is
+easy to translate a function-of-numbers into a function-of-random-variables.
+Now that $\hat{B}_1$ is itself a random variable, we can ask interesting questions
+about its behavior without examining the outcome of any particular experiment.
+Later in this section, you'll see why looking at the expected value and variance
+of an estimator is interesting.
+
+Second, I used the word ``limit'' in \eqref{eq:consistent-estimator}.
+If you're a math wizzkid you'll have pounced that. To say that
+a \emph{sequence of numbers} has a limit means that, for any threshold difference
 $\varepsilon$ you give me, I can give you an integer $N$ such that for every value
 in the sequence after the $N$-th one is within $\varepsilon$ of the true value.
 Clearly this definition is not sufficient in probability, where you could never
-be guaranteed, even after a trillion data points, of anything. In this example, there's always some
-chance, I won't say how large, that all your data points are some finite distance away from $B$. So instead, in
+be guaranteed, even after a trillion data points, of anything.
+In this example, there's always some
+chance that all your data points happen to fall really short of $B$.
+
+Instead, in
 probability, we say that a sequence of random variables $\{Y_i\}$ \emph{converges}
-toward a random variable $Y$ if
+toward a number $a$
 \begin{equation}
-\lim_{n\to\infty} \prob{|Y_n - Y| > \varepsilon} = 0,
+\lim_{n\to\infty} \prob{|Y_n - a| > \varepsilon} = 0,
 \end{equation}
 in other words, if the probability that $Y_n$ takes on a value more than $\varepsilon$
-away from $Y$ vanishes. In our example, $Y$ is a boring random variable that always
-takes on the value $B$, and the $Y_n$ are the estimators (imagined as random variables)
-for each $n$: $\max_i \{X_i : i \in 1,\ldots, n\}$. I'll use the notation for limits
-loosely.
+away from $a$ vanishes. In our example, $a$ is $B$,
+and the $Y_n$ are the random-variable estimators
+for each $n$: $\max_i \{X_i : i \in 1,\ldots, n\}$.
 
 It's fairly intuitive that $\hat{B}_1$ converges to $B$. To prove it, you give me
-some $\varepsilon$, and I say that the probability of a point falling within $\varepsilon$
-of $B$ is $\varepsilon / B$. The probability of a point falling outside that range
-is $1 - \varepsilon/B$. The probability of $n$ points falling outside is $(1 - \varepsilon/B)^n$,
-which goes to zero as $n$ increases.
+some small $\varepsilon > 0$.
+The probability of a point falling more than $\varepsilon$ below $B$
+is $1 - \varepsilon/B$. The probability of all $n$ points falling $\varepsilon$ from $B$
+is $(1 - \varepsilon/B)^n$,
+which goes to zero as $n$ increases, no matter how small you make $\varepsilon$.
 
 \subsection{Unbiased estimators}
 
@@ -231,6 +276,7 @@ Great! We have a consistent estimator $\hat{B}_1$. If I collect a zillion data
 points, I'll get really close to $B$.
 
 This seems like poor consolation. I'm rarely drawing a zillion data points.
+The Allies certainly weren't capturing a zillion German tanks.
 Consider the opposite case, if I draw only one data point. Clearly the maximum
 of the drawn values, just one that point, is a pretty bad estimate for the
 upper limit. If you draw 3 points, then the maximum is a little better, but
@@ -248,7 +294,7 @@ one whose expected value is the thing it's trying to estimate:
 
 How do we turn a biased estimator into an unbiased one? Maybe, if we compute
 $\expect{\hat{B}}$, we can just look and find some way. This will require the
-probability density function for $\max_i x_i$. Similar to the calculation above,
+probability density function for $\max_i X_i$. Similar to the calculation above,
 it's actually not hard to write the probability of a single data point being
 below $x$, that is between zero and $x$: it's just $x/B$. The probability of all
 $n$ data points falling between zero and $x$---which is the same as saying that
@@ -274,14 +320,14 @@ In other words, you expect your data points to fall at something like
 $\tfrac{1}{3}$ and $\tfrac{2}{3}$, so you expect a maximum of $\tfrac{2}{3}$.
 Clearly, as $n \to \infty$, $\expect{M} \to B$, like we had shown previously.
 
-This result suggests that I can just flip the numerical factor out front to get
+I can just flip the numerical factor out front to get
 an unbiased estimator:
 \begin{equation}
 \hat{B}_\mathrm{unbiased} \defeq \frac{n+1}{n} \max_i X_i.
 \end{equation}
 I did this so that:
 \begin{equation}
-\expect{\hat{B}_\text{unbiased}} = \expect{\frac{n+1}{n} \max_i X_i} = \frac{n+1}{n} \frac{n}{n+1} B = B.
+\expect{\hat{B}_\text{unbiased}} = \expect{\frac{n+1}{n} \max_i X_i} = \frac{n+1}{n} \expect{\max_i X_i} = B.
 \end{equation}
 So now we've assured that our estimates for $B$ are ``centered'' around
 $B$.\footnote{I put ``cenetered'' in quotes because the expected value can be
@@ -329,7 +375,7 @@ likelihood function. We say ``maximum likelihood'' rather than ``maximum
 probability'' as a way of emphasizing that the maximization will be done for
 fixed data points over varying parameters.
 
-For our example, the maximum likelihood approach says: as an estimator, pick
+For our example, the maximum likelihood (ML) approach says: as an estimator, pick
 the value such that, if it were the true value, would maximize the probability
 density of the observed data. That is:
 \begin{equation}
@@ -346,15 +392,174 @@ The first case means that we can overshoot at all, and the second says that
 the likelihood decreases if we decrease $b$. The solution is that
 $\hat{B}_\text{ML} = \max_i X_i$, which was our first good guess.
 
-\textbf{German tank problem} as an exercise.
+As an exercise, redo these calculations for the German tank problem, where you
+draw integers between 1 and an unknown $N$. Start by assuming that $N$ is much
+larger than the number of integers you draw so that the chance of drawing the
+same integer twice is really small and you can treat the separate draws as
+independent. The expected value will be tough to calculate, so just do it for
+drawing one point. Then, do everything with a computer.
 
-\section{Variance}\label{variance}
+\section{Estimating the mean}
 
-One estimator is used so often that it's often not even explained as an
-estimator, or even called an estimator, which is very confusing. Imagine
-if someone said that the definition of a maximum of a set of points was
-\(\tfrac{n+1}{n}\) times the biggest value. Crazy, right? If you agree,
-then you're well prepared.
+One of the crucial misunderstandings in pre-statistical experimentation was
+that the amount of information you had---or, similarly, the precision of your
+measurement---increased linearly with the number of data points you took. So
+if I took 100 data points and you took 25, I would have 4 times more
+information than you.
+
+A simple and very important instance of this is estimating the expected value
+of a distribution. People were doing this before they knew they were doing it,
+and you probably have too: the arithmetic mean of a bunch of numbers is an
+estimator of the expected value of the distribution they were drawn from.
+
+I'm suggesting that a good estimator for $\mathbb{E}[X]$ is $(1/N)\sum_i X_i$,
+where the $X_i$ are iid random variables distributed just like $X$. I think
+the most consistent notation would be to name this estimator
+$\hat{\mathbb{E}}_X$, to emphasize that it is a random variable that is
+estimating the expected value of $X$. It's typical and more compact however,
+to write it as $\overline{X}$, in analogy with the arithmetic mean of numbers
+$\overline{x}$. Regardless of what notation you use, the important this to
+remember is that recall that $\mathbb{E}$ is a function that takes random
+variables like $X$ and returns numbers, so $\expect{X}$ is a fixed number,
+while $\hat{\mathbb{E}}_X$ (a.k.a. $\overline{X}$) is an estimator, that is, a
+random variable.
+
+I'm going to show you that the arithmetic mean is an
+unbiased estimator of the expected value:
+\begin{equation}
+\expect{\overline{X}} = \expect{\frac{1}{N} \sum_i X_i} = \frac{1}{N} \sum_i \expect{X_i} = \expect{X}.
+\end{equation}
+I showed that the expected value $\expect{\overline{X}}$ of a random variable
+$\overline{X}$---which happens to be an estimator for the expected value
+$\expect{X}$ of the random variable $X$---is exactly equal to the expected
+value $\expect{X}$, the value that was being estimated. That means that $\overline{X}$
+is an unbiased estimator for $\expect{X}$.
+
+Note that the arithmetic mean is also automatically a consistent estimator of
+the expected value. Even if you draw just one data point, the expected value
+of the arithmetic mean is the true expected value of the target distribution.
+
+So I showed you, with some crazy symbology, something you felt was true for a
+long time. So what? Well, this formalism set us up to answer harder questions.
+Here's one: what's the \emph{variance} of $\overline{X}$? This will help
+answer the question: what's a typical deviation of the arithmetic mean from
+the true expected value of a distribution? Now that we're thinking of the
+arithmetic mean as a random variable, we have the power!
+\begin{align}\label{eq:sem}
+\var{\overline{X}} &= \var{\frac{1}{N} \sum_i X_i} \nonumber\\
+  &= \frac{1}{N^2} \sum_i \var{X_i} \quad\text{(variances of independent rv's add)} \nonumber\\
+  &= \frac{\var{X}}{N}.
+\end{align}
+Variance is a little confusing, being the square of the normal deviation, so
+normally we take it's square root and call it the standard deviation. The
+standard deviation of the arithmetic mean---as an estimator for $X$---is the
+standard deviation of $X$ divided by $\sqrt{n}$.\footnote{Take careful note
+that the words ``standard deviation'' here mean ``square root of the variance'',
+so, in this case, standard deviation is a function of a random variable, \emph{not}
+a function of numbers.}
+
+This is a fundamental and critical result in statistics: if I take 100 data
+points and you took 25, then my arithmetic mean's standard deviation has a
+term like $\sqrt{100} = 10$ in the denominator, and yours has $\sqrt{25} = 5$.
+In other words, even thought I took four times the data, my estimate is only
+twice as precise as yours. We get diminishing returns from every data point
+we take.
+
+You may see a resemblance between the results above and the familiar equation
+$s/\sqrt{n}$ for the ``standard error'' or ``standard error of the
+mean''.\footnote{I haven't defined $s$ because we're going to get to that in
+the next section.} The reason the ``standard error'' is different from the
+``standard deviation'' by a factor of $\sqrt{n}$ is exactly because of what we
+just went through: $s$ is some estimate of the standard deviation of the true
+population---that is, of the variation inherent in the thing being
+sampled---and $s/\sqrt{n}$ is the variation inherent in the arithmetic mean.
+
+\section{Estimating the variance}
+
+You may have been disappointed by $\eqref{eq:sem}$: when you asked me about
+the variance in my estimate of the expected value, I told you that it had to
+do with the true variance of the population $\var{X}$. That's normally not
+information we have access to: we usually also need to estimate the population
+variance.
+
+What's a reasonable estimator the true variance $\var{X}$? Well, just as the
+true variance is the square of the values in the distribution from their true
+expected value, we might guess that an estimate for the variance is the
+arithmetic mean of the squares of the deviations of the data points from their
+arithmetic mean:
+\begin{equation}\label{eq:estimator-vx1}
+\hat{\mathbb{V}}_X \defeq \frac{1}{N} \sum_i \left( X_i - \overline{X} \right)^2.
+\end{equation}
+
+Before diving into that equation, note that both $X_i$ and $\overline{X}$ are
+random variables, and note that they are not independent: the value of
+$\overline{X}$ certainly depends on each of the $X_i$. So first let's imagine
+a simpler case, where we're in a universe where happen to know the expected
+value of the distribution we're trying to determine the variance of. To make
+the equations simpler to read, I'll use the standard notation $\mu \defeq
+\expect{X}$. In this case, having known expected value (``kEV''), our
+estimator will be a little simpler:
+\begin{equation}
+\hat{\mathbb{V}}_{X,\mathrm{kEV}} = \frac{1}{N} \sum_i ( X_i - \mu )^2
+\end{equation}
+This estimator is unbiased:
+\begin{align*}
+\expect{\hat{\mathbb{V}}_{X,\mathrm{kEV}}}
+  &= \expect{\frac{1}{N} \sum_i ( X_i - \mu )^2} \\
+  &= \frac{1}{N} \sum_i \expect{X_i^2 - 2\mu X_i + \mu^2} \\
+  &= \expect{X^2} - 2 \mu \expect{X} + \mu^2 \quad\text{(since $X_i$ are identic. distrib.)} \\
+  &= \expect{X^2} - \mu^2 \\
+  &= \var{X}. \quad\text{(since $\var{X} = \expect{X^2} - \expect{X}^2$)}
+\end{align*}
+So if we happen to know the true expected value $\mu$, then we can compute
+variance in the naive way, and it's exactly correct.
+
+Now we can use this result to pull a little mathematical trick. Even if we
+don't know $\mu$ and $\var{X}$, we do know they exist, so we can manipulate
+\eqref{eq:estimator-vx1} to make it easier to work with. Specifically, I'm
+going to write ``standardized''\footnote{You're probably used to seeing
+standardized \emph{normal} variables written this way, but note that I haven't
+assumed that the $X_i$ are normally distributed. This logic holds for any
+random variable that has a well-defined expected value and variance.}
+random variables:
+\begin{equation}
+Z_i = \frac{X_i - \mu}{\sqrt{\var{X}}} \implies X_i = \sqrt{\var{X}} Z_i + \mu
+\end{equation}
+It should be easy to see that $Z_i$ has expected value 0 and variance \expect{Z_i^2} = 1$,
+and $\overline{Z}$ has expected value
+0 and variance $\expect{\overline{Z}^2} = 1/n$. Now I'll rewrite \eqref{eq:estimator-vx1}
+so it has $Z_i$ instead of $X_i$:
+\begin{align*}
+\hat{\mathbb{V}}_X
+  &= \frac{1}{n} \sum_i \left( X_i - \overline{X} \right)^2 \\
+  &= \frac{1}{n} \sum_i \left( \left[\sqrt{\var{X}} Z_i + \mu\right] - \left[ \sqrt{\var{X}} \overline{Z} + \mu \right] \right)^2 \\
+  &= \frac{\var{X}}{n} \sum_i \left( Z_i - \overline{Z} \right)^2
+\end{align*}
+Analogous to how we showed that $\var{X} = \expect{X^2} - \expect{X}^2$, some
+algebra shows that
+\begin{equation}
+\sum_i \left(Z_i - \overline{Z}\right)^2 = \sum_i Z_i^2 - n \overline{Z}^2.
+\end{equation}
+Thus, the expected value of this estimator is
+\begin{align*}
+\expect{\hat{\mathbb{V}}_X}
+  &= \expect{\frac{\var{X}}{n} \sum_i \left( Z_i - \overline{Z} \right)^2} \\
+  &= \frac{\var{X}}{n} \expect{\sum_i Z_i^2 - n \overline{Z}^2} \\
+  &= \frac{\var{X}}{n} \left( \sum_i \expect{Z_i^2} - n \expect{\overline{Z}^2} \right)\\
+  &= \frac{\var{X}}{n} (n - 1) \quad{\text{(using those \\
+  &= \frac{n-1}{n} \var{X}.
+\end{align*}
+where I chose $Z_1$ arbitrarily. All the $Z_i$ are identically distributed, so
+I just picked that one.
+
+\hl{consistency?}
+
+Let's check that this estimator meets some of our standard criteria. Is it
+unbiased?
+\begin{align*}
+\expect{\hat{\mathbb{V}}[\{X_i\}]} =
+  \frac{1}{N} \left(  \right)^2
+\end{align*}
 
 The definition of sample variance is the average square deviation from
 the mean: \[
