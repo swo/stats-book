@@ -4,248 +4,347 @@
 
 \section{Orientation and definitions}
 
+\subsection{Descriptive and inferential statistics}
+
 Up to this point, random variables and their values have occurred in a
 deductive kind of way: you know what the distribution of the random variable
 is, and then you ask what its expected value or variance is. Statistics is
 about going in the opposite, inferential direction. Given that I have some data---that is,
 realizations of the values of some random variables---what can I say about the
-distributions that those values were drawn from?
+distributions that those values were drawn from? Indeed, the word \emph{statistic}
+means a function of the data (or the value of that function) that depends only
+on the data.
 
-This characterization embraces a common typology of statistics into
+This characterization of statistics embraces a common typology of statistics into
 \emph{descriptive} statistics and \emph{inferential} statistics. Inferential
 statistics, which includes hypothesis testing, certainly has some more
 philosophical and technical hang-ups, but it's fair, at this point, to say
 that both descriptive and inferential statistics hinge on how we can use the
 data we have to say something about the populations that we drew that data
-from.
+from. Indeed, the reason the field of study is called ``descriptive statistics''
+is because it studies statistics---functions of the data---that are descriptive
+of the distributions from which the data were drawn.
 
 The jargon for this deductive/inductive difference is that mathematical
 probability considers \emph{statistical parameters}, which are functions of
 the distributions that give numbers, and \emph{estimators}, which are
 functions of the data that approximate something about the true distribution.
 The expected value $\mathbb{E}$ and variance $\mathbb{V}$ that we learned
-about earlier are two of this kinds of function. You can also think of
+about earlier are statistical parameters: they take a random variable (or, loosely
+speaking, a ``theoretical distribution'') and
+return a number. You can also think of
 statistical parameters are an ``index'' of the distribution. We say ``a normal
 distribution with mean $\mu$ and variance $\sigma^2$'' because, having said
 those two things, we've perfectly specified what distribution we're talking
-about. This chapter is about the second thing, estimators, which, as their
-name implies, are functions of the data that estimate something about the true
+about.
+
+This chapter is about the second thing, estimators, which, as their name
+implies, are functions of the data that estimate something about the true
 distribution.
+
+\subsection{Samples and populations}
 
 Up to this point, I've used the word ``distribution'' in the mathematical
 probability sense: it's the cdf $F_X$ or the pmf/pdf $f_X$. After this point,
 it will become crucial to draw a distinction between these mathematical
 probability objects on the one hand and, on the other hand, the mass of data
-that we get from an experiment.
+that we get from an experiment, which might also be called the ``distribution''
+of the data.
 
-\subsection{Distributions and samples}
+The distinction is usually made in the jargon of the social sciences. You draw
+some \emph{samples} from a target \emph{population}. If you're interested in
+the height of male versus female humans, then your target populations will be,
+say, \emph{all} American (or whatever) males and \emph{all} American female.
+In some alternate universe, you can somehow just measure the height of all
+American males and female. After this, the analysis doesn't require any
+probability or statistics: you just look at the complete, real data and draw
+whatever conclusions you wanted to. In contrast, in this universe, you need to
+take a sample of each of those populations. You use the sample data to
+estimate the properties of the population.
 
-what are these two things. definition of statistics with respect to samples.
-what ``sampling'' from a distribution means with respect to our iid variables,
-etc.
+I take this language another step further, because it's typical to make
+further assumptions about the target population. In reality, the distribution
+of the true population is going to be some messy curve. If you squint, it will
+probably look normally distributed. But if you reallydid measure all 300 million
+Americans, you would certainly find \emph{some} deviation from the normal
+distribution.\footnote{This fact, that taking more data makes it hard to fit
+traditional statistical models, will come up later.}
 
-also need some more discussion earlier to say that thinking about $\Omega$ is
-really confusing. What sample space would give rise to a normally-distributed
-variable, for example? And where do we draw the liens around the universe we're
-interested in? 
+However, it's typical to assume that the target population is normally
+distributed and call that normal distribution the ``population''. In that
+sense, a lot of statistical methods are trying to infer the properties of some
+ideal, mathematical distribution that \emph{approximates} the literal target
+population. This distinction is usually not made, so when someone says
+``population'' they mean ``normal distribution with mean and standard
+deviation whatever''. It's also not unusual to hear about the ``true''
+population, by which again is meant the idealized $\mathcal{N}(\mu,
+\sigma^2)$, which might be confusing because the literal target population
+will almost certainly \emph{not} be normally distributed, since the normal
+distribution is just a mathematical abstraction. So just keep in mind that
+most statistics only distinguishes between the \emph{sample}---the data you
+have, which are a subset of the literal target population---and the ``true
+population''---which is some idealized approximation of the literal target
+population.
 
-standard deviation vs. standard error in the mean
+\subsection{Variation and error}
+
+In the ``hard'' experimental sciences, this language about ``population'' may
+sound weird. If I'm trying to measure the speed of light, I'll repeat my
+experiment many times and get many different values. In the jargon, those
+values are the sample. What, then, is the population? We think there is a
+single, true speed of light. In this case, the ``population'' refers, somewhat
+tautologically, to the distribution of the values that would come from an
+infinite number of repetitions of our experiment. In other words, the sample
+defines the population, not the other way around.
+
+In the social sciences example, the shape of the distribution of measured
+values says something about the variation of the values in the target
+population: we get a range of measured values because people are different
+heights. In the physics example, the shape of the distribution has a lot to do
+with the precision in our experiment: we get a range of measured values
+because of all sorts of error that arie the in the process of experimentation.
+
+In biology, the situation is somewhere in between: we think there is true
+variation in, say, the physiology of the cells used in an experiment. We
+might wish there weren't: it would be easier to do some experiments if all
+cells started in exactly the same state and responded exactly the same way to
+an experimental condition. The meaning of the range of values we get is then
+something of a philosophical one. To what degree do we treat the range of
+values as due to error, because we couldn't make all the cells the same, and
+to what degree is it an honest report about the heterogeneity of behavior in
+some ``target population'' of cells? The answer depends on your research
+question.
+
+\subsection{The logic of statistics}
+
+Regardless of whether the variation we observe is due to ``real'' variation in
+the target population or to mere error, the whole logic of statistics is to
+collect multiple data points and use them to infer a single truth.
+
+This was a radical notion when it was first proposed. How could multiple,
+trashy bits of data somehow make something great? It's like saying that you
+can ask a thousand untrained people to make a sketch of an enigmatic, smiling
+woman and somehow expect the combination of those thousand sketches to turn
+into the Mona Lisa. The assumed correct answer, before statistics, was to pick
+the best value. If multiple scientists reported different values, you would
+examine their experimental methods, see how good they were with their hands,
+and pick the value from the scientist with the best method.
+
+This idea of ``combination of observations'' is today so ingrained that it's
+hard to imagine \emph{not} using a combination of observations to infer a
+truth. I think a useful bridge is the idea of meta-analysis. For example, does
+a certain educational intervention improve students' learning? Until the
+1970s, the assumed correct answer was to examine all the interventions, see
+which one worked well, and mostly ignore the ones that were imperfect
+according to the measure established by that one study (or small set of
+studies). In the 1970s, meta-analysis started comparing multiple studies---
+which detractors said was like comparing apples and oranges---to ask about
+whether an entire class of education intervention works. The 1970s was not
+that long ago.
+
 
 \section{Properties of estimators}
 
-So if there are more and more $X_i$ with iid $F_X$, then the idea is that the estimator of the $\hat{\theta}(\vec{x})$ should approach $\theta(F_X)$.
+Let's get to it! What are these estimators? What do they do? Rather than give
+some dry definitions, I'll use a motivating example, from which the
+definitions will arise (I hope) naturally.
 
-There's a ``sample'' probability distribution $\hat{f}_X$. It's hard to say whether this is a maximum likelihood estimator or something. What does ``sample'' mean? Like ``sample mean''?
+\subsection{A motivating example: the maximum of a uniform distribution}
 
-\section{Motivating example: uniform
-distribution}\label{motivating-example-uniform-distribution}
+Imagine you're doing an experiment where you get numbers that are uniformly
+distributed between some $A$ and $B$. For simplicity, let's set $A=0$ so that
+the probability distribution function for a random variable $X$ that follows
+this distribution is:
+\begin{equation}\label{eq:uniform_pdf}
+f_X(x) = \begin{cases}
+  1/B &\text{if $0 \leq x \leq B$} \\
+  0 &\text{otherwise}
+\end{cases}
+\end{equation}
+Imagine that you don't know $B$, and you're trying to figure it out, and the
+way you've decided to do that it draw many iid variables $X$. (I know this sounds
+like a silly experiment.)
 
-Consider a uniform distribution from zero up to some number \(B\).
-What's the maximum of this distribution? Well, if you know it, it's
-easy: it's just \(B\). It's also easy if you can sample a zillion times
-from the distribution: you are very likely at some point to get a value
-very close to \(B\), so you can just use that as your estimate.
+The idea is to generate an estimator, a function of our data that will
+approximate the true value $B$. It's typical to write estimators as the
+true value with a ``hat'', so we're interested in making a function $\hat{B}$.
 
-But what if you only drew one point? Then clearly the maximum of the
-drawn values, just that point, is a pretty bad estimate for the upper
-limit. If you draw 3 points, then the maximum is a little better, but
-you can feel pretty sure that estimating the \emph{population} maximum
-using your \emph{sample} maximum is biased: you're always going to
-underestimate the population maximum.
+Let me start with what will seem like a very inane example.\footnote{Perhaps
+this sounds silly, and it is, but I've more than once heard respected and
+well-meaning scientists say that the answer to statistical questions is ``3'',
+just 3.}  Say I draw $n$ data points, and then I ignore all of them and just
+pick 3:
+\begin{equation}
+\hat{B}_\mathrm{inane}(\{x_i : i \in 1, \ldots, n \}) \defeq 3.
+\end{equation}
+Now, this is technically an estimator: it's a function of the
+data alone, only it just so happens to not use any of that data. It's also,
+and not just technically, not a good estimator at all. The main problem is
+that, no matter how much data I accumulate, it's not guaranteed to be right.
+(In fact, it's guaranteed to be right only if $B=3.000\ldots$ just by sheer luck.)
 
-When we use our data to make a guess about a population parameter,
-that's an \emph{estimator}. (Good name.) We say that an estimator that
-we expect to not be ``systematically''\footnote{Why the scare quotes?
-  Like in all frequentist statistics, we're stuck with assuming that we
-  know the truth, finding the best answer knowing the full truth, and
-  then pretending we didn't know the truth in the first place. So
-  ``systematically'' is going to mean: assume you know the true value,
-  evaluate the behavior of the estimator knowing the truth, and then
-  forget you know the truth.} above or below the true value is
-\emph{unbiased}. Estimators are typically written with a hat (because
-you use a cone hat to communicate with the mothership?), so \(\hat{B}\)
-is an estimator for \(B\). Of course, there isn't just one estimator for
-a value. I know plenty of people who are perfectly happy to guess that 3
-is the right answer in statistics, so for them we might write
-\(\hat{B} = 3\). This is clearly a bad estimator, but what does ``bad''
-mean?
+\subsection{Consistent estimators}
 
-To answer that, let's consider some of the properties of different
-estimators. To keep the different estimators straight, let's put
-subscripts on them. I'll call the clearly bad estimator
-\(\hat{B}_\mathrm{bad} = 3\) and I'll call our naive estimator \[
-\hat{B}_1 = \max_i X_i,
-\] where I called it ``1'' because it was our first guess. I also called
-the variables we're drawing from the uniform distribution as \(X_i\).
+A very valuable improvement presents itself: if I drew $n$ data points, why not
+just take the maximum of those data points? I'll call this $\hat{B}_1$ since
+it's our first reasonable guess:
+\begin{equation}
+\hat{B}_1\left( \{x_i : i \in 1, \ldots, n\} \right) \defeq \max_i x_i
+\end{equation}
+Note that $\hat{B}_1$ is a function only of our data, the sampled numbers $x_i$.
 
-\subsubsection{Consistent estimators}\label{consistent-estimators}
+This new estimator has the crucial property of being \emph{consistent}, which
+means that, as you collect more and more data, the value of the estimator
+approaches the true value of the thing being estimated:
+\begin{equation}
+\text{$\hat{B}$ is a consistent estimator for $B$}
+  \implies \lim_{n\to\infty} \hat{B}(\{x_i : i \in 1,\ldots,n\}) = B
+\end{equation}
 
-One reason that \(\hat{B}_\mathrm{bad}\) seems bad is that it doesn't
-change. It won't ever get more ``right'', no matter how much data we
-collect. On the other hand, \(\hat{B}_1\) will get better. In fact, the
-more data we take, the closer we expect \(\hat{B}_1\) to get to the true
-maximum.
+If you're a math wizzkid you'll have pounced on my use of ``limit''. To say that
+a sequence of numbers has a limit means that, for any threshold difference
+$\varepsilon$ you give me, I can give you an integer $N$ such that for every value
+in the sequence after the $N$-th one is within $\varepsilon$ of the true value.
+Clearly this definition is not sufficient in probability, where you could never
+be guaranteed, even after a trillion data points, of anything. In this example, there's always some
+chance, I won't say how large, that all your data points are some finite distance away from $B$. So instead, in
+probability, we say that a sequence of random variables $\{Y_i\}$ \emph{converges}
+toward a random variable $Y$ if
+\begin{equation}
+\lim_{n\to\infty} \prob{|Y_n - Y| > \varepsilon} = 0,
+\end{equation}
+in other words, if the probability that $Y_n$ takes on a value more than $\varepsilon$
+away from $Y$ vanishes. In our example, $Y$ is a boring random variable that always
+takes on the value $B$, and the $Y_n$ are the estimators (imagined as random variables)
+for each $n$: $\max_i \{X_i : i \in 1,\ldots, n\}$. I'll use the notation for limits
+loosely.
 
-Estimators whose expected value approach the true value as the number of
-points approaches infinity is called \emph{consistent}. Call \(M\) the
-true value and \(n\) the number of points we drew. Then \(\hat{B}_1\) is
-consistent because \[
-\lim_{n \to \infty} \hat{B}_1 = M.
-\] In other words, if you specify an error threshold (e.g., you want an
-estimate within 10\% of the true value), then I can tell you what \(n\)
-you need to pick in order to get an estimate within that threshold (with
-some finite probability). In contrast, with \(\hat{B}_\mathrm{bad}\),
-there's no \(n\) you can pick that will get you arbitrarily close to the
-true value.
+It's fairly intuitive that $\hat{B}_1$ converges to $B$. To prove it, you give me
+some $\varepsilon$, and I say that the probability of a point falling within $\varepsilon$
+of $B$ is $\varepsilon / B$. The probability of a point falling outside that range
+is $1 - \varepsilon/B$. The probability of $n$ points falling outside is $(1 - \varepsilon/B)^n$,
+which goes to zero as $n$ increases.
 
-\subsubsection{Unbiased estimators}\label{unbiased-estimators}
+\subsection{Unbiased estimators}
 
-Clearly, though, \(\hat{B}_1\) is not perfect. No matter how many \(n\)
-we draw, \(\hat{B}_1\) will always be less than \(M\). We therefore say
-that \(\hat{B}_1\) is \emph{biased}. Mathematically, we might write
-\(\mathbb{E}[\hat{B}_1] < B\). Because it feels natural to expect that
-the expected value of your estimator will be the true value, an
-estimator \(\hat{B}\) for which \(\mathbb{E}[\hat{B}] = B\) is called
-\emph{unbiased}.\footnote{Another standard for ``good'' estimators is
-  the \emph{best linear unbiased} estimator (BLUE). ``Linear'' means
-  that the estimator is a linear function of the data. (You could maybe
-  imagine that there is some wacky, convoluted function that's a better
-  estimator, but we stick with linear.) The final qualifier, ``best'',
-  means that the variance of the estimator is the minimum of all other
-  linear unbiased estimators. Here ``variance of the estimator'' is
-  computed in the same sense that the expected value of the estimator is
-  computed for determining bias. In other words, ``best unbiased'' means
-  its centered on the true value with the smallest variance possible.}
+Great! We have a consistent estimator $\hat{B}_1$. If I collect a zillion data
+points, I'll get really close to $B$.
 
-Let's try to salvage our naive estimator \(\hat{B}_1\) and make an
-unbiased estimator \(\hat{B}_\mathrm{ub}\) instead.
+This seems like poor consolation. I'm rarely drawing a zillion data points.
+Consider the opposite case, if I draw only one data point. Clearly the maximum
+of the drawn values, just one that point, is a pretty bad estimate for the
+upper limit. If you draw 3 points, then the maximum is a little better, but
+you can still feel very sure that estimating population maximum $B$ using the
+sample maximum is \emph{biased}: it is always going to underestimate the
+population maximum. This is true even if I take a zillion data points: I'm
+never ever going to overestimate $B$ using $\hat{B}_1$.
 
-Where to start? It's likely that there are many unbiased operators, so
-we need to pick the form of the operator we want to look for. It seems
-likely that all our observed \(X_i\) only have two interesting things
-about them: their maximum, and how many of them there are. For example,
-if my first draw was \(1.0\), then I don't learn that much if I draw
-\(0.1\) the next five times, because I know that \(M > 1.0\), and,
-because it's a uniform distribution, I was just as likely to draw
-\(0.1\) as \(1.0\). If I draw many values below \(1.0\), I only learn
-that the maximum is probably not far above \(1.0\), which is already
-encoded in the number of points \(n\).
+Formally, a \emph{biased} estimator is one whose expected value is not the
+thing it's trying to estimate. Conversely, an \emph{unbiased} estimator is
+one whose expected value is the thing it's trying to estimate:
+\begin{equation}
+\text{$\hat{B}$ is an unbiased estimator for $B$} \implies \expect{\hat{B}} = B.
+\end{equation}
 
-So I want \(\hat{B}_\mathrm{ub}\) to be some function of \(n\), which is
-fixed, and \(M\), which is a random variable{[}\^{}wtf{]}, such that
-\(\mathbb{E}[\hat{B}_\mathrm{ub}] = M\). That will require knowing the
-distribution of \(M\).
+How do we turn a biased estimator into an unbiased one? Maybe, if we compute
+$\expect{\hat{B}}$, we can just look and find some way. This will require the
+probability density function for $\max_i x_i$. Similar to the calculation above,
+it's actually not hard to write the probability of a single data point being
+below $x$, that is between zero and $x$: it's just $x/B$. The probability of all
+$n$ data points falling between zero and $x$---which is the same as saying that
+the maximum is $x$---is $(x/B)^n$. I'll write a new random variable $M = \max_i X_i$
+so that
+\begin{equation}
+F_M(x) = (x/B)^n.
+\end{equation}
+Recall that the probability density function is the derivative of the cumulative
+distribution function:
+\begin{equation}
+f_M(x) = \frac{d}{dx} F_M(x) = \frac{n}{B} \left( \frac{x}{B} \right)^{n-1}.
+\end{equation}
+The expected value is the integral over this probability distribution function:
+\begin{equation}
+\expect{M} = \int_0^B x f_M(x) \,dx = \frac{n}{n+1} B.
+\end{equation}
 
-\textbf{swo} I mixed a lot of this up. I called \(B\) the true value,
-which got confusing. I should just use \(M\) and \(\hat{M}\).
+Let's examine this result: if $n=1$, then $\expect{M} = \tfrac{1}{2}B$. In
+other words, if you draw one point, you expect it to be right in the middle of
+the range $[0, B]$. Seems reasonable. For $n=2$, $\expect{M} = \tfrac{2}{3}B$.
+In other words, you expect your data points to fall at something like
+$\tfrac{1}{3}$ and $\tfrac{2}{3}$, so you expect a maximum of $\tfrac{2}{3}$.
+Clearly, as $n \to \infty$, $\expect{M} \to B$, like we had shown previously.
 
-The cumulative distribution function, the probability that the observed
-maximum is less than some \(m\), is just the probability that there is
-no point that is above \(m\): \[
-F_M(m) = \mathbb{P}[M \leq m] = \mathbb{P}[X_i \leq m \text{ for all } i] = \left( \frac{m}{B} \right)^n.
-\] Then we compute the probability density function: \[
-f_M(m) = \frac{d}{dm} F_M(m) = \frac{n}{B} \left( \frac{m}{B} \right)^{n-1},
-\] from which we compute the expected value of \(M\): \[
-\mathbb{E}[M] = \int_0^B m \, f_M(m) \, \mathrm{d}m = \frac{n}{n+1} B.
-\]
+This result suggests that I can just flip the numerical factor out front to get
+an unbiased estimator:
+\begin{equation}
+\hat{B}_\mathrm{unbiased} \defeq \frac{n+1}{n} \max_i X_i.
+\end{equation}
+I did this so that:
+\begin{equation}
+\expect{\hat{B}_\text{unbiased}} = \expect{\frac{n+1}{n} \max_i X_i} = \frac{n+1}{n} \frac{n}{n+1} B = B.
+\end{equation}
+So now we've assured that our estimates for $B$ are ``centered'' around
+$B$.\footnote{I put ``cenetered'' in quotes because the expected value can be
+a weird way to quantify ``middleness''. We'll get to that soon.} Sometimes we
+will overestimate $B$, but at least we won't, in a sense, be systematically
+underestimating it.
 
-Interesting, the expected value of \(M\) is just a multiple of \(B\).
-Consider that if \(n=1\), you just draw one point, the expected value of
-the maximum, which is just that value you drew, is \(\tfrac{1}{2} B\).
-Makes sense: you're likely to get something right in the middle.
+\subsection{Best linear unbiased estimators (BLUEs)}
 
-If you draw 2 points, the expected maximum if \(\tfrac{2}{3}B\),
-somewhat closer to \(B\). It's easy to see that as \(n\) increases,
-\(\mathbb{E}[B]\) approaches \(B\), just as we reasoned about before
-doing any math.
+You might go even further, and demand that an estimator, aside from being
+cenetered around $B$, also have a minimal spread around $B$. In a very
+confusing turn of phrase, the estimator that, in a class of estimator, has
+minimum variance is the \emph{best} estimator. You're most likely to encounter
+this terminology in the specific case of linear regression models, for which
+it turns out that ordinary least squares gives the \emph{best linear} unbiased
+estimator, where ``best'' we just defined and ``linear'' means that the
+estimator is a linear combination of the data.
 
-Now, by linearity of expectation, I know that
-\(\mathbb{E}\left[\tfrac{n+1}{n} M \right] = B\), so lo! I have found an
-unbiased estimator: \[
-\hat{B}_\mathrm{ub} = \frac{n+1}{n} M.
-\]
+It's worth noting that our $\hat{B}_\text{unbiased}$ is a linear combination
+of the $X_i$: it has coefficient zero for all the $X_i$ except for the one
+that takes on the biggest value, which we give coefficient 1. Beyond that,
+though, I don't think it's worth digging into the variance of
+$\hat{B}_\text{unbiased}$. I do think it's worth understanding that different
+estimators can vary in their precision.
 
-\subsubsection{Maximum likelihood
-estimator}\label{maximum-likelihood-estimator}
+\subsection{Maximum likelihood estimators}
 
-It's nice that we found an unbiased estimator, which we think is
-``good'' in the sense that we're not systematically off in one direction
-or the other. In one way this is comforting, but it isn't foolproof.
-Imagine you're working with a bimodal distribution: it tends to give
-small numbers or big numbers. Then an unbiased estimator splits the
-difference, potentially estimating values that aren't even possible!
+In this simple case, it was pretty easy to cook up a good estimator. There was
+a very short chain of logic between ``want maximum of true distribution'' to
+``look at maximum of observed values''. It's usually not this easy. To revisit
+the question of regression, if I have a bunch of data points, what's the a
+good way to make a slope out of them? It's not \textit{a priori} obvious.
 
-For this reason, it's useful to think about \emph{maximum likelihood}
-estimators (or MLEs, if you're into that sort of acronym). ``Maximum
-likelihood'' means that, given the \emph{observed} value, you find the
-\emph{true} value that, if it were true, would be most likely, out of
-all the other true values, to give rise to your data.\footnote{Did that
-  sound crazy? If so, get excited about the Bayesian section of this
-  book. In there we'll show that there's a mathematically precise way to
-  show that this kind of thinking---saying that the most likely state of
-  nature given our data is the state of nature that, of all states of
-  nature, was most likely to produce the data we observed---is coherent
-  only under some pretty strong assumptions about the universe.}
+There's a convenient methodology for making sensible estimators, called
+\emph{maximum likelihood} estimators. \emph{Likelihood} is a confusing word:
+in common speech, ``likelihood'' and ``probability'' are synonyms. In
+statistics jargon, they mean similar things, with slightly different emphases.
+A ``probability'' function typically asks about the probability of different
+outcomes given some fixed parameters. A ``likelihood'' functions asks about
+the probability (or probability density) of some fixed outcome while varying
+the parameters. Imagine a probability density function $f_X$ for some data
+value $x$ and some parameter $\theta$. We say that $f_X(x; \theta)$ is the
+probability function and $L(\theta; x) \defeq f_X(x; \theta)$ is the
+likelihood function. We say ``maximum likelihood'' rather than ``maximum
+probability'' as a way of emphasizing that the maximization will be done for
+fixed data points over varying parameters.
 
-In other words, given the observed \(M\), what \(B\) would have given
-rise to that \(M\) with the greatest probability? Mathematically we
-write \[
-\hat{B}_\mathrm{ML} = \max_B \mathbb{P}[M | B],
-\] where ``MLE'' stands for ``maximum likelihood''.\footnote{The
-  promised Bayesian result is that the \(B\) that maximizes
-  \(\mathbb{P}[M | B]\), the probability of the data given the state of
-  nature, is also the \(B\) for which \(\mathbb{P}[B | M]\), the
-  ``probability of the state of nature'' given the data, is maximum,
-  although that's only true under a specific, and pretty
-  hard-to-believe, criterion. I put more scare quotes here because, as
-  mentioned before, if probability is a frequency, it doesn't make sense
-  to talk about the probability of a state of nature.} This should be a
-piece of cake, since we already found the probability density function
-for \(M\), which is a function of \(B\). It's easy to see, just by
-inspection, that the value between zero and \(B\) for which \(m\)
-maximum \(f_M(m)\) is just \(B\). In other words,
-\(\hat{B}_\mathrm{ML} = M\).
-
-You may have noticed that this is the same estimator that I previous
-denigrated as ``naive'' and ``biased''. To be clear, this is the maximum
-likelihood estimator: you know that \(\hat{B}_\mathrm{ML}\) can't be any
-less than \(M\), since the upper bound must be at least as high as the
-biggest data point we observed, and some careful thought shows that
-\(\hat{B}_\mathrm{ML}\) can't be any greater than \(M\), since
-hypothetically increasing \(B\) above \(M\) just decreases the
-probability that you would have observed \(M\) as the maximum
-value.\footnote{Imagine hypothetically increasing \(B\) to a zillion
-  times \(M\). Clearly, observing that small of an \(M\) is given that
-  large of a \(B\) is unlikely, and there's no ``cut point'' so that an
-  infinitesimal increase is reasonable but a zillion-fold increase is
-  not.}
-
-So this example tells an interesting lesson: it's not the case that an
-estimator that is ``good'' in one sense (e.g., unbiased) will be
-``good'' in another sense (e.g., maximum likelihood). We'll show that
-there's a special case in which that's true. (Can you guess what it is?
-No really, try. Or, don't try, and just say the first probability
-distribution that comes to mind.)
+For our example, the maximum likelihood approach says: as an estimator, pick
+the value such that, if it were the true value, would maximize the probability
+density of the observed data. That is:
+\begin{equation}
+\hat{B}_\text{ML} \defeq \max_b \prod_i f_X(x_i; b)
+\end{equation}
+We can use \eqref{eq:uniform_pdf} to compute the probability:
+\begin{align*}
+\hat{B}_\text{ML} = \max_b \begin{cases}
+0 &\text{if any $x_i > b$} \\
+\prod_i (x_i/b) &\text{otherwise}
+\end{cases}
+\end{align*}
+The first case means that we can overshoot at all, and the second says that
+the likelihood decreases if we decrease $b$. The solution is that
+$\hat{B}_\text{ML} = \max_i X_i$, which was our first good guess.
 
 \textbf{German tank problem} as an exercise.
 
