@@ -39,90 +39,14 @@
 \part{Statistics}
 
 \include{chapter_estimators}
-
+\include{chapter_descriptive}
+\include{chapter_inference}
 
 \chapter{copied material}
 
 \section{Things to include}\label{things-to-include}
 
 \begin{itemize}
-\item
-  LMM as model for when biology becomes stats: you're doing GWAS.
-\item
-  Multiple hypothesis correction. Start by looking at the distribution
-  of \(p\)-values.
-\item
-  Likelihood of data vs. \emph{probability} of data.
-\item
-  Start with Bayesian as a conceptual thing, then go to frequentist for
-  most of the stats you will encounter, and then go back to Bayesian for
-  the more hardcore stuff.
-
-  \begin{itemize}
-  \item
-    Introduce priors with the binomial and beta prior. I think that's
-    really intuitive.
-  \item
-    Confidence intervals as random variables with the parameter fixed,
-    versus credible interval as a fixed thing that arises from the
-    posterior of the random variable of the parameter.
-  \end{itemize}
-\item
-  Visualizing pdf as equiprobable bins. Uniform distribution as dice
-  rolls on a d10, for why the probability of rolling exactly
-  0.5000\ldots{} is (nearly) zero.
-\item
-  Math on credible intervals: they align with confidence intervals in
-  very particular cases. Even the normal distribution with unknown
-  variance breaks that.
-\item
-  Normal approximation to the binomial, but then also to the Poisson, or
-  whatever you want.
-\item
-  ``Regression to the mean'' means a slope less than one
-\item
-  MCMC for complex SIR-type models: you know the observed outcomes
-  (e.g., occupancy of each compartment) comes from the input data, but
-  it's not clear how the outcomes relate to the inputs
-\item
-  ABC for something similar, where we're interested in the parameters
-  that generate the data, but there's no obvious mathematical
-  relationship between the parameters and the observed data.
-\item
-  Poisson as horse kicks. Or as drops with cells (a la Weitz, etc.)
-\item
-  Simulation in general
-\item
-  Bayesian as the mystical: the only way to say the probability about
-  the truth is to assert what you think is the truth
-\item
-  Frequentist as a weird subset of the Bayesian
-\item
-  Variance (shape) as more important than mean (location). If you have
-  variance, it's pretty easy to measure the mean and get a sense of
-  things. If you have the other way, it's a lot more murky.
-\item
-  Inference vs.~decision-making under uncertainty. How are these two
-  things different? (e.g., what's the ``cost'' of making an incorrect
-  scientific conclusion?)
-\item
-  Simpson's paradox: why two-way associations are confusing
-\item
-  Random number generation
-\item
-  Most textbooks are boring, and they just present a parade of stuff. I
-  want to use those things that are probably familiar as entry points
-  for learning. E.g., the difference between descriptive statistics and
-  inferential statistics is what those statistics are used for. In one,
-  they are used a estimators of population parameters. In the other,
-  they are summed over the ask about the likelihood of data.
-\item
-  ABC as super hacky thing!
-\item
-  Finite population correction:
-  \(\sigma_{\overline{X}} = \frac{\sigma}{\sqrt{n}} \sqrt{\frac{N - n}{n - 1}}\)
-\item
-  Wilk's theorem for likelihood ratio tests!
 \item
   Cramer-Rao bound: inverse of Fisher information matrix is the lower
   bound for the variance of unbiased estimators. An estimator that hits
