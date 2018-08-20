@@ -6,28 +6,66 @@
 refers to multiple things, each of which is called a ``statistic''. It's also a
 singular noun that refers to the study of these mathematical objects.
 
-Statistics is a tool.\footnote{I really enjoyed reading this anecdote from a
-paper by Gene Glass, the inventor of meta-analysis (doi:10.1002/jrsm.1133).
-Glass. He ends up sitting on the plane next to the famous statistician
-Tukey. Tukey asks, "Along which dimension do you see the greatest
-variability in effects?" By investigator. "Then jackknife on investigator."
-The point is that there's a wide gap between being able to understand what
-the jackknife is in a mathematical sense (i.e., how to compute it, whether
-it's an unbiased way to determine the variance in the median) and how to apply
-it. It also goes to show that "real" statisticians can be pretty hacky!}
+A mathematical approach will focus entirely on the behavior of the
+mathematical objects. To develop new, academically-interesting statistical
+methods requires a thorough understanding of these objects. The cookbook,
+which-test-should-I-use approach focuses entirely on ``statistics'' as a vague
+bag of tools, often with little understanding of the underlying mathematical
+objects.
 
-A \emph{statistic} is some function of the sample data. Although the field of
-statistics is often described as consisting of "descriptive statistics" and
-"inferential statistics"---that is, the study of mathematical objects used to
-describe data and to make inferences about the populations the data were taken
-from---in this book I want to emphasize that, for both purposes, we are
-interested in the properties of statistics.
+I aim for a middle road, so we can use statistics intelligently and correctly,
+focusing on statistics as a tool but understanding their underlying behavior.
+
+\section{Statistics as a tool}
+
+I'm not a historian of statistics, so take this with a grain of salt.
+Statistics as we understand it today arose to solve two problems: first, to
+prevent the overinterpretation of data, and second, to improve experimental
+design so that experiments are more likely to deliver interpretable data.
+
+\textbf{swo: Fisher and Rothamsted? Or cut this chapter down?}
+
+I really enjoyed reading this anecdote from a paper by Gene Glass, the
+inventor of meta-analysis (doi:10.1002/jrsm.1133). Glass was asking a novel
+question that didn't fit into the existing monolith of statistical thinking:
+if different papers report different quantitative results for the same
+phenomenon, how do we integrate those results into a single, synthesized
+quantitative result?
+
+A troubling problem was how to put confidence intervals on that synthesized
+estimate. By chance, Glass ended up sitting on an plane next to the famous
+statistician Tukey. Tukey was brilliant in both the study of the mathematical
+objects ``statistics'' as well as their practical applications. Glass asked
+Tukey how to develop his neede confidence intervals. Tukey asked, ``Along
+which dimension do you see the greatest variability in effects?''
+
+Glass answered, that the largest differences were between studies. In other
+words, the scientific investigator seemed to be the biggest source of
+variance. So Tukey answered, ``Then jackknife on investigator.'' We'll meet
+the jackknife later on in the book: it's a highly practical tool that allows
+you to guess about the behavior of a mathematical ``statistic'' without doing
+any of the difficult math. The great Tukey, when faced with a complicated
+empirical phenomenon, suggests using a hacky, \emph{ad hoc} method. So you
+shouldn't be afraid to either, so long as you know what the jackknife actually
+does!
+
+\section{Statistics as mathematical objects}
+
+To get concrete, a \emph{statistic} is some function of the sample data.
+Although the field of statistics is often described as consisting of
+"descriptive statistics" and "inferential statistics"---that is, the study of
+mathematical objects used to describe data and to make inferences about the
+populations the data were taken from---in this book I want to emphasize that,
+for both purposes, we are interested in the properties of statistics.
 
 The most interesting statistics are the ones that are used to estimate some
-property of the population. These kinds of statistics are sensibly called
+property of the population that the data were drawn from. These kinds of statistics are sensibly called
 \emph{estimators}. Most of the study of statistics comes down to figuring out things
 about estimators. One of the most critical is understanding the variance of
 estimators, which is essential for both descriptive statistics---so that you
 can put error bars on your measurements---and inferential statistics---so you
 can make a guess about how probable it is that your data arose under some null
 hypothesis. All of this is about estimators and their variance.
+
+The mathematical behavior of statistics arises from probability theory, which
+is why the first part of this book is about math.

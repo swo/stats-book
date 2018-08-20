@@ -1,49 +1,52 @@
 %!TEX root = main.tex
 
-\chapter{Probability theory: statistics's toolkit}
+\chapter{Probability theory}
 
 Probability is an entire branch of mathematics. To understand statistics, it's
 critical to have a grasp of basic concepts in probability. Indeed, inferential
-statistics was originally called ``inverse probability'': ``probability''
-meant the study of going from rules to outcomes (e.g., given the rules of
-chance, how likely am I to draw a royal flush?) and ``inverse probability''
-meant going from outcomes to rules (e.g., given the large number of times
-you've drawn royal flushes, can I conclude that you are a cheater?).
+statistics was originally called ``inverse probability''. ``Probability''
+meant the study of going from rules to outcomes. For example, given the rules of
+poker, how likely am I to draw a royal flush? ``Inverse probability''
+meant going from outcomes to rules. Given the large number of times
+you've drawn royal flushes, can I conclude that you are a cheater?
 
-Probability theory is all about (you guessed it!) a thing called
+Data follow the rules of probability, so to analyze data, we need to
+understand probability theory. Probability theory is all about a thing called
 \emph{probability}. Before going any further, let's examine this concept.
 
 \section{The definition of probability}
 
 We talk about and reason about probability every day, mostly for matters of
 prediction. Given the weather report, it it worth it for me to carry an
-umbrella? When will the line at the supermarket be shortest? Given the results
+umbrella? Given the results
 of my experiment, how likely is it that my hypothesis was correct?
 
-I bring this up because the way we think about probability is mostly in a
-\emph{Bayesian} way, but statistics, when not prefaced by the word
+We intuitively think about probability in a mostly
+\emph{Bayesian} way. Statistics, when not prefaced by the word
 ``Bayesian'', refers to a different philosophical branch call
-\emph{frequentist} statistics. These philosophical distinctions will have
-practical technical implications for your statistics.
+\emph{frequentist} statistics. These philosophical distinctions have
+important practical implications.
 
 In Bayesian statistics, \emph{probability} refers to a difficult-to-articulate
-sense of confidence about a future event. Practically, if I say the
-probability of an event is 1\%, it means I'm willing to bet a lot of money it
-won't happen. Philosophically, it's hard to say what me being ``1\%
+sense of confidence about a future event. If I say the
+probability of an event is 1\%, it means, in a practical sense, that I'm willing to bet a lot of money it
+won't happen. Philosophically, it's hard to say what ``1\%
 confident'' means. Even if it's philosophically challenging, I think this is
-how we all think about probability, so I won't go on about it.
+how we all think about probability, so I won't go on about it.\footnote{\textbf{swo: sunrise problem?}}
 
 A more mathematically and philosophically simple way to think about
-probability is the \emph{frequentist} approach, in which probabilities are all
-frequencies (or proportions). In the frequentist scheme, a 50\% chance of
+probability is the \emph{frequentist} approach. In this framework, probabilities are all
+proportions, or ``frequencies''.
+A 50\% chance of
 flipping a coin and seeing heads means that, as you flip the coin more and
 more times, the proportion of flips that come up heads will approach 50\%.
 
 The problem with the frequentist approach is that probabilities can only be
 assigned to events that can be repeated. It therefore doesn't make sense to
 ask about the probability that your hypothesis is correct, since your
-hypothesis \emph{is} either correct or incorrect, and no number of experiments
-will change whether it is or not. We live in just one universe, so you can't
+hypothesis is either correct or incorrect. It's like asking the probability
+that it rained yesterday. It either did or it didn't.
+We live in just one universe, so you can't
 ask, in a frequentist scheme, about the probability of a state of nature, like
 whether your hypothesis is correct.
 
@@ -51,13 +54,13 @@ This is deeply dissatifying: the whole point of statistical inference is to
 figure out what's going on in the world. But the Bayesian approach, which does
 allow you to ask about the probability of states of nature, is mathematically
 and technically more challenging. Also, some prominent statisticians thought
-it was nonsense and mostly directed all statistics work away from the Bayesian
+it was nonsense and mostly directed the field of statistics away from the Bayesian
 approach for many years.
 
 So what's the definition of probability? It's either:
 \begin{enumerate}
-\item the proportion of identically-repeated trials that have some outcome (in the frequentist approach), or
-\item some number between 0 and 1 that encodes our sense of the---for lack of a better word---probability of that outcome (in the Bayesian approach).
+\item in the frequentist sense, the proportion of identically-repeated trials that have some outcome, or
+\item in the Bayesian sense, some number between 0 and 1 that encodes our sense of the---for lack of a better word---probability of that outcome.
 \end{enumerate}
 
 \section{The mathematical definition of probability}
@@ -68,133 +71,148 @@ concepts called \emph{measure theory}. Although fascinating, it's pretty heavy
 lifting, so I'll aim to use definitions that will give us a lot of practical
 benefit, albeit at the cost of creating a mathematically incomplete theory.
 
-To start, we define \emph{outcomes} (or the \emph{sample space}) as the set of all things that could happen
-when we run some trial. For example, if I draw a single card from a shuffled
-deck, there are 52 possible outcomes, one for each card. The collection of all
-possible combinations of outcomes are the possible
-\emph{events}.\footnote{This is where the mathematical incompleteness comes
-in. If the outcomes are finite (i.e., discrete, like in our cards example),
-it's straightforward to enumerate the events as the finite set of all possible
-subsets of the outcomes. If the outcomes are continuous, things get tricky,
-and you need to be more careful about how you define ``all possible
-combinations''. The ``right'' way to do things is with a
-\emph{$\sigma$-algebra}.} In my card-drawing example, events including the
-individual outcomes (e.g., the Jack of Diamonds) and combinations of outcomes
-(e.g., any Diamond), including the ``everything'' outcome (drew any card).
+To start, we define \emph{outcomes} or \emph{sample space} as the set of all
+things that could happen when we run some trial. For example, if a flip a
+coin, it will land heads or tails. The collection of all possible combinations
+of outcomes are the possible \emph{events}.\footnote{This is where the
+mathematical incompleteness comes in. If the outcomes are finite (i.e.,
+discrete, like in our cards example), it's straightforward to enumerate the
+events as the finite set of all possible subsets of the outcomes. If the
+outcomes are continuous, things get tricky. You can't just ``count'' an
+infinite number of events, so you need to be careful about how you define
+``all possible combinations''. The right way to do things is with a
+\emph{$\sigma$-algebra}.} For flipping a coin, the events include the
+individual outcomes (heads or tails), the combinations of outcomes (either
+heads or tails), and no outcome (didn't flip anything).
+
+\begin{table}
+\centering
+\begin{tabular}{p{3cm}p{4cm}p{6cm}}
+\toprule
+Situation & Outcomes & Events \\
+\midrule
+Flipping a coin & heads, tails & $\varnothing$, $H$, $T$, $\Omega$ \\
+Rolling a die & $1, 2, \ldots, 6$ & $\varnothing$; $1, 2, \ldots, 6$; $\binom{6}{2}$ 2-event outcomes (e.g., 1 or 2); $\binom{6}{3}$ 3-outcome events (e.g., 1, 2, or 3); $\ldots$; $\binom{6}{5}$ 5-outcome events (e.g., any except 1); $\Omega$ \\
+Drawing a card & 2 of Clubs, $\ldots$, Ace of Hearts & $\varnothing$; 52 individual events (e.g., 2 of Clubs); $\binom{52}{2}$ 2-outcome events (e.g., black Ace); $\ldots$; $\binom{52}{51}$ 51-outcome events (e.g., any except 2 of Clubs); $\Omega$ \\
+Pick a random number between 0 and 1 & All real numbers between 0 and 1 & $\varnothing$; intervals like $[0, \tfrac{1}{2}]$; ``all subsets'' of $[0, 1]$; $\Omega$ \\
+Your experiment & Each possible configuration of atoms at measurement & ``Cancer cell died'', ``Electron had energy between 1 and 2 eV'', etc. \\
+\bottomrule
+\end{tabular}
+\caption{Distinction between outcomes and events for various example situations. $\varnothing$ is the nothing-happened event. $\Omega$ is the something-happened event. The ``all subsets'' is a $\sigma$-algebra, which we won't dive into.}
+\label{tab:outcome-event}
+\end{table}
 
 The difference between \emph{outcomes} and \emph{events} might seem trivial,
 but it will come up a few times, so I'll repeat that \emph{outcomes} are
-individual, granular things that might happen, while \emph{events} are
-groupings of outcomes. (I might have picked other words, but those are the
-ones we have to roll with.)
+individual, real things that might happen, while \emph{events} are abstract
+groupings of outcomes. Importantly, nothing-happened is an event but clearly
+not an outcome: if I run a trial, it can't be that nothing happened, but
+for mathematical reasons, nothing-happened is an event.
 
-We associate events with probability values using a function\footnote{When
-first learning probability, I found it confusing that ``probability'' and
-``random variables'', which will come up later, are (in mathematical terms)
-functions. In common parlance I think we talk about the \emph{values} of these
-functions as ``the probability'' or ``the random variable'', so think of these
-functions as the things that produce those values.} that is, confusing, also
-called ``probability''. Let $\Omega$ represent the set of all possible events,
-and let $\omega$ be some particular event (e.g., drew a Diamond). Then the
-probability function looks like:
-$$
-\mathbb{P} : \Omega \to [0, 1],
-$$
-that is, the probability function $\mathbb{P}$ is a function that takes
-elements in $\Omega$ (i.e., $\omega$) to values between 0 and 1. This will
-typically take the form
-$$
-\prob{\omega} = p,
-$$
-which can be read as ``the probability of $\omega$ is $p$''. For example,
-$$
-\prob{\text{drew a Diamond}} = \tfrac{1}{4}.
-$$
-Again, in a Bayesian mindset, $\tfrac{1}{4}$ means that I'm 25\% confident
-(whatever that means) that the card I draw will be a Diamond. In the
-frequentist mindset, it means that, if I shuffle the deck and draw a single
-card many times, the proportion of cards I draw that are Diamonds will
-approach 25\%.
+Each event is associated with a probability via a function that has no real
+name except ``probability''. It is a basic axiom of probability theory that
+probabilities always within zero and one. The probability function, written
+here as $\mathbb{P}$, links each event $\omega$ in the space $\Omega$ of
+events with a probability $p$:
+\begin{gather*}
+\mathbb{P} : \Omega \to [0, 1] \\
+\prob{\omega} = p
+\end{gather*}
+For example, if the event $H$ is flipping heads, then we say
+$\prob{H} = \tfrac{1}{2}$. I use the square brackets to emphasize
+that $\mathbb{P}$ is a function of something that is not a number: it takes
+events $\omega$ and not numbers like 5.
 
-It's a requirement that all the probability goes somewhere, so $\prob{\Omega} = 1$,
-that is, the probability of \emph{something} happening is 1. It's also a
-requirement that it can't be that nothing happens: $\prob{\varnothing} = 0$,
-where the empty set $\varnothing$ is, weirdly, an event.
+Probability theory axioms specify that the anything-happened event $\Omega$ has
+probability one and the nothing-happened event $\varnothing$ has probability zero:
+\begin{align*}
+\prob{\Omega} &= 1 \\
+\prob{\varnothing} &= 0
+\end{align*}
+Something must happen, and nothing cannot happen.
 
 \section{Manipulating probabilities}
 
-We're often interested in the relationships between events, and the math
-behind this should be pretty intuitive.
+We're often interested in the relationships between events. What is that
+probability that this \emph{or} that happened? What is the probability that
+this \emph{and} that happened?
 
-\subsection{``Adding'' events}
+\subsection{``And'' adds event probabilities}
 
 If $A$ and $B$ are two events that don't have any constituent outcomes in
 common, we call then \emph{disjoint}, and their probabilities add. For
-example, the probability of drawing a Queen \emph{or} a King is the
-probability of drawing a Queen plus the probability of drawing a King.
+example, the probability of flipping a heads or a tails is
+the probability of heads plus the probability of tails.
 Mathematically we write this as
 $$
-A \cap B = \varnothing \implies \prob{A \cup B} = \prob{A} + \prob{B},
+\text{if } A \cap B = \varnothing \text{, then } \prob{A \cup B} = \prob{A} + \prob{B},
 $$
-where the ``cap'' means \emph{intersection} (``and'') and the ``cup'' means
+where the ``cap'' $\cap$ means \emph{intersection} (``and'') and the ``cup'' $\cup$ means
 \emph{union} (``or''), so this reads ``if no outcomes are in both $A$ and $B$,
 then the probability of $A$ or $B$ is the sum of their individual probabilities.''
 
-If $A$ and $B$ do have some overlap, you need to trot out some fun little
-rules called \emph{De Morgan's laws} to figure things out. Consider the event
-of drawing a Jack \emph{or} a Diamond. If you add up the probability of
-drawing a Jack and the probability of drawing a Diamond, you end up double-counting
-the Jack of Diamonds event, so the solution is to subtract out the
-double-counted event:
+If $A$ and $B$ do have some overlap, you need to subtract out the probability
+of the overlap. For example, consider drawing a card
+from a standard 52-card deck. What is the probability of drawing a Jack or a
+Diamond? If you add up the probability of drawing a Jack and the probability
+of drawing a Diamond, you end up double-counting the Jack of Diamonds event,
+so the solution is to subtract out the double-counted event:
 $$
 \prob{A \cup B} = \prob{A} + \prob{B} - \prob{A \cap B}.
 $$
 We mostly deal with disjoint events, so I won't belabor this point.
 
-\subsection{``Multiplying'' events}
+\subsection{``Or'' multiplies events}
 
-If ``or'' for disjoint events adds probabilities, what does taking the ``and''
-of events do? Say I shuffle, draw one card, then reshuffle everthing, and draw
-again. What's the probability that I draw the Jack of Diamonds \emph{and then}
-the Queen of Spades? If $A$ and $B$ are \emph{independent}, then their
-probabilities multiply. In my reshuffling example, the drawing of the two
-cards are independent, so the probability of drawing two particular cards in a
-particular order is $\tfrac{1}{52} \times \tfrac{1}{52}$.
+We just said that ``or'' for disjoint events adds probabilities. How do we
+find the probability of $A$ and $B$? Say I flip two coins. What's the
+probability that I flip heads on the first coin and heads on the second?
 
-The mathematical definition of independence might feel a little circular: two
-events are independent if their probabilities multiply. Intuitively,
-independence means that the events can't depend on each other: because I
-reshuffle the deck in between, what card I drew the first time can't affect
-what card I draw the second time.
+If $A$ and $B$ are \emph{independent} events, then their probabilities
+multiply. The probability of flipping two heads is $\tfrac{1}{2} \times
+\tfrac{1}{2} = \tfrac{1}{4}$.
 
-``Depends on'' also has a mathematical notation. \emph{Conditional
+\subsection{Independence and conditional probability}
+
+How do you know if two events are independent? Mathematically, $A$ and $B$
+are indepedent if and only if their probabilities multiply.
+
+This might feel circular. Intuitively, independence means that the events
+can't depend on each other. I flip two separate coins, so the flip of one
+can't affect the flip of the other.
+
+``Depends on'' also has a mathematical notation. While the probability function
+took a single event and returned a single number, \emph{conditional
 probability} is a function that takes two events and returns a probability:
 $$
-\mathbb{P}_\mathrm{conditional} : \Omega \times \Omega \to [0, 1].
+\mathbb{P}[A | B] = p.
 $$
+This equation is read as ``the probability of $A$ given $B$ is $p$''.
 
-The standard notation uses a vertical bar, which is confusing because it will
-be used for other stuff: $\prob{A | B}$ is read as ``the probability of $A$
-given $B$''. In a frequesting mindset, where probabilities are proportions,
-$\prob{A | B}$ is, of trials in which $B$ happened, the proportion in which
-$A$ also happened.\footnote{This is another place in which my simple
-definition hides controversy and subtlety. I'm using the ``Kolmogorov
+In a frequesting mindset, where probabilities are proportions, $\prob{A | B}$
+is, on a denominator of the trials in which $B$ happened, the proportion of
+trials  in which $A$ also happened.\footnote{This is another place in which my
+simple definition hides controversy and subtlety. I'm using the ``Kolmogorov
 definition'' of conditional probability, but there's more than one way to
-approach it. The Borel-Kolmogorov paradox shows you that you can get weird
-situations when apparently dividing by zero.} Say $N_B$ is the number of
-trials in which $B$ happened, $N_{AB}$ is the number of trials in which $A$
-and $B$ happened, and $N$ is the total number of trials. Then the proportion
-we're talking about is $N_{AB} / N_B$. Divide top and bottom by $N$ to get
-$(N_{AB}/N) / (N_B/N)$ so that the top and bottom are themselves proportions,
-which are frequentist probabilities, from which I hope it's easy to see that
-the definition of conditional probability is
-$$
-\prob{A | B} \equiv \frac{\prob{A \cap B}}{\prob{B}}.
-$$
+approach it. Probability is a philosophically and mathematically complex notion.}
+Say $n_B$ is the number of trials in which $B$ happened, $n_{AB}$ is the
+number of trials in which $A$ and $B$ happened, and $n$ is the total number of
+trials. Then the proportion we're talking about is $n_{AB} / n_B$.
 
-A pictoral way of thinking about conditional probabilities is to say you're
-from your original universe of events $\Omega$ into the smaller universe of
-events $B$.
+\begin{figure}
+\caption{Conditional probability as shrinking of universe}
+\label{fig:conditional-probability}
+\end{figure}
+
+To get to the more general definition of conditional probability, divide top
+and bottom by $n$ to get $(n_{AB}/n) / (n_B/n)$. The numerator is the
+proportion of trials where $A$ and $B$ happened. The denominator is the
+proportion of trials were $B$ happened. Thinking of proportions of trials as
+probabilities, it follows that: $$ \prob{A | B} \defeq \frac{\prob{A \cap
+B}}{\prob{B}}. $$ A pictoral way of thinking about conditional probabilities
+is to say you're interested in the probability of $A$, not in the original
+universe of events $\Omega$, but in the smaller universe of events $B$ (Figure
+\ref{fig:conditional-probability}).
 
 This notation clarifies our definition of independence. If $A$ and $B$ are
 independent, then $\prob{A \cap B} = \prob{A} \times \prob{B}$, so, by the
