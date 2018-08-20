@@ -200,148 +200,130 @@ making a mathematically precise statement about $X$'s pdf and cdf.
 \subsection{Independent, identically-distributed random variables}
 
 A common construct is to consider \emph{independent, identically-distributed}
-(or iid) random variables. This means you have a collection of random variables $X_i$
-that are all independent of one another but follow the same distribution. This
-might be written as
+(or ``iid'') random variables. This means you have a collection of random variables $X_i$
+that all have the same cdf and are all independent of one another. For example,
 \begin{equation*}
-X \stackrel{\text{iid}}{\sim} \mathcal{N}(0, 1)
+X \stackrel{\text{iid}}{\sim} \mathcal{N}(\mu, \sigma^2)
 \end{equation*}
-to mean that $f_{X_i}(x)$ is the standard normal pdf for every random variable
+means that $f_{X_i}(x) = f_\mathcal{N}(x; \mu, \sigma^2)$ for every random variable
 $X_i$ and that all the $X_i$ and $X_j$ are independent for all $i \neq j$.
-For example, in my card drawing example, if I draw one card, shuffle the deck,
-and draw another card, any random variable associated with the cards in the
-two draws will be independent and identically distributed.\footnote{I hope
-it's clear that ``independent'' and ``identically-distributed'' are not
-contradictory: the only knowledge you could potentially get from the outcomes
-$X_1, X_2, \ldots X_n$ that would tell you something about the as-of-yet
-hidden value of $X_{n+1}$ is what distribution the $X_i$ are drawn from. This,
-however, is not a secrete when you say that ``the $X_i$ are iid standard
-normal variables''. Later on we will definitely get into how you use the
-values taken on by $X_i$ to try to guess what distribution they come. That's
-the point of inferential statistics!}
 
-If some random variables are independent and indentically distributed, then
-their histogram approximates the probability distribution function. To see why
-this is, remember that, at least in the frequentist scheme, the proportion of
-``trials'', which we can now more concretely associate with the individual
-random variables in this group of iid random variables, that fall into some
-range $[a, b]$ is the probability of \emph{each} of the identically-distributed
-random variables taking on values in that range, which is $\prob{a
-< X \leq b} = \int_a^b f_X(x') \,dx'$. When we talk about ``drawing from a
-normal distribution'', what we're talking about in a rigorous mathematical
-sense is examining a collection of iid variables with that distribution.
+Independent, identically-distributed random variables are important for
+frequentist statistics because they represent the ``many independent trials''
+in the frequentist definition of probability as a proportion of many
+independent trials in which an outcome emerges. As the number of iid variables
+increases, the proportion of discrete iid random variables that take on each
+discrete value will approach the probability of that value. Similarly, the
+proportion of continuous iid random variable that take on values in a range $a
+\leq X < b$ will approach $F_X(b) - F_X(a)$.
+
+In day-to-day speech, we might say, ``I draw $n$ values from this random
+variable $X$''. Mathematically, this means, ``Consider $n$ iid random
+variables distributed like $X$''.
+
+% swo: do events or outcomes get probabilities?
 
 \section{Sums and products of random variables}
 
 If you know the cdf and pdf for a random variable $X$, and you also know these
 values for another random variable $Y$, you might be interested in the
-behavior of these variables together.\footnote{An important example is the sum
-of many independent, identically-distributed random variables, which we will
-see are intimately linked to the normal distribution.} Many specific
-distributions have nice shortcuts for figuring out the behavior of sums of
-random variables with those distributions.\footnote{For example, if $X \sim
-\mathcal{N}(\mu_1, \sigma_1^2)$ and $Y \sim \mathcal{N}(\mu_2, \sigma_2^2)$,
-then $X + Y \sim \mathcal{N}(\mu_1 + \mu_2, \sigma_1^2 + \sigma_2^2)$.} Where
-do those nice rules come from?
+behavior of these variables together. An important example is the sum of many
+independent, identically-distributed random variables, which we will see are
+intimately linked to the normal distribution. Many specific distributions have
+nice shortcuts for figuring out the behavior of sums of random variables with
+those distributions. For example, if $X \sim \mathcal{N}(\mu_1, \sigma_1^2)$
+and $Y \sim \mathcal{N}(\mu_2, \sigma_2^2)$, then $X + Y \sim
+\mathcal{N}(\mu_1 + \mu_2, \sigma_1^2 + \sigma_2^2)$. Where do those nice
+rules come from?
 
 First, let's be clear about the notation. If $X$ and $Y$ are random variables,
 then what does $Z = X + Y$ mean? Remember that $X$ and $Y$ are both functions,
-so the plus sign in $X + Y$ doesn't mean the same thing as the plus sign in $1
-+ 2$. Instead, it's an intuitive shorthand:
+so the plus sign in $X + Y$ doesn't mean ``add numbers''. Instead, it's an intuitive shorthand:
 \begin{equation}
-Z = X + Y \implies Z[\omega] = X[\omega] + Y[\omega],
+Z = X + Y \text{ means } Z[\omega] = X[\omega] + Y[\omega].
 \end{equation}
-that is, for every outcome $\omega$, $Z$ takes on the sum of the values that
-$X$ and $Y$ take on. More pedantically, $Z$ is a function that, for every input
+That is, for every outcome $\omega$, $Z$ takes on the sum of the values that
+$X$ and $Y$ take on. In other words, $Z$ is a function that, for every input
 $\omega$, outputs the sum of the outputs of $X$ and $Y$ when they in turns are
 fed the input $\omega$.
 
 This means that, for some event, if $X$ takes on the value $x$ and $Y$ takes
-on the value $y$, then $Z$ takes on $x+y$. Reversing that, we can say that, if
+on the value $y$, then $Z$ takes on $x+y$. It follows that, if
 $Z$ takes on the value $z$ and $X$ takes on $x$, then it must be that $Y$
-takes on $z - x$. This is how we write the pmf for a discrete $Z = X + Y$ when
-$X$ and $Y$ are independent:
+took on $z - x$. Therefore the probability that $Z$ takes on value $z$ is
+sum of the probabilities that $X$ took on $x_i$ and $Y$ takes on $z - x_i$.
+If $X$ and $Y$ are independent,
+$\prob{(X = x_i) \cap (Y = z - x_i)} = \prob{X = x_i} \times \prob{Y = z - x_i}$
+so that
 \begin{align*}
-Z = X + Y \implies f_Z(z) &= \sum_i \prob{(X=x_i) \cap (Y=z - x_i)} \\
-  &= \sum_i \prob{X=x_i} \prob{Y=z-x_i} \text{ (independence)} \\
-  &= \sum_i f_X(x_i) f_Y(z - x_i)
+f_Z(z) &= \sum_i \prob{(X=x_i) \cap (Y=z - x_i)} \\
+  &= \sum_i \prob{X=x_i} \prob{Y=z-x_i} \\
+  &= \sum_i f_X(x_i) f_Y(z - x_i).
 \end{align*}
-Note that $f_Y(z-x_i)$ could be zero for many cases. For example, if $X$ and
-$Y$ are two die rolls, then $f_Z(5)$ if $X$ was 6 then $Y$ would have to be $5
-- 6 = -1$, which is clearly impossible.
 
 A similar definition holds for when $Z = X + Y$ is continuous. Rather than
 summing over all the outcomes in which $X$ takes on certain values, we integrate:
 \begin{equation}
 f_Z(z) = \int f_X(x') f_Y(z - x') \,dx'
 \end{equation}
-The right way to derive this is to start with the cdf for $Z$, but it's pretty
-boring algebraic manipulation, so you can trust that it works out.
 
-The process is similar for a product of random variables $Z = XY$, expect
-that, if $Z = z$ and $X = x$, then it must be that $Y = z/x$. You can also
-take a ratio of random variables $Z = X/Y$, which will have terms where $Y =
-zx$. The math behind all these can be a real pain, and cases in which there is
-a nice syllogism like ``if $X$ is whatever distributed and $Y$ is whatever
-distributed, then $Z = X + Y$ is whatever distributed'' are glorious
-exceptions.
+For a product of random variables $Z = XY$, we say that,
+if $Z = z$ and $X = x$, then it must be that $Y = z/x$.
+For a ratio of random variables $Z = X/Y$, it must be that $Y = zx$.
 
-I want you to see that, even if the math showing some fact about the sum,
-product, or ratio of random variables is hard---for example, the ratio of two
-normally distributed variables is \emph{not} normally distributed---there's
-nothing mysterious about where the fact comes from, or how you could derive
-your own facts like that yourself, if you had the time and algebraic ability.
+For any particular $X$ and $Y$, the derived variables $X + Y$, $XY$, and $X/Y$
+are usually distributed in some really messy way. For example, although the
+sum of two normally-distributed random variables is normally distributed,
+neither the product nor the ratio of normally-distributed random variables are
+normally distributed.
 
 \section{Properties of random variables}
 
 Two properties of random variables, their \emph{expected values} and
 \emph{variances}, will come up repeatedly.
 
-\subsection{Expected value (but don't always expect it)}
+\subsection{Don't expect the expected value}
 
-A random variable's \emph{expected value} is a sort of ``average'' value of
-the random variable. For a discrete variable, you find the weighted average of
-the values the random variable takes on, where the weights are the probability
-that that value comes up. For a continuous random variable, you need to
-integrate:
+A random variable's \emph{expected value} is the probability-weighted average
+of the values it takes on. It is a function that links random variables with
+numbers:
+\begin{equation*}
+\mathbb{E} : \text{random variables} \to \mathbb{R}
+\end{equation*}
+For a discrete random variable, you simply sum. For a continuous random
+variable, you need to integrate:
 \begin{equation}
 \expect{X} = \begin{dcases}
   \sum_i x_i f_X(x_i) & \text{ for discrete random variables} \\
   \int x' f_X(x') \,dx' & \text{ for continuous random variables}
 \end{dcases}
 \end{equation}
-where the $i$ refer to the different values taken by $X$ and the limits of the
-integral are the limits of the values taken on by $X$. You might also see
-people use notation like $E[X]$ or $\mathbb{E}X$ or, for reasons that will
-become confusing later, $\overline{X}$.
+You might also see people use notation like $E[X]$, $\mathbb{E}X$, or $\mu_X$.
 
-The name ``expected value'' is a little confusing. We previously noted that,
+% swo: expected vs. expectation. go with "expected"
+
+The name ``expectation value'' is a little confusing. We previously noted that,
 for continuous random variables, the probability of getting any particular
 number is essentially zero, so there's no particular number you should
 ``expect''. For discrete random variables, where there is finite probability
 of getting each particular number, the expected value need not be any of the
-values actually taken on by $X$. In the example of rolling a die, each of the
-numbers 1 through 6 arises with equal probability, so:
+values actually taken on by $X$. In our coin flip example, the random variable
+$X$ measuring the number of heads flipped has expectation value:
 \begin{equation}
-\expect{X} = \sum_{k=1}^6 k f_X(k) = \sum_{k=1}^6 k \times \frac{1}{6} = 3.5.
+\expect{X} = 0 \times \prob{T} + 1 \times \prob{H} = \tfrac{1}{2}.
 \end{equation}
-You certainly don't ever expect to roll a 3.5!
+You certainly don't ever expect to flip $0.5$ heads.
 
-What the expected value \emph{is} is a handy mathematical tool and a measure
-of ``central tendency'', a rough of measure of what kind of values $X$ is
-``centered'' around, although even this is slippery, since, as you might
+Even if you don't expect the expectation value, it is a handy mathematical
+tool, and it is a rough of measure of what kind of values $X$ is
+``centered'' around. Even this is slippery, since, as you might
 recall from learning in high school about the difference between mean, mode, and median, what ``the
-center'' means is not necessarily obvious. It's worth noting, though, that if
-the values $x_i$ taken on by a random variable $X$ are all equiprobable, then
-the expected value of $X$ is just the plain-old arithmetic mean of the $x_i$:
-\begin{equation}
-f_X(x_i) = f_X(x_j) \text{ for all } i, j \implies \expect{X} = \frac{1}{n} \sum_i x_i.
-\end{equation}
+center'' means is not necessarily obvious.
 
-\hl{proof of linearity of expectation}
+\subsection{Linearity of expectation}
 
 Expected values have some nice properties that make them really easy to deal
-with. For example, the expected value of a shifted random variable like $X +
+with. For example, the expectation value of a shifted random variable like $X +
 1$ is just $\expect{X} + 1$: you're still ``averaging'' $X$ overall the
 outomes, but you're just adding 1 to everything you averaged, which is clearly
 just the ``average'' $X$ plus 1. Similarly, you should be able to see that
@@ -350,120 +332,88 @@ $\expect{2X} = 2 \,\expect{X}$.
 You could think of ``1'' in the previous example as being a really boring
 random variable: it gives 1 for every outcome. This might lead you to suspect
 that $\expect{X + Y} = \expect{X} + \expect{Y}$, which is true. The fact that
-you can easily transform the expected values of random variables multiplied by
+you can easily transform the expectation values of random variables multiplied by
 numbers and the sum of random variables is called the \emph{linearity of expectation}:
 \begin{equation}
 \expect{aX + bY} = a \,\expect{X} + b \,\expect{Y}.
 \end{equation}
+The proof of this fact follows from the logic used to find the pmf of $Z = X +
+Y$. It's not hard, but it's not particularly enlightening either.
 
-Perhaps surprisingly, this property holds whether $X$ and $Y$ are independent
-or not. Here's the proof: We previously showed that if $Z = X + Y$, then
-\begin{equation}
-f_Z(z) = \sum_i f_X(x_i) f_Y(z - x_i).
-\end{equation}
-With some re-arranging, you can show that this is equivalent to
-\begin{equation}
-f_Z(z) = \sum_i \sum_j (x_i + y_j) f_X(x_i) f_Y(y_j).
-\end{equation}
-Split this up into two sums:
-\begin{align*}
-f_Z(z) &= \sum_i \sum_j x_i f_X(x_i) f_Y(y_j) + \sum_i \sum_j y_j f_X(x_i) f_Y(y_j) \\
-  &= \left(\sum_i x_i f_X(x_i)\right) \left(\sum_j f_Y(y_j)\right) +
-    \left(\sum_j y_j f_Y(y_j)\right) \left(\sum_i f_X(x_i)\right).
-\end{align*}
-You'll recall that summing up the pmf gives 1, that is, $\sum_i x_i f_X(x_i) =
-1$, so the second and fourth bits are just 1. Then notice that the first bit is
-just $\expect{X}$ and the third is just $\expect{Y}$.
-
-\hl{Another way to think about this is to say that, even if $X$ and $Y$ depend on
-each other,}
-
-\footnote{Here's a problem that sounds really hard, but becomes
-really easy with expectation: there are $n$ chickens, standing in a circle.
-Suddenly, every chicken pecks the chicken to its left or to its right with
-equal probability. How many chickens got pecked?---If you interpret ``how many''
-as expected value, then notice that the total number of pecked chickens is the
-sum of iid random variables, one for each chicken, with 0 indicating not pecked
-and 1 indicating pecked. To be not pecked, the chicken to the left must peck
-left, and the chicken to the right must peck right, each with probability
-$1/2$, so the expected value for each chicken is $1/4$. The
-expected number of pecked chickens is $n/4$. Computing the
-\emph{variance} in the number of pecked chickens is definitely harder! \hl{cite}}
-
-Interestingly, the \emph{product} of two random variables is nice only if the
-variables are independent. In that case, $\expect{XY} = \expect{X}\,\expect{Y}$.
+Interestingly, the product $XY$ of two random variables is nice only if the
+variables $X$ and $Y$ are independent. In that case, $\expect{XY} = \expect{X}\,\expect{Y}$.
 More generally, there is some residual term call the \emph{covariance}:
 \begin{equation}
 \expect{XY} = \expect{X} \, \expect{Y} + \cov{X, Y}.
 \end{equation}
-Before getting too much into covariance, we should start with regular variance!
+Before getting too much into covariance, we should start with regular variance.
 
 \subsection{Variance}
 
 If the expected value is some measure of position, then \emph{variance} is the
-corresponding measurement of spread. For a random variable $X$, the variance
-is the expected value of a random variable $(X - \expect{X})^2$.\footnote{We
-learned about how to take the product of random variables, so this is totally
-kosher: we start with $X$, then make a new random variable $X - \expect{X}$,
-and then look at a third random variable $(X - \expect{X})^2$.} In words, this
-is the expectation value (i.e., some kind of sense of position or magnitude)
-or the square of the deviations of $X$ from \emph{its} expected value. I'll
-write variance with a weird V:
-\begin{equation}
-\var{X} \defeq \expect{(X - \expect{X})^2}.
-\end{equation}
-You might also see notation like $\mathrm{Var}[X]$ or $V(X)$, or, for reasons
-that will become confusing later on, $\sigma^2_X$. Again, I use the square brackets
-to emphasize that $\mathbb{V}$ is not a function over numbers: it takes random
-variables and gives back a number.
+corresponding measurement of spread. It is a function of random variables that
+returns a nonnegative number:
+\begin{equation*}
+\mathbb{V} : \text{random variables} \to [0, \infty).
+\end{equation*}
+The variance of $X$ is also often written $\mathrm{Var}[X]$, $V(X)$, or $\sigma^2_X$.
 
-Note that $\var{X} \geq 0$, since it's an expected value over squares, which
-are nonnegative.\footnote{The uninteresting case $\var{X} = 0$ means that $X$
-always takes on the same value---that is, that it's a constant.}
+For a random variable $X$, the variance is the expected value of the square of
+the deviation of the random variable from its own expected value:
+\begin{equation*}
+\var{X} \defeq \expect{(X - \expect{X})^2}
+\end{equation*}
+Because all those nested brackets are confusing, people sometimes write
+$\expect{X}$, which is just a number, as $\mu$ so that $\var{X} = \expect{(X -
+\mu)^2}$.
+
+Variance is always nonnegative because it's a weighted average over squares,
+which are always nonnegative. The variance of a random variable is zero only
+in the very boring case where that random variable always takes on the same
+value.
+
+Note that the square in $(X - \expect{X})^2$ is a shorthand for taking the
+product of two iid random variables: $X^2$ refers to the product $X_1 X_2$,
+where $X_1$ and $X_2$ are distributed like $X$.
 
 Unlike the expected value, variance is not linear. Consider the random variable $aX$,
 where $a$ is just a number:
 \begin{equation}
-\var{aX} = \expect{(aX - \expect{aX})^2} = \expect{a^2(X - \expect{X})} = a^2 \expect{X}.
+\var{aX} = \expect{(aX - \expect{aX})^2} = \expect{a^2(X - \expect{X})} = a^2 \, \expect{X}.
 \end{equation}
-For a sum, the situation is even more confusing. First I'll note that
-\begin{equation}
-\var{X} = \expect{X^2 - 2X \expect{X} - \expect{X}^2}
-  = \expect{X^2} - \expect{X}^2.
-\end{equation}
-In words, the variance is the expectation of the square minus the square of
-the expectation. I did this so I could more easily expand out:
-\begin{align*}
-\var{X + Y} &= \expect{(X+Y)^2} - \expect{X+Y}^2 \\
-  &= \expect{X^2} + \expect{Y^2} + 2\, \expect{XY} - \left(\expect{X}+\expect{Y}\right)^2 \\
-  &= \left(\expect{X^2} - \expect{X}^2\right) +
-    \left(\expect{Y^2} - \expect{Y}^2\right) +
-    2 \left(\expect{XY} - \expect{X} \, \expect{Y}\right) \\
-  &= \var{X} + \var{Y} + 2 \cov{X, Y}
-\end{align*}
+For a sum, the situation is even more confusing. Some algebra shows that
+\begin{equation*}
+\var{X + Y} = \var{X} + \var{Y} + 2 \,\cov{X, Y},
+\end{equation*}
 where $\cov{X, Y}$, introduced in the end of the last section, is the
-\emph{covariance} of $X$ and $Y$. I think it's way easier to write it out as
+\emph{covariance} of $X$ and $Y$:
 \begin{equation}
 \cov{X, Y} \defeq \expect{(X - \expect{X})(Y - \expect{Y})}.
 \end{equation}
-In other words, the covariance is the expected value of the product of the
-deviations of $X$ and $Y$ from their expected values.
+
+In words, the covariance is the expected value of the product of the
+deviations of $X$ and $Y$ from their expected values. If, when $X$ takes on
+values greater than its expected value, $Y$ also tends to take on values
+greater than its expected value, then $\cov{X, Y} > 0$. Conversely, if, when
+$X$ has positive deviations, $Y$ has negative deviations, then $\cov{X, Y} <
+0$. If $X$ and $Y$ are independent, then $\cov{X, Y} = 0$.
 
 \subsection{Correlation}
 
-Rather than covariance, you're probably more
-familiar with the term \emph{correlation}, especially the familiar Pearson's
-correlation coefficient, usually written $\rho$, which is
-\begin{equation}
-\rho[X, Y] \defeq \frac{\cov{X, Y}}{\sqrt{\var{X} \var{Y}}}.
-\end{equation}
-I want to emphasize that we're still talking about random variables, which are
-functions, and not numbers, the ``realizations'' of random variables. So, as I
-wrote it, $\rho$ is a \emph{function} that takes two random variables, which
-are themselves functions, and returns a number.\footnote{This is different
-from the correlation coefficient as you're probably used to it, which is
-computed as a number from a set of numbers. If you find this curious, don't
-worry, that's what the next chapter is about!}
+Rather than covariance, you're probably more familiar with the term
+\emph{correlation}, especially the familiar Pearson's correlation coefficient,
+usually written $\rho$ or $r$. The correlation coefficient is a function of
+two random variables that gives a number between $-1$ and $1$:
+\begin{gather*}
+\rho : (\text{random variables}) \times (\text{random variables}) \to [-1, 1] \\
+\rho[X, Y] \defeq \frac{\cov{X, Y}}{\sqrt{\var{X} \var{Y}}},
+\end{gather*}
+In other words, the correlation between $X$ and $Y$ is their covariance
+``normalized'' by their variances. The reason for dividing by the two
+variances was so that $\rho$ is between $-1$ and $1$. The math isn't hard, but
+it's not particularly useful for us.
+
+% swo: figure, or integrate this paragraph
 
 To see how covariance and correlation are related, think about a correlated
 $X$ and $Y$, like a simple bivariate normal distribution. \hl{figure} In
@@ -474,26 +424,3 @@ deviation is negative, the other tends to be negative. This way, the overall
 two variables are \emph{anticorrelated}, then when one is higher than average
 the other tends to be lower than average, so the product of deviations tends
 to be negative.
-
-The reason for dividing by the two variances was so that $\rho$ is between
-$-1$ and 1. To see that that's true, define the ``standardized'' random
-variable \begin{equation} X' = \frac{X - \expect{X}}{\sqrt{\var{X}}}
-\end{equation} which has has mean 0 and variance 1. Similarly define $Y'$, and
-then check that $\rho[X, Y] = \rho[X', Y'] = \expect{X'Y'}$. Now make another
-random variable $Z = X' - \rho Y'$.\footnote{If you're familiar with linear
-regression, notice that $Z$ is like the residuals that come from predicting
-$X'$ using independent variable $Y'$ and slope $\rho$: $\rho Y'$ are the
-predicted values. The fact that $\var{Z} = 1 - \rho^2$ is why sometimes people
-call $\rho^2$, or $R^2$, the ``fraction of variance explained'' by the
-regression. If $\rho$ is 1, then $Z$, the residuals, are a constant zero:
-you've ``explained'' all the variation.} Its variance is
-\begin{align*}
-\var{Z} &= \expect{(X' - \rho Y')^2} \\
-  &= \expect{X'^2 - 2 \rho X' Y' + \rho^2 Y'^2} \\
-  &= \expect{X'^2} - 2\rho\,\expect{X'Y'} + \rho^2 \expect{Y'^2} \\
-  &= 1 - 2\rho^2 + \rho^2 \\
-  &= 1 - \rho^2
-\end{align*}
-Variances are always nonnegative, so $1 - \rho^2 \geq 0$, from which you can see
-that $-1 \leq \rho \leq 1$.\footnote{This proof is a specific case of the
-Cauchy-Schwartz inequality.}
