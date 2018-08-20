@@ -2,175 +2,158 @@
 
 \chapter{Random variables}
 
-Now that we know how to ``and'' and ``or'' events, we want to be able to do
-something more than ask what's going to happen or not. We need a mathematical
-bridge between the abstract stuff we just did and the familiar concepts like
-means, standard deviations, and probability distributions. The bridge is
-\emph{random variables}. What does it mean to say that some ``thing'' is
-normally distributed? We'll get there in this section.
+In the previous chapter, we examined outcomes, events, and their
+probabilities. Outcomes are specific configurations of atoms, which is not at
+all a practical thing for a scientist think about. Events are abstract
+groupings of those configurations, which is also impractical. Instead, in
+science, we measure the results of experiments with numbers. We link whatever
+we see with a number. In microbiology, we could cells. In physics, we measure
+the energy of an electron.
+
+In probability theory, \emph{random variables} link outcomes with numbers.
+They are the mathematical analogue of scientific measurement. Random variables
+will lead us to familiar concepts like means, standard deviations, and
+probability distributions.
 
 \section{Definition of random variables}
 
-As a toy example, consider rolling a six-sided die. There are six outcomes of
-interest. We want to associate each of those outcomes with a number.
-Mathematically, we call that association a random variable: it is a function
-that takes outcomes and returns numbers:
-$$
-X : \Omega \to \mathbb{R},
-$$
-that is, a random variable $X$ is a function from the space of outcomes to the
-real numbers.\footnote{Again, this is a simplification: measure theory says
-that a random variable can map the outcome space to any \emph{measurable
-space}.} For example, $X$ takes the event ``two dots came up'' and associates
-it with the number 2.
+Confusingly, a ``random variable'' is a function, not a number. We might say
+that a random variable ``takes on'' a value, but the random variable itself,
+in mathematical terms is always a function.
 
-I've now given you what seems like a lot of weird mathematical symbology to do something really natural. If $X$ is the number that comes up from a die roll, then
-$$
-\prob{X = 2} = \frac{1}{6},
-$$
-where you'll notice that ``$X = 2$'' is an \emph{event}: it's the
-set of outcomes for which $X$ returns the value 2.
+A \emph{discrete} random variable $X$ is a function that associates outcomes
+$\omega \in \Omega$ with a finite set of numbers $x_i$:
+\begin{gather*}
+X : \Omega \to \{x_1, \ldots x_k\} \\
+X[\omega] = x_i
+\end{gather*}
+for some finite $k$. A \emph{continuous} random variables associates outcomes with real
+numbers $x \in \mathbb{R}$:
+\begin{gather*}
+X : \Omega \to \mathbb{R} \\
+X[\omega] = x
+\end{gather*}
+This is a simplification: measure theory says that a random variable can map
+the outcome space to any \emph{measurable space}. We won't dive into that.
 
-This example probably seems pretty dopey, since there's only one outcome that
-$X$ maps to 2. The important thing that just happened is that we were able to
-abstract over the outcomes $\Omega$ and instead look at just the numbers
-popping out of the random variable $X$. It will be nice to say ``$X$ is
-normally distributed'' without having to figure out exactly which outcomes $X$
-is mapping to what numbers. We're interested in the behavior of $X$ and not
-necessarily in the $\Omega$: you'll want to develop statistical tools that
-will work for anything old thing that's normally distributed, and you don't
-want to be developing a new theory of probability each time.
+For example, when flipping a die, you could imagine a random variable $X$
+encoding ``number of heads flipped'':
+\begin{align*}
+X[H] &= 1 \\
+X[T] &= 0
+\end{align*}
+Roughly speaking, the values of the random variable group the outcomes into
+events, which each have probabilities. This means it makes sense to ask about
+the event in which a random variable takes on a value, e.g., $\prob{X = 1} = \tfrac{1}{2}$.
+Note that ``$X = 1$'' does not mean that $X$ is the number one; instead, the
+entire phrase ``$X = 1$'' refers to the event where $X$ took on the value one.
 
-A slightly less dopey example is: when I draw cards from the deck, my random
-variable is 1 for Ace, the rank of the card for cards 2 through 10, and 10 for
-Jack, Queen, and King. In this case $\prob{X = 10} = \tfrac{16}{52}$.
+Random variables therefore allow us to abstract over the outcomes and look
+only at the values taken on by the random variable. From now on, we will have
+no reason to think about the specific configuration of atoms in our
+experiment. We only think about the numbers delivered by our apparatus. Soon
+we'll be able to say things like ``$X$ is normally distributed'' without having
+to specify what are the outcomes and events.
 
-If you're asking ``then why did we bother with last chapter'', note that the
-rules for manipulating events and probabilities will work just as well for
-events like ``$X = 2$'' as they did for ``drew a Jack''. The philosophical and
-technical definition of probability still holds. For example, $\prob{(X = 9)
-\cup (X = 10)}$, the probability that $X$ takes on the values 9 or 10, is the
-sum of the two constituent probabilities $\prob{X=9}$ and
-$\prob{X=10}$.\footnote{We know that $X=9$ and $X=10$ are disjoint because
-every event can be associated with only one random variable value.}
+The previous chapter was not a waste, however, because the
+rules for manipulating events and probabilities work just as well for
+events like ``$X = 1$'' as they did for ``flipped heads''. The philosophical and
+technical definition of probability still holds. For example, $\prob{(X = 1)
+\cup (X = 0)}$, the probability that $X$ takes on the values zero or one, is the
+sum of the two constituent probabilities $\prob{X=1}$ and
+$\prob{X=0}$.
 
 \section{Distribution of random variables}
 
-Now we're talking about something you've probablty thought about: how is $X$
-``distributed''? If you're like me, you think in terms of \emph{probability
-distribution functions} (pdf's) and consider \emph{cumulative distribution
-functions} (cdf's) as a derived quantity, but in fact it's mathematically
-easier to go the reverse route. (If you aren't familiar with either, never
-fear, this section is here!)
+How is $X$ ``distributed''? If you're like me, you think in terms of
+\emph{probability distribution functions} (pdf's) and consider
+\emph{cumulative distribution functions} (cdf's) as a derived quantity, but in
+fact it's mathematically easier to go the reverse route. If you aren't
+familiar with either, never fear.
 
 \subsection{Cumulative distribution functions}
 
 The first way of defining the ``distribution'' of a random variable $X$ is its
-\emph{cumulative distribution function}\footnote{For reasons that will become
-clear, these are also called cumulative \emph{density} functions. They mean
-the same thing.} (``cdf'' for short), which is a function\footnote{Finally, a
-function that's actually named ``function''!} that takes a number $x$ and
-returns the probability that $X$ is at most $x$:\footnote{I use the regular
-parentheses with $F_X$ because it's the kind of function that I expect you
-normally think of as a function: it takes a number and returns a number. I use
-the square brackets for functions like $\mathbb{P}$ to emphasize that they
-take things that aren't numbers.}
-$$
+\emph{cumulative distribution function}, also called the cumulative
+\emph{density} function and abbreviated ``cdf''. The cdf of a discrete random
+variable $X$ is the probability that the random variable takes on a value
+below some threshold $x_i$:
+\begin{gather*}
+F_X : \{x_1, \ldots, x_k\} \to [0, 1] \\
+F_X(x_i) \defeq \prob{X \leq x_i} = \sum_{j \,:\, x_j \leq x_i} \prob{X = x_j}
+\end{gather*}
+A continuous random variable has a cdf that takes real numbers:
+\begin{gather*}
+F_X : \mathbb{R} \to [0, 1] \\
 F_X(x) \defeq \prob{X \leq x},
-$$
-where $F_X$ is the cdf of $X$. This is the typical notation.
+\end{gather*}
+Note that the cdf is a function of numbers, which I emphasize by
+using regular parentheses around $x$ in $F_X(x)$.
 
-Take careful note that $X$ is a function, $x$ is a number, and
-``$X \leq x$'' is an event. In other words, ``$\leq$'' here
-means something different\footnote{In computer programming this kind of
-behavior is called \emph{polymorphism}. In some languages, like Python,
-\texttt{1 + 2} means 3 but \texttt{"hello " + "world"} means ``hello world''.
-In one case, \texttt{+} is adding numbers and in the other case it's concatenating
-strings. So to understand what action is being taken, you need to look not
-only at the function, but also what stuff is being fed to it.} than in an
-inequality with two numbers (e.g., $1 \leq 2$).\footnote{Indeed, $\prob{1 \leq
-2} = 1$!} This may seem pedantic, but I think having a really good grasp of
-the notation will help you articulate correct thoughts more clearly. Things
-will quickly get confusing if you think that $X \leq x$ means the same thing
-as $x \leq x$! Again, $1 \leq 2$ is a Boolean value---true or false---but
-$X \leq x$ is an \emph{event}, all the parts of the univese of outcomes for
-which the random variable $X$ takes on values less than the number $x$.
+Take careful note that ``$X \leq x$'' is an event, not a Boolean expression
+like ``$1 \leq 2$''. This may seem pedantic, but I think having a really good
+grasp of the notation will help you articulate correct thoughts more clearly.
+Things will quickly get confusing if you think that $\prob{X \leq x}$ means the same
+thing as $\prob{x \leq x}$.
 
-If the number of outcomes is finite (e.g., for a die roll, there are six
-outcomes), then $X$ takes on a finite number of values (at most, the number of
-outcomes), and it's pretty easy to say in words what $F_X$ is doing:
-it looks at every outcome, sees if $X$ maps that outcome to a value less than
-or equal to the number $x$, and adds up the probabilities of just those
-outcomes. If $X$ takes on a finite number of values, we call it a
-\emph{discrete} random variable.\footnote{Note, however, that $X$ can take on
-a finite number of values even if the number of outcomes is \emph{not} finite.
-There might be an infinite number of outcomes---say, one for each of the real
-numbers between 0 and 6---and the random variable returns an integer between 1
-and 6---just the real number associated with each outcome, rounded up. The
-combination of that space of outcomes and that random variable gives exactly
-the same behavior as the simple $X$ on die rolls. That's part of the beauty of
-using random variables rather than just raw events.}
+% swo: need a figure here with the laddering
 
-If $X$ is a discrete random variable, and it takes on minimum value
-$x_\mathrm{min}$ and maximum value $x_\mathrm{max}$, then it should be clear
-that
+A discrete random variable takes on a maximum value $x_\mathrm{max}$ so that
 \begin{gather}
-F_X(x_\mathrm{min}) = \prob{X = x_\mathrm{min}} \\
-F_X(x_\mathrm{max}) = 1
+\text{if } x < x_\mathrm{min} \text{, then } F_X(x) = 0 \\
+F_X(x_\mathrm{max}) = 1.
 \end{gather}
-If $X$ takes on an infinite number of values, it is an \emph{continuous}
-random variable. If those values are bounded---the common example being a
-uniform random variable that takes values between 0 and 1---then the same
-rules apply.
-If $X$ takes on every real value (i.e., any number from $-\infty$ to $\infty$),
-then
+If a continuous random variable can take on any real number, then  the cdf of
+a continuous random variable approaches zero and one as $x$ goes out toward
+infinity:
 \begin{gather}
 \lim_{x \to -\infty} F_X(x) = 0 \\
 \lim_{x \to \infty} F_X(x) = 1
 \end{gather}
 
+% need a figure here with, say, normal distribution
+
 \subsection{Probability distribution function}
 
-The cumulative distribution function, though relative easy to define, isn't
-always very nice to look at and think about. For discrete random variables, it's
-often just as easy to use the values $\prob{X = x}$, which is called the \emph{probability mass function} (or ``pmf'') of $X$:
-\begin{equation}
-f_X(x) \defeq \prob{X = x}.
-\end{equation}
-Note that, for a discrete random variable $X$, $F_X$ means the cdf and $f_X$
-means the pdf. This function takes numbers---the values that $X$ takes on---
-and returns probabilities, which are always between 0 and 1.
+For a discrete random variable, it's straightforward to define its
+\emph{probability mass function} or ``pmf'', which is just the probability
+that it takes on each discrete value $x_i$:
+\begin{gather*}
+f_X : \{x_1, \ldots, x_k\} \to [0, 1] \\
+f_X(x_i) = \prob{X = x_i}
+\end{gather*}
 
-What's the analogue of the pmf for continuous random variables? It's tempting,
-but ultimately incorrect, to just write $\prob{X = x}$ again. This may seem
-like a pedantic diversion, but I actually think it's important to avoid
-confusion.
+The analogue for continuous random variables is the probability
+\emph{distribution} function, also called probability \emph{density} function
+or ``pdf'':
+\begin{gather*}
+f_X(x) : \mathbb{R} \to [0, 1] \\
+f_X(x) \defeq \frac{d}{dx} F_X(x)
+\end{gather*}
 
-For a continuous random variable, $\prob{X = x}$ is zero. For example, say $X$
-takes on values between 0 and 1 symmetrically, e.g., the probability that $X$
-comes out between 0 and 0.5 is the same as between 0.5 and 1. Say you're
-asking about the probability that $X$ comes out as 0.5. I'll grant the
-following:
+Note that the pdf of a continuous random variable is not $\prob{X = x}$. This
+may seem like a pedantic diversion, but I actually think it's important to
+avoid confusion. For a continuous random variable, $\prob{X = x}$ is zero. For
+example, say $X$ takes on values between 0 and 1 symmetrically, e.g., the
+probability that $X$ comes out between 0 and 0.5 is the same as between 0.5
+and 1. Say you're asking about the probability that $X$ comes out as 0.5. I'll
+grant the following:
 \begin{align*}
 \prob{0 \leq X \leq 1} &= 1 \\
-\prob{4.95 \leq X \leq 5.05} &= 0.1 \\
-\prob{4.995 \leq X \leq 5.005} &= 0.01 \\
+\prob{0.495 \leq X \leq 0.505} &= 0.1 \\
+\prob{0.4995 \leq X \leq 0.5005} &= 0.01 \\
+&\vdots
 \end{align*}
 and so on. We normally don't say that $\prob{X = 0.500\ldots} = 0$, since that
-makes it sound like it's not allowed for $X$ to take on 0.5. But it should be
-clear that, from any practical point of view, it doesn't make sense to write
-things like $\prob{X = 0.5}$.
+makes it sound like it's impossible for $X$ to take on the value $0.5$.
+Nevertheless, it should be clear that, from any practical point of view, it
+doesn't make sense to write things like $\prob{X = 0.5}$. It does make sense
+to write $f_X(0.5)$; it does not make sense to write $\prob{X =
+0.5}$.\footnote{Those dissatisfied with this explanation will need to learn
+some measure theory.}
 
-So whereas the pmf gives actually probabilities, for continuous random
-variables we need something else. The solution is the \emph{probability
-distribution function} (or pdf), which, when integrated, gives probabilities.
-The pdf is also written as $f_X$, and it's the derivative of the cdf:
-\begin{equation}
-f_X(x) \defeq \frac{d}{dx} F_X(x).
-\end{equation}
-The other name for the pdf is the probability \emph{density} function, which I
-actually like a little better, because it emphasizes that the pdf is something
-that, when integrated, gives probabilities:
+The word ``density'' in probability density function emphasizes that the pdf,
+when integrated, gives probabilities:
 \begin{equation}\label{eq:integrated_pdf}
 \int_{x_0}^{x_1} f_X(x') \,dx' = F_X(x_1) - F_X(x_0) = \prob{x_0 < X \leq x_1}
 \end{equation}
@@ -185,17 +168,23 @@ that is, that all the probability must be somewhere, and
 \end{equation}
 
 These definitions I've given are simple ones, and they need to be refined to
-deal with more complicated functions.\footnote{For example, if the cdf has
-discontinuities, then you need to be more careful with the limits on the
-integrals. That's why there's one ``$<$'' and one ``$\leq$'' in \eqref{eq:integrated_pdf}.}
+deal with more complicated functions. For example, if the cdf has
+discontinuities, you need careful with the limits on the integrals.
 
 \subsection{Known distributions}
 
-In yet more notation, we use a tilde to denote that a random variable
-``follows'' a certain distribution, that is, that it has a pdf and cdf that
-we've already heard of. The familiar example is the normal distribution, which
-is so common that we write it with just one letter, so that $X \sim
-\mathcal{N}(\mu, \sigma^2)$ is a shorthand for
+If a random variable $X$ has the same cdf as another random variable $Y$ (and
+therefore also the same pdf), we say that $X$ is ``distributed like'' $Y$:
+$$
+X \sim Y.
+$$
+This notation is used to refer to well-documented distributions. For example,
+you might say that $X$ is distributed like a normal random variable with mean
+$\mu$ and variance $\sigma^2$:
+$$
+X \sim \mathcal{N}(x; \mu, \sigma^2),
+$$
+which is a shorthand for saying
 \begin{equation*}
 f_X(x) = f_\mathcal{N}(x; \mu, \sigma^2) \defeq
   \frac{1}{\sqrt{2\pi\sigma^2}} \exp \left\{-\frac{1}{2} \frac{(x-\mu)^2}{\sigma^2} \right\}.
