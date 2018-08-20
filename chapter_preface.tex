@@ -1,0 +1,107 @@
+%!TEX root=main.tex
+
+\chapter{Preface}
+
+\section*{Who this book is for}
+
+As a graduate student and postdoc, I found that many graduate
+students and postdocs, especially in the life sciences, have a fair amount of quantitative
+training, often including statistics, and can hack together
+fairly sensible quantitative methods that answer their scientific questions. I
+found, though, that there was often a steep drop-off when it came time to apply
+statistical rigor to these hacky methods. This is my
+own story too.
+
+This book is for people who are experienced quantitative and scientific
+thinkers, have decent algebra, and who want to learn
+about how to use statistical thinking to improve their scientific thinking.
+A rusty memory of college-level statistics might make it more interesting
+but is not required.
+
+\section*{What this book is for}
+
+As I tried to fill gaps in my statistics knowedge, I found that books about
+statistics tended to come in two varities: utterly simplistic and
+overwhelmingly complex. It felt like trying to find books to read as an
+adult second-language leanrer.
+Grown-up books have interesting topics but overwhelming grammar and vocabulary,
+while children's books have accessible language but childish topics.
+
+I wanted this book to be interesting for scientific ``adults'' without having
+an overwhelming grammar or vocabulary. I introduce a lot of math in the first
+few sections, but it assumes very little mathematical training and focuses on
+the building blocks of the practical discussions later on. There are very few
+proofs in this book.
+
+\section*{What this book is not}
+
+This \emph{is} a book for people who want
+to use rigorous statistics to do science, and maybe even to develop some
+new statistical methods. It is \emph{not} a book for people who want to
+push the boundaries of what statisticians think are interesting mathematical
+problems.
+
+This is not a cookbook that tells you what statistical test to run on your
+data. Instead, I try to give you tools to reason about why to do a test and
+how to formulate one. Rather than telling you which steps to generate a
+$p$-value in a specific case, I show how $p$-values come about in general and
+how to derive them for specific cases.
+
+I did not fill this book with scientific examples, because I find that it's
+very easy to think that your particular scientific question is very
+interesting, and that the statistics that motivate are interesting, but that
+someone \emph{else's} scientific questions or statistical problems are entirely
+uninteresting. I try to keep it general so you can imagine you are the hero of the story.
+
+\section*{What you should be able to do after reading this book}
+
+I want you to be able to articulate you own statistical tests, modify
+and critique existing methodologies, and develop a healthy skepticism of the
+idea of statistical inference in general.
+
+\section*{What else should I read}
+
+My principal sources of motivation for this book were Allen Downey's
+\textit{Think Stats} and \textit{Think Bayes}. Stephen Stigler's
+\textit{History of Statistics} helped me understand many of the unspoken
+assumptions present in contemporary statistical thinking. Miran Lipva\v{c}a's
+\textit{Learn You a Haskell for Great Good} helped me clarify the language
+around the mathematical objects that come up. The first four chapters of
+\textit{Probability and Random Processes} by Grimmett and Stirzaker are an
+outstanding introduction to probability.
+
+\section*{Notes on notation}
+
+\begin{table}
+\centering
+\begin{tabular}{ll}
+\toprule
+Type of object & Notation \\
+\midrule
+function that maps $A$ to $B$ & $f : A \to B$ \\
+function of a number $x$ with parameters $\theta$ & $f(x; \theta)$ \\
+function of non-number input $X$ & $f[X]$ \\
+probability function & $\mathbb{P} : \Omega \to [0, 1]$ \\
+probability & $p \in [0, 1]$ \\
+discrete cumulative distribution function for random variable $X$ & $F_X : \mathbb{Z} \to [0, 1]$ \\
+continuous cumulative distribution function for random variable $X$ & $F_X : \mathbb{R} \to [0, 1]$ \\
+probability mass function for random variable $X$ & $f_X : \mathbb{Z} \to [0, 1]$ \\
+probability distribution function for random variable $X$ & $f_X : \mathbb{R} \to [0, 1]$ \\
+random variable $X$ is distributed like $Y$ & $X \sim Y$ \\
+estimator of statistic $X$ & $\hat{X}$ \\
+variance of a random variable $X$ & $\mathbb{V}[X]$, $\sigma_{X}^2$ \\
+expected value of a random variable $X$ & $\mathbb{E}[X]$, $\mu_X$ \\
+estimator for mean of iid random variables $X_i$ & $\hat{\mathbb{E}}[X]$, $\hat{\mu}_X$, $\overline{X}$ \\
+estimator for variance of iid random variables $X_i$ & $\hat{\mathbb{V}}[X]$, $\hat{\sigma}_X^2$ \\
+observed mean of data & $\overline{x}$ \\
+observed variance of data & $s^2$ \\
+\bottomrule
+\end{tabular}
+\caption{Notation used in this book.}
+\label{tab:notation}
+\end{table}
+
+Notation is important, especially in probability and statistics, where related
+but crucially different things can be represented by similar pieces of
+notation. I present each piece of notation as it arises, but I put them here
+also for reference (Table~\ref{tab:notation}).
