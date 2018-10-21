@@ -332,6 +332,12 @@ estimation (BLUE) of the slope and intercept. In ``best linear'', ``best'' we ju
 defined and ``linear'' means that the estimator is a linear combination of the
 observed data points.
 
+There is a theoretical lower limit to the variance of estimators called the
+\emph{Cram\'{e}r-Rao bound}. Rather than making a comparison, saying that one
+estimator is more efficient than another, it's typical for an estimator to be
+described as simply and superlatively ``efficient'', meaning that it hits this
+lower variance limit and is therefore maximully efficient.
+
 \subsection{Maximum likelihood estimators}
 
 In the simple toy example of the German tank problem, it was pretty easy to
@@ -394,9 +400,9 @@ likelihood, then, is just the value of the maximum observed data point, which
 was the consistent, unbiased estimator we guessed above.
 
 In fact, all maximum likelihood estimators are consistent, and they are
-efficient in the limit of large sample size. (It can be that other estimators
-are more efficient that the ML estimator for a finite sample size.) Maximum
-likelihood estimators are not guaranteed to be unbiased.
+maximally efficient in the limit of large sample size. (It can be that other
+estimators are more efficient that the ML estimator for a finite sample size.)
+Maximum likelihood estimators are not guaranteed to be unbiased.
 
 Because ML estimators have these nice statistical properties, and because it's
 relatively to articulate and compute them, they are used very often.
