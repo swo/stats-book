@@ -2,42 +2,34 @@
 
 \chapter{Probability theory}
 
-Probability is an entire branch of mathematics. To understand statistics, it's
-critical to have a grasp of basic concepts in probability. Indeed, inferential
-statistics was originally called ``inverse probability''. ``Probability''
-meant the study of going from rules to outcomes. For example, given the rules of
-poker, how likely am I to draw a royal flush? ``Inverse probability''
-meant going from outcomes to rules. Given the large number of times
-you've drawn royal flushes, can I conclude that you are a cheater?
-
-Data follow the rules of probability, so to analyze data, we need to
-understand probability theory. Probability theory is all about a thing called
-\emph{probability}. Before going any further, let's examine this concept.
+To understand statistics, it's critical to have a grasp of basic concepts in
+probability, which is an entire branch of mathematics. The central concept in
+probability theory is, unsurprisingly, \emph{probability}.
 
 \section{The definition of probability}
 
 We talk about and reason about probability every day, mostly for matters of
-prediction. Given the weather report, it it worth it for me to carry an
-umbrella? Given the results
-of my experiment, how likely is it that my hypothesis was correct?
+prediction. Given the weather report, is it worth it for me to carry an
+umbrella? Given the results of my experiment, how likely is it that my
+hypothesis was correct?
 
-We intuitively think about probability in a mostly
-\emph{Bayesian} way. Statistics, when not prefaced by the word
-``Bayesian'', refers to a different philosophical branch call
-\emph{frequentist} statistics. These philosophical distinctions have
-important practical implications.
+We intuitively think about probability in a mostly \emph{Bayesian} way.
+Statistics, when not prefaced by the word ``Bayesian'', refers to a different
+philosophical branch call \emph{frequentist} statistics. The philosophical
+distinction between Bayesian probability and frequentist probability have
+important practical implications, so it's important to understand the
+difference.
 
 In Bayesian statistics, \emph{probability} refers to a difficult-to-articulate
-sense of confidence about a future event. If I say the
-probability of an event is 1\%, it means, in a practical sense, that I'm willing to bet a lot of money it
-won't happen. Philosophically, it's hard to say what ``1\%
-confident'' means. Even if it's philosophically challenging, I think this is
-how we all think about probability, so I won't go on about it.\footnote{\textbf{swo: sunrise problem?}}
+sense of confidence about an unknown thing, often a future event. If I say the
+probability of an event is 1\%, it means, in a practical sense, that I'm
+willing to bet a fair amount of money it won't happen. Philosophically, it's
+hard to say what ``1\% confident'' means, but the concept should be very
+intuitive.
 
 A more mathematically and philosophically simple way to think about
-probability is the \emph{frequentist} approach. In this framework, probabilities are all
-proportions, or ``frequencies''.
-A 50\% chance of
+probability is the \emph{frequentist} approach. In this framework,
+probabilities are all proportions, or ``frequencies''. A 50\% chance of
 flipping a coin and seeing heads means that, as you flip the coin more and
 more times, the proportion of flips that come up heads will approach 50\%.
 
@@ -45,10 +37,9 @@ The problem with the frequentist approach is that probabilities can only be
 assigned to events that can be repeated. It therefore doesn't make sense to
 ask about the probability that your hypothesis is correct, since your
 hypothesis is either correct or incorrect. It's like asking the probability
-that it rained yesterday. It either did or it didn't.
-We live in just one universe, so you can't
-ask, in a frequentist scheme, about the probability of a state of nature, like
-whether your hypothesis is correct.
+that it rained yesterday. It either did or it didn't. We live in just one
+universe, so you can't ask, in a frequentist scheme, about the probability of
+a state of nature, like whether your hypothesis is correct.
 
 This is deeply dissatifying: the whole point of statistical inference is to
 figure out what's going on in the world. But the Bayesian approach, which does
@@ -72,18 +63,20 @@ lifting, so I'll aim to use definitions that will give us a lot of practical
 benefit, albeit at the cost of creating a mathematically incomplete theory.
 
 To start, we define \emph{outcomes} or \emph{sample space} as the set of all
-things that could happen when we run some trial. For example, if a flip a
-coin, it will land heads or tails. The collection of all possible combinations
-of outcomes are the possible \emph{events}.\footnote{This is where the
-mathematical incompleteness comes in. If the outcomes are finite (i.e.,
-discrete, like in our cards example), it's straightforward to enumerate the
-events as the finite set of all possible subsets of the outcomes. If the
-outcomes are continuous, things get tricky. You can't just ``count'' an
-infinite number of events, so you need to be careful about how you define
-``all possible combinations''. The right way to do things is with a
-\emph{$\sigma$-algebra}.} For flipping a coin, the events include the
-individual outcomes (heads or tails), the combinations of outcomes (either
-heads or tails), and no outcome (didn't flip anything).
+things that could happen when we run some trial. How you define ``set of all
+things'' is a complicated question. In the discussion that follows, I'll use
+simple, abstract events. For example, if you flip a coin, we'll say it lands
+heads or tails. The collection of all possible combinations of outcomes are
+the possible \emph{events}.\footnote{This is where the mathematical
+incompleteness comes in. If the outcomes are finite (i.e., discrete, like in
+our cards example), it's straightforward to enumerate the events as the finite
+set of all possible subsets of the outcomes. If the outcomes are continuous,
+things get tricky. You can't just ``count'' an infinite number of events, so
+you need to be careful about how you define ``all possible combinations''. The
+right way to do things is with a \emph{$\sigma$-algebra}.} For flipping a
+coin, the events include the individual outcomes (heads or tails), the
+combinations of outcomes (either heads or tails), and no outcome (didn't flip
+anything).
 
 \begin{table}
 \centering
@@ -111,7 +104,7 @@ for mathematical reasons, nothing-happened is an event.
 
 Each event is associated with a probability via a function that has no real
 name except ``probability''. It is a basic axiom of probability theory that
-probabilities always within zero and one. The probability function, written
+probabilities are always between zero and one. The probability function, written
 here as $\mathbb{P}$, links each event $\omega$ in the space $\Omega$ of
 events with a probability $p$:
 \begin{gather*}

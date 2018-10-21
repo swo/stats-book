@@ -6,19 +6,19 @@
 
 As a graduate student and postdoc, I found that many graduate
 students and postdocs, especially in the life sciences, have a fair amount of quantitative
-training, often including statistics, and can hack together
+training, often including statistics. They can hack together
 fairly sensible quantitative methods that answer their scientific questions. I
-found, though, that there was often a steep drop-off when it came time to apply
+found, however, that there was often a steep drop-off when it came time to apply
 statistical rigor to these hacky methods. This is my
 own story too.
 
 This book is for people who are experienced quantitative and scientific
-thinkers, have decent algebra, and who want to learn
+thinkers, have decent algebra skills, and who want to learn
 about how to use statistical thinking to improve their scientific thinking.
 A rusty memory of college-level statistics might make it more interesting
 but is not required.
 
-\section*{What this book is for}
+\section*{Who this book is for}
 
 As I tried to fill gaps in my statistics knowedge, I found that books about
 statistics tended to come in two varities: utterly simplistic and
@@ -31,27 +31,24 @@ I wanted this book to be interesting for scientific ``adults'' without having
 an overwhelming grammar or vocabulary. I introduce a lot of math in the first
 few sections, but it assumes very little mathematical training and focuses on
 the building blocks of the practical discussions later on. There are very few
-proofs in this book.
+proofs.
 
 \section*{What this book is not}
 
-This \emph{is} a book for people who want
-to use rigorous statistics to do science, and maybe even to develop some
-new statistical methods. It is \emph{not} a book for people who want to
-push the boundaries of what statisticians think are interesting mathematical
-problems.
+This is not a book for people who want to push the boundaries of what
+statisticians think are interesting mathematical problems.
 
 This is not a cookbook that tells you what statistical test to run on your
-data. Instead, I try to give you tools to reason about why to do a test and
+data. I want to give you the ability to reason about why to do a test and
 how to formulate one. Rather than telling you which steps to generate a
 $p$-value in a specific case, I show how $p$-values come about in general and
 how to derive them for specific cases.
 
-I did not fill this book with scientific examples, because I find that it's
+I did not fill this book with scientific examples because I find that it's
 very easy to think that your particular scientific question is very
 interesting, and that the statistics that motivate are interesting, but that
-someone \emph{else's} scientific questions or statistical problems are entirely
-uninteresting. I try to keep it general so you can imagine you are the hero of the story.
+someone else's scientific questions or statistical problems are entirely
+uninteresting. I tried to keep it general so you can imagine you are the hero of the story.
 
 \section*{What you should be able to do after reading this book}
 
@@ -72,6 +69,11 @@ outstanding introduction to probability.
 
 \section*{Notes on notation}
 
+Notation is important, especially in probability and statistics, where related
+but crucially different things can be represented by similar pieces of
+notation. I present each piece of notation as it arises, but I put them here
+also for reference (Table~\ref{tab:notation}).
+
 \begin{table}
 \centering
 \begin{tabular}{ll}
@@ -80,7 +82,7 @@ Type of object & Notation \\
 \midrule
 function that maps $A$ to $B$ & $f : A \to B$ \\
 function of a number $x$ with parameters $\theta$ & $f(x; \theta)$ \\
-function of non-number input $X$ & $f[X]$ \\
+function of non-number thing $X$ & $f[X]$ \\
 probability function & $\mathbb{P} : \Omega \to [0, 1]$ \\
 probability & $p \in [0, 1]$ \\
 discrete cumulative distribution function for random variable $X$ & $F_X : \mathbb{Z} \to [0, 1]$ \\
@@ -100,8 +102,3 @@ observed variance of data & $s^2$ \\
 \caption{Notation used in this book.}
 \label{tab:notation}
 \end{table}
-
-Notation is important, especially in probability and statistics, where related
-but crucially different things can be represented by similar pieces of
-notation. I present each piece of notation as it arises, but I put them here
-also for reference (Table~\ref{tab:notation}).
