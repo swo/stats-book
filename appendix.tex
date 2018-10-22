@@ -1,0 +1,94 @@
+
+Before diving into that equation, note that the $X_i$ and $e{X}$ are
+random variables, and note that they are not independent: the value of
+$\overline{X}$ certainly depends on each of the $X_i$. So first let's imagine
+a simpler case, where we're in a universe where happen to know the expected
+value of the distribution we're trying to determine the variance of. To make
+the equations simpler to read, I'll use the standard notation $\mu \defeq
+\expect{X}$.\footnote{Do remember, however, that $\overline{X}$ is a random
+variable---a function of the data---while $\expect{X}$ is a function of the
+distribution, and therefore just a single matter-of-fact number.} In this
+case, having known expected value (``kEV''), our estimator will be a little
+simpler:
+\begin{equation}
+\hat{\mathbb{V}}_{X,\mathrm{kEV}} = \frac{1}{N} \sum_i ( X_i - \mu )^2
+\end{equation}
+
+\subsubsection{Bias in estimators of variance}
+
+The known-expected-value estimator is unbiased:
+\begin{align*}
+\expect{\hat{\mathbb{V}}_{X,\mathrm{kEV}}}
+  &= \expect{\frac{1}{N} \sum_i ( X_i - \mu )^2} \\
+  &= \frac{1}{N} \sum_i \expect{X_i^2 - 2\mu X_i + \mu^2} \\
+  &= \expect{X^2} - 2 \mu \expect{X} + \mu^2 \quad\text{(since $X_i$ are identic. distrib.)} \\
+  &= \expect{X^2} - \mu^2 \\
+  &= \var{X}. \quad\text{(since $\var{X} = \expect{X^2} - \expect{X}^2$)}
+\end{align*}
+So if we happen to know the true expected value $\mu$, then we can compute
+variance in the naive way, and it's exactly correct.
+
+Now we can use this result to pull a little mathematical trick. Even if we
+don't know $\mu$ and $\var{X}$, we do know they exist, so we can manipulate
+\eqref{eq:estimator-vx1} to make it easier to work with. Specifically, I'm
+going to write ``standardized''\footnote{You're probably used to seeing
+standardized \emph{normal} variables written this way, but note that I haven't
+assumed that the $X_i$ are normally distributed. This logic holds for any
+random variable that has a well-defined expected value and variance.}
+random variables:
+\begin{equation}
+Z_i = \frac{X_i - \mu}{\sqrt{\var{X}}} \implies X_i = \sqrt{\var{X}} Z_i + \mu
+\end{equation}
+It should be easy to see that $Z_i$ has expected value 0 and variance $\expect{Z_i^2} = 1$,
+and $\overline{Z}$ has expected value
+0 and variance $\expect{\overline{Z}^2} = 1/n$. Now I'll rewrite \eqref{eq:estimator-vx1}
+so it has $Z_i$ instead of $X_i$:
+\begin{align*}
+\hat{\mathbb{V}}_X
+  &= \frac{1}{n} \sum_i \left( X_i - \overline{X} \right)^2 \\
+  &= \frac{1}{n} \sum_i \left( \left[\sqrt{\var{X}} Z_i + \mu\right] - \left[ \sqrt{\var{X}} \overline{Z} + \mu \right] \right)^2 \\
+  &= \frac{\var{X}}{n} \sum_i \left( Z_i - \overline{Z} \right)^2
+\end{align*}
+Analogous to how we showed that $\var{X} = \expect{X^2} - \expect{X}^2$, some
+algebra shows that
+\begin{equation}
+\sum_i \left(Z_i - \overline{Z}\right)^2 = \sum_i Z_i^2 - n \overline{Z}^2.
+\end{equation}
+Thus, the expected value of this estimator is
+\begin{align*}
+\expect{\hat{\mathbb{V}}_X}
+  &= \expect{\frac{\var{X}}{n} \sum_i \left( Z_i - \overline{Z} \right)^2} \\
+  &= \frac{\var{X}}{n} \expect{\sum_i Z_i^2 - n \overline{Z}^2} \\
+  &= \frac{\var{X}}{n} \left( \sum_i \expect{Z_i^2} - n \expect{\overline{Z}^2} \right)\\
+  &= \frac{\var{X}}{n} (n - 1) \quad\text{(using the little identities)} \\
+  &= \frac{n-1}{n} \var{X}.
+\end{align*}
+Note that the expected value of our estimator is not equal to the thing we're
+trying to estimate, so this estimator is biased! It systematically \emph{underestimate}
+the true variance. Interestingly, like when we tried to cook up
+an estimator for the upper limit of a uniform distribution, we ended up with
+something that was off by a multiplicative factor. The solution is to make a new
+estimator that has the inverse, cancelling factor out front:
+\begin{equation}
+\hat{\mathbb{V}}_{X,\mathrm{unbiased}}
+  = \frac{n}{n-1} \times \frac{1}{n} \sum_i \left(X_i - \overline{X}\right)^2
+  = \frac{1}{n-1} \sum_i \left(X_i - \overline{X}\right)^2.
+\end{equation}
+Using $n-1$ instead of $n$ in the denominator is known as Bessel's
+correction.\footnote{Gauss was using the correction before Bessel discovered
+it, as early as 1823. I hope the late date, 1823, impresses upon you how
+subtle this reasoning must be. The ancient Greeks were using the arithmetic
+mean, but an unbiased estimator for standard deviation took thousands of
+years.}
+
+This equation may look familiar as the ``sample variance'', typically written
+\begin{equation}
+s^2 = \frac{1}{n-1} \sum_i \left(x_i - \overline{x}\right)^2.
+\end{equation}
+I always wondered why, in Stats 101, I was told that the mean had $n$ in the
+denominator but variance had $n-1$.\footnote{The traditional answer says that it's
+about ``degrees of freedom'': you're ``using up'' one ``degree of freedom''
+when computing $\overline{x}$, so you only have $n-1$ to compute $s^2$.
+``Degrees of freedom'' is an ill-defined concept that I don't think it useful.
+Explaining one mystery in terms of another mystery is not good pedagogy!}
+This is why! The point is to make an unbiased estimator.

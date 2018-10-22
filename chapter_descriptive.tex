@@ -140,6 +140,27 @@ case of the normal distribution. This was a momentous thing when it was first
 discovered because it explained, in part, why the arithmetic mean seemed like
 such a good way to estimate the ``center'' of a distribution.
 
+\section{Median and mode: alternatives to the expected value}
+
+The arithmetic mean is only one measure of central position. Two other
+important ones are the \emph{median} and \emph{mode}.
+
+In probability theory, the median is the value that cuts the probability
+density function in half. In other words, it is the value at which the
+cumulative distribution function equals $\tfrac{1}{2}$. In statistical
+analysis, the median is the ``middle'' value of the data, the one half-way
+down the sorted list of values.
+
+The median is an appealing measure of central position because it is robust to
+outliers. If the biggest number among your collected data were multiplied by
+1,000, the mean of the data would probably change a lot, but the median would
+change not at all (assuming you have at least 3 data points).
+
+In probability theory, the mode is the value that maximizes the probability
+density function (or probability mass function). In statistical analysis, it
+is the most frequent value. The mode usually arises in statistical analysis
+only when examining discrete data.
+
 \section{Sample variance as an estimator of variance}
 
 You may have been disappointed by the equation in the last section where I
@@ -196,23 +217,104 @@ subtle this reasoning about variance and bias must be. The ancient Greeks knew
 about the arithmetic mean, an unbiased estimator of expected value, but it took
 thousands of years for an unbiased estimator for variance to arise.
 
-\section{Median and mode: alternatives to the expected value}
+\section{Confidence intervals}
 
-The arithmetic mean is only one measure of central position. Two other
-important ones are the \emph{median} and \emph{mode}.
+\subsection{Meaning and interpretation}
 
-In probability theory, the median is the value that cuts the probability
-density function in half. In other words, it is the value at which the
-cumulative distribution function equals $\tfrac{1}{2}$. In statistical
-analysis, the median is the ``middle'' value of the data, the one half-way
-down the sorted list of values.
+So far we've shown how to make \emph{point estimates}, that is, guesses for
+population parameters that are just a single number. This presents a problem,
+because statistics and probability are all about uncertainty, and we know that
+the point estimate we make for, say, $B$ in the German tank problem, even if
+consistent and unbiased. We said that we prefer efficient estimators, but we
+haven't shown a way of expressing the variance of the estimator. The answer in
+the frequentist framework is confidence intervals.
 
-The median is an appealing measure of central position because it is robust to
-outliers. If the biggest number among your collected data were multiplied by
-1,000, the mean of the data would probably change a lot, but the median would
-change not at all (assuming you have at least 3 data points).
+Given a population parameter $\theta$ and an estimator $\hat{\theta}$ of that
+parameter, a \emph{confidence interval} at level $1 - \alpha$ is a pair of
+random variables $\hat{\theta}_-$ and $\hat{\theta}_+$ that, for any set of
+parameters, will include the true value $\theta$ with probability at least
+$1-\alpha$:
+\begin{equation}
+  \prob{\hat{\theta}_- \leq \theta \leq \hat{\theta}_+} \geq 1 - \alpha.
+\end{equation}
 
-In probability theory, the mode is the value that maximizes the probability
-density function (or probability mass function). In statistical analysis, it
-is the most frequent value. The mode usually arises in statistical analysis
-only when examining discrete data.
+Take careful note of this definition. Confidence intervals are a method. They
+take the data as input and give numbers as output. They are designed so that,
+if an experiment produces data that exactly follows the abstract mathematical
+model used to derive the intervals were repeated many times, then the
+intervals would include the true value in some proportion of cases. The
+interval cannot tell you about your particular case. Either the true $\theta$
+is inside your interval or it is not. Confidence intervals cannot tell you
+whether you're in the 95\% ``including'' case or the 5\% ``not including''
+case.
+
+That being said, most people interpret confidence intervals as if the were
+\emph{credible intervals}, which is the analogous concept from Bayesian
+statistics. A 95\% credible interval means that there is a 95\% posterior
+probability that the parameter of interest falls in that interval. You can
+view this conflation of confidence intervals and credible intervals as a
+terrible intellectual disaster, or you can shrug and say that most of the time
+it seems like the two end up giving similar answers so it's not worth worrying
+about. I'm not sure which one is right.
+
+Confidence intervals were first developed in 1937 and were enormously
+controversial when first introduced to the statistics community. Although they
+are now ubiquitous, I hope the relatively late date impresses on you that our
+philosophical understanding of confidence intervals and how to correctly
+interpret them is still not fully mature.
+
+\subsection{Constructing intervals}
+
+To show how confidence intervals are constructed, let's consider the German
+tank problem. We could set $\hat{B}_- = \max_i X_i$. This value is guaranteed
+to be below the maximum $B$, so we now only need to consider the upper
+confidence limit. We might guess that this upper limit is some multiple
+$\delta > 1$ of the lower limit:
+\begin{equation}
+  \hat{B}_+ = \delta \times \max_i X_i = \delta \, \hat{B}_-
+\end{equation}
+We want the probability that $\hat{B}_+$ exceeds $B$ to be $1 - \alpha$:
+\begin{equation}
+  1 - \alpha = \prob{\hat{B}_+ \geq B}
+\end{equation}
+Some algebraic manipulation shows that this is equivalent to
+\begin{equation}
+  \alpha = \prob{\hat{B}_- \leq B / \delta}
+\end{equation}
+The right-hand side is just the cumulative distribution function for
+$\hat{B}_-$, the maximum of the data, which we worked out before to be
+$(x/B)^n$:
+\begin{equation}
+  \alpha = \left( \frac{B / \delta}{B} \right)^n \implies \delta = \frac{1}{\alpha^{1/n}}.
+\end{equation}
+
+This definition has two properties we would expect. For larger $\alpha$,
+$\delta$ shrinks. This means that, for a a looser confidence interval, like
+going from a 99\% interval at $\alpha = 0.01$ to a 90\% interval with $\alpha
+= 0.1$, then we can specify a smaller range. For larger $n$, $\delta$ also
+shrinks. If we have more data, then the confidence interval shrinks.
+
+For example, for a 90\% ($\alpha = 0.1$) confidence interval in the case with
+$n=2$, when we roughly expect the observed data point to fall at $\tfrac{1}{3}
+B$ and $\tfrac{2}{3} B$, the unbiased estimator is $\tfrac{3}{2} m$. The
+confidence interval lower limit is $m$, and the upper limit is $0.1 ^{-1/2}
+\times \tfrac{3}{2} m \approx 4.7 m$.
+
+\subsection{Properties of confidence intervals}
+
+Just as we value consistency, unbiasedness, and efficiency in estimators, so
+there are properties that we value in confidence intervals. The most important property is
+\emph{validity}, which means that the probability
+$\prob{\hat{\theta}_- \leq \theta \leq \hat{\theta}_+}$ exceeds $1-\alpha$ by
+as little as possible. Consider, for example, the example of flipping a
+weighted coin, which has some probability $0 < p < 1$ of landing heads. I
+could set my confidence intervals as $\hat{p}_- = 0$ and $\hat{p}_+ = 1$.
+These intervals are guaranteed to be right, but they're maximally
+conservative. We criticize this interval by saying that it is not ``valid'':
+the 95\% confidence interval should be smaller than the 100\% confidence
+interval.
+
+The confidence interval we computed for the German tank problem is valid
+because we solved the equation $\prob{\hat{B}_+ \leq B} = 1 - \alpha$. In
+other words, we made sure that $\hat{B}_+$ was as small as it could be to just
+reach the $1 - \alpha$ level.

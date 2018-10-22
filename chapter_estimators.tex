@@ -397,12 +397,20 @@ The first case means that we can't overshoot at all, so $\hat{B}_\text{ML}$
 cannot be smaller than the maximum data point. The second case shows that,
 as $B'$ is increased, the likelihood of the observed data decreases. The maximum
 likelihood, then, is just the value of the maximum observed data point, which
-was the consistent, unbiased estimator we guessed above.
+was the consistent estimator we guessed above.
 
 In fact, all maximum likelihood estimators are consistent, and they are
 maximally efficient in the limit of large sample size. (It can be that other
 estimators are more efficient that the ML estimator for a finite sample size.)
-Maximum likelihood estimators are not guaranteed to be unbiased.
+Maximum likelihood estimators are not guaranteed to be unbiased. Indeed, in this
+example, the maximum of the data is a biased estimator.
 
-Because ML estimators have these nice statistical properties, and because it's
-relatively to articulate and compute them, they are used very often.
+Although ML estimators are not perfect, it's nice that they are consistent and
+have some guarantees on their efficiency. It's also really nice that they
+arise from an algorithmic approach. If you can write down the likelihood
+function, you can maximize it analytically, that is, exactly, by hand, like we
+did in this example. If you can't write down the likelihood function but you
+can sample from the distribution and compute the likelihood for every sample
+you draw, then you can still do a maximum likelihood estimate. The fact that
+you can take this algorithmic, computational approach means that maximum
+likelihood estimation is used a lot in complex models, like we'll see later.
