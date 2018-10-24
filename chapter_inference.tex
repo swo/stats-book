@@ -38,6 +38,27 @@ is a better estimator than weighting by just \(n_i\)): \[
 s_p^2 = \frac{(n_1 - 1) s_1^2 + (n_2 - 1) s_2^2}{n_1 + n_2 - 2}.
 \]
 
+To see why this is, say that we're going to develop some pooled estimator
+$\hat{\mathbb{V}}_{X,p}$, which is a constant times the sum of squares:
+\begin{align}
+\hat{\mathbb{V}}_{X,p} &= C \left[ \sum_i (X_{1i} - \overline{X}_1)^2 + \ldots \right] \\
+  &= C \left[ \sigma^2 \sum_i (Z_{1i} - \overline{Z}_1^2 ) + \ldots \right] \\
+  &= C \sigma^2 \left[ \sum_i Z_{1i}^2 - n \overline{Z}_1^2 + \ldots \right] \\
+\expect{\hat{\mathbb{V}}_{X,p}} &= C \sigma^2 \left[ \sum_i \expect{Z_{1i}^2} - n \expect{\overline{Z}_1^2} + \ldots \right] \\
+  &= C \sigma^2 \left( n_1 - 1 + n_2 - 1 \right) \\
+\end{align}
+which implies that
+\begin{equation}
+C = \frac{1}{n_1 + n_2 - 2}.
+\end{equation}
+
+To see the last bit, use this identity:
+\begin{align}
+\sum_i (Z_i - \overline{Z})^2 &= \sum_i (Z_i^2 - 2 Z_i \overline{Z} + \overline{Z}^2) \\
+  &= \sum_i Z_i^2 - 2 n \overline{Z} \overline{Z} + n \overline{Z}^2 \\
+  &= \sum_i Z_i^2 - n \overline{Z}^2.
+\end{align}
+
 The thing we're observing is the difference between the mean of \(n_1\)
 samples from a (potentially ficitious) variable \(X_1\) and \(n_2\) from
 \(X_2\): \[
