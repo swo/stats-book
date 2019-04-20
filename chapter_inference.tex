@@ -1,409 +1,120 @@
 %!TEX root=main.tex
 
-\chapter{Inferential statistics}
+\chapter{A conceptual introduction to inference}
 
-\section{The philosophy of statistical inference}
+The typical approach in statistics is to teach frequentist inference ---things like $t$-tests--- before Bayesian statistics. The reason is that Bayesian statistics is mathematically more complex, it was developed after frequentist statistics, and is more confusing. However, the reason Bayesian statistics is confusing is because inference is confusing, and pretending that it is not leads to some critical misunderstandings about statistical inference.
 
-- inference vs. decision-making under uncertainty
-- the p-value debate
-- note that the math is still the same as before, we still thinking about properties of estimators
-- inference as one of the most widely-spread notions in science
+Rather than hide the fact that inference is confusing, I introduce the concept of inference in this chapter, contrasting frequentist and Bayesian inference, and showing very little math.
 
-\section{Parametric inference}
+Having dealt with inference's limitations, I will go on to the nuts and bolts of ``doing'' statistical inference. But read this chapter first, so you don't hold on to some critical misconceptions.
 
-- z-test
-- t-test
-- Wilk's theorem? and likelihood-ratio tests
-- F-tests in general, variance. Then go to ANOVA
+\section{Inference is philosophically confusing}
 
-\section{Non-parametric inference}
+\emph{Inference} means taking some concrete cases and making a broader
+conclusion. Inference is always contrasted with deduction, which does the
+opposite, reasoning from broad rules to particular circumstances. The classic
+example of deduction is: all humans are mortal, Socrates is human, therefore
+Socrates is mortal. We reason from a general rule about mortality to
+a particular case of Socrates's mortality.
 
-- Kolmogorov-Smirnov
+Inference goes from particular to general. For most of humanity's history, we
+did this without worrying. Plato felt confident asserting that all humans are
+mortal because he had never heard a counterexample: because every human he
+observed or had heard about was mortal, he reasoned that \emph{every} human ---every one who ever lived and every one which will live--- is mortal.
 
-\section{$t$-test}
+Thousands of years after Plato, the philosopher David Hume questioned this kind of logic. He said, ``Sure, every human \emph{so far} has been mortal. But that's not proof positive that \emph{no} human will ever be immortal.'' We today are very comfortable to say that ``correlation does not prove causation'', but Hume took that logic to its extreme: if correlation does not prove causation, then seeing that every single one of billions of human who lived is mortal does not prove that the next human is guaranteed to be mortal. If we can't even prove that humans are mortal, then how do we conclude anything?\footnote{This argument is usually couched as the ``sunrise problem'': given that the sun has risen every day, what's the probability it will rise tomorrow? Is that probability \emph{exactly} 1?}
 
-\subsection{Equal variance}\label{equal-variance}
+This may seem abstract, but I want to point out that inference is philosophically confusing so that you will not be surprised to hear that inferential statistics is confusing!
 
-The (old school) \emph{t}-test is two sample, assuming equal variances.
-We're interested in the difference in the means between the two
-populations.
+\section{Inferential statistics is confusing}
 
-The null hypothesis is that we're drawing \(n_1 + n_2\) samples from a
-population that has this equal variance, and that the labels on the two
-``populations'' are just fictitious.
+As I noted in chapter \ref{chapter:probability}, there are two ways to define
+``probability'', \emph{Bayesian} and \emph{frequentist}. So far, this book has
+all been about frequentist statistics, and I will continue in that vein in this
+chapter, even though frequentist statistics's primary weakness is in inference!
 
-Our estimator \(s_p^2\) for the pooled variance is just the average of
-the variances of the two ``populations'', weighted by \(n_i - 1\) (which
-is a better estimator than weighting by just \(n_i\)): \[
-s_p^2 = \frac{(n_1 - 1) s_1^2 + (n_2 - 1) s_2^2}{n_1 + n_2 - 2}.
-\]
+To understand why, recall that, in frequentist statistics, probability is
+a \emph{proportion} (that is, a frequency): as the number of identical
+replicates of an experiment is increased to infinity, the proportion of those
+experiments that have some particular result will approach a proportion, which
+is the probability. If I flip a fair coin many times, the proportion of times
+it will land heads is $\tfrac{1}{2}$, so the probability of heads is
+$\tfrac{1}{2}$.
 
-To see why this is, say that we're going to develop some pooled estimator
-$\hat{\mathbb{V}}_{X,p}$, which is a constant times the sum of squares:
-\begin{align}
-\hat{\mathbb{V}}_{X,p} &= C \left[ \sum_i (X_{1i} - \overline{X}_1)^2 + \ldots \right] \\
-  &= C \left[ \sigma^2 \sum_i (Z_{1i} - \overline{Z}_1^2 ) + \ldots \right] \\
-  &= C \sigma^2 \left[ \sum_i Z_{1i}^2 - n \overline{Z}_1^2 + \ldots \right] \\
-\expect{\hat{\mathbb{V}}_{X,p}} &= C \sigma^2 \left[ \sum_i \expect{Z_{1i}^2} - n \expect{\overline{Z}_1^2} + \ldots \right] \\
-  &= C \sigma^2 \left( n_1 - 1 + n_2 - 1 \right) \\
-\end{align}
-which implies that
+The difficulty of using frequentist statistics for inference is that the whole
+point of inference is to draw a conclusion about the one, single world we are
+living in. Are humans mortal? This is a question to which we cannot assign
+a probability: either humans are mortal or not. It doesn't make sense to run
+``replicate universes'' in which humans may end up as mortal or not. We live in
+this universe, where humans are one or the other, and we want to know about
+what's happening in this universe, so the frequentist probability that humans
+are mortal is 1 if they are mortal and 0 if they are not mortal.\footnote{If
+this sounds stupid, consider this question: what is the probability that
+Socrates is mortal? Well, Socrates is dead, so of course he was mortal:
+probability equals one. The tough thing to understand is that, for frequentist
+statistics, the question ``What's the probability that my hypothesis is
+correct?'' sounds as bizarre as the question ``What's the probability that
+Socrates is mortal?''}
+
+This creates a paradox. I want to know what my data suggest about my hypothesis. Given this data, what's the probability that my hypothesis is correct? Frequentist statistics simply cannot assign a probability to the concept ``my hypothesis is correct'', except to make it 0 or 1. And yet we use frequentist statistics to do inferential reasoning all the time.
+
+\section{A null hypothesis is our imperfect approach to frequentist inference}
+
+We resolve the paradox of using frequentist statistics to make inferences about the character of the universe ---things which do not have frequencies--- using a trick called a \emph{null hypothesis}. Rather than asking, ``Given the data, what's the probability that my hypothesis is correct?'', we construct an uninteresting, null hypothesis and then reverse the question, ``Imagine this null hypothesis were true. Then what's the probability of getting data like mine?''
+
+For example, if I think you're cheating in a card game, the natural question is to ask, ``Given the cards I've seen you draw, what's the probability that you're cheating?'' The point of a null hypothesis is to flip it around: ``Imagine that you were playing fair. What's the probability you would be winning this month?''
+
+To emphasize how these two questions are different, I'll introduce the typical
+mathematical symbols for these concepts: $\theta$ is the event that the null
+hypothesis is correct, and $X$ is the event that I observed the data I did. Our
+natural inclination is to ask about $\prob{\theta | X}$. But in frequentist
+statistics, $\prob{\theta}$ is nonsense, either you are cheating or you are not.
+So we flip the question, instead asking about $\prob{X | \theta}$.
+
+\section{The null hypothesis approach cannot say whether your hypothesis is true}
+
+In the previous section, we replaced an induction question with a deduction question: $\prob{\theta | X}$ reasons from the specific $X$ to the general $\theta$, while $\prob{X | \theta}$ reasons from the general $\theta$ to the specific $X$. In other words, we replaced the hard, inference question (are you cheating? are all human mortal?) with the easier, deduction question: if you were not cheating, how likely are you to have gotten such lucky hands?
+
+It's tempting to equate $\prob{\theta | X}$ and $\prob{X | \theta}$. This is called the \emph{prosecutor's fallacy}. Imagine there was a crime, and the perpetrator left type AB negative blood at the scene. A person with type AB negative blood is accused of the crime. The prosecutor will say, ``Only 1\% of Americans have type AB negative blood. So if this person were innocent, there is only a 1\% chance that type AB negative blood would be found at the crime site. Thus, there is a 1\% chance that this person is innocent.''
+
+The prosecutor did a bait-and-switch. The null hypothesis $\theta$ is that the accused is innocent, and some random American committed the crime. The data $X$ is having found AB negative blood. The prosecutor accurately concluded that $\prob{X | \theta} = 1\%$. But then they fallaciously concluded that $\prob{\theta | X} = 1\%$.
+
+If it's not obvious that this argument is fallacious, consider the more general proposition that $\prob{A | B}$ equals $\prob{B | A}$. For example, if it is snowing, what's the probability that the temperature is below freezing? Basically 100\%. But if it is below freezing, what is the probability that it is snowing? Clearly much less than 100\%. But clearly the two concepts have something to do with one another, which we will examine in the next section.
+
+\section{Bayes's theorem is the only way to ask about whether your hypothesis is correct}
+
+The relation between $\prob{X | \theta}$ and $\prob{\theta | X}$ is laid out in \emph{Bayes's theorem}:
 \begin{equation}
-C = \frac{1}{n_1 + n_2 - 2}.
+\prob{\theta | X} = \frac{\prob{X | \theta} \prob{\theta}}{\prob{X}}.
 \end{equation}
+This result follows almost immediately from the definition of conditional probability, laid out in chapter \ref{chapter:probability}.
 
-To see the last bit, use this identity:
-\begin{align}
-\sum_i (Z_i - \overline{Z})^2 &= \sum_i (Z_i^2 - 2 Z_i \overline{Z} + \overline{Z}^2) \\
-  &= \sum_i Z_i^2 - 2 n \overline{Z} \overline{Z} + n \overline{Z}^2 \\
-  &= \sum_i Z_i^2 - n \overline{Z}^2.
-\end{align}
-
-The thing we're observing is the difference between the mean of \(n_1\)
-samples from a (potentially ficitious) variable \(X_1\) and \(n_2\) from
-\(X_2\): \[
-\overline{X}_1 - \overline{X}_2 = \frac{1}{n_1} \sum_{i=1}^{n_1} X_{1i} - \frac{1}{n_2} \sum_{i=1}^{n_2} X_{2i}.
-\] It would be nice if our statistic was distributed like
-\(\mathcal{N}(0, 1)\), so we compute the variance of this observation:
-\[
-\begin{aligned}
-\mathrm{Var}\left[ \overline{X}_1 - \overline{X}_2 \right]
-  &= \frac{1}{n_1^2} \sum_i \mathrm{Var}[X_1] + \frac{1}{n_2^2} \sum_i \mathrm{Var}[X_2] \\
-  &= \frac{1}{n_1^2} n_1 s_p^2 + \frac{1}{n_2^2} n_2 s_p^2 \\
-  &= \left( \frac{1}{n_1} + \frac{1}{n_2} \right) s_p^2.
-\end{aligned}
-\]
-
-So the statistic for this test is just the observation over its
-variance: \[
-t = \frac{\overline{X}_1 - \overline{X}_2}{s_p \sqrt{\frac{1}{n_1} + \frac{1}{n_2}}}.
-\]
-
-The confusing thing is that \(\overline{X}_1\), \(\overline{X}_2\), and
-\(s_p\) are all random variables. We know how to take the sum (or
-difference) of two random variables (i.e., how to figure out the
-distribution of the numerator), but it's not immediately obvious how to
-find the distribution of the whole thing, which has a different random
-variable in its denominator.
-
-\subsubsection{Computational approach}\label{computational-approach}
-
+Note that there are four terms in Bayes's theorem:
 \begin{itemize}
-\tightlist
-\item
-  Compute the observed \(t\) statistic
-\item
-  Compute the observed sizes, means, and standard deviations for the two
-  sample populations
-\item
-  Many times, generate two sets of random variates. One set of variates
-  is drawn from a normal distribution with the first sample mean and
-  variance.
-\item
-  For each iteration, compute the simulated \(t\) statistic.
-\item
-  The empirical \(p\)-value is the fraction (not true! need \(r+1/n+1\))
-  of simulated statistics that are greater than the observed statistic.
+\item $\prob{\theta | X}$: Given the data, what's the probability that hypothesis is true? This is what the court is trying to figure out: given the evidence, what's the probability that the accused is innocent (or guilty)?
+\item $\prob{X | \theta}$: Given the hypothesis, or null hypothesis, what's the probability of observing the data we did?\footnote{You may recognize that this wording is the definition of the $p$-value. In a way, the point of this chapter is to conceptually prepare you to be critical of the $p$-value, and to understand that is is \emph{not} $\prob{\theta | X}$.}
+\item $\prob{X}$: What's the probability of observing this data? In this case, this is essentially the same as $\prob{X | \theta}$.
+\item $\prob{\theta}$: What's the probability, not considering the evidence, that this person is innocent?
 \end{itemize}
 
-\subsection{Unequal variance (Welch's)}\label{unequal-variance-welchs}
+In the courtroom example, $\prob{X}$ is the probability that, if we walked into a random courtroom trying a case with blood evidence, that the blood would be of type AB negative. If 1\% of Americans have type AB negative blood, and people of different blood types commit crimes at the same rates, then $\prob{X} = 1\%$.
 
-This is the Behrens-Fisher problem. It stumped Fisher! He came up with a
-weird statistic with a weird distribution (Behrens-Fisher), but it
-didn't really stick, since he couldn't calculate confidence intervals
-(?).
+In this example, $\prob{X | \theta}$ is very similar to $\prob{X}$. Say there are 300 million Americans, of whom 1\%, or 3 million, have type AB negative blood. If the accused is innocent, there are 299,999,999 type AB negative people left, so the probability of observing type AB negative blood is $(3\text{ million} - 1) / (300\text{ million}) = 1\% - 1 / (300\text{ million})$, or just slightly smaller than 1\%.
 
-Instead, people went for the Welch-Satterthwaite equation, which
-approximates the interesting distribution using a more handy one by
-matching the first and second moments. (Maybe worth discussing those? Or
-just say mean and variance?)
+So, plugging in $\prob{X}$ and $\prob{X | \theta}$, which we computed based on our knowledge about blood types, we can conclude that $\prob{\theta | X}$ is just slightly smaller than $\prob{\theta}$. In other words, the probability that the accused is innocent given the blood evidence is only very slightly smaller than the probability that they are innocent when not considering that evidence. Without any evidence, the probability that some random accused person happens to be the perpetrator is small, say 1 in 300 million. In other words, the prosecutor, if they have only the blood evidence, has a very bad case.
 
-\section{anova}\label{anova}
+\section{Bayes's theorem is about updating, not defining, probabilities}
 
-Say you have some (equally-sized) groups. Each group was drawn from a
-normal distribution (all with the same variance). Are the data
-consistent with the model in which all those groups have the same mean?
+In the example from the previous section, I showed that we can use data to compute the relationship between $\prob{\theta}$, the probability that a hypothesis is correct not considering the data, and $\prob{\theta | X}$, the probability that a hypothesis is correct given the data. In the language of Bayesian statistics, $\prob{\theta}$ is called the \emph{prior probability} of $\theta$, and $\prob{\theta | X}$ is the \emph{posterior probability}. In other words, the data ``updated'' the prior, pre-data-collection probability.
 
-The statistic is \(F \equiv \frac{\mathrm{MS}_B}{\mathrm{MS}_W}\), where
-\(MS_B\) is the mean of the squares of the residuals(?) between the
-group means and the grand mean (``between'') and \(MS_W\) is the mean of
-the squares of the residuals between the data points and the group means
-(``within'').
+The blood type example worked because the choice of $\prob{\theta}$ was pretty clear: if we picked an Amercian at random, what's the chance they are innocent of this particular crime? (Or, conversely, what's the chance that a randomly-selected person is the perpretrator?)
 
-Again, focus on what's the population we're sampling from. It's easy to
-think about a finite population, where you can just do all the possible
-combinations and compare their \(F\) statistics. Then move on to say
-that, if you believe that the particular variances and means you
-measured are the exact, true distribution that you're sampling from, ask
-what happens when you sample from that infinite population.
+In other cases, when $\theta$ is a hypothesis, $\prob{\theta}$ becomes extremely problematic. Take the Socrates example: what's the probability, if you hadn't observed the lives and deaths of any human, that all humans are mortal? Or take a science example: if Einstein had showed you his general theory of relativity, but neither you nor he had ever observed any experimental evidence or astronomical data, what would you say is the prior, pre-data-collection probability that his data is correct?
 
-\subsection{z-test example}\label{z-test-example}
+As I discussed above, it only makes sense to assign probability to hypotheses in a Bayesian context. It doesn't make sense to ask on what fraction of replicates of Earth humans are mortal; instead you ask how confident you are that humans are mortal.
 
-What's the nonparametric equivalent of this? It's just saying what the
-empirical cdf is! Then say, if you really truly believe your mean and
-standard deviation, then you can do that.
+Again, Bayes's theorem, is a perfectly mathematically sound theorem, but it only \emph{updates} probabilities. Given a prior probability, and the data, it gives a posterior probability. But it can never tell you the prior probability. This is why people don't like Bayesian statistics. How can you put a prior probability on a hypothesis? Do you make a guess? ``Well, Einstein was smart, so that's a plus, but his theory sounds complicated, so that's a minus, and so I think maybe fifty-fifty?''
 
-In other words, you say you are absolutely sure what population you are
-drawing from. The same is actually true of the \emph{t}-test, except
-that the \emph{z}-test is asking about a single value, distributed like
-\(N(\mu, \sigma^2)\), while the \emph{t}-test is about the mean of the
-\(n\) points, which is distributed like \(N(\mu, \sigma^2/n)\).
+There's no mathematically sound answer to this question because there is no philosophically sound answer to this question. In other words, frequentist statistics and Bayesian statistics are both rigorous mathematical systems, and there is clear link between experimental science and the proportion-probabilities of frequentist statistics, but the link betwen Bayesian degree-of-confidence probabilities and what we have in our heads is not so clear.
 
-\section{Paired differences}\label{paired-differences}
-
-\subsection{Historical example and
-motivation}\label{historical-example-and-motivation}
-
-Darwin's thing with the pots, as described in Fisher's \emph{Design of
-Experiments}
-
-We'll make a tower of the kinds of assumptions made to test Darwin's
-hypothesis.
-
-\subsection{Sign test}\label{sign-test}
-
-Assume that it's meaningful if a hybrid plant is taller than a
-self-fertilized plant, but don't assign any meaning beyond that. Then
-the data are effectively dichotomized: you get some number of cases in
-which one is taller and some number of cases in which the other is
-taller.
-
-Better to say that we're sampling from any distribution that has zero
-median. You could even say you're sampling from \emph{all}
-distributions. That's confusing, mathematically, because there are
-infinitely many distributions, and it's not obvious how you should
-sample from that functional space, but it works out, because all those
-distributions will have the same distribution of pluses and minuses.
-
-This is now just a binomial test.
-
-\subsection{Rank test (Mann-Whitney $U$)}
-
-Assume that the \emph{ranks} of the differences are meaningful.
-
-Now you're sampling from any distribution that is symmetric about zero.
-That means it has zero median also.
-
-\subsection{Fisher's weird sum test}\label{fishers-weird-sum-test}
-
-Not sure if there's any name for this. Assume that the actual values of
-the differences are meaningful.
-
-\subsection{Welch's $t$-test}
-
-Assume that the two populations are normally distributed and, and
-therefore that that the variances of the populations are meaningful.
-Then you can infer where this set of differences would stand in an
-infinite set of such differences.
-
-For early statisticians, this was really appealing, mostly from a
-computational point of view: you could actually compute the mean and
-standard deviation with pen and paper in a reasonable amount of time,
-but you definitely couldn't do all \(2^n\) different ways of taking
-sums. Fisher does it for one example in his book, and I'm sure it was
-pretty crazy. He makes it clear that he went to great lengths to do it,
-and his conclusion is that the results are basically the same, so you
-should probably be doing the easier thing and not worry about it.
-Nowadays it's gotten pretty easy to do the other thing!, so it's
-
-\section{Wilcox test and Mann-Whitney
-test}\label{wilcox-test-and-mann-whitney-test}
-
-\textbf{Walsh averages and confidence intervals}, from
-\href{http://www.stat.umn.edu/geyer/old03/5102/notes/rank.pdf}{here}
-
-There a few different names for these things:
-
-\begin{itemize}
-\tightlist
-\item
-  One-sample test: is this distribution symmetric about zero (or
-  whatever)?
-\item
-  Two-sample unpaired (independent; Mann-Whitney): does one of these
-  distributions ``stochastically dominate'' the other (i.e., is it that
-  a random value drawn from population \(A\) is more than 50\% probable
-  to be greater than a random value from \(B\))?
-\item
-  Two-sample paired (dependent): are the differences between paired data
-  points symmetric about zero?
-\end{itemize}
-
-\subsection{Wilcoxon}\label{wilcoxon}
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  For each pair \(i\), compute the magnitude and sign \(s_i\) of the
-  difference. Exclude tied pairs.
-\item
-  Order the pairs by the magnitude of their difference: \(i=1\) is the
-  pair with the smallest magnitude. Now \(i\) is the rank.
-\item
-  Compute the \(W = \sum_i i s_i\).
-\end{enumerate}
-
-Thus, the bigger differences get more weight.
-
-(There might be a way to do a visualization of this: as you walk along
-the data points, you get a good bump for every rank that is in the
-``high'' data set, and you get a bad hit for every rank that is not.
-Then it settles out pretty quickly, and you want to know the meaning of
-the final intercept.)
-
-For small \(W\), the distribution has to be computed for each integer
-\(W\). For larger values (\(\geq 50\)), a normal approximation works.
-
-Compare the sign test, which does not use ranks, and which assumes the
-median is zero, but not that the distributions are symmetric. That's
-just a binomial test of the number of pluses or minuses you get. It's
-like setting the weights, which in \(W\) are the ranks, all equal.
-
-\subsection{Mann-Whitney}\label{mann-whitney}
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  Assign ranks to every observation.
-\item
-  Compute \(R_1\), the sum ranks that belong to points for sample 1.
-  Note that \(R_1 + R_2 = \sum_{i=1}^N = N(N+1)/2\).
-\item
-  Compute \(U_1 = R_1 - n_1(n_1+1)/2\) and \(U_2\). Use the smaller of
-  \(U_1\) or \(U_2\) when looking at a table.
-\end{enumerate}
-
-At minimum \(U_1 = 0\), which means that sample 1 had ranks
-\(1,2,\ldots,n_1\). Note that \(U_1 + U_2 = n_1 n_2\).
-
-For large \(U\), there is a normal distribution approximation.
-
-\subsubsection{Generation}\label{generation}
-
-Say you have \(N\) total points and \(n_1\) in sample 1. Find all the
-ways to draw \(n_1\) numbers from the sequence \(1, 2, \ldots N\).
-Compute \(U\) for each of those. Voila.
-
-Note that, if you fix \(n_1\), then you don't have to subtract the
-\(n_1(n_1+1)/2\) to get the right \(p\)-value.
-
-\section{Statistical power: Cochrane-Armitage
-test}\label{statistical-power-cochrane-armitage-test}
-
-We never want to run just any test: we want to use the test that is most
-capable of distinguishing between the scenarios we're interested in.
-Usually this is a matter of choosing the test that has the right
-assumptions: the one-sample \emph{t}-test is more powerful than the
-Wilcoxon test if the data come from a truly normally-distributed
-population.
-
-In other cases, you might have more flexibility. There's a somewhat
-obscure test that is, I think, a great illustration of this.
-
-Imagine that you have some data with a dichotomous outcome for some
-categorical predictor value. One classic example is drug dosing: you
-think that, as the dosage of the drug goes up, you have more good
-outcomes than bad outcomes. Did a greater proportion of people on board
-the Titanic survive as you go up from crew to Third Class to Second to
-First? Did the proportion of some kind of event increase over years?
-Technically, this means you have a \(2 \times k\) table of counts, with
-two outcomes and \(k\) predictor categories.
-
-\begin{longtable}[]{@{}llll@{}}
-\toprule
-Outcome & Dose 1 & Dose 2 & Dose 3\tabularnewline
-\midrule
-\endhead
-Good & 1 & 5 & 9\tabularnewline
-Bad & 9 & 4 & 1\tabularnewline
-\bottomrule
-\end{longtable}
-
-You could use a \(\chi^2\) test with equal expected frequencies across
-the columns. In other words, there might be more ``good'' than ``bad''
-outcomes, but you don't expect that proportion to differ meaningfully
-across categories. You would pool the data across categories, use the
-observed proportion of good outcomes as you best guess of the true
-proportion \(f\), and compare the actual data with you expectation that
-a fraction \(f\) of the counts in each column are ``good''.
-
-In our examples, we think the data have some \emph{particular} kind of
-pattern. The \(\chi^2\) test doesn't look for any particular pattern; it
-just looks for any deviation from the null. The test statistic for the
-\(\chi^2\) distribution is based around the sum of the square deviations
-from the expected values, usually written \(\sum_i (O_i - E_i)^2\), with
-some stuff in the denominator to make the distribution of the statistic
-easier to work with. If the sum of the squared deviations is too large,
-then we have evidence that the observed values are not ``sticking to''
-the expected frequencies.
-
-The trick I'm going to show you is to keep the same null
-hypothesis---that outcome doesn't depend on dose---but adjust the test
-so that it's more sensitive to particular kinds of dependencies.
-
-This is a fair approach because we're still just trying to say, ``OK,
-say you (the nameless antagonist) were right, and there really was no
-pattern in the data. Then I'm free to make up any test statistic, so
-long as, if you're right, we can show that the observed data were likely
-to have arisen by chance.''
-
-To start constructing the test, think about each flip as a weighted
-binomial trial. We'll use these weights to adjust the test statistic to
-be more sensitive to what we suspect the true pattern in the data is,
-but we'll need to derive the distribution of the test statistic so that
-we can satisfy the nameless antagonist.
-
-Say each flip \(y_i\), which is in some category \(x_i\), gets some
-associated weight \(w_i\). A really simple statistic would be
-\(\sum_i w_i y_i\), the sum of the weights of the ``successful'' trials.
-It would be nice to have this be zero-centered: \[
-\sum_i \left\{ w_i y_i - \mathbb{E}\left[ w_i y_i \right] \right\} = \sum_i w_i (y_i - \overline{p}),
-\] where \(\overline{p} = (1/N)\sum_i y_i\).
-
-It would also be nice for this to have variance 1, so we can divide by
-the square root of \[
-\mathrm{Var}\left[ \sum_i w_i (y_i - \overline{p}) \right] = \overline{p} (1-\overline{p}) \sum_i w_i^2
-\] to produce the statistic \[
-T = \frac{\sum_i w_i (y_i - \overline{p})}{\sqrt{\overline{p} (1-\overline{p}) \sum_i w_i^2}}.
-\]
-
-You could also conceive of this being a table with two rows and some
-number of columns. We bin the trials by their weights: all trials with
-the same weight are in the same column. Successes go in the top row;
-failures in the bottom. Now write \(t_c\) as the weight of the trials in
-the \(c\)-th column, \(n_{1c}\) is the number of successful trials with
-weight \(t_c\) (i.e., in column \(c\)), and \(n_{2c}\) is the number of
-failures. Then some math shows that you can rewrite \(T\) as \[
-T = \frac{\sum_c w_c (n_{1c} n_{2\bullet} - n_{2c} n_{1\bullet})}{\sqrt{(n_{1\bullet} n_{2\bullet} / n_{\bullet\bullet}^2) \sum_c n_{\bullet c} w_c^2}}
-\] where \(n_{r\bullet}\) are the row margins, \(n_{\bullet c}\) are the
-column margins, and \(n_{\bullet\bullet}\) is the total number of
-trials.
-
-\emph{N.B.}: The wiki page gives a different answer, but I don't trust
-it, since the variance formula doesn't assume independence of the
-\(y_i\). A fact sheet about the PASS software that shows the formula in
-terms of the \(y_i\) seems to make a mistake by using \(i\) as an index
-both for individual trials and for the weight categories.
-
-The confusing thing here is how to pick the weights. This test is mostly
-used to look for linear trends: imagine that each \(y_i\) is associated
-with some \(x_i\), so that the weights would be \(x_i\) or
-\(x_i - \overline{x}\). Why you pick these exact weights has to do with
-the \emph{sensitivity} of the test. There could, of course, be a
-nonlinear trend, like a U-shape, that would lead to a zero expectation
-for this statistic. The \(\chi^2\) test can find that, but
-Cochrane-Armitage with these weights cannot.
-
-To see why you use those weights for a linear test, imagine that
-\(p_i \propto x_i\), and zero-center the \(x_i\) such that
-\(p_i = m x_i + \overline{p}\).
-
-Then the question is what \(w_i\) maximize \(\mathbb{E}[T]\)? You can
-quickly see that this is equivalent to maximizing
-\(\sum_i w_i x_i / \sqrt{\sum_i w_i^2}\), and taking a derivative with
-respect to \(w_j\) shows that, at the extremum,
-\(x_j \sum_i w_i^2 = w_j \sum_i w_i x_i\), which \(w_i = x_i\) for all
-\(i\) satisfies. So those weights are the best way to get a large
-statistic if you think that there actually is a linear test.
+Having filled your mind with this philosophical cloud, let's get down to the nuts and bolts of statistical inference.
