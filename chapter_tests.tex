@@ -1,13 +1,72 @@
 %!TEX root=main.tex
 
-As discussed above, in frequentist statistics, $\prob{\theta}$ is either 0 or 1, and you don't get to pick what it is: it's just a fact of the universe whether your hypothesis is correct or not. This makes Bayes's theorem seem a little silly. Indeed, Bayes's theorem only makes sense if you think about probability in a \emph{Bayesian} sense, as a degree of confidence in something.
+\chapter{Frequentist inferential statistics: statistical tests and confidence intervals}
 
-\section{The philosophy of statistical inference}
+The previous chapter laid out the conceptual points of inference. In this chapter, I lay out the nuts and bolts of what most people think statistics is: tests.
 
-- inference vs. decision-making under uncertainty
-- the p-value debate
-- note that the math is still the same as before, we still thinking about properties of estimators
-- inference as one of the most widely-spread notions in science
+The mathematics of statistical tests follows directly from the previous mathematical chapters: we define some \emph{estimators}, functions of the data that predict some property of the data, and determine their variance. We just give things different names and interpret them differently.
+
+But rather than begin with the mathematics of tests, I'll start with the concepts of how they work, and show how to implement them algorithmically and computationally. Once you understand what the test is doing, we can get back to unpacking some of the math you will hear bandied about around them.
+
+\section{The ingredients in a statistical test}
+
+To run a statistical test, you need:
+
+\begin{enumerate}
+\item Observed data.
+\item A listing of the universe of observations that could have been made, of which the actual observation is one instance.
+\item A \emph{null hypothesis} that associates a probability with each possible observation.
+\item A \emph{test statistic} that summarizes how interesting the observed data are in a single number.
+\end{enumerate}
+
+Every statistical test that you know of can be defined by how it selects its
+universe of possible observations, its null hypothesis, and its test statistic.
+
+The test will give you two outputs:
+
+\begin{enumerate}
+\item A $p$-value, which is the probability of observing data as extreme (or ``interesting'') as what you did observe, given the null hypothesis.
+\item Confidence intervals on the test statistic.
+\end{enumerate}
+
+More concretely, the $p$-value is the proportion of the observations in the universe of observations, weighted by their probabilities, that have test statistics that are more extreme (i.e., either larger or smaller) than the test statistic for the observed data. The confidence interval says that, using the observed data as our best estimates of the underlying truth, what range of test statistics would we expect?
+
+\section{Interpreting $p$-values and confidence intervals}
+
+The $p$-value was developed by Fisher, probably the one person who had the most influence on modern statistics. He used the $p$-value, a rigorously-derived number, to reason informally about data. If the $p$-value too big, by some standard to be determined \textit{ad hoc}, then the data didn't show anything interesting. In different books and papers, for different data sets, Fisher used different standards for ``too big'', but $0.05$ was a recurring choice.
+
+Later, Neyman and Pearson (the younger) reformulated Fisher's method as a kind
+of decision-making under uncertainty. If you were a decision-maker, and you had
+to make a decision, what would you do when faced with certain data? They
+suggested you pick some specific \emph{confidence level}, written $\alpha$, and
+make your decision based on whether $p$ was greater than or less than $\alpha$.
+
+Although Fisher furiously disagreed with Neyman and Pearson about how to interpret $p$-values, the canonical $\alpha = 0.05$ somehow made it into the scientific literature.
+
+As laid out in the previous chapter, ``what is the probability that this data is true, given the data?'' is a very tricky question. The critical point is that the $p$-value is, in the language of that chapter, $\prob{X | \theta}$, but we want to know about $\prob{\theta | X}$. The link between these is the mysterious prior probability $\prob{\theta}$.
+
+I think my only take-away is that you should trust your gut more than a $p$-value. First, Fisher developed statistics as a way to rigorously show that data \emph{weren't} interesting, a mathematical counterbalance to humans' ability to find interesting patterns in data, especially their own. He meant $p$-values as a way to deflate puffed-up conclusions, not to puff them up. Second, Fisher, who invented $p$-values, couldn't really agree with other extremely intelligent people about exactly what they meant. So don't make yourself crazy trying to figure it out too precisely either! Just know that big $p$-values, where ``big'' depends on the intellectual context, mean the data aren't interesting, where ``interesting'' is defined by the null hypothesis.
+
+Confidence intervals were also controversial when first introduced, and they are also philosophically confusing. To say that the 95\% confidence interval on $X$ is from here to there means that, if the test statistic observed in this experiment were the true one (which it almost certainly is not), then if you repeated the experiment many times, in what interval would the measured test statistics tend to fall? This is \emph{not} the same as saying that there is a 95\% chance that the true value is in that interval, although exactly what it \emph{is} saying is confusing.
+
+\section{Constructing a parametric test: the binomial proportion test}
+
+To understand how to go from a test's ingredients to its outputs, I will work
+through many examples of increasing complexity. The first and simplest is a proportion test: of $n$ things, $x$ have some property. Is that result ``interesting'' given an expectation that a proportion $p$ of things would have that property? The most common example is with coin flips: I flip a coin $n$ times and get $x$ heads. Are these results consistent with the coin being fair (i.e., $p = 0.5$)?
+
+In this example:
+\begin{itemize}
+\item The \emph{observed data} is just the number $x$. (The number $n$ is a fixed parameter.)
+\item The universe of possible observations is the list of numbers from 0 to $n$: we could have flipped 0 heads, 1 head, and so on up to $n$ heads. That's the complete listing of what possibly could have happened.
+\item The \emph{null hypothesis} is that $p = 0.5$.
+\item The \emph{test statistic} is also just the number $x$. (This is why this is a simple example!)
+\end{itemize}
+
+The $p$-value is the probability of data as extreme as what we observed, given the null hypothesis that $p = 0.5$.\footnote{I apologize that $p$ means the expected proportion of heads and $p$-value means something totally different.} If the probability of flipping heads is $p$, then the probability of flipping $x$ heads and $n - x$ tails is precisely the binomial probability mass function:
+\begin{equation}
+\mathrm{Binom}(x; n, p) = \binom{n}{x} p^x (1-p)^{n-x}
+\end{equation}
+
 
 \section{Parametric inference}
 
