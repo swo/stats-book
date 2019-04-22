@@ -49,6 +49,19 @@ I think my only take-away is that you should trust your gut more than a $p$-valu
 
 Confidence intervals were also controversial when first introduced, and they are also philosophically confusing. To say that the 95\% confidence interval on $X$ is from here to there means that, if the test statistic observed in this experiment were the true one (which it almost certainly is not), then if you repeated the experiment many times, in what interval would the measured test statistics tend to fall? This is \emph{not} the same as saying that there is a 95\% chance that the true value is in that interval, although exactly what it \emph{is} saying is confusing.
 
+\section{The simplest test: checking for a fair coin}
+
+To understand how to go from a test's ingredients to its outputs, I will work
+through many examples of increasing complexity. The first and simplest is this: I flip a coin $n$ times, seeing some sequence of heads and tails, and I want to infer whether the coin is fair.
+
+\begin{itemize}
+\item The \emph{observed data} is the sequence of heads and tails I flipped.
+\item The universe of possible observations is all the sequences of heads and tails I could have flipped. So if $n=2$, the universe is the four cases $HH, HT, TH, TT$.
+\item The \emph{null hypothesis} is that heads and tails are equally likely.
+\item The \emph{test statistic} is the number of heads I flipped. This statistic, like all the other statistics discussed in chapter XX, is a function of the data: given some sequence of heads and tails, it just counts up the number of heads.
+\end{itemize}
+
+
 \section{Constructing a parametric test: the binomial proportion test}
 
 To understand how to go from a test's ingredients to its outputs, I will work
@@ -58,15 +71,33 @@ In this example:
 \begin{itemize}
 \item The \emph{observed data} is just the number $x$. (The number $n$ is a fixed parameter.)
 \item The universe of possible observations is the list of numbers from 0 to $n$: we could have flipped 0 heads, 1 head, and so on up to $n$ heads. That's the complete listing of what possibly could have happened.
-\item The \emph{null hypothesis} is that $p = 0.5$.
+\item The \emph{null hypothesis} is that $p = 0.5$.\footnote{The fact that the null hypothesis has a number in it is a signal that this is a \emph{parametric} test. We'll soon encounter nonparametric tests that don't need to make this kind of numerical specification.}
 \item The \emph{test statistic} is also just the number $x$. (This is why this is a simple example!)
 \end{itemize}
 
-The $p$-value is the probability of data as extreme as what we observed, given the null hypothesis that $p = 0.5$.\footnote{I apologize that $p$ means the expected proportion of heads and $p$-value means something totally different.} If the probability of flipping heads is $p$, then the probability of flipping $x$ heads and $n - x$ tails is precisely the binomial probability mass function:
-\begin{equation}
-\mathrm{Binom}(x; n, p) = \binom{n}{x} p^x (1-p)^{n-x}
-\end{equation}
+\subsection{One- and two-sided $p$-values}
 
+The $p$-value is the probability of data as extreme as what we observed, given the null hypothesis that $p = 0.5$.\footnote{I apologize that $p$ means the expected proportion of heads and $p$-value means something totally different.} The words ``as extreme'' are a little tricky. If I had an \textit{a priori} hypothesis that $x$ would be smaller than $np$ ---if I had an idea that the coin would be unfairly biased towards tails--- then I can use an \emph{one-sided} $p$-value, where I consider only the possibility of having flipped $0, 1, \ldots, x$ heads. Or, if I had an \emph{a priori} hypothesis that $x$ would be larger than $np$ ---that the coin would be biased towards heads--- then I would consider the possibilities of $x, x+1, \ldots, n$ heads. If I didn't have an \textit{a priori} expectation about which way $x$ would deviate from $np$ ---if I expected the coin might be unfair but didn't know in which direction--- then I need to consider the possibilities of having flipped any of $0, 1, \ldots, x$ and also $x+1, x+2, \ldots, n$.
+
+More concretely, if the probability of flipping heads is $p$, then the probability of flipping exactly $y$ heads and $n - y$ tails is precisely the binomial probability mass function:
+\begin{equation}
+\mathrm{Binom}(y; n, p) = \binom{n}{y} p^y (1-p)^{n-y}
+\end{equation}
+So if my \textit{a priori} hypothesis is that the coin is biased toward tails ---and $x$ toward small numbers--- then I would use the one-sided $p$-value:
+\begin{equation}
+\text{$p$-value} = \sum_{y=0}^x \mathrm{Binom}(y; n, p)
+\end{equation}
+Or, if I thought $x$ was biased toward large values, I would count up from $x$ to $n$:
+\begin{equation}
+\text{$p$-value} = \sum_{y=x}^n \mathrm{Binom}(y; n, p)
+\end{equation}
+The related \textit{two-sided} $p$-value counts from below and above:
+\begin{equation}
+\text{$p$-value} = \sum_{y=0}^x \mathrm{Binom}(y; n, p) + \sum_{y=x + 1}^n \mathrm{Binom}(y; n, p)
+\end{equation}
+Because larger $p$-values means that the data are less ``interesting'', using a two-sided $p$-value is more conservative than a one-sided value. Someone should always have a reason for using a one-sided $p$-value rather than two-sided.
+
+\subsubsection{Confidence intervals}
 
 \section{Parametric inference}
 
