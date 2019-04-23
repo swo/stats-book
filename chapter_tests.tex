@@ -61,43 +61,154 @@ through many examples of increasing complexity. The first and simplest is this: 
 \item The \emph{test statistic} is the number of heads I flipped. This statistic, like all the other statistics discussed in chapter XX, is a function of the data: given some sequence of heads and tails, it just counts up the number of heads.
 \end{itemize}
 
-
-\section{Constructing a parametric test: the binomial proportion test}
-
-To understand how to go from a test's ingredients to its outputs, I will work
-through many examples of increasing complexity. The first and simplest is a proportion test: of $n$ things, $x$ have some property. Is that result ``interesting'' given an expectation that a proportion $p$ of things would have that property? The most common example is with coin flips: I flip a coin $n$ times and get $x$ heads. Are these results consistent with the coin being fair (i.e., $p = 0.5$)?
-
-In this example:
-\begin{itemize}
-\item The \emph{observed data} is just the number $x$. (The number $n$ is a fixed parameter.)
-\item The universe of possible observations is the list of numbers from 0 to $n$: we could have flipped 0 heads, 1 head, and so on up to $n$ heads. That's the complete listing of what possibly could have happened.
-\item The \emph{null hypothesis} is that $p = 0.5$.\footnote{The fact that the null hypothesis has a number in it is a signal that this is a \emph{parametric} test. We'll soon encounter nonparametric tests that don't need to make this kind of numerical specification.}
-\item The \emph{test statistic} is also just the number $x$. (This is why this is a simple example!)
-\end{itemize}
-
 \subsection{One- and two-sided $p$-values}
 
-The $p$-value is the probability of data as extreme as what we observed, given the null hypothesis that $p = 0.5$.\footnote{I apologize that $p$ means the expected proportion of heads and $p$-value means something totally different.} The words ``as extreme'' are a little tricky. If I had an \textit{a priori} hypothesis that $x$ would be smaller than $np$ ---if I had an idea that the coin would be unfairly biased towards tails--- then I can use an \emph{one-sided} $p$-value, where I consider only the possibility of having flipped $0, 1, \ldots, x$ heads. Or, if I had an \emph{a priori} hypothesis that $x$ would be larger than $np$ ---that the coin would be biased towards heads--- then I would consider the possibilities of $x, x+1, \ldots, n$ heads. If I didn't have an \textit{a priori} expectation about which way $x$ would deviate from $np$ ---if I expected the coin might be unfair but didn't know in which direction--- then I need to consider the possibilities of having flipped any of $0, 1, \ldots, x$ and also $x+1, x+2, \ldots, n$.
+The $p$-value is the probability of data as extreme as what we observed, or
+more extreme, given the null hypothesis that $p = 0.5$.\footnote{I apologize
+that $p$ means the expected proportion of heads and $p$-value means something
+totally different.} The tricky part of this definition is understand what ``as
+extreme or more'' means.
 
-More concretely, if the probability of flipping heads is $p$, then the probability of flipping exactly $y$ heads and $n - y$ tails is precisely the binomial probability mass function:
-\begin{equation}
-\mathrm{Binom}(y; n, p) = \binom{n}{y} p^y (1-p)^{n-y}
-\end{equation}
-So if my \textit{a priori} hypothesis is that the coin is biased toward tails ---and $x$ toward small numbers--- then I would use the one-sided $p$-value:
-\begin{equation}
-\text{$p$-value} = \sum_{y=0}^x \mathrm{Binom}(y; n, p)
-\end{equation}
-Or, if I thought $x$ was biased toward large values, I would count up from $x$ to $n$:
-\begin{equation}
-\text{$p$-value} = \sum_{y=x}^n \mathrm{Binom}(y; n, p)
-\end{equation}
-The related \textit{two-sided} $p$-value counts from below and above:
-\begin{equation}
-\text{$p$-value} = \sum_{y=0}^x \mathrm{Binom}(y; n, p) + \sum_{y=x + 1}^n \mathrm{Binom}(y; n, p)
-\end{equation}
-Because larger $p$-values means that the data are less ``interesting'', using a two-sided $p$-value is more conservative than a one-sided value. Someone should always have a reason for using a one-sided $p$-value rather than two-sided.
+``Extremeness'' is quantified by the test statistic, which summarizes each of
+the possible observations ---each length-$n$ sequence of heads and tails---
+into a single number, the number of heads in that sequence. ``As extreme or
+more'' can mean 3 things:
+\begin{itemize}
+    \item as small as what was observed, or smaller,
+    \item as large as what was observed, or larger, or
+    \item as far away from the ``center'' as was observed, or further away.
+\end{itemize}
 
-\subsubsection{Confidence intervals}
+The first two cases call for \emph{one-sided} $p$-values and can be used if you
+have an \textit{a priori} hypothesis that the number of heads that you will
+observe will be much higher or lower than what you would expect if the coin
+were fair. So if I want to seek support for my \textit{a priori} hypothesis
+that the coin is more likely to land tails than heads, then I would use that
+one-sided $p$-value. If I don't have an \textit{a priori} expectation about
+whether the flips will be enriched for heads or tails ---if I just think that
+the coin is not fair, but I don't know which way--- then I need a more
+conservative, \emph{two-sided} $p$-value.
+
+In this example, the null hypothesis of a fair coin means that all the possible
+sequences of heads and tails are equally likely, so to compute a one-sided
+$p$-value, I just need to count up the number of sequences that are more
+extreme than the observed one:
+\begin{equation}
+    \text{one-sided $p$-value} = \frac{\text{number of possible sequences more extreme than observed}}{\text{total number of sequences}}
+\end{equation}
+You may know that the number of length-$n$ heads-tails sequences is $2^n$ and
+that the number of those sequences that has $x$ heads is $\binom{n}{x} = n! /
+\left[ x! (n-x)! \right]$. Thus, for this example, if we have a ``low-sided''
+expectation about the number of heads:
+\begin{equation}
+    \text{``low-sided'' one-sided $p$-value} = \frac{\sum_{y=0}^x \binom{n}{x}}{2^n}
+\end{equation}
+A ``high-sided'' $p$-value would sum from $x$ up to $n$.
+
+For the two-sided $p$-value, we need to sum up the ``low-side'' and ``high-side'' $p$-values. Because the observed $x$ falls to one side of the central expectation $\expect{x} = n/2$, we need to symmetrize to find the other value. For example if $x$ is low, we make another, mirrored ``high'' $x_\mathrm{hi} = n-x$:
+\begin{equation}
+    \text{two-sided $p$-value} = \frac{\sum_{y=0}^x \binom{n}{x} + \sum_{y=n-x}^n \binom{n}{x}}{2^n}
+\end{equation}
+If $x > n/2$, then the sums would go from $0$ to $n-x$ and from $x$ to $n$.
+
+\section{Checking for a specified unfairness of a coin}
+
+In the first example, we used a null hypothesis that heads and tails were equal, which simplifed thinking about $p$-values because we could simply count up the equiprobable sequences of heads and tails.
+
+Now, we generalize slightly, allowing a null hypothesis that the probability $p$ of flipping heads is not exactly $\tfrac{1}{2}$:
+\begin{itemize}
+\item The \emph{observed data} is, again, the sequence of heads and tails I flipped.
+\item The universe of possible observations is, again, all the sequences of heads and tails I could have flipped.
+\item The \emph{null hypothesis} is that the probability of flipping heads is $p$.
+\item The \emph{test statistic} is the number of heads I flipped.
+\end{itemize}
+
+The mathematically savvy will know that the probability of $y$ successful trials among $n$ total trials, with each trial having a probability $p$ of success, is the \emph{binomial distribution}:
+\begin{equation}
+    \mathrm{Binom}(y; n, p) = \binom{n}{y} p^y (1-p)^{n-y}
+\end{equation}
+This is just like the above, where we counted the number of sequences, only now
+we need to weight them by the number of more (or less) probably heads (and
+tails):
+\begin{equation}
+    \text{``low-sided'' one-sided $p$-value} = \sum_{y=0}^x \mathrm{Binom}(y; n, p)
+\end{equation}
+
+\subsection{Computing confidence intervals}
+
+Recall that a \emph{confidence interval} is a method: it is a pair of
+statistics, functions of the data, that will, in a certain proportion $\alpha$
+of replicate experiments, will contain the true value, regardless of what the
+true value is.
+
+In this example, the ``true value'' in question is the unknown probability
+$p_\mathrm{true}$ that the coin will flip heads, which would be anything
+between 0 and 1.  So we need a method that, whether $p_\mathrm{true} = 10^{-6}$
+or $p_\mathrm{true} = 0.999$, will produce an interval that contains the true
+$p_\mathrm{true}$ in a proportion of $\alpha$ of the data that would arise in
+replicates of that experiment.
+
+As mentioned earlier, there are multiple methods that can achieve this result.
+The one that doesn't rely on any kind of approximation, which we will address
+later, is the \emph{Clopper-Pearson} interval. This says to find the largest
+value $p_+$ for which $\sum_{y=0}^x \mathrm{Binom}(y; n, p_+) > \alpha/2$ and
+the smallest value $p_-$ for which $\sum_{y=x}^n \mathrm{Binom}(y; n, p_-) >
+\alpha/2$. In other words, if $\alpha=95\%$, pick an uppper limit on
+$p_\mathrm{true}$ so that, if that were the true value, in exactly $2.5\%$ of
+replicates of the experiment, you would get numbers of heads larger than what
+you observed. Similarly, pick a lower limit so that, if that were the true
+probability of flipping heads, in $2.5\%$ of replicates, you would get numbers
+of heads larger than what you observed.
+
+If this seems like a big, confusing headache, I hope you take it as a sign that
+confidence intervals are confusing, not that you're not understanding!
+
+\section{Approximating the binomial proportion test}
+
+The elegance of the previous example is that it works by simply enumerating all
+the possible sets of observations. The inelegant part is that there can be
+many: $2^n$ grows quickly with $n$, making the sums in the $p$-value
+calculations onerous. Furthermore, the math of the Clopper-Pearson interval is
+a bit of a mess and hard to articulate.
+
+In fact, rather than enumerating all $2^n$ possibilities, the typical approach
+is to approximate the binomial distribution with the normal distribution. It turns out that, when $n$ is not too small, that:
+\begin{equation}
+    \mathrm{Binom}(x; n, p) \approx \mathcal{N}\left(x; \; \mu = np, \; \sigma^2 = \frac{p (1-p)}{n}\right),
+\end{equation}
+in other words, you can use a normal distribution with mean a mean and variance
+computed from $n$ and $p$ to approximate the binomial distribution.
+
+\textbf{FIGURE}
+
+The binomial counting approach was intellectually elegant but mathematically
+inelegant. The normal approximation approach is mathematically elegant but
+intellectually confusing, as it makes the ingredients in the test very
+artificial:
+\begin{itemize}
+    \item The observed data is not the sequence of heads and tails but rather simply $x$, which was previously the observed test statistics, that is, the number of heads flipped.
+    \item The universe of possible observations is all values between $0$ and $n$. Of course, this isn't really true, as you can only observe integer $x$. But for the math to work out, you need to imagine that you could have observed $x = 1.02$, for example.
+    \item The null hypothesis, as above, is some assertion about the probability $p$, only now $p$ is not the probability of any particular event, it's just a parameter in the normal distribution's mean and variance.
+    \item The test statistic is just $x$, the observed number.
+\end{itemize}
+
+The other intellectually weird thing is that now, because the universe of possible observations is infinite, you cannot count up the states but must integrate over them:
+\begin{equation}
+    \text{``low-sided'' one-sided $p$-value} = \int_{y=0}^x \mathcal{N}\left(y; np, \frac{p(1-p)}{n} \right) \,\mathrm{d}y
+\end{equation}
+This is where the mathematical elegance comes in: the integral of the normal distribution, which is its cumulative distribution function, is oft-calculated and so easy to look up. So now rather than summing over something like $2^n$ states, we just look up a single number.
+
+The confidence intervals become similarly simple: I look for a lower bound $p_-$ such that the probability that I would observe a value smaller than what I did observe is $\alpha/2$:
+\begin{equation}
+    \alpha/2 = \int_{y=0}^x \mathcal{N} \left(y; np_-, \frac{p_-(1-p_-)}{n} \right) \,\mathrm{d}y
+\end{equation}
+
+There are a few other approximations to the binomial distribution that are more
+accurate, but they all come down to the same logic: they exchange the
+intellectual simplicity of counting up over a finite universe of states for the
+mathematical elegance of integrating over a well-known function.
+
+\textbf{point out how this works with a z-test?}
 
 \section{Parametric inference}
 
