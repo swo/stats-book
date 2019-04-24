@@ -210,6 +210,62 @@ mathematical elegance of integrating over a well-known function.
 
 \textbf{point out how this works with a z-test?}
 
+\section{The data with different null hypotheses and statistics: paired tests}
+
+So far we've had null hypotheses and test statistics that are obvious matches for the data that we're looking at. In the real world, when you're making up your own statistical tests, you'll find that you actually have multiple choices for null hypotheses and test statistics. To show how this can work, I'll analyze the same kind of data in a few ways.
+
+Charles Darwin wanted to know if cross-fertilized corn (\textit{Zea mays}) grew better than self-fertilized corn. He took 15 pairs of plants, one self- and one cross-fertilized, each having germinated on the same day, and planted them together in one of 4 pots. He measured the heights of the plants, to one-eight of an inch, after some time (Table \ref{table:darwin}).
+
+\begin{table}
+\centering
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{ccll}
+\toprule
+& & \multicolumn{2}{c}{Height (inches)} \\
+\cmidrule{3-4}
+Pair & Pot & Crossed & Self-fert. \\
+\midrule
+1 & 1 & $23 \tfrac{1}{2}$ & $17 \tfrac{3}{8}$ \\
+2 & 1 & $12$ & $20 \tfrac{3}{8}$ \\
+3 & 1 & $21$ & $20$ \\[1.0ex]
+4 & 2 & $22$ & $20$ \\
+5 & 2 & $19 \tfrac{1}{8}$ & $18 \tfrac{3}{8}$ \\
+6 & 2 & $21 \tfrac{1}{2}$ & $18 \tfrac{5}{8}$ \\[1.0ex]
+7 & 3 & $22 \tfrac{1}{8}$ & $18 \tfrac{5}{8}$ \\
+8 & 3 & $20 \tfrac{3}{8}$ & $15 \tfrac{1}{4}$ \\
+9 & 3 & $18 \tfrac{1}{4}$ & $16 \tfrac{1}{2}$ \\
+10 & 3 & $21 \tfrac{5}{8}$ & $18$ \\
+11 & 3 & $23 \tfrac{1}{4}$ & $16 \tfrac{1}{4}$ \\[1.0ex]
+12 & 4 & $21$ & $18$ \\
+13 & 4 & $22 \tfrac{1}{8}$ & $12 \tfrac{3}{4}$ \\
+14 & 4 & $23$ & $15 \tfrac{1}{2}$ \\
+15 & 4 & $12$ & $18$ \\
+\bottomrule
+\end{tabular}
+\caption{Darwin's \textit{Zea mays} data}
+\label{table:darwin}
+\end{table}
+
+The obvious question is: did the hybridized plants grow faster than the self-fertilized plants?
+
+\subsection{A sign test}
+
+This just reduces down to the binomial test above. Null hypothesis is that the median is zero.
+
+\subsection{Wilcoxon's signed rank test}
+
+Null hypothesis is zero median and symmetric distribution. Much more complex test statistic.
+
+\subsection{Fisher's sum test}
+
+Null is zero median and symmetric distribution. Simple test statistic.
+
+\subsection{Paired $t$-test}
+
+\subsection{Scott's}
+
+Something about permuting within the pots? Bootstrapping?
+
 \section{Parametric inference}
 
 - z-test
