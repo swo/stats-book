@@ -49,10 +49,12 @@ I think my only take-away is that you should trust your gut more than a $p$-valu
 
 Confidence intervals were also controversial when first introduced, and they are also philosophically confusing. To say that the 95\% confidence interval on $X$ is from here to there means that, if the test statistic observed in this experiment were the true one (which it almost certainly is not), then if you repeated the experiment many times, in what interval would the measured test statistics tend to fall? This is \emph{not} the same as saying that there is a 95\% chance that the true value is in that interval, although exactly what it \emph{is} saying is confusing.
 
-\section{The simplest test: checking for a fair coin}
+\section{A test with a simple explanation but difficult math: the binomial proportion test}
 
 To understand how to go from a test's ingredients to its outputs, I will work
-through many examples of increasing complexity. The first and simplest is this: I flip a coin $n$ times, seeing some sequence of heads and tails, and I want to infer whether the coin is fair.
+through many examples of increasing complexity. The first and simplest is this:
+I flip a coin $n$ times, seeing some sequence of heads and tails, and I want to
+infer whether the coin is fair.
 
 \begin{itemize}
 \item The \emph{observed data} is the sequence of heads and tails I flipped.
@@ -163,13 +165,46 @@ of heads larger than what you observed.
 If this seems like a big, confusing headache, I hope you take it as a sign that
 confidence intervals are confusing, not that you're not understanding!
 
-\section{Approximating the binomial proportion test}
+\section{A test with simple math but a difficult explanation: the $z$-test}
 
 The elegance of the previous example is that it works by simply enumerating all
 the possible sets of observations. The inelegant part is that there can be
 many: $2^n$ grows quickly with $n$, making the sums in the $p$-value
 calculations onerous. Furthermore, the math of the Clopper-Pearson interval is
 a bit of a mess and hard to articulate.
+
+As a counterexample, consider the humble $z$-test, in which your experiment consists of drawing a single number from a pre-specified population, specifically, a normal distribution with known mean $\mu$ and variance $\sigma^2$:
+\begin{itemize}
+\item The observed data is the single number $x$ you drew.
+\item The universe of possible observations is all numbers, from $-\infty$ to $+\infty$.
+\item The null hypothesis is that the number $x$ was drawn from a normal population with mean $\mu$ and variance $\sigma^2$.
+\item The test statistic is just the number $x$.
+\end{itemize}
+
+In this example, rather than summing up over the \emph{discrete} universe of possibilities, you need to integrate to find the $p$-value:
+\begin{equation}
+  \text{``low-sided'' $p$-value} = \int_{y=-\infty}^x f_\mathcal{N}(y; \mu, \sigma^2) \,\mathrm{d}y = F_\mathcal{N}(y; \mu, \sigma^2).
+\end{equation}
+
+\subsection{cis}
+
+\begin{align}
+1 - \alpha &= \prob{X_- \leq \mu \leq X_+} \\
+\alpha / 2 &= \prob{X_- \geq \mu}
+\end{align}
+Making the inspired guess that
+\begin{equation}
+  \frac{X_- - \mu}{\sigma} = \frac{X - \mu}{\sigma} - b
+\end{equation}
+that is, that $X_- = X - \sigma b$, we find that
+\begin{align}
+  \alpha/2 &= \prob{X - \sigma b \geq \mu} \\
+  &= \prob{\frac{X - \mu}{\sigma} > b},
+\end{align}
+which you can find that, for $\alpha = 0.05$, you get $b = 1.96$.
+
+
+\section{approx}
 
 In fact, rather than enumerating all $2^n$ possibilities, the typical approach
 is to approximate the binomial distribution with the normal distribution. It turns out that, when $n$ is not too small, that:
