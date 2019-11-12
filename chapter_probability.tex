@@ -4,10 +4,10 @@
 \label{chapter:probability}
 
 To understand statistics, it's critical to have a grasp of basic concepts in
-probability, which is an entire branch of mathematics. The central concept in
-probability theory is, unsurprisingly, \emph{probability}.
+probability, which is an entire branch of mathematics. Here I will give you
+the essentials so you can have a grasp of probability theory.
 
-\section{The definition of probability}
+\section{Probability has two definitions}
 
 We talk about and reason about probability every day, mostly for matters of
 prediction. Given the weather report, is it worth it for me to carry an
@@ -17,51 +17,104 @@ hypothesis was correct?
 We intuitively think about probability in a mostly \emph{Bayesian} way.
 Statistics, when not prefaced by the word ``Bayesian'', refers to a different
 philosophical branch call \emph{frequentist} statistics. The philosophical
-distinction between Bayesian probability and frequentist probability have
-important practical implications, so it's important to understand the
-difference.
+distinction between Bayesian probability and frequentist probability has
+practical implications, so it's important to understand the difference.
 
-In Bayesian statistics, \emph{probability} refers to a difficult-to-articulate
-sense of confidence about an unknown thing, often a future event. If I say the
-probability of an event is 1\%, it means, in a practical sense, that I'm
-willing to bet a fair amount of money it won't happen. Philosophically, it's
-hard to say what ``1\% confident'' means, but the concept should be very
-intuitive.
+In Bayesian statistics, \emph{probability} refers to a sense of confidence
+about an unknown thing, often a future event. If I say the probability of an
+event is 1\%, it means, in a practical sense, that I'm willing to bet a fair
+amount of money it won't happen. Philosophically, it's hard to say what ``1\%
+confident'' really means, but the concept should be very intuitive.
 
-A more mathematically and philosophically simple way to think about
-probability is the \emph{frequentist} approach. In this framework,
-probabilities are all proportions, or ``frequencies''. A 50\% chance of
-flipping a coin and seeing heads means that, as you flip the coin more and
-more times, the proportion of flips that come up heads will approach 50\%.
+The mathematically and philosophically simpler definition of probability is as
+a proportion or ``frequency''. A 50\% probability of flipping a coin and seeing
+heads means that, as you flip the coin more and more times, the proportion of
+flips that come up heads will approach 50\%. One might equivalently say that
+the ``frequency'' of heads approaches 50\%. This is called the
+\emph{frequentist} definition of probability.
 
-The problem with the frequentist approach is that probabilities can only be
-assigned to events that can be repeated. It therefore doesn't make sense to
-ask about the probability that your hypothesis is correct, since your
-hypothesis is either correct or incorrect. It's like asking the probability
-that it rained yesterday. It either did or it didn't. We live in just one
-universe, so you can't ask, in a frequentist scheme, about the probability of
-a state of nature, like whether your hypothesis is correct.
 
-This is deeply dissatifying: the whole point of statistical inference is to
-figure out what's going on in the world. But the Bayesian approach, which does
-allow you to ask about the probability of states of nature, is mathematically
-and technically more challenging. Also, some prominent statisticians thought
-it was nonsense and mostly directed the field of statistics away from the Bayesian
-approach for many years.
+\section{The frequentist system is more coherent but dissatisfying}
 
-So what's the definition of probability? It's either:
-\begin{enumerate}
-\item in the frequentist sense, the proportion of identically-repeated trials that have some outcome, or
-\item in the Bayesian sense, some number between 0 and 1 that encodes our sense of the---for lack of a better word---probability of that outcome.
-\end{enumerate}
+The problem with the frequentist definition is that probabilities can only
+be assigned to experiments or situations that can be repeated infinitely many
+times. It does not make sense to ask about the probability that it will rain
+tomorrow any more than it makes sense to ask about the probability that it
+rained yesterday: it either rained or it didn't, either it will rain or it
+won't.
+
+The fact that we live in just one universe means that, in a frequentist scheme,
+you cannot ask about the probability of a state of nature. You cannot ask about
+the probability your hypothesis is correct. If you get anything other than zero
+or one, you did the math wrong.
+
+As a scientist, this is deeply dissatisying.  The whole point of statistical
+inference is to figure out what's going on in the world. I don't want to feed
+my hard-won experimental data into a statistical algorithm that says, ``If your
+hypothesis is true, then it is; and if it's not, it's not.''
+
+The Bayesian approach is more appealing in that it does in fact allow you to
+ask about the probability of states of nature. There is such a thing as a
+Bayesian probability that it will rain tomorrow or that your scientific
+hypothesis is correct.
+
+Unfortunately, Bayesian statistics is more mathematically and technically
+challenging. It also requires an assertion of a \emph{prior probability}: you
+must state the probability that your hypothesis was true before you started the
+experiment. This idea is bizarre and repugnant to many scientists today. More
+importantly, some early, prominent statisticians thought it was nonsense and
+mostly directed the field of statistics away from the Bayesian approach for
+many years.
+
+Perhaps not surprisingly, frequentist statistics are more common.
+``Statistics'' means frequentist statistics unless someone explicitly says
+``Bayesian''. I follow this convention and will discuss only frequentist
+statistics. Sorry.
+
 
 \section{The mathematical definition of probability}
 
-In the last section I used the words ``trial'', ``outcome'', and
-``probability''.  There is a sophisticated mathematical theory about all these
-concepts called \emph{measure theory}. Although fascinating, it's pretty heavy
-lifting, so I'll aim to use definitions that will give us a lot of practical
-benefit, albeit at the cost of creating a mathematically incomplete theory.
+
+Above we said that the frequentist definition of probability has to do with the
+proportions of infinitely-repeatable trials that have some \emph{outcome}. An
+outcome is any thing that can happen as a result of an infinitely-repeatable
+trial. For example, if you flip a coin, you will get heads, or you will get
+tails.
+
+The \emph{sample space}, written $\Omega$, consists of all possible subsets of
+\emph{outcomes}, each written $\omega$. Members of the sample space are called
+\emph{events}.  Clearly, each outcome is itself an event: ``flipped heads'' and
+``flipped tails'' are both events. But the empty set $\varnothing$ is also an
+event (``nothing happened''), and the set of all outcomes $\Omega$
+
+The basis of the mathematical theory of probability is \emph{measure theory}, a
+fascinating but involved subject. Here I aim to use definitions that will give
+us a lot of practical benefit, albeit at the cost of creating a mathematically
+incomplete theory. If this concerns you, there are many, many excellent books
+and classes on both probability theory and measure theory.
+
+
+
+
+In probability theory, \emph{probability} is a function that maps \emph{events}
+to numbers between zero and one:
+\begin{equation*}
+\mathbb{P} : \Omega \to [0, 1],
+\end{equation*}
+where the \emph{sample space} $\Omega$ is the set of all \emph{events}
+$\omega$. An event is anything that could happen when you run some
+infinitely-repeatable trial or experiment. For example, if you flip a coin, you
+might get heads or tails.
+
+For completeness, the sample space includes all combinations of events,
+including the anything-happened event $\Omega$ (i.e., you flips either one of
+heads or tails) and the nothing-happened event $\varnothing$, which have the
+probabilities you expect:
+\begin{align*}
+\prob{\Omega} &= 1 \\
+\prob{\varnothing} &= 0
+\end{align*}
+Some other examples of events and sample spaces are in \ref{tab:events}.
 
 To start, we define \emph{outcomes} or \emph{sample space} as the set of all
 things that could happen when we run some trial. How you define ``set of all
