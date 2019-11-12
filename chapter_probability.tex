@@ -85,52 +85,11 @@ The \emph{sample space}, written $\Omega$, consists of all possible subsets of
 \emph{outcomes}, each written $\omega$. Members of the sample space are called
 \emph{events}.  Clearly, each outcome is itself an event: ``flipped heads'' and
 ``flipped tails'' are both events. But the empty set $\varnothing$ is also an
-event (``nothing happened''), and the set of all outcomes $\Omega$
-
-The basis of the mathematical theory of probability is \emph{measure theory}, a
-fascinating but involved subject. Here I aim to use definitions that will give
-us a lot of practical benefit, albeit at the cost of creating a mathematically
-incomplete theory. If this concerns you, there are many, many excellent books
-and classes on both probability theory and measure theory.
-
-
-
-
-In probability theory, \emph{probability} is a function that maps \emph{events}
-to numbers between zero and one:
-\begin{equation*}
-\mathbb{P} : \Omega \to [0, 1],
-\end{equation*}
-where the \emph{sample space} $\Omega$ is the set of all \emph{events}
-$\omega$. An event is anything that could happen when you run some
-infinitely-repeatable trial or experiment. For example, if you flip a coin, you
-might get heads or tails.
-
-For completeness, the sample space includes all combinations of events,
-including the anything-happened event $\Omega$ (i.e., you flips either one of
-heads or tails) and the nothing-happened event $\varnothing$, which have the
-probabilities you expect:
-\begin{align*}
-\prob{\Omega} &= 1 \\
-\prob{\varnothing} &= 0
-\end{align*}
-Some other examples of events and sample spaces are in \ref{tab:events}.
-
-To start, we define \emph{outcomes} or \emph{sample space} as the set of all
-things that could happen when we run some trial. How you define ``set of all
-things'' is a complicated question. In the discussion that follows, I'll use
-simple, abstract events. For example, if you flip a coin, we'll say it lands
-heads or tails. The collection of all possible combinations of outcomes are
-the possible \emph{events}.\footnote{This is where the mathematical
-incompleteness comes in. If the outcomes are finite (i.e., discrete, like in
-our cards example), it's straightforward to enumerate the events as the finite
-set of all possible subsets of the outcomes. If the outcomes are continuous,
-things get tricky. You can't just ``count'' an infinite number of events, so
-you need to be careful about how you define ``all possible combinations''. The
-right way to do things is with a \emph{$\sigma$-algebra}.} For flipping a
-coin, the events include the individual outcomes (heads or tails), the
-combinations of outcomes (either heads or tails), and no outcome (didn't flip
-anything).
+event (``nothing happened''), and the set of all outcomes $\Omega$ is also an
+event (``something happened''). Some other examples of outcomes, events, and
+sample spaces are in Table \ref{tab:outcome-event}. I emphasize that
+\emph{outcomes} are individual, real things that might happen, while
+\emph{events} are abstract groupings of outcomes.
 
 \begin{table}
 \centering
@@ -145,52 +104,59 @@ Pick a random number between 0 and 1 & All real numbers between 0 and 1 & $\varn
 Your experiment & Each possible configuration of atoms at measurement & ``Cancer cell died'', ``Electron had energy between 1 and 2 eV'', etc. \\
 \bottomrule
 \end{tabular}
-\caption{Distinction between outcomes and events for various example situations. $\varnothing$ is the nothing-happened event. $\Omega$ is the something-happened event. The ``all subsets'' is a $\sigma$-algebra, which we won't dive into.}
+\caption{Distinction between outcomes and events for various example
+situations.}
 \label{tab:outcome-event}
 \end{table}
 
-The difference between \emph{outcomes} and \emph{events} might seem trivial,
-but it will come up a few times, so I'll repeat that \emph{outcomes} are
-individual, real things that might happen, while \emph{events} are abstract
-groupings of outcomes. Importantly, nothing-happened is an event but clearly
-not an outcome: if I run a trial, it can't be that nothing happened, but
-for mathematical reasons, nothing-happened is an event.
+As an aside, I note that defining ``all possible subsets of outcomes'' is
+straightforward for a discrete case like flipping a coin or drawing a card, but
+it is complicated for a continuous case like drawing a random real number
+between $0$ and $1$. In continuous cases, a rigorous definition for the event
+space $\Omega$ requires concepts from \emph{measure theory}, including a
+$\sigma$-\emph{algebra}. I avoid these complexities in this chapter at the cost
+of presenting a mathematically incomplete theory of probability.
 
-Each event is associated with a probability via a function that has no real
-name except ``probability''. It is a basic axiom of probability theory that
-probabilities are always between zero and one. The probability function, written
-here as $\mathbb{P}$, links each event $\omega$ in the space $\Omega$ of
-events with a probability $p$:
-\begin{gather*}
-\mathbb{P} : \Omega \to [0, 1] \\
-\prob{\omega} = p
-\end{gather*}
-For example, if the event $H$ is flipping heads, then we say
-$\prob{H} = \tfrac{1}{2}$. I use the square brackets to emphasize
-that $\mathbb{P}$ is a function of something that is not a number: it takes
-events $\omega$ and not numbers like 5.
+\emph{Probability} is a function that maps events to numbers between $0$ and
+$1$:
+\begin{equation*}
+\mathbb{P} : \Omega \to [0, 1]
+\end{equation*}
+For example, if $H$ is the event of flipping heads, then $\prob{H} =
+\tfrac{1}{2}$. I use the square brackets to emphasize that $\mathbb{P}$ is a
+function of something other than numbers: $H$ is not a number like $5$, it is
+an \emph{event}, a distinct mathematical object.
 
-Probability theory axioms specify that the anything-happened event $\Omega$ has
-probability one and the nothing-happened event $\varnothing$ has probability zero:
+Confusingly, ``probability'' refer both to the function $\mathbb{P}$ as well as
+the number $p = \prob{\omega}$ that comes from applying this function to an
+event $\omega$.
+
+
+\section{Manipulating probabilities}
+
+\subsection{Probability functions follow certain axiomatic rules}
+
+Comfortingly, probability functions are axiomatically required to be defined so
+that that the probability that ``nothing happened'' is zero and the probability
+that ``something happened'' is one:
 \begin{align*}
 \prob{\Omega} &= 1 \\
 \prob{\varnothing} &= 0
 \end{align*}
 Something must happen, and nothing cannot happen.
 
-\section{Manipulating probabilities}
+The axioms about probability functions also mean they follow specific rules
+around manipulating probabilities. For example, we're often interested in the
+relationships between events. What is that probability that this \emph{or} that
+happened? What is the probability that this \emph{and} that happened?
 
-We're often interested in the relationships between events. What is that
-probability that this \emph{or} that happened? What is the probability that
-this \emph{and} that happened?
-
-\subsection{``And'' adds event probabilities}
+\subsection{``Or'' adds event probabilities}
 
 If $A$ and $B$ are two events that don't have any constituent outcomes in
-common, we call then \emph{disjoint}, and their probabilities add. For
-example, the probability of flipping a heads or a tails is
-the probability of heads plus the probability of tails.
-Mathematically we write this as
+common, we call then \emph{disjoint}, and their probabilities add. For example,
+the probability of flipping a heads \emph{or} flipping a tails is the
+probability of heads plus the probability of tails.  Mathematically we write
+this as
 $$
 \text{if } A \cap B = \varnothing \text{, then } \prob{A \cup B} = \prob{A} + \prob{B},
 $$
@@ -200,7 +166,7 @@ then the probability of $A$ or $B$ is the sum of their individual probabilities.
 
 If $A$ and $B$ do have some overlap, you need to subtract out the probability
 of the overlap. For example, consider drawing a card
-from a standard 52-card deck. What is the probability of drawing a Jack or a
+from a standard 52-card deck. What is the probability of drawing a Jack \emph{or} a
 Diamond? If you add up the probability of drawing a Jack and the probability
 of drawing a Diamond, you end up double-counting the Jack of Diamonds event,
 so the solution is to subtract out the double-counted event:
@@ -209,59 +175,54 @@ $$
 $$
 We mostly deal with disjoint events, so I won't belabor this point.
 
-\subsection{``Or'' multiplies events}
+\subsection{``And'' multiplies events}
 
 We just said that ``or'' for disjoint events adds probabilities. How do we
 find the probability of $A$ and $B$? Say I flip two coins. What's the
-probability that I flip heads on the first coin and heads on the second?
+probability that I flip heads on the first coin \emph{and} heads on the second?
 
 If $A$ and $B$ are \emph{independent} events, then their probabilities
-multiply. The probability of flipping two heads is $\tfrac{1}{2} \times
+multiply. The probability of flipping two heads in a row is $\tfrac{1}{2} \times
 \tfrac{1}{2} = \tfrac{1}{4}$.
 
 \subsection{Independence and conditional probability}
 
-How do you know if two events are independent? Mathematically, $A$ and $B$
-are indepedent if and only if their probabilities multiply.
+Mathematically, $A$ and $B$ are indepedent if and only if their probabilities
+multiply. This might feel circular, so I will show you the logic.
 
-This might feel circular. Intuitively, independence means that the events
-can't depend on each other. I flip two separate coins, so the flip of one
-can't affect the flip of the other.
+Intuitively, two events are independent is they do not depend on each other. If
+I flip two separate coins, the flip of one coin can't affect the flip of the
+other.
 
-``Depends on'' also has a mathematical notation. While the probability function
-took a single event and returned a single number, \emph{conditional
-probability} is a function that takes two events and returns a probability:
-$$
-\mathbb{P}[A | B] = p.
-$$
-This equation is read as ``the probability of $A$ given $B$ is $p$''.
+Perhaps surprisingly, ``depends on'' hits on a deep philosophical question.
+Just as ``probability'' had frequentist and Bayesian definitions, so there are
+multiple definitions of \emph{conditional probability}. The easiest
+(``Kolomogorov'') definition is:
+\begin{equation*}
+\prob{A | B} = \frac{\prob{A \cap B}}{\prob{B}},
+\end{equation*}
+where $\prob{A | B}$ is pronounced ``the probability of $A$ given $B$''.
 
-In a frequesting mindset, where probabilities are proportions, $\prob{A | B}$
-is, on a denominator of the trials in which $B$ happened, the proportion of
-trials  in which $A$ also happened.\footnote{This is another place in which my
-simple definition hides controversy and subtlety. I'm using the ``Kolmogorov
-definition'' of conditional probability, but there's more than one way to
-approach it. Probability is a philosophically and mathematically complex notion.}
-Say $n_B$ is the number of trials in which $B$ happened, $n_{AB}$ is the
-number of trials in which $A$ and $B$ happened, and $n$ is the total number of
-trials. Then the proportion we're talking about is $n_{AB} / n_B$.
+Although the definition of conditional probability is a mathematical axiom that
+cannot be proven or disproven, it is easy to get an intuitive picture of why it
+is chosen as an axiom. In a frequentist interpretation of probability, $\prob{A
+| B}$ is, on a denominator of the trials in which $B$ happened, the proportion
+of trials in which $A$ also happened. Say $n_B$ is the number of trials in
+which $B$ happened, $n_{AB}$ is the number of trials in which $A$ and $B$
+happened, and $n$ is the total number of trials. Then the proportion we're
+talking about is $n_{AB} / n_B$, which corresponds to $\prob{A \cap B} /
+\prob{B}$. I like to think of conditional probability as ``zooming in'' to a
+smaller sample space: rather than thinking about all of $\Omega$, we are
+thinking only about the subset of outcomes $\omega$ where $B$ happened (Figure
+\ref{fig:conditional-probability}).
 
 \begin{figure}
 \caption{Conditional probability as shrinking of universe}
 \label{fig:conditional-probability}
 \end{figure}
 
-To get to the more general definition of conditional probability, divide top
-and bottom by $n$ to get $(n_{AB}/n) / (n_B/n)$. The numerator is the
-proportion of trials where $A$ and $B$ happened. The denominator is the
-proportion of trials were $B$ happened. Thinking of proportions of trials as
-probabilities, it follows that: $$ \prob{A | B} \defeq \frac{\prob{A \cap
-B}}{\prob{B}}. $$ A pictoral way of thinking about conditional probabilities
-is to say you're interested in the probability of $A$, not in the original
-universe of events $\Omega$, but in the smaller universe of events $B$ (Figure
-\ref{fig:conditional-probability}).
-
-This notation clarifies our definition of independence. If $A$ and $B$ are
-independent, then $\prob{A \cap B} = \prob{A} \times \prob{B}$, so, by the
-definition, $\prob{A | B} = \prob{A}$. In other words, independence means that
-the probability of one event doesn't depend on the other.
+If $A$ and $B$ are independent, then $A$ does not ``depend on'' $B$: the
+probability of $A$ given that $B$ happened is equal to the probability of $A$
+without knowing anything about $B$: if $A$ and $B$ are independent, then
+$\prob{A | B} = \prob{A}$, and thus $\prob{A \cap B} = \prob{A} \times
+\prob{B}$.
