@@ -116,6 +116,13 @@ F_X : \mathbb{R} \to [0, 1] \\
 F_X(x) \defeq \prob{X \leq x}
 \end{gather*}
 
+No one else says it this way, but I like to think of there being a cdf
+``metafunction'' $F_{(\cdot)}$ that takes in random variables and returns
+cdf's:
+\begin{gather*}
+F_{(\cdot)} : X \to \left( \mathbb{R} \to [0, 1] \right)
+\end{gather*}
+
 Note that the cdf is a function of numbers, which I emphasize by using regular
 parentheses around $x$ in $F_X(x)$. Note also that, just as ``$X = 1$'' did
 not mean that the random variable $X$ equals 1, ``$X \leq x$'' does not mean

@@ -72,8 +72,7 @@ Perhaps not surprisingly, frequentist statistics are more common.
 statistics. Sorry.
 
 
-\section{The mathematical definition of probability}
-
+\section{Probability is a function}
 
 Above we said that the frequentist definition of probability has to do with the
 proportions of infinitely-repeatable trials that have some \emph{outcome}. An
@@ -131,11 +130,6 @@ Confusingly, ``probability'' refer both to the function $\mathbb{P}$ as well as
 the number $p = \prob{\omega}$ that comes from applying this function to an
 event $\omega$.
 
-
-\section{Manipulating probabilities}
-
-\subsection{Probability functions follow certain axiomatic rules}
-
 Comfortingly, probability functions are axiomatically required to be defined so
 that that the probability that ``nothing happened'' is zero and the probability
 that ``something happened'' is one:
@@ -150,7 +144,7 @@ around manipulating probabilities. For example, we're often interested in the
 relationships between events. What is that probability that this \emph{or} that
 happened? What is the probability that this \emph{and} that happened?
 
-\subsection{``Or'' adds event probabilities}
+\section{``Or'' adds event probabilities; ``and'' multiplies}
 
 If $A$ and $B$ are two events that don't have any constituent outcomes in
 common, we call then \emph{disjoint}, and their probabilities add. For example,
@@ -175,9 +169,7 @@ $$
 $$
 We mostly deal with disjoint events, so I won't belabor this point.
 
-\subsection{``And'' multiplies events}
-
-We just said that ``or'' for disjoint events adds probabilities. How do we
+We said that ``or'' for disjoint events adds probabilities. How do we
 find the probability of $A$ and $B$? Say I flip two coins. What's the
 probability that I flip heads on the first coin \emph{and} heads on the second?
 
@@ -185,7 +177,7 @@ If $A$ and $B$ are \emph{independent} events, then their probabilities
 multiply. The probability of flipping two heads in a row is $\tfrac{1}{2} \times
 \tfrac{1}{2} = \tfrac{1}{4}$.
 
-\subsection{Independence and conditional probability}
+\section{Independence and conditional probability}
 
 Mathematically, $A$ and $B$ are indepedent if and only if their probabilities
 multiply. This might feel circular, so I will show you the logic.

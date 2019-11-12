@@ -57,8 +57,9 @@ a function ($f$) as input and returned a number (zero).
 
 A function can also take a function and return a different function. For
 example, the mirror of $f(x)$ around the $x=0$ point is a new function $g(x) =
--f(x)$. The function ``mirror around $x=0$'' took a function ($f$) as input and
-returned another function ($g$).
+f(-x)$. The function ``mirror around $x=0$'' took a function ($f$) as input and
+returned another function ($g$). In computer science, functions that return
+functions are sometimes called ``function factories''.
 
 I hope it's clear that the inputs or outputs could be anything. I could even
 say that I have a function $h$ that maps from the space of quadrilaterals to
@@ -95,6 +96,13 @@ f(1) = 2 \\
 \mathrm{add}(1, 2) = 3
 \end{gather*}
 
+
+
+Sometimes the ``dot'' notation, like $f(\cdot)$, is used to distinguish the
+function $f$ from the number $f(x)$ that the function outputs for the input
+$x$. The dot avoids the confusion about whether $x$ is a stand-in or whether it
+is an actual number by using the dot, which is clearly not a number.
+
 But sometimes we write certain functions of two inputs with an ``infix'' style
 in between the two inputs: we write $1 + 2 = 3$ rather than $\mathord{+}(1, 2)
 = 3$. In a few cases, we write a function as ``around-fix''. For example, the
@@ -104,7 +112,6 @@ for things the factorial function: $4! = 24$.
 Don't be alarmed. These are all just functions, mappings from one set of things
 to another set of things. If you see some notation you do not understand, ask,
 ``What is this a function of? What kinds of things is it mapping from and to?''
-
 
 \section{Different functions are written in the same way}
 
@@ -121,7 +128,9 @@ example, say $f(x) = x^2$. Then $f(2) = 4$ is true but $f(2) = 5$ is false.
 The ``equals'' in $f(2) = 5$ is a function that takes two numbers, $f(2)$ and
 $5$, and returns the Boolean ``false''. Extra confusingly, the ``equals'' in
 $f(x) = x^2$ is not a function at all; it is a signal to you, the reader, that
-a function is being defined!
+a function is being defined! I try to avoid this confusion in this book by
+writing ``def'' on top of any equal sign that is a mathematically important
+definition.
 
 Polymorphism arises in a few critical and very confusing moments in probability
 theory. For example, if I say ``the probability that $X$ equals two'', you will
