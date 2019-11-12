@@ -1,3 +1,15 @@
+# Empirical P-values
+
+- You observe a specific statistic, and then you sample another *n*.
+- Under the null hypothesis, the observed value and the other *n* came from the same distribution.
+- The *p*-value is the probability of getting a value as small as the observed one, given that the null is true.
+- If you know the "shape" of the distribution, you can compute this exactly (e.g., as we did in our sign test).
+- If you *don't* know the shape, then you need to do this empirically, with a parametric test.
+- You say, I have *n+1* items in a list. What's the chance that this particular item falls at rank *m* or below (or above)? That's $(r+1)/(n+1)$.
+- It's a mistake to do $r/n$, but not a terrible mistake, except that it gives you $p=0$!
+- Overestimates small $p$ (because you go up to 1/n+1) and underestimates large, but that's normally not a problem. The important thing is avoiding p=0 bias.
+- Also, this provides an *estimate* of the $p$-value, since you're basically doing a binomial test: of $n+1$ total coin flips, $r+1$ come out heads. What's the probability of heads? This has a confidence interval around it.
+
 # Material to fix
 
 - Universality of statistics
