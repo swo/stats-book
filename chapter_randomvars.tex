@@ -2,133 +2,170 @@
 
 \chapter{Random variables}
 
-In the previous chapter, we examined outcomes, events, and their
-probabilities. The outcomes we considered were very simple. For example, in
-the case of a coin toss, we said that the outcomes were heads or tails. We did
-this in part because it made the math very simple.
+The math in the last chapter is perfectly good for computing the probability
+of flipping a coin and getting a certain number of heads in a row, or for
+computing the probability of a winning poker hand, but not much more.
 
-It turns out that the math still works if the number of outcomes is infinite.
-For example, we might say that the coin landed with heads up and with some
-rotation with respect to magnetic north. We don't even need to limit ourselves
-to the coin. The outcome could include whether stock prices in Asia went up or
-down.
+This chapter introduces \emph{random variables}. Mathematically, random
+variables link outcomes with numbers. Intuitively, this link mirrors scientific
+measurement, the act of associating an outcome of an experiment with a number.
+Moving away from counting individual outcomes and events to looking at
+numbers will provide both useful mathematical abstraction as well as a more
+intuitive way to think about a scientific experiment.
 
-It may seem crazy to include information completely irrelevant to the question
-at hand. The space of events, all possible sets of outcomes, is now a truly
-crazy object to try to imagine. I introduce this complexity to demonstrate the
-power and elegance of \emph{random variables}.
 
-Take my example to the extreme: say that the space of outcomes of our
-experiment is all possible configurations of atoms in the universe at the
-moment your experiment is complete. As scientists, we have some kind of way of
-associating this configuration with a number. You have some apparatus that
-does measurement. For a microbiology experiment, you might count the number of
-bacterial colonies on a Petri dish. This reduces the overwhelming complexity
-of the universe into a single integer. A physics experiment might take the
-whizzing of many fundamental particles and return a single number, the kinetic
-energy of one of those particles.
+\section{A random variable is a function}
 
-Random variables are the mathematical analogue of measurement: they
-link outcomes with numbers.
+Before learning probability, I was used to thinking of a ``random variable'' as
+a random number generator: I might ``draw'' ten values from a
+``normally-distributed random variable''. As discussed in Chapter
+\ref{chapter:functions}, a random number generator is not a function in the
+mathematical sense that we are using here, which can make the following
+definition confusing.
 
-\section{Definition of random variables}
+A \emph{random variable} is a function from the sample space, the set of all
+possible outcomes of an experiment, to the real numbers. As mentioned above, I
+think of a random variable as a mathematical analog to scientific measurement:
+outcomes are the actual experimental outcomes, and a random variable maps that
+outcome to the number you would see on your measurement device.
 
-A random variable is a function from the space of outcomes to the real
-numbers. It links each outcome with a real number. A \emph{discrete} random
-variable $X$ is a function that associates outcomes $\omega \in \Omega$ with a
-finite set of numbers $x_i$:
+Random variables come in two major flavors, \emph{discrete} and
+\emph{continuous}. A \emph{discrete} random variable $X$ associates outcomes
+$\omega \in \Omega$ with a finite set of numbers $x_i$:
 \begin{gather*}
 X : \Omega \to \{x_1, \ldots x_k\} \\
 X[\omega] = x_i
 \end{gather*}
-for some finite $k$.
+for some finite $k$. A \emph{continuous} random variables associates outcomes
+with real numbers $x \in \mathbb{R}$:
+\begin{gather*}
+X : \Omega \to \mathbb{R}
+\end{gather*}
+In fact, this is a simplification: measure theory says that a random variable
+can map the outcome space to any \emph{measurable space}, but I will not dive
+into that.
 
-Note that we only specified that the random variable's output numbers be a
-finite set. The outcomes themselves might be infinite. For example, when
-flipping a coin, you could imagine a random variable $X$ encoding ``number of
-heads flipped''. If you use the abstract formulation from the last chapter,
-there are only two outcomes, $H$ and $T$, and the values of $X$ follow very
-mechanically from the outcomes:
+Note that the distinction between discrete and continuous random variables only
+has to do with the values they map \emph{to}, not with the sample space they
+map \emph{from}. If the sample space is discrete, we can clearly only have a
+discrete random variable. For example, when flipping a coin, there are only two
+outcomes, heads $H$ or tails $T$. You could imagine a random variable $X$
+encoding ``number of heads flipped'':
 \begin{align*}
 X[H] &= 1 \\
 X[T] &= 0
 \end{align*}
+There are other random variables you could define from this, say:
+\begin{align*}
+X[H] &= 5\pi \\
+X[T] &= -33
+\end{align*}
+But you clearly cannot map from a finite number of inputs to an infinite number
+of outputs.
 
-To make things more exciting, imagine that our outcomes were the crazy ones
-that include the rotational configuration of the coins or stock prices in
-Asia. Just as we look with our eyes and call a flip heads or tails, we can
-imagine a random variable that looks at each outcome and calls it as heads or
-tails. This means that, regardless of what the outcomes and events actually
-were, we can cook up a random variable that groups the outcomes how we want
-them to be grouped, just as we can design scientific apparatus that measures
-exactly what we want to measure and nothing else.
+In contrast, you can have an infinite space of outcomes and map it to a
+discrete set of values via a discrete random variable, or map it to an infinite
+set of values by a continuous random variable. For example, say I have an
+infinite set of outcomes and then a random variable $X$ that maps each outcome
+to a number, and those numbers include all the real numbers between $-1$ and
+$1$. Then I could find some outcome $\omega_1$ such that $X[\omega_1] =
+\tfrac{1}{3}$, and I could find some other outcome $\omega_2$ such that
+$X[\omega_1] = -\pi/6$, and so on. Now it's very clear I could define another
+random variable $Y$:
+\begin{equation*}
+Y[\omega] = \begin{cases}
+  0 \text{ if } X[\omega] \leq 0 \\
+  1 \text{ if } X[\omega] > 0
+\end{cases}
+\end{equation*}
+Clearly $Y$ takes on only two values, $0$ and $1$, and so is a discrete random
+variable, even though it is defined on an infinite set of inputs.
 
-Consider the set of outcomes mapped by the random variable to the same value.
-For example, consider all the wacky outcomes that the random variable maps to
-1 (i.e., heads). This set of outcomes is an event, which has a probability
-associated with it. This means it makes sense to write e.g., $\prob{X = 1} =
-\tfrac{1}{2}$. The one tricky thing to note is that the symbols ``$X = 1$'' in
-that equation do not signify that $X$ is the number one. $X$ is a function and
-will never equal one. Instead, the entire phrase ``$X = 1$'' refers to the
-event, the set of outcomes, for which $X$ took on the value 1.
 
-A \emph{continuous} random variables associates outcomes with real
-numbers $x \in \mathbb{R}$:
-\begin{gather*}
-X : \Omega \to \mathbb{R} \\
-X[\omega] = x
-\end{gather*}
-This is a simplification: measure theory says that a random variable can map
-the outcome space to any \emph{measurable space}. We won't dive into that.
+\section{Random variables abstract over outcomes}
 
-Because random variables allow us to abstract over the outcomes and look only
-at the values taken on by the random variable, from now on we will have no
-reason to think about the specific configuration of atoms in our experiment.
-We only think about the numbers delivered by our apparatus. Soon we'll be able
-to say things like ``$X$ is normally distributed'' without having to specify
-what are the outcomes and events.
+The whole point of random variables is that, very soon, we will never need to
+talk about outcomes again. Note how strained my previous example was, where I
+had to say, ``Well, there is some event $\omega$ that the random variable $X$
+maps to some value.'' I do not want to have to name all my outcomes like I did
+for the coin flip. Indeed, I \emph{cannot} come up with a name for an infinite
+number of outcomes \emph{except} insofar as I use a random variable so I can
+map them to the real numbers!
 
-The previous chapter was not a waste, however, because the
-rules for manipulating events and probabilities work just as well for
-events like ``$X = 1$'' as they did for ``flipped heads''. The philosophical and
-technical definition of probability still holds. For example, $\prob{(X = 1)
-\cup (X = 0)}$, the probability that $X$ takes on the values zero or one, is the
-sum of the two constituent probabilities $\prob{X=1}$ and
-$\prob{X=0}$.
+From this point forward, we will only refer to events by the values that random
+variables take on for those events' constitutent outcomes. For example, if
+$X$ represents the number of heads flipped on one coin toss, then $X = 0$
+refers to the \emph{event} where the coin landed tails, and $X = 1$ refers to
+the \emph{event} where the coin landed heads. Because the probability function
+maps events to numbers, we can now write:
+\begin{equation*}
+  \prob{X = 0} = \tfrac{1}{2}
+\end{equation*}
+Take careful note of the subtlety of this statement:
+\begin{align*}
+  \mathbb{P} &\text{ is a function mapping events to numbers between zero and one} \\
+  X &\text{ is a function mapping outcomes to numbers} \\
+  X = 0 &\text{ is the event composed of all the outcomes for which $X$ takes on the value zero} \\
+  \text{the first} = &\text{ is a function that took the function $X$ and the number $0$ and returned an event} \\
+  \text{the second} = &\text{ is a logical assertion}
+\end{align*}
+The important thing to remember is that $X = 0$ is an \emph{event}, a grouping
+of outcomes, \emph{not} a logical assertion like $1=1$.
 
-\section{Distribution of random variables}
+Conveniently, because we required that the probability function be defined on
+the ``nothing-happened'' event $\varnothing$ and the ``something-happend''
+event $\Omega$, I can also write such silly truths as:
+\begin{align*}
+  \prob{X = 5} &= \prob{\varnothing} = 0 \\
+  \prob{0 \leq X \leq 1} &= \prob{\Omega} = 1
+\end{align*}
 
-How is $X$ ``distributed''? If you're like me, you think in terms of
-histogram-like \emph{probability distribution functions} (pdf's) and consider
-\emph{cumulative distribution functions} (cdf's) as a derived quantity.
-Mathematically, it's easier to go the reverse route. If you aren't familiar
-with either, never fear.
+I could, of course, define a new random variable, say:
+\begin{align*}
+  Y[H] &= 6 \\
+  Y[T] &= 6
+\end{align*}
+From which it is clear that $\prob{Y = 6} = 1$ and $\prob{Y = y} = 0$ for any
+$y \neq 6$.
 
-\subsection{Cumulative distribution functions}
+The point is that, although the probabilities of the outcomes heads and tails
+both remain $\tfrac{1}{2}$, we no longer need to think about exactly what
+outcomes there are, what probabilities they have, and to what number the random
+variable maps each outcome. Instead, we can just examine the random variable,
+which has abstracted over everything else.
 
-The first way of defining the ``distribution'' of a random variable $X$ is its
-\emph{cumulative distribution function}, also called the cumulative
-\emph{density} function, abbreviated ``cdf''. The cdf of a random
-variable $X$ is the probability that the random variable takes on a value
-below the given value:
+The previous chapter was not a waste, however, because the rules for
+manipulating events and probabilities work just as well for events like ``$X =
+1$'' as they did for ``flipped heads''. The philosophical and technical
+definition of probability still holds. For example, $\prob{(X = 1) \cup (X =
+0)}$, the probability that $X$ takes on the values zero or one, is the sum of
+the two constituent probabilities $\prob{X=1}$ and $\prob{X=0}$.
+
+\section{Cumulative distribution functions}
+
+Now that we have random variables, we can ask how they are ``distributed''.  If
+you are like me, you think can't help but think of random variables as random
+number generators that produce values to be visualized as a histogram, whose
+mathematical analog is the \emph{probability distribution functions} (pdf's).
+In fact, it's mathematically more straightforward to define the
+\emph{cumulative distribution functions} (cdf's) and use that to define the pdf.
+
+The cdf of a random variable $X$, canonically written $F_X$, is a function that
+maps from real numbers to the numbers between zero and one. It is the
+probability of the event on which $X$ takes on a value below the given input
+value:
 \begin{gather*}
 F_X : \mathbb{R} \to [0, 1] \\
 F_X(x) \defeq \prob{X \leq x}
 \end{gather*}
 
-No one else says it this way, but I like to think of there being a cdf
-``metafunction'' $F_{(\cdot)}$ that takes in random variables and returns
-cdf's:
-\begin{gather*}
-F_{(\cdot)} : X \to \left( \mathbb{R} \to [0, 1] \right)
-\end{gather*}
-
 Note that the cdf is a function of numbers, which I emphasize by using regular
-parentheses around $x$ in $F_X(x)$. Note also that, just as ``$X = 1$'' did
-not mean that the random variable $X$ equals 1, ``$X \leq x$'' does not mean
-that $X$ is less than $x$. Instead, ``$X \leq x$'' refers to an event, the set
-of all outcomes that the random variable $X$ maps to numbers smaller than the
-number $x$. Big $X$ is a function and little $x$ is a number.
+parentheses around $x$ in $F_X(x)$. And as a reminder, ``$X \leq x$'' does not
+mean ``when $X$ is less than $x$''. Remember that $X$ is a function, so it
+cannot be ``less'' than a number, any more than the operation of addition can
+be less than 10.  Instead, ``$X \leq x$'' refers to an event, the set of all
+outcomes that the random variable $X$ maps to numbers smaller than the number
+$x$. Big $X$ is a function and little $x$ is a number.
 
 For a discrete random variable, which takes on specific values $x_i$, the cdf is
 just the sum of the probabilities of those specific values smaller than the
@@ -154,29 +191,29 @@ those cases, the cdf approaches zero and one as $x$ goes out toward infinity:
 
 % need a figure here with, say, normal distribution
 
-\subsection{Probability distribution function}
+\section{Probability distribution functions}
 
 For a discrete random variable, it's straightforward to define its
-\emph{probability mass function} or ``pmf'', which is just the probability
-that it takes on each discrete value $x_i$:
+\emph{probability mass function} or ``pmf'', canonically written $f_X$, which
+is just the probability that it takes on each discrete value $x_i$:
 \begin{gather*}
 f_X : \mathbb{R} \to [0, 1] \\
 f_X(x_i) \defeq \prob{X = x_i}
 \end{gather*}
 
-The analogue for continuous random variables is the \emph{probability
+The analog for continuous random variables is the \emph{probability
 distribution function}, or probability \emph{density} function,
-abbreviated ``pdf'' and written with a little $f$:
+abbreviated ``pdf'':
 \begin{gather*}
 f_X(x) : \mathbb{R} \to [0, 1] \\
 f_X(x) \defeq \frac{d}{dx} F_X(x)
 \end{gather*}
 
-Note that the pdf of a continuous random variable is not $\prob{X = x}$. This
-may seem like a pedantic diversion, but I actually think it's important to
-avoid confusion. For a continuous random variable, $\prob{X = x}$ is zero. For
-example, say $X$ takes on values between 0 and 1 uniformly, e.g., the
-probability that $X$ comes out between 0 and 0.5 is the same as between 0.5
+Note that the pdf of a continuous random variable $f_X(x)$ is not $\prob{X =
+x}$. This may seem like a pedantic diversion, but I actually think it's
+important to avoid confusion. For a continuous random variable, $\prob{X = x}$
+is zero. For example, say $X$ takes on values between 0 and 1 uniformly, e.g.,
+the probability that $X$ comes out between 0 and 0.5 is the same as between 0.5
 and 1, which is five times the probability you'll get a value between 0 and
 0.1, and so one. Say you're asking about the probability that $X$ comes out as
 0.5. I'll grant the following:
@@ -189,20 +226,23 @@ and so on. We normally don't say that $\prob{X = 0.500\ldots} = 0$, since that
 makes it sound like it's impossible for $X$ to take on the value $0.5$.
 Nevertheless, it should be clear that, from any practical point of view, the
 probability of getting exactly $0.500\ldots$ from your experiment is
-approximately zero. It does make sense to write ask about the density of $X$
-at 0.5, i.e., $f_X(0.5)$. It make less sense to ask about the probability that
-$X$ takes on 0.5, i.e., $\prob{X = 0.5}$.\footnote{Those dissatisfied with
-this explanation will need to learn some measure theory.}
+essentially zero. It does make sense to write ask about the density of $X$ at
+0.5, i.e., $f_X(0.5)$. It mostly does not make sense to ask about the
+probability that $X$ takes on 0.5, i.e., $\prob{X = 0.5}$. Those dissatisfied
+with this explanation will need to learn some measure theory!
 
 The word ``density'' in probability density function emphasizes that the pdf,
 when integrated, gives a probability:
 \begin{equation}\label{eq:integrated_pdf}
-\int_{x_0}^{x_1} f_X(x') \,dx' = F_X(x_1) - F_X(x_0) = \prob{x_0 < X \leq x_1}
+\int_{x_0}^{x_1} f_X(x') \dd x' = F_X(x_1) - F_X(x_0) = \prob{x_0 < X \leq x_1}
 \end{equation}
+In other words, the little-$f$ pdf $f_X$ is the derivative of the big-$F$ cdf
+$F_X$.
+
 It follows from the definition of the cdf and
 some fundamental calculus that
 \begin{equation}
-\int_{-\infty}^\infty f_X(x') \,dx' = 1
+\int_{-\infty}^\infty f_X(x') \dd x' = 1
 \end{equation}
 In other words, all probability density must be somewhere. This also requires that
 \begin{equation}
@@ -341,11 +381,11 @@ with data, let's consider two important properties of random variables, their
 
 \subsection{Don't expect the expected value}
 
-A random variable $X$'s \emph{expected value} $\expect{X}$ is the probability-
-weighted average of the values it takes on. It is a function that links random
-variables with numbers:
+The \emph{expected value} $\expect{X}$ of a random variable $X$ is the
+probability-weighted average of the values it takes on. It is a function that
+links random variables with numbers:
 \begin{equation*}
-\mathbb{E} : \text{random variables} \to \mathbb{R}
+\expect{\cdot} : \text{random variables} \to \mathbb{R}
 \end{equation*}
 For a discrete random variable, you simply sum. For a continuous random
 variable, you need to integrate:
