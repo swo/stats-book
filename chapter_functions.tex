@@ -4,34 +4,42 @@
 \label{chapter:functions}
 
 It may seem weird to start a book about statistics with something as abstract
-as ``functions'', but I think that probability theory get very confusing if you
-are not 100\% comfortable with thinking about functions.
+as ``functions'', but I think that probability theory becomes very confusing if you
+are not entirely comfortable with the formalism of mathematical functions.
 
-In later chapters, you will read statements like ``a \emph{statistic} is a
-function of the data'', ``a \emph{random variable} is a function'', and ``the
-statement $X=2$ is an \emph{events}''. After reading this chapter, you should
-be comfortable with the idea that in ``$X=2$'', the ``equals'' is a function
-that takes a function ($X$) and a number ($2$) and then returns a creature of a
-species (``event'') that you have not heard of before.
+As an example, as they are typically meant in statistical writing, $x=2$ is a
+true or false statement, while $X=2$ is an \emph{event}, which we will define
+later. This distinction often causes enormous confusion. After reading this
+chapter, you should comfortable with the idea that the ``equals'' sign in the
+statements $x=2$ and $X=2$ are actually different functions.
 
 \section{Functions map things to other things}
 
 In mathematical terms, a \emph{function} is relationship between sets, linking
 each element of one set to an element of another set. For example, say I have a
 function $f$ that links each number to the that number plus one:
-\begin{align*}
-f(1) &= 2 \\
-f(2) &= 3 \\
+\begin{gather*}
+f(1) = 2 \\
+f(2) = 3 \\
 \text{etc.}
-\end{align*}
+\end{gather*}
+This function is relatively simple in that it has only one input and it links
+elements of a set, the integers, onto other members of the same set. As we will
+see, functions can be much more complicated than this.
 
-For computer scientists, it may be more natural to think of a function as a
-little factory: $f$ ``takes'' an input number, adds $1$, and then ``returns''
-an output. This analogy works so long as the computer science function is a
-``pure'' function whose output is perfectly determined by the input. For
-example, although \texttt{generate\_random\_number} might be a ``function'' in
-the jargon of a programming language, it is not a function in the mathematical
-sense, because it does not map inputs onto consistent outputs.
+For many people, especially those used to computer programming, it may be more
+natural to think of a function as a factory: $f$ ``takes'' an input number $x$,
+adds $1$ to $x$, and then ``returns'' the output $x+1$. This analogy can be
+confusing because, in computer science, a ``function'' can actually refer to
+different things. The correct analogy to the mathematical concept of
+``function'' is called a ``pure'' function in computer science, where ``pure''
+means that the function is guaranteed to produce the same output whenever given
+the same input.\footnote{A pure function also has no ``side effects'', which
+means that calling that function cannot change anything about the statement of
+the program.} For example, a random number generator, while it might be called
+a ``function'' in a program, is not a pure function. To the user's eye, a
+random number generator is called multiple times, with no input, and returns
+different numbers every time.
 
 Some functions, like my example above, map one number to another, single
 number. Other functions take two numbers and return one number. For example, say
@@ -39,11 +47,19 @@ the function $g$ adds two numbers:
 \begin{equation*}
 g(1, 2) = 3
 \end{equation*}
+In fact, this is just the ``plus'' function that we usually write with \emph{infix
+notation}, meaning that we put the operator between the arguments, like $1+2$,
+rather than at the front, like $\mathord{+}(1, 2)$.
 
-A function can take something that isn't a number and return a number. For
+A function can take something that is not a number and return a number. For
 example, say the determinant of a matrix $A$ is $5$:
 \begin{equation*}
 \mathrm{det}(A) = 5
+\end{equation*}
+The reverse is of course possible. For example, a function could take as input
+a positive integer and return the identity matrix of that size:
+\begin{equation*}
+    \mathrm{Identity}(3) = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \\ \end{bmatrix}
 \end{equation*}
 
 Or a function can take numbers and return something that is not a number. For
