@@ -3,172 +3,134 @@
 \chapter{Functions}
 \label{chapter:functions}
 
-It may seem weird to start a book about statistics with something as abstract
-as ``functions'', but I think that probability theory becomes very confusing if you
-are not entirely comfortable with the formalism of mathematical functions.
+It may seem strange to start a book about statistics with something as abstract
+as functions, but many of the important objects in statistics are actually
+functions. If you are not entirely comfortable with the formalism of mathematical
+functions, fundamental concepts in statistics may become very confusing.
 
-As an example, as they are typically meant in statistical writing, $x=2$ is a
-true or false statement, while $X=2$ is an \emph{event}, which we will define
-later. This distinction often causes enormous confusion. After reading this
-chapter, you should comfortable with the idea that the ``equals'' sign in the
-statements $x=2$ and $X=2$ are actually different functions.
+As an example, in statistics, you often see notation like $X=x$. You might be
+tempted to think that $X$ is a variable representing a number, and $x$ is another
+variable representing a number, and the equal sign means that the two variables
+represent the same number. However, in probability and statistics, the notation
+$X=x$ refers to something entirely different: $X$ represents a kind of function
+called a \emph{random variable}, $x$ is a number, and the whole statement is not an
+assertion that the two sides of the equation are equal but instead a reference
+to the set of \emph{events} that the function $X$ maps to the value $x$. If this
+sounds incredibly bewildering, I agree, and helping unpack that is the purpose
+of the next few chapters.
 
 \section{Functions map things to other things}
 
 In mathematical terms, a \emph{function} is relationship between sets, linking
 each element of one set to an element of another set. For example, say I have a
-function $f$ that links each number to the that number plus one:
-\begin{gather*}
-f(1) = 2 \\
-f(2) = 3 \\
-\text{etc.}
-\end{gather*}
-This function is relatively simple in that it has only one input and it links
-elements of a set, the integers, onto other members of the same set. As we will
-see, functions can be much more complicated than this.
-
-For many people, especially those used to computer programming, it may be more
-natural to think of a function as a factory: $f$ ``takes'' an input number $x$,
-adds $1$ to $x$, and then ``returns'' the output $x+1$. This analogy can be
-confusing because, in computer science, a ``function'' can actually refer to
-different things. The correct analogy to the mathematical concept of
-``function'' is called a ``pure'' function in computer science, where ``pure''
-means that the function is guaranteed to produce the same output whenever given
-the same input.\footnote{A pure function also has no ``side effects'', which
-means that calling that function cannot change anything about the statement of
-the program.} For example, a random number generator, while it might be called
-a ``function'' in a program, is not a pure function. To the user's eye, a
-random number generator is called multiple times, with no input, and returns
-different numbers every time.
-
-Some functions, like my example above, map one number to another, single
-number. Other functions take two numbers and return one number. For example, say
-the function $g$ adds two numbers:
+function $f$ that links each number to that number plus one:
 \begin{equation*}
-g(1, 2) = 3
+f(1) = 2, \quad f(2) = 3, \quad \text{etc.}
 \end{equation*}
-In fact, this is just the ``plus'' function that we usually write with \emph{infix
-notation}, meaning that we put the operator between the arguments, like $1+2$,
-rather than at the front, like $\mathord{+}(1, 2)$.
+Take careful note: the equation $f(1) = 2$, when translated into words, means that the function
+$f$ maps the input $1$ to the output $2$. It does not mean that the function equals
+$2$. A function is a relationship between sets, not a number.
 
-A function can take something that is not a number and return a number. For
-example, say the determinant of a matrix $A$ is $5$:
+In computer programming, a ``function'' refers to a sort of computational factory
+that takes some input and returns some output. This kind of ``function'' is not
+necessarily a mapping like a mathematical function is. For example, a random number
+generator ``function'' is designed to return a different, unpredictable number
+every time is it called. Some programming languages define \emph{pure} functions,
+which are analogous to mathematical functions in that they are guaranteed to deliver
+the same output whenever given the same input, but this is unusual. Do not confuse
+mathematical functions with the conceptually distinct computer programming concept
+that happens to have the same name.
+
+\section{Functions can map different kinds of things, including functions}
+
+The function $f$ above is relatively simple: it takes a single real number as input
+and returns another real number. We characterize the function $f$ like this:
 \begin{equation*}
-\mathrm{det}(A) = 5
+    f : \mathbb{R} \to \mathbb{R},
 \end{equation*}
-The reverse is of course possible. For example, a function could take as input
-a positive integer and return the identity matrix of that size:
+where $\mathbb{R}$ represents the set of real numbers. A slightly more complex function
+adds two numbers:
 \begin{equation*}
-    \mathrm{Identity}(3) = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \\ \end{bmatrix}
+    \mathrm{add}(1, 2) = 3
+\end{equation*}
+Technically, this function still takes a single thing as input, only now that ``thing''
+is an ordered pair of numbers. Ordered pairs of real numbers are also called the
+\emph{Cartesian product} of the set of real numbers with itself, that is,
+$\mathbb{R} \times \mathbb{R}$, or just $\mathbb{R}^2$. We characterize this function
+like:
+\begin{equation*}
+    \mathrm{add} : \mathbb{R}^2 \to \mathbb{R}
 \end{equation*}
 
-Or a function can take numbers and return something that is not a number. For
-exmaple, the statement ``$5$ is less than or equal to $2$'' is false: the
-operator ``less than or equal two'' takes two numbers ($5$ and $2$) and returns
-a Boolean value (``false'').
-
-A function can also take a function as input and return a number. For example,
-the minimum of the function $f(x) = x^2$ is zero. A function (``minimum'') took
-a function ($f$) as input and returned a number (zero).
-
-A function can also take a function and return a different function. For
-example, the mirror of $f(x)$ around the $x=0$ point is a new function $g(x) =
-f(-x)$. The function ``mirror around $x=0$'' took a function ($f$) as input and
-returned another function ($g$). In computer science, functions that return
-functions are sometimes called ``function factories''.
-
-I hope it's clear that the inputs or outputs could be anything. I could even
-say that I have a function $h$ that maps from the space of quadrilaterals to
-the space of vegetables:
+Functions can map from things that aren't numbers. In linear algebra, every square matrix has a determinant, which is a real number. Thus, ``determinant'' is a function:
 \begin{equation*}
-h(\lozenge) = \text{Brussels sprouts}.
+    \mathrm{det} : \{\text{square matrices}\} \to \mathbb{R}
 \end{equation*}
-There is a special notation to make it clear what kinds of spaces a function
-maps from and to:
+Functions can also map to things that aren't numbers. Again in linear algebra, one
+matrix has multiple eigenvectors. Thus, ``eigenvectors'' is a function:
 \begin{equation*}
-h : \text{quadrilaterals} \to \text{vegetables}.
-\end{equation*}
-Perhaps more familiar, the function $f$ above maps from real numbers to other
-real numbers:
-\begin{equation*}
-f : \mathbb{R} \to \mathbb{R}
-\end{equation*}
-Functions with multiple inputs, like $g$ above, get a Cartesian product
-``cross'':
-\begin{equation*}
-g : \mathbb{R} \times \mathbb{R} \to \mathbb{R}
+    \mathrm{eigenvectors} : \{\text{matrices}\} \to \{\text{multiple vectors}\}
 \end{equation*}
 
+Importantly, functions can map from functions and to functions. For example,
+the minimum of the function $f(x) = x^2$ is zero. We characterize the ``minimum''
+function like:
+\begin{equation*}
+    \mathrm{min} : (\mathbb{R} \to \mathbb{R}) \to \mathbb{R},
+\end{equation*}
+where $(\mathbb{R} \to \mathbb{R})$ means the set of functions that map from real
+number to real numbers. Or, note that the mirror of some function $f(x)$ around
+$x=0$ is a new function $g(x) = f(-x)$. Thus, ``mirror around $x=0$'' is a function:
+\begin{equation*}
+    \mathrm{mirror} : (\mathbb{R} \to \mathbb{R}) \to (\mathbb{R} \to \mathbb{R})
+\end{equation*}
 
 
 \section{Functions are written in different ways}
 
-Confusingly, we write functions in many different ways. The most obvious is the
-``prefix'' or ``Eulerian'' style, where single-letter, italic text functions or
-3-ish-letter, normal text functions precede their inputs:
-\begin{gather*}
-f(1) = 2 \\
-\sin \pi = 1 \\
-\mathrm{add}(1, 2) = 3
-\end{gather*}
+We are used to writing functions using the \emph{prefix} (or ``Eulerian'') style,
+like $f(1) = 2$. In a few cases with well-known functions, we drop the parentheses,
+such as in $\sin \pi = 1$.
 
+However, there are other styles of writing functions. In \emph{infix} notation, the
+function (or ``operator'') goes between the two inputs, such as in $1 + 2$, rather
+than $+(1, 2)$. We use \emph{around-fix} notation for the absolute value, like in $|x|$,
+and we use \emph{postfix} notation for the factorial function, such as $4!$. And
+there are plenty more. The binomial ``choose'' function $\binom{n}{k}$ maps a pair of
+integers to an integer. Summation, such as $\sum_{x=0}^n f(x)$, can be thought of as
+mapping a function and two integers (the lower and upper limits) to a real number (i.e.,
+the value of the sum).
 
+The important thing is to understand what each symbol on the page is. If it not a
+variable, then it is likely a function, or a part of the notation needed to encode
+a function. If it is a function, what is it mapping from and to?
 
-Sometimes the ``dot'' notation, like $f(\cdot)$, is used to distinguish the
-function $f$ from the number $f(x)$ that the function outputs for the input
-$x$. The dot avoids the confusion about whether $x$ is a stand-in or whether it
-is an actual number by using the dot, which is clearly not a number.
-
-But sometimes we write certain functions of two inputs with an ``infix'' style
-in between the two inputs: we write $1 + 2 = 3$ rather than $\mathord{+}(1, 2)
-= 3$. In a few cases, we write a function as ``around-fix''. For example, the
-determinant of the matrix $A$ is often written $|A|$. We even use a ``postfix''
-for things the factorial function: $4! = 24$.
-
-Don't be alarmed. These are all just functions, mappings from one set of things
-to another set of things. If you see some notation you do not understand, ask,
-``What is this a function of? What kinds of things is it mapping from and to?''
 
 \section{Different functions are written in the same way}
 
-Computer scientists are likely comfortable with \emph{polymorphism}, the
-notion that the same ``function'', applied to different inputs, takes different
-actions. For example, in many programming languages, \texttt{+} is both
-numeric addition and string concatenation: \texttt{1 + 2} returns \texttt{3},
-but \texttt{"Stats " + "rules"} gives \texttt{"Stats rules"}. Somehow the
-``function'' \texttt{+} knew to add in one case and to concatenate in the
+In computer science, \emph{polymorphism} refers to the fact that the same ``function''
+(in the computer science sense) will, when handed inputs of different types, perform
+different computations. For example, in many programming languages, \texttt{+} is used
+to signal numeric addition as well as string concatenation: \texttt{1 + 2} returns \texttt{3},
+but \texttt{"Cui " + "bono?"} gives \texttt{"Cui bono?"}. Somehow the plus
+``function'' knew to add in one case and to concatenate in the
 other.
 
-We do the same thing with fairly common symbols, like ``equals'' ($=$). For
-example, say $f(x) = x^2$. Then $f(2) = 4$ is true but $f(2) = 5$ is false.
-The ``equals'' in $f(2) = 5$ is a function that takes two numbers, $f(2)$ and
-$5$, and returns the Boolean ``false''. Extra confusingly, the ``equals'' in
-$f(x) = x^2$ is not a function at all; it is a signal to you, the reader, that
-a function is being defined! I try to avoid this confusion in this book by
-writing ``def'' on top of any equal sign that is a mathematically important
-definition.
+In mathematics, polymorphism is mostly called ``different notation''. For example,
+the plus symbol ($+$) can be used to add two real numbers, but it can also be used
+to ``add'' two matrices. Adding two numbers and adding two matrices are analogous
+operations, but they are not identical. In statistics, we will encounter this situation
+often, where a series of symbols on the page could make perfect sense as an operation
+on numbers, but when in fact it means something very different.
 
-Polymorphism arises in a few critical and very confusing moments in probability
-theory. For example, if I say ``the probability that $X$ equals two'', you will
-respond with a number between zero and one. Say the value is one-third:
-\begin{equation*}
-\prob{X = 2} = \tfrac{1}{3}
-\end{equation*}
-Apparently, ``probability'' is a function that maps statements like
-``$X$ equals two'' to a number:
-\begin{equation*}
-\mathbb{P} : \text{statements like ``$X=2$''} \to [0, 1]
-\end{equation*}
-Now if I say, ``the probability that one equals two'', you will say ``zero'':
-\begin{equation*}
-\prob{1 = 2} = 0
-\end{equation*}
-This makes it seem like ``$X=2$'' and ``$1=2$'' are the same
-kinds of statements.
+The most important example of this confusion comes from the meaning of the equal sign
+($=$). If I write $x=2$, it is most likely a definition: I'm asserting that the value
+of $x$ is $2$. But if I write $1=2$, and ask you, ``Is this true?'', you will say no.
+Many programming languages distinguish between the assignment operator \texttt{=} and the
+equality test operator \texttt{==}, so that \texttt{x=1} is a command ``set $x$ to $1$!'',
+while \texttt{x==2} is a question ``is $x$ equal to 2?'', to which the program will
+response \texttt{TRUE} or \texttt{FALSE}.
 
-However, in another sense, ``one equals two'' is clearly ``false'', but
-``the probability of false is zero'' doesn't make a lot of sense. The probability
-function does not take Booleans; it takes something called \emph{events} that
-will be defined in the next chapter. The point is that the ``equals'' in ``$X=2$''
-means a different thing from the ``equals'' in ``$1=2$'', since ``$X=2$'' need
-not resolve to simply ``true'' or ``false''.
+To help ease some confusion, I will put little symbols on top of the equal signs to
+clarify what the equal sign means. For example, $f(x) \defeq x^2$ means that I'm defining
+the function $f$, while $x^2 = x \cdot x$ means that I'm showing you the steps in a proof, and $x \stackrel{?}{=} 2$ means that I'm asking a question.
