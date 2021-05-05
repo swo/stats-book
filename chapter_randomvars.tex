@@ -16,34 +16,38 @@ intuitive way to think about a scientific experiment.
 
 \section{A random variable is a function}
 
-Before learning probability, I was used to thinking of a ``random variable'' as
-a random number generator: I might ``draw'' ten values from a
-``normally-distributed random variable''. As discussed in Chapter
-\ref{chapter:functions}, a random number generator is not a function in the
-mathematical sense that we are using here, which can make the following
-definition confusing.
-
-A \emph{random variable} is a function from the sample space, the set of all
-possible outcomes of an experiment, to the real numbers. As mentioned above, I
+A \emph{random variable} is a function, common written $X$, that maps from the
+sample space, the set of all possible outcomes of an experiment, to the real numbers:
+\begin{equation*}
+    X : \Omega \to \mathbb{R}
+\end{equation*}
+As mentioned above, I
 think of a random variable as a mathematical analog to scientific measurement:
 outcomes are the actual experimental outcomes, and a random variable maps that
 outcome to the number you would see on your measurement device.
 
+Before learning probability, I thought of ``random variables'' as
+random number generators: I might ``draw'' ten values from a
+``normally-distributed random variable''. However, as discussed in Chapter
+\ref{chapter:functions}, a random number generator is not a function in the
+mathematical sense. It is important to remember that, technically speaking,
+a random variable is a function.
+
+It is also important to remember that ``random variable'' does not mean ``a
+numerical variable that takes on a random value''. It would be very hard to
+prove any theorems about random variables if ``random'' meant that, every time
+you looked at the page, ``$X$'' meant something different! In common speech
+we might say that a random variable ``takes on'' some value, but I advise you
+to shy away from that during this book, because it encourages you to think
+about ``random variables'' not as functions but instead as random number
+generators.
+
+\section{Random variables are classified by how many values they map to}
+
 Random variables come in two major flavors, \emph{discrete} and
-\emph{continuous}. A \emph{discrete} random variable $X$ associates outcomes
-$\omega \in \Omega$ with a finite set of numbers $x_i$:
-\begin{gather*}
-X : \Omega \to \{x_1, \ldots x_k\} \\
-X[\omega] = x_i
-\end{gather*}
-for some finite $k$. A \emph{continuous} random variables associates outcomes
-with real numbers $x \in \mathbb{R}$:
-\begin{gather*}
-X : \Omega \to \mathbb{R}
-\end{gather*}
-In fact, this is a simplification: measure theory says that a random variable
-can map the outcome space to any \emph{measurable space}, but I will not dive
-into that.
+\emph{continuous}. A discrete random variable $X$ associates outcomes
+$\omega \in \Omega$ with a finite set of numbers $x_i$, while a continuous
+random variable maps events to an infinite number of numbers.
 
 Note that the distinction between discrete and continuous random variables only
 has to do with the values they map \emph{to}, not with the sample space they
@@ -55,7 +59,7 @@ encoding ``number of heads flipped'':
 X[H] &= 1 \\
 X[T] &= 0
 \end{align*}
-There are other random variables you could define from this, say:
+There are other random variables you could define from this, say this silly example:
 \begin{align*}
 X[H] &= 5\pi \\
 X[T] &= -33
@@ -64,136 +68,135 @@ But you clearly cannot map from a finite number of inputs to an infinite number
 of outputs.
 
 In contrast, you can have an infinite space of outcomes and map it to a
-discrete set of values via a discrete random variable, or map it to an infinite
-set of values by a continuous random variable. For example, say I have an
-infinite set of outcomes and then a random variable $X$ that maps each outcome
-to a number, and those numbers include all the real numbers between $-1$ and
-$1$. Then I could find some outcome $\omega_1$ such that $X[\omega_1] =
-\tfrac{1}{3}$, and I could find some other outcome $\omega_2$ such that
-$X[\omega_1] = -\pi/6$, and so on. Now it's very clear I could define another
-random variable $Y$:
-\begin{equation*}
-Y[\omega] = \begin{cases}
-  0 \text{ if } X[\omega] \leq 0 \\
-  1 \text{ if } X[\omega] > 0
-\end{cases}
-\end{equation*}
-Clearly $Y$ takes on only two values, $0$ and $1$, and so is a discrete random
-variable, even though it is defined on an infinite set of inputs.
+discrete set of values. For example, imagine I'm measuring the time required for
+a radioactive atom to decay. The outcomes are all possible times required for
+decay, which is an infinite number of possibilities. But I could define a simpler,
+discrete random variable that asks, ``Did it take less than 1 second, between 1
+and 2 seconds, or more than 2 seconds?'' and then map those three swaths of outcomes
+to three, but only three, different numbers.
 
 
 \section{Random variables abstract over outcomes}
 
-The whole point of random variables is that, very soon, we will never need to
-talk about outcomes again. Note how strained my previous example was, where I
-had to say, ``Well, there is some event $\omega$ that the random variable $X$
-maps to some value.'' I do not want to have to name all my outcomes like I did
-for the coin flip. Indeed, I \emph{cannot} come up with a name for an infinite
-number of outcomes \emph{except} insofar as I use a random variable so I can
-map them to the real numbers!
+The whole point of random variables is that we don't need to talk about
+individual outcomes. Enumerating the outcomes of a trial is easy when talking
+about flipping
+coins, or rolling a die, or drawing a card from a deck, but it's basically
+impossible to enumerate an infinite set of outcomes \emph{without} referring to
+them by means of numbers. In other words, the only sensible way to talk about
+infinite sets of outcomes is to instead talk about the values that a random variable
+maps those outcomes to!
 
-From this point forward, we will only refer to events by the values that random
-variables take on for those events' constitutent outcomes. For example, if
-$X$ represents the number of heads flipped on one coin toss, then $X \rveq 0$
-refers to the \emph{event} where the coin landed tails, and $X = 1$ refers to
-the \emph{event} where the coin landed heads. Because the probability function
-maps events to numbers, we can now write:
+From this point forward, we will only refer to events by the values that a random
+variable maps those events to. For example, if $X$ represents the number of heads
+flipped on one coin toss, then $X \rveq 0$ refers to the \emph{event} where the coin landed tails, and $X \rveq 1$ refers to the \emph{event} where the coin landed heads.
+Because the probability function maps events to numbers, we can now write:
 \begin{equation*}
-  \prob{X = 0} = \tfrac{1}{2}
+  \prob{X \rveq 0} = \tfrac{1}{2}
 \end{equation*}
-Take careful note of the subtlety of this statement:
+Take careful note of all the pieces in this equation:
 \begin{align*}
-  \mathbb{P} &\text{ is a function mapping events to numbers between zero and one} \\
-  X &\text{ is a function mapping outcomes to numbers} \\
-  X = 0 &\text{ is the event composed of all the outcomes for which $X$ takes on the value zero} \\
-  \text{the first} = &\text{ is a function that took the function $X$ and the number $0$ and returned an event} \\
-  \text{the second} = &\text{ is a logical assertion}
+  X &\text{ is a function mapping events to numbers} \\
+  X \rveq 0 &\text{ is the event composed of all the outcomes for which $X$ takes on the value zero} \\
+  \mathbb{P} &\text{ is a function mapping events to numbers between zero and one}
 \end{align*}
-The important thing to remember is that $X = 0$ is an \emph{event}, a grouping
-of outcomes, \emph{not} a logical assertion like $1=1$.
+I put the ``rv'' on top of the equal sign to emphasize that the notation $X=0$ does
+not that $X$ is a number and it is equal to the number zero. No one else puts that
+``rv'' there, and I will drop that notation after this chapter. But I want it to be
+very clear that the equal sign in $X=0$ means something very different than the
+equals sign in $\mathbb{P}[H] = \tfrac{1}{2}$. $X \rveq 0$ is new kind of notation,
+a shorthand to refer to events, not an equalling of two numbers. To further emphasize
+that, consider this equation:
+\begin{equation*}
+    (X \rveq 5) = \varnothing
+\end{equation*}
+It is impossible to flip five heads on a single coin flip, so the set of events that
+$X$ maps to the number five is the empty set. You will never see anyone else write an
+equation like this, but I put it there to scare you, to make you less sure of what
+an equal sign means.
 
-Conveniently, because we required that the probability function be defined on
-the ``nothing-happened'' event $\varnothing$ and the ``something-happend''
-event $\Omega$, I can also write such silly truths as:
-\begin{align*}
-  \prob{X = 5} &= \prob{\varnothing} = 0 \\
-  \prob{0 \leq X \leq 1} &= \prob{\Omega} = 1
-\end{align*}
-
-I could, of course, define a new random variable, say:
-\begin{align*}
-  Y[H] &= 6 \\
-  Y[T] &= 6
-\end{align*}
-From which it is clear that $\prob{Y = 6} = 1$ and $\prob{Y = y} = 0$ for any
-$y \neq 6$.
-
-The point is that, although the probabilities of the outcomes heads and tails
-both remain $\tfrac{1}{2}$, we no longer need to think about exactly what
+Again, the nice thing is that, although the probabilities of the outcomes heads and
+tails both remain $\tfrac{1}{2}$, we no longer need to think about exactly what
 outcomes there are, what probabilities they have, and to what number the random
 variable maps each outcome. Instead, we can just examine the random variable,
-which has abstracted over everything else.
+which has abstracted over everything else. A very pedantic person might have argued
+that, when you flip a coin, ``heads'' is actually a grouping of an infinite number
+of distinct outcomes: the coin might fall with the face on the coin pointing north,
+or west, or north-north-west; or the coin might have fallen into between the cushions
+of the couch and actually been standing almost straight up. Discrete sample spaces
+are clearly a mathematical fiction. Nevertheless, discrete random variables allow me
+to deal with a finite number of interesting \emph{events}, and continuous random
+variables allow me to abstract over whatever was happening in nature and simply say,
+I guess this or that number with some probability.
 
 The previous chapter was not a waste, however, because the rules for
-manipulating events and probabilities work just as well for events like ``$X =
-1$'' as they did for ``flipped heads''. The philosophical and technical
+manipulating probabilities work just as well for events like ``$X =
+1$'' as they did for outcomes like ``flipped heads''. The philosophical and technical
 definition of probability still holds. For example, $\prob{(X = 1) \cup (X =
-0)}$, the probability that $X$ takes on the values zero or one, is the sum of
-the two constituent probabilities $\prob{X=1}$ and $\prob{X=0}$.
+0)}$, the probability of the events that $X$ maps to either zero or one,
+is the sum of the probabilities
+the two constituent, disjoint events $\prob{X=1}$ and $\prob{X=0}$.
 
 \section{Cumulative distribution functions}
 
-Now that we have random variables, we can ask how they are ``distributed''.  If
-you are like me, you think can't help but think of random variables as random
+Now that we have random variables, we can ask how they are ``distributed''. If
+you are like me in days of yore, you think of random variables as random
 number generators that produce values to be visualized as a histogram, whose
-mathematical analog is the \emph{probability distribution functions} (pdf's).
+mathematical analog is the \emph{probability density functions} (pdf's).
 In fact, it's mathematically more straightforward to define the
 \emph{cumulative distribution functions} (cdf's) and use that to define the pdf.
 
 The cdf of a random variable $X$, canonically written $F_X$, is a function that
 maps from real numbers to the numbers between zero and one. It is the
-probability of the event on which $X$ takes on a value below the given input
-value:
+probability of the event that $X$ maps to any value equal to or less than the
+given input value:
 \begin{gather*}
 F_X : \mathbb{R} \to [0, 1] \\
-F_X(x) \defeq \prob{X \leq x}
+F_X(x) \defeq \prob{X \stackrel{\mathrm{rv}}{\leq} x}
 \end{gather*}
+Again, I put the ``rv'' of the less-than-or-equal sign to emphasize that $X$ is
+a function, $x$ is a number, and $X \leq x$ is an event.
+Note also that the cdf is a function of numbers $x$, which I emphasize by using
+regular parentheses around $x$ in $F_X(x)$.
 
-Note that the cdf is a function of numbers, which I emphasize by using regular
-parentheses around $x$ in $F_X(x)$. And as a reminder, ``$X \leq x$'' does not
-mean ``when $X$ is less than $x$''. Remember that $X$ is a function, so it
-cannot be ``less'' than a number, any more than the operation of addition can
-be less than 10.  Instead, ``$X \leq x$'' refers to an event, the set of all
-outcomes that the random variable $X$ maps to numbers smaller than the number
-$x$. Big $X$ is a function and little $x$ is a number.
-
-For a discrete random variable, which takes on specific values $x_i$, the cdf is
+It follows that, for a discrete random variable, which takes on specific values
+$x_i$, the cdf is
 just the sum of the probabilities of those specific values smaller than the
 given $x$:
 \begin{equation*}
 F_X(x) = \prob{X \leq x} = \sum_{j \,:\, x_j \leq x} \prob{X = x_j}
 \end{equation*}
 A discrete random variable therefore has maximum and minimum values:
-\begin{gather}
+\begin{gather*}
 \text{if } x < x_\mathrm{min} \text{, then } F_X(x) = 0 \\
 \text{if } x \geq x_\mathrm{max} \text{, then } F_X(x) = 1
-\end{gather}
+\end{gather*}
 
-% swo: need a figure here with the laddering
+\begin{figure}
+    \centering
+    %\includegraphics{}
+    \caption{Cumulative distribution function and probability mass function for a discrete random variable.}
+    \label{fig:discrete-cdf}
+\end{figure}
 
 A continuous random variable can also have a minimum and maximum. However,
 there are continuous random variables that can take on any real number. In
 those cases, the cdf approaches zero and one as $x$ goes out toward infinity:
-\begin{gather}
+\begin{gather*}
 \lim_{x \to -\infty} F_X(x) = 0 \\
 \lim_{x \to \infty} F_X(x) = 1
-\end{gather}
+\end{gather*}
 
-% need a figure here with, say, normal distribution
+\begin{figure}
+    \centering
+    %\includegraphics{}
+    \caption{Cumulative distribution function and probability density function for a continuous random variable.}
+    \label{fig:continuous-pdf}
+\end{figure}
 
-\section{Probability distribution functions}
+\section{Probability density functions}
 
-For a discrete random variable, it's straightforward to define its
+For a discrete random variable, it is straightforward to define its
 \emph{probability mass function} or ``pmf'', canonically written $f_X$, which
 is just the probability that it takes on each discrete value $x_i$:
 \begin{gather*}
@@ -202,7 +205,7 @@ f_X(x_i) \defeq \prob{X = x_i}
 \end{gather*}
 
 The analog for continuous random variables is the \emph{probability
-distribution function}, or probability \emph{density} function,
+density function},
 abbreviated ``pdf'':
 \begin{gather*}
 f_X(x) : \mathbb{R} \to [0, 1] \\
@@ -212,11 +215,8 @@ f_X(x) \defeq \frac{d}{dx} F_X(x)
 Note that the pdf of a continuous random variable $f_X(x)$ is not $\prob{X =
 x}$. This may seem like a pedantic diversion, but I actually think it's
 important to avoid confusion. For a continuous random variable, $\prob{X = x}$
-is zero. For example, say $X$ takes on values between 0 and 1 uniformly, e.g.,
-the probability that $X$ comes out between 0 and 0.5 is the same as between 0.5
-and 1, which is five times the probability you'll get a value between 0 and
-0.1, and so one. Say you're asking about the probability that $X$ comes out as
-0.5. I'll grant the following:
+is basically zero for any value of $x$. For example, say $X$ takes on values
+between 0 and 1 uniformly. Then it follows that:
 \begin{align*}
 \prob{0 \leq X \leq 1} &= 1 \\
 \prob{0.495 \leq X \leq 0.505} &= 0.1 \\
@@ -226,55 +226,40 @@ and so on. We normally don't say that $\prob{X = 0.500\ldots} = 0$, since that
 makes it sound like it's impossible for $X$ to take on the value $0.5$.
 Nevertheless, it should be clear that, from any practical point of view, the
 probability of getting exactly $0.500\ldots$ from your experiment is
-essentially zero. It does make sense to write ask about the density of $X$ at
-0.5, i.e., $f_X(0.5)$. It mostly does not make sense to ask about the
-probability that $X$ takes on 0.5, i.e., $\prob{X = 0.5}$. Those dissatisfied
-with this explanation will need to learn some measure theory!
+essentially zero. On the other hand, It does make sense to write ask about the
+\emph{density} of $X$ at 0.5, i.e., $f_X(0.5)$.
 
 The word ``density'' in probability density function emphasizes that the pdf,
 when integrated, gives a probability:
-\begin{equation}\label{eq:integrated_pdf}
-\int_{x_0}^{x_1} f_X(x') \dd x' = F_X(x_1) - F_X(x_0) = \prob{x_0 < X \leq x_1}
-\end{equation}
+\begin{equation*}\label{eq:integrated_pdf}
+\int_{x_0}^{x_1} f_X(x) \dd x = F_X(x_1) - F_X(x_0) = \prob{x_0 < X \leq x_1}
+\end{equation*}
 In other words, the little-$f$ pdf $f_X$ is the derivative of the big-$F$ cdf
 $F_X$.
 
 It follows from the definition of the cdf and
 some fundamental calculus that
-\begin{equation}
-\int_{-\infty}^\infty f_X(x') \dd x' = 1
-\end{equation}
+\begin{equation*}
+\int_{-\infty}^\infty f_X(x) \dd x = 1
+\end{equation*}
 In other words, all probability density must be somewhere. This also requires that
-\begin{equation}
-\lim_{x \to \pm \infty} = 0
-\end{equation}
+\begin{equation*}
+\lim_{x \to \pm \infty} f_X(x) = 0
+\end{equation*}
 so that probability density can't be ``hiding'' infinitely far away from the origin.
 
-These definitions I've given are simple ones, and they need to be refined to
+The definitions I've given are simple ones, and they need to be refined to
 deal with more complicated functions. For example, if the cdf has
 discontinuities, you need careful with the limits on the integrals.
 
-\subsection{Known distributions}
+\subsection{Independent, identically-distributed random variables}
 
 If a random variable $X$ has the same cdf as another random variable $Y$ (and
 therefore also the same pdf), we say that $X$ is ``distributed like'' $Y$:
 $$
 \text{if } F_X(x) = F_Y(x) \text{ for all } x, \text{ then } X \sim Y.
 $$
-
-Critically, $X$ and $Y$ are not required to be the same function. They might
-take completely different spaces of outcomes as input. For example, $X$ might
-be looking at coin flips and Asian stock prices, while $Y$ might be looking at
-sunspots. All that is required is that $X$ and $Y$ deliver the same numbers
-with the same probabilities.
-
-Just as random variables allowed us to abstract over the outcome space and
-think only about what kinds of numbers of scientific apparatus is delivering,
-this ``distributed like'' concept allows us to abstract again, thinking about
-the kinds of experiments that give certain kinds of results.
-
-For example, you might say that a random variable $X$ is distributed like a
-normal random variable, with mean $\mu$ and variance $\sigma^2$:
+Many cdf's are named. For example, you might say that a random variable $X$ is distributed like a normal random variable, with mean $\mu$ and variance $\sigma^2$:
 $$
 X \sim \mathcal{N}(x; \mu, \sigma^2).
 $$
@@ -283,178 +268,125 @@ This is shorthand for saying
 f_X(x) = f_\mathcal{N}(x; \mu, \sigma^2) \defeq
   \frac{1}{\sqrt{2\pi\sigma^2}} \exp \left\{-\frac{1}{2} \frac{(x-\mu)^2}{\sigma^2} \right\}
 \end{equation*}
-The power of this is that we can talk about ``normally-distributed variables''
-without making any reference to the precise experimental setup that produces
-them.
 
-We'll get to lists of familiar and common random variables later. Before that,
-we need some more tools to discuss the relationships between random variables.
+Critically, to say that $X \sim Y$ does not imply that $X$ and $Y$ are the same
+function. In fact, they might
+be defined in terms of completely different sample spaces. The random variable
+$X$ might be looking at stock prices and $Y$ might be looking at the time between
+solar flares. All that is required is that $X$ and $Y$ deliver the same numbers
+with the same probabilities.
 
-\subsection{Independent, identically-distributed random variables}
+Because frequentist statistics is concerned with repeatable trials, we will often
+consider \emph{independent, identically-distributed},
+abbreviated ``iid'', random variables. \emph{Identically-distributed} means that
+all the random variables in the collection have the same cdf. \emph{Independent}
+means that the probabilities of ``and'' events multiply:
+\begin{equation*}
+    \text{$X$ and $Y$ are independent if and only if }
+    \mathbb{P}[(X \rveq x) \cap (Y \rveq y)]
+    = \mathbb{P}[X \rveq x] \times \mathbb{P}[Y \rveq y]
+\end{equation*}
+It follows that, if the events in the sample spaces that $X$ and $Y$ map \emph{from}
+are independent, then $X$ and $Y$ will be independent. So if $X$ is defined with
+respect to one iteration of an experiment, and $Y$ is defined with respect to another,
+physically independent iteration of that experiment, then $X$ and $Y$ are independent.
 
-A common construct is to consider \emph{independent, identically-distributed},
-abbreviated ``iid'', random variables. This means you have a collection of
-random variables $X_i$ that all have the same cdf and are all independent of
-one another. For example,
+In the context of iid random variables, it is actually common to write ``$X$'' as
+referring to a whole set of random variables. Thus,
 \begin{equation*}
 X \stackrel{\text{iid}}{\sim} \mathcal{N}(\mu, \sigma^2)
 \end{equation*}
-means that $f_{X_i}(x) = f_\mathcal{N}(x; \mu, \sigma^2)$ for every random variable
-$X_i$ and that all the $X_i$ and $X_j$ are independent for all $i \neq j$.
-
-Independent, identically-distributed random variables are important for
-frequentist statistics. They represent the ``many independent trials''
-in the definition of frequentist definition as a proportion of many
-independent trials in which an outcome emerges. As the number of iid variables
-increases, the proportion of discrete iid random variables that take on each
-discrete value will approach the probability of that value. Similarly, the
-proportion of continuous iid random variable that take on values in a range $a
-\leq X < b$ will approach $F_X(b) - F_X(a)$.
+actually means that there is some set of random variables $X_1$, $X_2$, $\ldots$;
+that $f_{X_i}(x) = f_\mathcal{N}(x; \mu, \sigma^2)$ for every $i$; and that
+$X_i$ and $X_j$ are independent for all $i \neq j$.
 
 In day-to-day speech, we might say, ``I draw $n$ values from this random
 variable $X$''. Mathematically, this means, ``Consider $n$ iid random
-variables distributed like $X$''. Random number generators  aim to deliver the
-realized values of iid variables.
-
-% swo: do events or outcomes get probabilities? it's really events, but it doesn't
-% matter for the simple, discrete case, since you can always just add and stuff.
+variables distributed like $X$''.
 
 \section{Sums and products of random variables}
 
 If you know the cdf and pdf for a random variable $X$, and you also know these
 values for another random variable $Y$, you might be interested in the
-behavior of these variables together. An important example is the sum of many
-independent, identically-distributed random variables, which we will see are
-intimately linked to the normal distribution. In some cases, specific distributions have
-nice shortcuts for figuring out the behavior of sums of random variables with
-those distributions. For example, if $X \sim \mathcal{N}(\mu_1, \sigma_1^2)$
-and $Y \sim \mathcal{N}(\mu_2, \sigma_2^2)$, then $X + Y \sim
-\mathcal{N}(\mu_1 + \mu_2, \sigma_1^2 + \sigma_2^2)$. Where do those nice
-rules come from?
+behavior of these two variables together. Say, for example, that I draw two
+random numbers from a normal distribution using a random number generation. What
+is the probability that their sum is above or below some threshold?
 
-First, let's be clear about the notation. If $X$ and $Y$ are random variables,
-then what does $Z = X + Y$ mean? Remember that $X$ and $Y$ are both functions,
-so the plus sign in $X + Y$ doesn't mean ``add numbers''. Instead, it's an intuitive shorthand:
-\begin{equation}
-Z = X + Y \text{ means } Z[\omega] = X[\omega] + Y[\omega].
-\end{equation}
-That is, for every outcome $\omega$, $Z$ takes on the sum of the values that
-$X$ and $Y$ take on. In other words, $Z$ is a function that, for every input
-$\omega$, outputs the sum of the outputs of $X$ and $Y$ when they in turns are
-fed the input $\omega$.
+If $X$ and $Y$ are random variables, we define a new random variable
+$Z = X \stackrel{\mathrm{rv}}{+} Y$, where again, I put that little ``rv''
+in there to remind you that the
+plus sign in $X + Y$, where $X$ and $Y$ are functions like random variables,
+cannot mean the same thing as the plus sign in $x + y$, where $x$ and $y$
+are just numbers.
 
-This means that, for some event, if $X$ takes on the value $x$ and $Y$ takes
-on the value $y$, then $Z$ takes on $x+y$. It follows that, if
-$Z$ takes on the value $z$ and $X$ takes on $x$, then it must be that $Y$
-took on $z - x$. Therefore the probability that $Z$ takes on value $z$ is
-sum of the probabilities that $X$ took on $x_i$ and $Y$ takes on $z - x_i$.
-If $X$ and $Y$ are independent,
-$\prob{(X = x_i) \cap (Y = z - x_i)} = \prob{X = x_i} \times \prob{Y = z - x_i}$
-so that
+The meaning of $X + Y$ feels intuitive, like in my example about drawing numbers
+from a random number generator. But how do we define $X + Y$ mathematically?
+Imagine first that $X$ and $Y$ are independent, discrete random variables. Then it
+should be that $\mathbb{P}[Z = z]$ is the probability of $X = x_i$ and $Y = y_j$
+for all the cases where $x_i + y_i = z$. Note that this, given some $z$, this
+constrains $y_j$ to by $z - x_i$:
 \begin{align*}
-f_Z(z) &= \sum_i \prob{(X=x_i) \cap (Y=z - x_i)} \\
-  &= \sum_i \prob{X=x_i} \prob{Y=z-x_i} \\
+f_Z(z) &= \sum_i \prob{X=x_i} \prob{Y=z-x_i} \\
   &= \sum_i f_X(x_i) f_Y(z - x_i).
 \end{align*}
-
 A similar definition holds for when $Z = X + Y$ is continuous. Rather than
 summing over all the outcomes in which $X$ takes on certain values, we integrate:
 \begin{equation}
-f_Z(z) = \int f_X(x') f_Y(z - x') \,dx'
+f_Z(z) = \int f_X(x) f_Y(z - x) \,dx
 \end{equation}
 
-For a product of random variables $Z = XY$, we say that,
-if $Z = z$ and $X = x$, then it must be that $Y = z/x$.
-For a ratio of random variables $Z = X/Y$, it must be that $Y = zx$.
+For a product of random variables $Z = XY$, we need to use $f_Y(z/x)$, and for
+a ratio of random variables $Z = X/Y$, we need to use $f_Y(zx)$. Note that, in
+each of these cases, the notations like $X + Y$, $XY$, and $X/Y$ refer to a new
+random variable and also give us a hint about how to compute its pdf.
 
-For any particular $X$ and $Y$, the derived variables $X + Y$, $XY$, and $X/Y$
-are usually distributed in some really messy way. For example, although the
-sum of two normally-distributed random variables is normally distributed,
-neither the product nor the ratio of normally-distributed random variables are
-normally distributed.
 
-\section{Properties of random variables}
-
-To make a bridge with the next section, where we start to use random variable
-with data, let's consider two important properties of random variables, their
-\emph{expected values} and \emph{variances}.
-
-\subsection{Don't expect the expected value}
+\section{Don't expect the expected value}
 
 The \emph{expected value} $\expect{X}$ of a random variable $X$ is the
-probability-weighted average of the values it takes on. It is a function that
-links random variables with numbers:
-\begin{equation*}
-\expect{\cdot} : \text{random variables} \to \mathbb{R}
-\end{equation*}
+probability-weighted average of the values it takes on. 
 For a discrete random variable, you simply sum. For a continuous random
 variable, you need to integrate:
 \begin{equation}
-\expect{X} = \begin{dcases}
+\expect{X} \defeq \begin{dcases}
   \sum_i x_i f_X(x_i) & \text{ for discrete random variables} \\
   \int x f_X(x) \,dx & \text{ for continuous random variables}
 \end{dcases}
 \end{equation}
-You might also see people use notation like $E[X]$, $\mathbb{E}X$, or $\mu_X$.
+Thus, just like ``maximum'', ``expected value'' is
+a function that maps random variables to numbers:
+\begin{equation*}
+\mathbb{E} : \text{random variables} \to \mathbb{R}
+\end{equation*}
+I use square brackets with $\mathbb{E}$ to emphasize that this is a function
+that maps from something other than numbers.
 
-% swo: expected vs. expectation. go with "expected"
-
-The name ``expectation value'' is a little confusing. We previously noted that,
+The name ``expected value'' is misleading. We previously noted that,
 for continuous random variables, the probability of getting any particular
 number is essentially zero, so there's no particular number you should
 ``expect''. For discrete random variables, where there is finite probability
-of getting each particular number, the expected value need not be any of the
-values actually taken on by $X$. In our coin flip example, the random variable
+of getting each particular number, the expected value actually need not be any of the
+values that $X$ maps to. In our coin flip example, the random variable
 $X$ measuring the number of heads flipped has expectation value:
 \begin{equation}
 \expect{X} = 0 \times \prob{T} + 1 \times \prob{H} = \tfrac{1}{2}.
 \end{equation}
-You certainly don't ever expect to flip $0.5$ heads.
+You certainly don't ever expect to flip $0.5$ heads!
 
-Even if you don't expect the expectation value, it is a handy mathematical
-tool, and it is a rough of measure of what kind of values $X$ is ``centered''
-around. Even this is slippery, since, as you might recall from learning in
-high school about the difference between mean, mode, and median, the term ``the
-center'' can mean different things.
+A better way to think of the expected value is as a measure of \emph{central position}.
+There are of course multiple ways to quantify central position beyond the
+expected value, which is analogous to the mean or average. You can certainly
+map random variables to their medians and modes, but those mappings are substantially
+more complex and not as useful for our purposes.
 
-\subsection{Linearity of expectation}
+\section{Variance}
 
-Expected values have some nice properties that make them really easy to deal
-with. For example, the expectation value of a shifted random variable like $X +
-1$ is just $\expect{X} + 1$: you're still ``averaging'' $X$ overall the
-outomes, but you're just adding 1 to everything you averaged, which is clearly
-just the ``average'' $X$ plus 1. Similarly, you should be able to see that
-$\expect{2X} = 2 \,\expect{X}$.
-
-You could think of ``1'' in the previous example as being a really boring
-random variable: it gives 1 for every outcome. This might lead you to suspect
-that $\expect{X + Y} = \expect{X} + \expect{Y}$, which is true. The fact that
-you can easily transform the expectation values of random variables multiplied by
-numbers and the sum of random variables is called the \emph{linearity of expectation}:
-\begin{equation}
-\expect{aX + bY} = a \,\expect{X} + b \,\expect{Y}.
-\end{equation}
-The proof of this fact follows from the logic used to find the pmf of $Z = X +
-Y$. The proof isn't hard, but it's not particularly enlightening either.
-
-Interestingly, the product $XY$ of two random variables is nice only if the
-variables $X$ and $Y$ are independent. In that case, $\expect{XY} = \expect{X}\,\expect{Y}$.
-More generally, there is some residual term call the \emph{covariance}:
-\begin{equation}
-\expect{XY} = \expect{X} \, \expect{Y} + \cov{X, Y}.
-\end{equation}
-Before getting too much into covariance, we should start with regular variance.
-
-\subsection{Variance}
-
-If the expected value is some measure of position, then \emph{variance} is the
-corresponding measurement of spread. It is a function of random variables that
-returns a nonnegative number:
+If the expected value is a measure of central position, then \emph{variance} $\mathbb{V}$
+is the corresponding measurement of spread or \emph{scale}. It is a function of random
+variables that returns a nonnegative number:
 \begin{equation*}
 \mathbb{V} : \text{random variables} \to [0, \infty).
 \end{equation*}
-The variance of $X$ is also often written $\mathrm{Var}[X]$, $V(X)$, or $\sigma^2_X$.
-
 For a random variable $X$, the variance is the expected value of the square of
 the deviation of the random variable from its own expected value:
 \begin{equation*}
@@ -464,76 +396,85 @@ Because all those nested brackets are confusing, people often replace the
 notation $\expect{X}$ with the notation $\mu$ so that the definition of
 variance reads $\var{X} = \expect{(X - \mu)^2}$.
 
-Variance is always nonnegative because it's a weighted average over squares,
-which are always nonnegative. The variance of a random variable is zero only
-in the very boring case where that random variable always takes on the same
-value.
+Although $\mu$ is just a number when we say $\mu = \mathbb{E}[X]$, the same
+notation ``$\mu$'' cannot refer to a number when we write $X - \mu$. We can
+subtract numbers from the values that a function maps to, but we cannot subtract
+numbers from raw functions, any more than I can subtract a number from the
+operation of multiplication. In other words, $f(x) - 2$ makes sense, but $f - 2$
+does not. Thus, ``$\mu$'' in $X - \mu$ is actually a trivial random variable that
+maps its whole sample space to $\mu$, so that
+$\mathbb{P}[\text{``}\mu\text{''} = \mu] = 1$.
+Similarly, $(X - \mu)^2 = (X - \mu) \stackrel{\mathrm{rv}}{\times} (X - \mu)$
+is another new random variable. Given random variables $X$ and $Y$, we saw
+earlier how to compute the pdf of a new random variable $XY$, so we also know how to
+find the pdf for a random variable $X^2 = X \times X$.
 
-Note that this definition calls for taking the exponent of a random variable.
-Say $X$ takes on some values $x_i$. Then the other random variable $X - \mu$
-takes on the corresponding values $x_i - \mu$, and the final random variable
-$(X - \mu)^2$ takes the values $(x_i - \mu)^2$.
+\section{Covariance}
 
-Unlike the expected value, variance is not linear. Consider the random variable $aX$,
-where $a$ is just a number:
-\begin{equation}
-\var{aX} = \expect{(aX - \expect{aX})^2} = \expect{a^2(X - \expect{X})} = a^2 \, \expect{X}.
-\end{equation}
-For a sum, the situation is even more confusing. Some algebra shows that
+Starting with the definition of the expected value, you can easily show that
+it is a \emph{linear} function:
 \begin{equation*}
-\var{X + Y} = \var{X} + \var{Y} + 2 \,\cov{X, Y},
+\expect{aX + bY} = a \,\expect{X} + b \,\expect{Y}
 \end{equation*}
-where $\cov{X, Y}$, introduced in the end of the last section, is the
-\emph{covariance} of $X$ and $Y$:
-\begin{equation}
-\cov{X, Y} \defeq \expect{(X - \expect{X})(Y - \expect{Y})}.
-\end{equation}
+Note that, just as $\mu$ transformed from a number to a random variable when we wrote
+$X + \mu$, so the number $a$ in this equation transforms into a random variable
+when we write $aX$.
+
+Variance, however is not linear. You can easily show that, for some number $a$,
+\begin{equation*}
+  \var{aX} = \expect{(aX - \expect{aX})^2} = \expect{a^2(X - \expect{X})} = a^2 \, \expect{X}.
+\end{equation*}
+With some more algebra, you can show that
+\begin{equation*}
+  \var{X + Y} = \var{X} + \var{Y} + 2 \,\cov{X, Y},
+\end{equation*}
+where $\cov{X, Y}$, the \emph{covariance} of $X$ and $Y$ is
+\begin{equation*}
+  \cov{X, Y} \defeq \expect{(X - \expect{X})(Y - \expect{Y})}.
+\end{equation*}
 To avoid the nested brackets, this is sometimes written
-\begin{equation}
+\begin{equation*}
 \cov{X, Y} = \expect{(X - \mu_X)(Y - \mu_Y)}.
-\end{equation}
-
+\end{equation*}
 In words, the covariance is the expected value of the product of the
-deviations of $X$ and $Y$ from their expected values. If, when $X$ takes on
-values greater than its expected value, $Y$ also tends to take on values
-greater than its expected value, then $\cov{X, Y} > 0$. Conversely, if, when
-$X$ has positive deviations, $Y$ has negative deviations, then $\cov{X, Y} <
-0$. If $X$ and $Y$ are independent, then $\cov{X, Y} = 0$.
+deviations between the values that $X$ and $Y$ map to and the expected values
+of those random variables.
+Note that covariance is a function of two random variables:
+\begin{equation*}
+  \mathrm{Cov} : (\text{random variables})^2 \to \mathbb{R}.  
+\end{equation*}
 
-Note that $\cov{X, X} = \var{X}$.
+If $X$ and $Y$ are independent, then their covariance is zero. (The reverse is
+not necessarily true.) Some algebra will also show that
+\begin{equation}
+\expect{XY} = \expect{X} \, \expect{Y} + \cov{X, Y}.
+\end{equation}
+Thus, for independent random variables, which we will deal with a lot,
+the expected value of the produce of two random variables is simply the
+product of their expectation values. These properties of the expected value
+will come in very handy in future sections.
 
-\subsection{Correlation}
-
-Rather than covariance, you're probably more familiar with the term
-\emph{correlation}, especially the familiar Pearson's correlation coefficient,
-usually written $\rho$ or $r$. The correlation coefficient is a function of
-two random variables that gives a number between $-1$ and $1$:
+You may be more familiar with \emph{correlation} than covariance. The most
+common definition of correlation, Pearson's correlation coefficient, typically
+written $\rho$, is just a rescaling of the covariance to values between $-1$
+and $+1$:
 \begin{gather*}
-\rho : (\text{random variables}) \times (\text{random variables}) \to [-1, 1] \\
+\rho : (\text{random variables})^2 \to [-1, 1] \\
 \rho[X, Y] \defeq \frac{\cov{X, Y}}{\sqrt{\var{X} \var{Y}}},
 \end{gather*}
-In other words, the correlation between $X$ and $Y$ is their covariance
-``normalized'' by their variances. The reason for dividing by the two
-variances was so that $\rho$ is between $-1$ and $1$. The math isn't hard, but
-it's not particularly useful for us.
+It turns out that dividing by that factor rescales the covariance, which can
+be any number, to a single range, $-1$ to $+1$. Thus, the correlation
+between two random variables does not depend on their scaling:
+\begin{gather*}
+    \cov{aX, bY} = ab \,\cov{X, Y} \\
+    \rho[aX, bY] = \rho[X, Y]
+\end{gather*}
 
-% swo: figure, or integrate this paragraph
-
-To see how covariance and correlation are related, think about a correlated
-$X$ and $Y$, like a simple bivariate normal distribution. \hl{figure} In
-general, the points for which $X$ is greater than its mean value are the same
-points for which $Y$ is greater than its mean value. Similarly, when one
-deviation is negative, the other tends to be negative. This way, the overall
-\emph{product} of the two deviations tends to be positive. In constrast, if
-two variables are \emph{anticorrelated}, then when one is higher than average
-the other tends to be lower than average, so the product of deviations tends
-to be negative.
-
-\subsection{Higher moments}
+\section{Higher moments}
 
 The expected value and the variance are two in a series of properties of
-random variables called \emph{moments}. As the variance has a square in it,
-\emph{skewness} has a cube and \emph{kurtosis} has a fourth power. Random
-variables with positive skewness has an asymmetric tail trailing to the right;
+random variables called \emph{moments}. Just as the variance has a square in it,
+\emph{skewness} has a cube and \emph{kurtosis} has a fourth power. The pdf's of random
+variables with positive skewness have an asymmetric tail, trailing out to the right;
 negative skewness means a tail to the left. Kurtosis measures the ``fatness''
 or ``heaviness'' of the tails.
