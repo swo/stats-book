@@ -89,3 +89,76 @@ Fill in the "SWOs"
 - "Personal" probability
 - Bayes factor as alternative to pvalue (if you have two models)
 - Glivenko-Cantelli theorem about why you can (asymptotically) use the empirical distribution function to approximate the real one
+
+# Old text about variation
+
+Up to this point, I've used the word ``distribution'' in the mathematical
+probability sense: it's the cdf $F_X$ or the pmf/pdf $f_X$.
+It it now crucial to distinguish between these mathematical
+probability objects and, on the other hand, the mass of data
+that we get from an experiment, which might also be called the ``distribution''
+of the data. (As we'll see later, this confusion of language is not
+totally unwarranted, because the mass of data is itself a complicated estimator
+of the mathematical distribution.)
+
+The distinction between mathematical distributions and data distributions is
+usually made in the jargon of the social sciences: from some
+\emph{population}, you draw a \emph{sample}. The sample refers to the numbers
+you collected; the population refers to the larger universe of numbers your
+sample was drawn from. We use the sample to estimate properties of the
+population. For example, if you're interested in the height of men versus
+women in the US, then your target populations will be, say, all American males
+and all American females. The sample is whatever heights you actually measure.
+We then try to make some inference about all Americans based on our sample.
+
+In the heights example, the target population is finite. There are only 300
+million Americans. It is therefore theoretically possible to make a list of
+the heights of all Americans. In a repeatable experiment, on the other hand,
+the target population is infinite: you could theoretically repeat an
+experiment infinitely many times, drawing an infinite number of data points.
+In most cases, statistics proceeds as if the target population were infinite,
+although there are corrections you can make when your sample size starts to
+approach the size of the target population.
+
+Many statistical methods also assume that the target population follows some
+known distribution. The classic example is that the $t$-test assumes that the
+target populations are normally distributed. This can make the language a
+little confusing. If you are using the $t$-test to compare the heights of
+males and females, is the ``true'' population the actual distribution of
+heights among the 300 million Americans, or is the ``true'' population the
+normal distribution? In most cases, ``true'' is used to refer to the abstract
+mathematical distribution rather than the actual distribution of the target
+population.
+
+The important point is that the ``sample'' distribution refers to the data you
+collected, while the ``true'' or ``theoretical'' distribution refers to the
+theoretical approximation of the target population your data came from.
+
+---
+
+In the ``hard'' experimental sciences, this language about ``population'' may
+sound weird. If I'm trying to measure the speed of light, I repeat my
+experiment many times and get many different values. Those values are the
+sample, but what is the population? We think there is a single, true speed of
+light, not a distribution of speeds of lights. In this case, the ``population''
+refers, somewhat tautologically, to the distribution of the values that would
+come from an infinite number of repetitions of our experiment. In other words,
+the sample defines the population, not the other way around.
+
+In the social sciences example, the shape of the distribution of measured
+values says something about the variation of the values in the target
+population. We get a range of measured values because people are different
+heights. In the physics example, the shape of the distribution has everything lot to do
+with the precision in our experiment. We get a range of measured values
+because of all sorts of error that arise the in the process of experimentation.
+
+In biology, the situation is somewhere in between. We think there is true
+variation in, say, the physiology of the cells used in an experiment. We
+might wish there weren't. It would be easier to do some experiments if all
+cells started in exactly the same state and responded exactly the same way to
+an experimental condition. The meaning of the range of values we get is then
+something of a philosophical one. To what degree do we treat the range of
+values as due to error, because we couldn't make all the cells the same, and
+to what degree is it an honest report about the heterogeneity of behavior in
+some ``target population'' of cells? Multilevel models, which will come up later,
+are an attempt to deal with multiple sources of variation.
