@@ -1,320 +1,66 @@
 %!TEX root=main
 
-\chapter{Descriptive estimators}
+\chapter{Confidence intervals}
 
-In the German tank problem from the last chapter, we were interested in making
-an estimate of a property of the distribution from which some data points were
-drawn. Estimators that describe distributions are loosely called
-\emph{descriptive} estimators. In this chapter, I will apply some of the
-concepts developed in the last chapter to two common descriptive estimators,
-expected value and variance.
+\section{Definition}
 
-\section{Arithmetic mean as estimator of the expected value}
-
-A random variable $X$ has some true, fixed expected value $\expect{X}$. To get
-a sense of what that true value is, we would draw $n$ data points from iid random
-variable $X_i$. We want a statistic, a function of the observed data points
-$x_i$, that provides a good estimate of $\expect{X}$.
-
-A simple first guess for our statistic is the arithmetic mean of the data
-$\tfrac{1}{n} \sum_i x_i$. This statistic corresponds to an estimator, that
-is, a random variable, that estimated the expected value $\expect{X}$. I'll
-write this estimator with a hat and put the $X$ in a subscript to remind us
-that we're estimating the expected value of the $X_i$:
-\begin{equation}
-\hat{\mathbb{E}}_X \defeq \frac{1}{n} \sum_i X_i.
-\end{equation}
-Just as the overline is used to indicated arithmetic mean of numbers (e.g.,
-$\overline{x}$), so this random variable is sometimes written $\overline{X}$.
-
-\subsection{Consistency}
-
-Is the estimator $\hat{\mathbb{E}}_X$ a consistent estimator for the true
-value $\expect{X}$? Does it approaches the true value as the amount of data
-increases?
-
-It feels very intuitive that the arithmetic mean should approach
-the expected value, but but is not a trivial result. Jacob Bernoulli took 20
-years to formulate a suitably rigorous proof of a special case of this result.
-He thought so highly of it that he called this result the ``Golden Theorem''.
-We call the generalization of his result the \emph{law of large numbers}:
-\begin{equation}
-\hat{\mathbb{E}}_X \to \expect{X}
-\end{equation}
-where the arrow means ``converges probabilistically'', like we saw in the last
-chapter.
-
-The proof is not very difficult, but it's not very illuminating for us either,
-so I omit it here. The important thing is that, as you might expect, the
-arithmetic mean does converge to the true expected value as the amount of data
-increases.
-
-\subsection{Unbiasedness}
-
-Like we said last chapter, knowing that an estimator is consistent is nice,
-but we'd like to know it's not systematically wrong in one direction or the
-other. So now we ask if the expected value of the estimator of the expected
-value is itself equal to the true expected value. That is a hard sentence to
-read, and the math is also weird-looking:
-\begin{equation}
-\expect{\hat{\mathbb{E}}_X} \stackrel{?}{=} \expect{X}
-\end{equation}
-
-Recall that the original object $X$ and the estimator $\hat{\mathbb{E}}_X$ are
-both random variables. The equation is just asking if the expected values of
-two random variables are the same. It's also asking if the estimator
-$\hat{\mathbb{E}}_X$ is centered around the true value $\expect{X}$ it's
-trying to estimate. The thing that makes the equation trippy is that
-``centered around'' is articulated using the expected value.
-
-It's pretty easy to see that the arithmetic mean is a consistent estimator for the
-expected value:
-\begin{equation}
-\expect{\hat{\mathbb{E}}_X} = \expect{\frac{1}{n} \sum_i X_i} = \frac{1}{n} \sum_i \expect{X_i} = \expect{X}.
-\end{equation}
-I was allowed to push the expected value inside the sum because of the linearity of expectation.
-
-\subsection{Efficiency of the arithmetic mean}
-
-Now it gets interesting. Efficiency has something to do with the variance of
-the estimator:
-\begin{equation}
-\var{\hat{\mathbb{E}}_X} = \var{\frac{1}{n} \sum_i X_i} = \frac{1}{n^2} \sum_i \var{X_i} = \frac{1}{n} \var{X}.
-\end{equation}
-I was allowed to push the variance inside the sum because the variance of the
-sum of independent variables is the sum of their variances.
-
-The \emph{standard deviation}, the square root of the variance, of the
-estimator is then $1 / \sqrt{n}$ times the standard deviation of $X$. This is
-a fundamental and critical result in statistics: if I take 100 data points and
-you took 25, then my estimator's standard deviation has a term like
-$\sqrt{100} = 10$ in the denominator, and yours has $\sqrt{25} = 5$. In other
-words, even thought I took four times the data, my estimate is only twice as
-precise as yours. In other words, information does not increase linearly with
-amount of data. Quadruple the data means only double the information.
-
-The standard deviation $\sqrt{(1/n) \var{X}}$ of $\hat{\mathbb{E}}_X$ is also
-called the \emph{standard error of the mean} to emphasize that we're not
-talking about the standard deviation of the data points we gathered but rather
-the standard deviation of the estimate on the mean. We'll see in the next
-section that, as the number of data points $n$ increases, the standard
-deviation of the data we collected will approach a fixed value, the standard
-deviation of $X$. However, the standard deviation on our estimate of
-$\expect{X}$ decreases like $1/\sqrt{n}$: the more data we collect, the better
-we can estimate $\expect{X}$.
-
-\subsection{Arithmetic mean as maximum likelihood estimate}
-
-The arithmetic mean seems to have a lot of nice properties: it is consistent
-and unbiased. We were able to compute its variance, but it's not yet clear if
-the estimator is efficient.
-
-To imagine a simple case, consider some iid normal variables $X_i
-\stackrel{\text{iid}}{\sim} \mathcal{N}(\mu, \sigma^2)$. The maximum
-likelihood estimator for the expected value $\mu$ is, by the properties of
-maximum likelihood estimators, guaranteed to be efficient in the limit of a
-large dataset. The likelihood function for a set of data $x_i$ is
-\begin{equation}
-  L(\mu'; \vec{x}, \sigma) = \prod_i f_{\mathcal{N}}(x_i; \mu, \sigma)
-    = \prod_i \frac{1}{\sqrt{2 \pi \sigma^2}} \exp \left\{ - \frac{(x_i - \mu')^2}{2 \sigma^2} \right\}
-\end{equation}
-Note that I wrote $\mu'$ to emphasize that it's a variable, not the true,
-unknown value $\mu$.
-
-Note that if some $\mu'$ maximizes $L(\mu'; \vec{x}, \sigma)$, then that same
-$\mu'$ will also maximum the logarithm of $L(\mu'; \vec{x}, \sigma)$, since the
-logarithm is a monotonically increasing function. It's very common, when doing
-maximum likelihood estimates, to consider the log-likelihood function $\ell$
-rather than the likelihood function $L$:
-\begin{equation}
-\ell(\mu'; \vec{x}, \sigma) = -\frac{n}{2} \log \left(2 \pi \sigma^2 \right) - \frac{1}{2\sigma^2} \sum_i (x_i - \mu')^2
-\end{equation}
-
-If we think of $n$ and $\sigma$ as fixed, then maximizing $\ell$ comes down to
-minimizing $\sum_i (x_i - \mu')^2$ with respect $\mu'$:
-\begin{equation}
-  0 = \frac{d \ell}{d \mu'} = 2 \sum_i (x_i - \mu') \implies \sum_i x_i = n \mu' \implies \mu' = \frac{1}{n} \sum_i x_i.
-\end{equation}
-In other words, the arithmetic mean is the maximum likelihood estimator in the
-case of the normal distribution. This was a momentous thing when it was first
-discovered because it explained, in part, why the arithmetic mean seemed like
-such a good way to estimate the ``center'' of a distribution.
-
-\section{Median and mode: alternatives to the expected value}
-
-The arithmetic mean is only one measure of central position. Two other
-important ones are the \emph{median} and \emph{mode}.
-
-In probability theory, the median is the value that cuts the probability
-density function in half. In other words, it is the value at which the
-cumulative distribution function equals $\tfrac{1}{2}$. In statistical
-analysis, the median is the ``middle'' value of the data, the one half-way
-down the sorted list of values.
-
-The median is an appealing measure of central position because it is robust to
-outliers. If the biggest number among your collected data were multiplied by
-1,000, the mean of the data would probably change a lot, but the median would
-change not at all (assuming you have at least 3 data points).
-
-In probability theory, the mode is the value that maximizes the probability
-density function (or probability mass function). In statistical analysis, it
-is the most frequent value. The mode usually arises in statistical analysis
-only when examining discrete data.
-
-\section{Sample variance as an estimator of variance}
-
-You may have been disappointed by the equation in the last section where I
-said that the variance of $\hat{\mathbb{E}}_X$ depended on $\var{X}$, but I
-didn't say what $\var{X}$ was.
-
-If you happened to know the expected value $\expect{X}$ of the underlying
-variable, an estimator $\hat{\mathbb{V}}_X$ for the variance would be simply:
-\begin{equation}
-  \hat{\mathbb{V}}_X \defeq \frac{1}{n} \sum_i \left( X_i - \mathbb{E}X \right)^2.
-\end{equation}
-
-It's fairly easy to show that this estimator is unbiased. It turns out to be
-much harder to prove that it is consistent. This proof relies on the
-\emph{central limit theorem}, perhaps the single most important result from
-statistical theory. The theorem says that, if the random variable in question
-meets some pretty basic criteria, the sum of iid random variables approaches a
-normal distribution. Many things in the natural world appear to be
-approximately normally distributed because they are somehow the sum of many
-random forces.
-
-Usually we don't know the expected value of our distribution ahead of time,
-and we need to estimate the expected value and the variance of our data at the
-same time. In that case, the fixed value $\expect{X}$ gets replaced by the
-estimator $\hat{\mathbb{E}}_X$:
-\begin{equation}
-\hat{\mathbb{V}}_X \defeq \frac{1}{n} \sum_i \left( X_i - \hat{\mathbb{E}}_X \right)^2
-  = \frac{1}{n} \sum_{i=1}^n \left( X_i - \frac{1}{n} \sum_{j=1}^n X_j \right)^2
-\end{equation}
-This estimator turns out to be consistent but biased toward smaller values; it
-tends to underestimate the true variance. The intuitive explanation is that,
-by chance, you'll often get points that aren't centered around the true
-expected value. The estimator $\hat{\mathbb{V}}_X$ doesn't know that, so it
-measures the data points' deviations from the midpoint of the collected data,
-which will tend to be smaller than the deviations from the true expected
-value.
-
-Some clever algebraic manipulation shows that
-\begin{equation}
-\expect{\hat{\mathbb{V}}_X} = \frac{n-1}{n} \var{X}.
-\end{equation}
-Just like in the German tank problem, our estimator is off by a multiplicative factor. The unbiased estimator for $\var{X}$, when the expected value and variance are being estimated simultaneously, is therefore:
-\begin{equation}
-\hat{\mathbb{V}}_{X,\text{unbiased}} = \frac{n}{n - 1} \sum_i \left( X_i - \hat{\mathbb{E}}_X \right)^2
-\end{equation}
-This unbiased estimator is usually called the \emph{sample variance}.
-Confusingly, the word ``variance'' can be used to refer to the true variance
-of a random variable, the biased variance estimator we showed above, or the
-corrected, unbiased estimator written here.
-
-As a historical note, Gauss was using this corrected formula for sample
-variance as early as 1823. I hope the late date, 1823, impresses upon you how
-subtle this reasoning about variance and bias must be. The ancient Greeks knew
-about the arithmetic mean, an unbiased estimator of expected value, but it took
-thousands of years for an unbiased estimator for variance to arise.
-
-\section{Confidence intervals}
-
-\subsection{Meaning and interpretation}
-
-So far we've shown how to make \emph{point estimates}, that is, guesses for
+So far we have worked with \emph{point estimates}, that is, guesses for
 population parameters that are just a single number. This presents a problem,
 because statistics and probability are all about uncertainty, and we know that
-the point estimate we make for, say, $B$ in the German tank problem, even if
-consistent and unbiased. We said that we prefer efficient estimators, but we
-haven't shown a way of expressing the variance of the estimator. The answer in
-the frequentist framework is confidence intervals.
+the point estimate we make for, say, $B$ in the German tank problem will likely
+never be exactly correct, even if the estimator is consistent, unbiased, and
+efficient.
 
-Given a population parameter $\theta$ and an estimator $\hat{\theta}$ of that
-parameter, a \emph{confidence interval} at level $1 - \alpha$ is a pair of
-random variables $\hat{\theta}_-$ and $\hat{\theta}_+$ that, for any set of
-parameters, will include the true value $\theta$ with probability at least
-$1-\alpha$:
+In the frequentist framework, the approach for expressing uncertainty is using
+\emph{confidence intervals}. A confidence interval for a parameter $\theta$ with estimator $\hat{\theta}$
+at \emph{level} $1-\alpha$ is a pair of estimators $\hat{\theta}_-$ and $\hat{\theta}_+$
+defined such that, for any parameter value $\theta$, it holds that:
 \begin{equation}
   \prob{\hat{\theta}_- \leq \theta \leq \hat{\theta}_+} \geq 1 - \alpha.
 \end{equation}
+A typical value for $\alpha$ is 5\%, or $0.05$, which yields 95\% confidence intervals.
 
-Take careful note of this definition. Confidence intervals are a method. They
-take the data as input and give numbers as output. They are designed so that,
-if an experiment produces data that exactly follows the abstract mathematical
-model used to derive the intervals were repeated many times, then the
-intervals would include the true value in some proportion of cases. The
-interval cannot tell you about your particular case. Either the true $\theta$
-is inside your interval or it is not. Confidence intervals cannot tell you
-whether you're in the 95\% ``including'' case or the 5\% ``not including''
-case.
+In other words, in the frequentist approach, we develop two statistics ---functions
+of the observed data--- such that their corresponding estimators will, with some
+probability, enclose the true value, for every possible true value. Strictly speaking,
+you must select a method for constructing confidence intervals such that, for any
+parameter $\theta$ I choose, the proportion of infinitely many repeated trials will
+produce realizations of the confidence interval that enclose $\theta$.
 
-That being said, most people interpret confidence intervals as if the were
-\emph{credible intervals}, which is the analogous concept from Bayesian
-statistics. A 95\% credible interval means that there is a 95\% posterior
-probability that the parameter of interest falls in that interval. You can
-view this conflation of confidence intervals and credible intervals as a
-terrible intellectual disaster, or you can shrug and say that most of the time
-it seems like the two end up giving similar answers so it's not worth worrying
-about. I'm not sure which one is right.
+\section{Meaning and interpretation}
 
-Confidence intervals were first developed in 1937 and were enormously
-controversial when first introduced to the statistics community. Although they
-are now ubiquitous, I hope the relatively late date impresses on you that our
-philosophical understanding of confidence intervals and how to correctly
-interpret them is still not fully mature.
+Confidence intervals are a very new concept. They were first introduced in the statistical literature in 1937 and become commonplace in scientific work only in the later 20th century.
+It is perhaps no surprise, given its youth, that the concept of the confidence interval
+is very confusing.
 
-\subsection{Constructing intervals}
+The most common misconception about confidence intervals is that they represent
+\emph{confidence}. (One might argue that ``confidence'' was a poor word to use to name this
+thing!) In this misconception, we can have 95\% confidence that the true parameter $\theta$
+lies inside the confidence interval constructed after the experimental data has been gathered.
+Strictly speaking, this is incorrect. In a frequentist framework, the true
+value is either inside the realized confidence interval, or it is not; our ignorance of
+the true value has nothing to do with probability. In fact, the interval that encloses
+the true value with some ``confidence'' is a Bayesian concept, the \emph{credible interval}.
+``Confidence'' is part of the Bayesian definition of probability; it is foreign to the
+frequentist construction.
 
-To show how confidence intervals are constructed, let's consider the German
-tank problem. We could set $\hat{B}_- = \max_i X_i$. This value is guaranteed
-to be below the maximum $B$, so we now only need to consider the upper
-confidence limit. We might guess that this upper limit is some multiple
-$\delta > 1$ of the lower limit:
-\begin{equation}
-  \hat{B}_+ = \delta \times \max_i X_i = \delta \, \hat{B}_-
-\end{equation}
-We want the probability that $\hat{B}_+$ exceeds $B$ to be $1 - \alpha$:
-\begin{equation}
-  1 - \alpha = \prob{\hat{B}_+ \geq B}
-\end{equation}
-Some algebraic manipulation shows that this is equivalent to
-\begin{equation}
-  \alpha = \prob{\hat{B}_- \leq B / \delta}
-\end{equation}
-The right-hand side is just the cumulative distribution function for
-$\hat{B}_-$, the maximum of the data, which we worked out before to be
-$(x/B)^n$:
-\begin{equation}
-  \alpha = \left( \frac{B / \delta}{B} \right)^n \implies \delta = \frac{1}{\alpha^{1/n}}.
-\end{equation}
+To a practicing scientist, this distinction might appear entirely semantic. Regardless of
+what they specifically mean, it is useful to have some quantification of uncertainty.
 
-This definition has two properties we would expect. For larger $\alpha$,
-$\delta$ shrinks. This means that, for a a looser confidence interval, like
-going from a 99\% interval at $\alpha = 0.01$ to a 90\% interval with $\alpha
-= 0.1$, then we can specify a smaller range. For larger $n$, $\delta$ also
-shrinks. If we have more data, then the confidence interval shrinks.
+\section{Constructing intervals}
 
-For example, for a 90\% ($\alpha = 0.1$) confidence interval in the case with
-$n=2$, when we roughly expect the observed data point to fall at $\tfrac{1}{3}
-B$ and $\tfrac{2}{3} B$, the unbiased estimator is $\tfrac{3}{2} m$. The
-confidence interval lower limit is $m$, and the upper limit is $0.1 ^{-1/2}
-\times \tfrac{3}{2} m \approx 4.7 m$.
+To show how confidence intervals are constructed, consider the German
+tank problem again. Our unbiased point estimate is $\hat{B} = \tfrac{n+1}{n} \max_i X_i$.
+We found that the cdf for $\max_i X_i$ was $(x/B)^n$, so the cdf for the
+unbiased point estimate is:
+\begin{equation*}
+    F_{\hat{B}}(x) = \frac{n+1}{n} \left(\frac{x}{B}\right)^n
+\end{equation*}
 
-\subsection{Properties of confidence intervals}
+\subsection{Validity}
 
-Just as we value consistency, unbiasedness, and efficiency in estimators, so
-there are properties that we value in confidence intervals. The most important property is
-\emph{validity}, which means that the probability
-$\prob{\hat{\theta}_- \leq \theta \leq \hat{\theta}_+}$ exceeds $1-\alpha$ by
-as little as possible. Consider, for example, the example of flipping a
-weighted coin, which has some probability $0 < p < 1$ of landing heads. I
-could set my confidence intervals as $\hat{p}_- = 0$ and $\hat{p}_+ = 1$.
-These intervals are guaranteed to be right, but they're maximally
-conservative. We criticize this interval by saying that it is not ``valid'':
-the 95\% confidence interval should be smaller than the 100\% confidence
-interval.
+\subsection{Profile method}
 
-The confidence interval we computed for the German tank problem is valid
-because we solved the equation $\prob{\hat{B}_+ \leq B} = 1 - \alpha$. In
-other words, we made sure that $\hat{B}_+$ was as small as it could be to just
-reach the $1 - \alpha$ level.
+\section{Jackknife}
+
+\section{Bootstrapping}
