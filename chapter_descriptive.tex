@@ -27,6 +27,11 @@ you must select a method for constructing confidence intervals such that, for an
 parameter $\theta$ I choose, the proportion of infinitely many repeated trials will
 produce realizations of the confidence interval that enclose $\theta$.
 
+Note that $\alpha$ is the probability of an error, that is, of the confidence intervals not
+enclosing the true value. Thus, a higher confidence percentage, which translates to a lower 
+$\alpha$, means a lower probability of the
+confidence intervals being incorrect, and thus wider confidence intervals.
+
 \section{Meaning and interpretation}
 
 Confidence intervals are a very new concept. They were first introduced in the statistical literature in 1937 and become commonplace in scientific work only in the later 20th century.
@@ -51,16 +56,60 @@ what they specifically mean, it is useful to have some quantification of uncerta
 
 To show how confidence intervals are constructed, consider the German
 tank problem again. Our unbiased point estimate is $\hat{B} = \tfrac{n+1}{n} \max_i X_i$.
-We found that the cdf for $\max_i X_i$ was $(x/B)^n$, so the cdf for the
-unbiased point estimate is:
+We will design a \emph{symmetric} confidence interval, which means that:
 \begin{equation*}
-    F_{\hat{B}}(x) = \frac{n+1}{n} \left(\frac{x}{B}\right)^n
+    \prob{\hat{B}_- \leq B} = \prob{\hat{B}_+ \geq B} = 1 - \frac{\alpha}{2}
+\end{equation*}
+This confidence interval is symmetric because the probability that the confidence interval
+will not include $B$ because it is too low is equal to the probability that it will not
+include $B$ because it is too high. For a 95\% confidence interval, the probability of the
+confidence interval being wrong on either side is $2.5\%$, for a 5\% total probability of
+error.
+
+To construct $\hat{B}_-$ and $\hat{B}_+$, we will find the range of values in which the point
+estimator $\hat{B}$ is expected fall, given $B$. We found that the cdf for the biased
+estimator $\max_i X_i$ was $(x/B)^n$, so the cdf for the
+unbiased point estimator:
+\begin{equation*}
+    \prob{\hat{B} \leq x} = \frac{n+1}{n} \left(\frac{x}{B}\right)^n
+\end{equation*}
+First, we use this cdf to find the value of $x$ such that $\hat{B}$ will fall below it
+with probability $1-\frac{\alpha}{2}$:
+\begin{equation*}
+    \prob{\hat{B} \leq x} = 1 - \frac{\alpha}{2} \implies x = \left( \frac{\alpha}{2} \frac{n}{n+1}\right)^{1/n} B
+\end{equation*}
+Next, we ``invert'' this relationship:
+\begin{equation*}
+    1 - \frac{\alpha}{2}
+    = \prob{\hat{B} \leq \left( \frac{\alpha}{2} \frac{n}{n+1}\right)^{1/n} B}
+    = \prob{\left( \frac{\alpha}{2} \frac{n}{n+1}\right)^{-1/n} \hat{B} \leq B}
+\end{equation*}
+And thus, we have found our lower confidence interval:
+\begin{equation*}
+    \hat{B}_- = \left( \frac{\alpha}{2} \frac{n}{n+1}\right)^{-1/n} \hat{B}
+\end{equation*}
+A similar exercise shows that:
+\begin{equation*}
+    \hat{B}_+ = \left[ \left(1- \frac{\alpha}{2}\right) \frac{n}{n+1}\right]^{-1/n} \hat{B}
 \end{equation*}
 
-\subsection{Validity}
+As an example, for $n=5$, $\max x_i = 1$, and $\alpha = 5\%$, we have $\hat{B} = 1.2$, $\hat{B}_- = 1.04$ and $\hat{B}_+ = 2.17$. For $n=100$ and the same observed maximum $1$,
+we have $\hat{B} = 1.01$,
+$\hat{B}_- = 1.0004$, and $\hat{B}_+ = 1.04$. In both these cases, we do not say what $B$
+actually is, so we cannot say whether or not the confidence intervals contain the true value
+or not. We only know that, regardless of what $B$ is, there is a 95\% probability that the
+resulting data will produce, according to our definitions, a value of $\hat{B}_-$ and
+$\hat{B}_+$, that contain $B$.
 
-\subsection{Profile method}
+We could have been much lazier with our confidence intervals. For example, I could have
+defined $\hat{B}_- = 0$. Because we know \textit{a priori} that $B>0$, this lower end
+of the confidence interval will always be correct. In fact, it means that the confidence
+intervals will be contain $B$ with a probability greater than $1-\alpha$. This is an
+undesirable feature. Confidence intervals with the desirable property that they have a
+error probability of exactly $\alpha$ and no more are termed \emph{valid} confidence intervals.
+
+\section{Bootstrapping}
 
 \section{Jackknife}
 
-\section{Bootstrapping}
+\section{Profile method}
