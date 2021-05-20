@@ -58,25 +58,12 @@
 \section{Things to include}\label{things-to-include}
 
 \begin{itemize}
-\item Why can't we make confidence intervals with the LR test? Like, how big does a value have to be for us to reject the null? I imagine that this is an overly conservative approach, but I think it gives a nice exmaple of how to think about stuff.
-\item
-  Cramer-Rao bound: inverse of Fisher information matrix is the lower
-  bound for the variance of unbiased estimators. An estimator that hits
-  this bound is minimum variance unbiased (MVU). (BLUE as a weird name,
-  since B and MV mean the same thing?) Not \emph{a priori} clear that
-  some estimator is an MVU.
-\item
-  Start with Bayesian, because that's how scientists are used to
-  thinking, and then go onto frequentist, because that's how it's easier
-  to do the math, and then return to Bayes.
 \item
   Gauss: a minimum-variance, mean-unbiased estimator minimizes the
   squared-error loss function. Laplace: among median-unbiased
   estimators, a minimum-average-absolute-deviation estimator minimizes
   the absolute loss function. Maybe it's better to allow some bias so
-  you can get less variance. That's the domain of statistical theory.
-\item
-  Linear mixed models using relationship-matrix?
+  you can get less variance. That's the domain of statistical theory. \hl{Move to MLE section?}
 \item
   Fisher's crazy sum test is the same thing as is used in \emph{TRANSIT}
   (DeJesus \emph{et al}.): they treat TA sites in the same gene as
@@ -86,138 +73,13 @@
   datasets. OK, it's not \emph{exactly} like Fisher's test, since it's
   not paired, but it's pretty close. Fisher probably wouldn't have
   wanted to to the \(\binom{n}{2}\) options, compared to the \(2^n\)
-  that he did.
+  that he did. \hl{Example of how people come up with tests?}
 \end{itemize}
-
-\section{GEE notes}\label{gee-notes}
-
-The estimator for the covariance matrix of the estimator for the
-parameters \(\bm{\theta}\) has typical element \[
-\widehat{\mathrm{Cov}}[\hat{\bm{\theta}}]_{i,j} =
-  \left[ \left( -\frac{\partial^2 \mathcal{L}}{\partial \theta_u \, \partial \theta_v} \right) \right]^{-1}_{i,j}.
-\] The inverse is a matrix inverse. This is weird notation.
-
-For example, consider the easy case with just one parameter, so that \[
-\widehat{\mathrm{Var}}[\hat{\theta}] =
-  -\left( \frac{\partial^2 \mathcal{L}}{\partial \theta^2} \right)^{-1}.
-\]
-
-Then try the easy example where we're looking at the sample mean, which
-is the estimator \(\hat{\mu}\) for some population with unknown mean
-\(\mu\) and known variance \(\sigma^2\). Then the log likelihood is \[
-\mathcal{L}(\theta) = \sum_i \left\{ -\frac{1}{2} \log (2 \pi \sigma^2) -
-  \frac{(x_i - \mu)^2}{2 \sigma^2} \right\}
-\] and the second derivative is just \[
-\frac{\partial^2 \mathcal{L}}{\partial \mu^2} = -\frac{n}{\sigma^2},
-\] from which it's clear that
-\(\widehat{\mathrm{Var}}[\hat{\mu}] = \sigma^2/n\). This is just the
-result that we got from our more straightforward approach, where we
-asked about the variance of the estimator, before we had called it that.
-
-Note, however, that this estimate depends on \(\sigma^2\), the
-\emph{true} population variance. In an exercise, you'll compute the
-estimator covariance matrix for the estimator of
-\(\bm{\theta} = (\mu, \sigma^2)\). That will show that there is some
-estimated covariance between \(\hat{\mu}\) and \(\hat{\sigma}^2\), but
-you find that each of \(\widehat{\mathrm{Var}}[\hat{\mu}]\),
-\(\widehat{\mathrm{Var}}[\hat{\sigma}^2]\), and
-\(\widehat{\mathrm{Cov}}[\hat{\mu}, \hat{\sigma}^2]\) depend on the true
-values, not on the estimates themselves. This isn't unreasonable: each
-of these thing is a well-defined random variable that will have a real,
-honest, true distribution, and we're deriving its properties. Clearly
-the true properties of these random variables should depend on the true
-values, but it leaves us in a pickle when we're doing estimation: when
-computing the standard errors on our estimators, we need to use our
-points estimates as the true values!
-
-\textbf{Relationship between ``sampling distribution'' and estimator.
-``Standard error'' as SD of sampling distribution OR estimate of
-standard deviation.}
-
-
-
-\section{Estimators}\label{estimators}
-
-\subsection{The tyranny of the normal, part
-XLIV}\label{the-tyranny-of-the-normal-part-xliv}
-
-You get some data points from a normal distribution (I hope you guessed
-it), and you're interested in the mean and standard deviation of that
-distribution (because those are the only things to know about).
-
-What is the maximum likehood estimator for the mean? In other words,
-given your data points \(x_i\), what \(\mu\), among all the other
-\(\mu\), would have given rise to these particular data with the
-greatest probability? \[
-\begin{aligned}
-\hat{\mu}_\mathrm{ML}
-  &= \mathrm{argmax}_\mu \, \prod_i \mathbb{P}[X_i = x_i] \\
-  &= \mathrm{argmax}_\mu \, \prod_i \frac{1}{\sqrt{2 \pi \sigma^2}} \exp\left\{ -\frac{(x_i - \mu)}{2\sigma^2} \right\} \\
-  &= \mathrm{argmax}_\mu \, \left(2\pi\sigma^2\right)^{-\frac{n}{2}} \exp\left\{ \sum_i -\frac{(x_i-\mu)^2}{2\sigma^2} \right\}
-\end{aligned}
-\]
-
-At this point, it's nice to pull a little trick: the value \(x\) that
-maximum a function \(f(x)\) is the same value that maximizes
-\(\log f(x)\). In other words: \[
-\mathrm{argmax}_x f(x) = \mathrm{argmax}_x \log f(x).
-\] This turns the nasty exponent into a sum: \[
-\hat{\mu}_\mathrm{ML} = \mathrm{argmax}_\mu \left\{ -\frac{n}{2} \left(2 \pi \sigma^2\right) - \frac{1}{2\sigma^2} \sum_i (x_i-\mu)^2 \right\}.
-\] It's pretty clear that we'll need to do something about \(\sigma\) at
-some point: if \(\sigma\) is too big, then the first term blows up, and
-the whole thing goes negative, which is not great for the argmax. If
-\(\sigma\) is too small, then second term blows up. Whatever we pick
-\(\sigma\) to be, it's clear that that choice is independent of the one
-we should make for \(\mu\), since we should just pick a \(\mu\) that
-minimizes \(\sum_i (x_i - \mu)^2\).
-
-Is this starting to look familiar? The \(\mu\) that minimizes this sum
-is the one that solves: \[
-0 = \frac{d}{d\mu} \sum_i (x_i - \mu)^2 = \sum_i -2 (x_i - \mu) = -2 \left( \sum_i x_i - \sum_i \mu \right),
-\] which implies that \(\sum_i x_i = n\mu\), that is,
-\(\mu = \tfrac{1}{n} \sum_i x_i\). It's just our old, dear friend, the
-arithmetic mean.
-
-\subsubsection{Gauss-Laplace synthesis}\label{gauss-laplace-synthesis}
-
-If you're not shocked by what just happened, you have no heart. If you
-\emph{are} shocked, then you're in good company: the realization that
-the normal distribution is the distribution for which the arithmetic
-mean is the maximum likelihood estimator was part of the ``Gauss-Laplace
-synthesis''. In 1809, Gauss published a book about ``least squares
-estimation'', a method for picking a ``best fit'' estimate to data by
-minimizing the squares of the deviations from the arithmetic mean (i.e.,
-minimizing \(\sum_i (x_i - \mu)^2\)), was a ``good'' guess for the
-``true'' value of the mean, where ``good'' meant that it was relatively
-easy to do my hand and seemed to work right.
-
-In the same book, Gauss worked with the normal distribution, which had
-previously been cooked up by Laplace, and showed how you could use it as
-a model for measurement errors. (Gauss's work with the normal
-distribution so overshadowed Laplace's original description that we now
-call the normal distribution ``Gaussian'', and ``Laplacian'' refers to a
-different distribution.)
-
-In 1810, Laplace showed that the normal distribution arises as the sum
-of many random variables \textbf{see somewhere}. Later that year, he
-read Gauss's book from 1809, and he was \textbf{get the quote}. In that
-moment, Laplace realized that the reason that the arithmetic mean always
-seemed so nice, and the reason that least squares seemed to work so
-well, was because the normal distribution's fundamental property causes
-it to arise in so many places, and \textbf{clean up this section}.
-
-\subsubsection{End of historical note}\label{end-of-historical-note}
-
-As you might guess, the arithmetic mean is also the unbiased estimator
-for the population mean: \[
-\mathbb{E}[\mathrm{\mu}] = \mathbb{E}\left[\frac{1}{n} \sum_i X_i \right] = \frac{1}{n} \sum_i \mathbb{E}[X_i] = \mu.
-\]
-
-\textbf{Is this really all that special, then?}
-
 
 \subsection{Estimators about
 estimators}\label{estimators-about-estimators}
+
+\hl{Move this up, into the descriptive section}
 
 \subsubsection{Jackknife}\label{jackknife}
 
@@ -354,30 +216,10 @@ And then an $n^2$ comes out? The point is that the jackknife is basically
 doing a finite estimation of the gradient, by leaving out a single point at a
 time.
 
-\section{others}
-
-Bootstrapping means that you guess that the observed samples are the true
-distribution, and you work forward from there. It's like a maximum likelihood,
-frequentist thing.
-
-You need to draw $n$ samples, because that's the same number you drew originally.
-
-What do you do when you want to compute the variance of some statistic
-that's not easy to compute? Or you don't know what distribution you're
-sampling from? Then you permute your own data. How do we relate:
-
-\begin{itemize}
-\tightlist
-\item
-  permutation tests
-\item
-  bootstrapping (and jack-knifing, etc.)
-\item
-  nonparametric (which I know is different)
-\end{itemize}
-
 \section{\texorpdfstring{What does it mean to
 ``sample''?}{What does it mean to sample?}}\label{what-does-it-mean-to-sample}
+
+\hl{Earlier in text, get clearer about RVs and their ``realizations''. and ``samples''}
 
 Does it make sense to compute a confidence interval when you're sampled
 all the 50 United States?
@@ -386,119 +228,10 @@ all the 50 United States?
 between simple random sampling and something else. Then need to explain
 what simple random sampling is!
 
-\section{Confidence intervals}\label{confidence-intervals}
-
-Confidence intervals are very slippery things. It's tempting to say that
-``I am 95\% confident'' that the true value of a quantity lies within
-the 95\% confidence interval. In frequentist statistics, ``I am
-\emph{X}\% confident'' has no meaning. The probability that the true
-value lies within an interval is either 0 or 1, since if you repeat the
-world-experiment many times, the true value will always be the same. In
-other words, ``confidence'' is a Bayesian notion of probability. The
-interval that you are 95\% confident that something falls in is
-therefore a Bayesian concept (and it gets the confusing name of
-``credible interval''). So forget that ``confidence interval'' has
-anything to do with confidence.
-
-Here's how things actually work: before you collect any data, you
-develop a \emph{method} for generating the upper and lower confidence
-intervals, which are a pair of statistics, that is, functions of the
-data. This method has the property that the statistics it generates an
-interval that, in 95\% of cases, contains the true value.
-
-Here's the slippery part: the confidence interval is generated so that,
-in 95\% of cases, they are ``correct'' in that they contain the true
-value. In the other 5\% of cases, they don't include the true value.
-Strictly speaking, they can't tell you anything about the probability
-that the value is in the range.
-
-\textbf{What's the easy way to explain the Bayesian link?} The typical
-frequentist answer is really pedantic.
-
-\subsection{Binomial test example}\label{binomial-test-example}
-
-We set \(N\) and observe \(X\) to guess \(p\): \[
-P[p \in \mathrm{CI} | X] \propto P[X | p \in \mathrm{CI}] \times P[p \in \mathrm{CI}].
-\]
-
-Confidence intervals don't actually do any of these. E.g.,
-Clopper-Pearson guarantees that, given any \(p\), 95\% of the outcomes
-will include the true value. The actual ranges included depend on \(p\)!
-This isn't the case for the normal distribution, because it has all
-these amazing properties about scaling and so forth. I think this is the
-best example.
-
-For example, start with the super dorpy confidence interval \([0, 1]\).
-This is always true, but it's way too conservative. Then say something
-else dorpy like a constant range, and show that this won't work if \(N\)
-is too small.
-
-Let's look at a real example. The Clopper-Pearson interval are the
-limits of the range of values of \(p\) such that
-\(P[x < X | p] > 2.5\%\) and \(P[x > X | p] > 2.5\%\). The first
-inequality is fulfilled by smaller values of \(p\) (e.g., if \(p\) is
-zero, then \(x\) has to be zero), so the \emph{upper} confidence limit
-is determined by the greatest \(p\) that satisfies that inequality. The
-second inequality is fulfilled by larger \(p\) (e.g., if \(p\) is 1 then
-\(x=N\)), so the \emph{lower} confidence limit is determined by the
-smallest \(p\) that satisfies this inequality.
-
-How can we tell that this is a confidence interval? Given any true \(p\)
-and \(N\), if I make draws \(x\) from \(\mathrm{Bin}(p, N)\), will this
-confidence interval include \(p\) in 95\% of cases?
-
-\subsection{\texorpdfstring{Comparison to
-\(p\)-value}{Comparison to p-value}}\label{comparison-to-p-value}
-
-Given \(N\), and having observed \(X\), we want to test the hypothesis
-that \(p\) equals some \(p_0\) (typically \(\tfrac{1}{2}\)).
-
-The nonrejection interval is the range of \(x\) such that \(x N\) is
-close enough to \(p_0\) that the probability that \(x\) arose from
-\(p_0\) is above some threshold. The lower limit is the lowest \(x\)
-that would have arisen from \(p_0\) with some probability \(\alpha/2\),
-that is, the smallest \(x\) such that \(P[x | p_0] > (1-\alpha)/2\).
-This means that we take the state of nature \(p_0\) as given and scan
-over the possible data values, comparing our data to those values.
-
-In contrast, in a confidence interval, we take the data as given and
-scan over the possible states of nature \textbf{in some way}. For the
-binomial, it's obvious that the confidence intervals and the
-nonrejection intervals are not the same thing, since it the one is
-discrete and the other is continuous. Only in the normal (\textbf{???})
-can we assume they are the same thing.
-
-\subsection{Returning}\label{returning}
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  You get some data that has some parameters (e.g., a sample mean and
-  sample variance).
-\item
-  You \emph{guess} that your observed sample mean and variance are the
-  \emph{true} mean and variance.
-\item
-  You ask, ``If someone else sampled from this true distribution many
-  times, and they got all kinds of sample means and variances, what
-  method could they use to construct, from the values they observed, an
-  interval that would, in 95\% of cases, include the true value?''
-\item
-  Then you forget that you are omniscient and know the true value and
-  instead use the methodology that these ignorant people would use, but
-  you use it on your own data.
-\end{enumerate}
-
-Now the crazy Bayesian switch comes in: you conflate the frequency of
-cases with your confidence that you are in the 95\% of cases.
-
-\emph{N.B.}: For the \emph{t}-distribution, there's this ``pivotal
-quantity'' thing, which means that the true \(\mu\) and \(\sigma\) drop
-out, which is very luck, and it means that we \emph{don't} need to make
-a parametric assumption about how things work.
 
 \subsection{\texorpdfstring{\emph{t}-distribution}{t-distribution}}\label{t-distribution}
+
+\hl{Maybe just mention in passing how difficult the math gets when you want to estimate many quantities simultaneously? Contrast t- and z-tests}
 
 Let's think about how to construct that method. Say you knew the true
 variance \(\sigma^2\). Then we know that the sample means are drawn from
@@ -545,6 +278,8 @@ our purposes. I write this out fully because it is one of the things we
 will \emph{not} derive in this book.
 
 \section{Contingency tables}\label{contingency-tables}
+
+\hl{Move Fisher's exact, Barnard, chi-square up, into a section on p-values? Or maybe statistical power?}
 
 These are nice examples for how to do statistical thinking.
 
@@ -777,278 +512,17 @@ example of wrongness}
 
 \section{Regression}\label{regression}
 
-Hardin pages 56-57 talks about the difference between the normal
-(subject-specific) and the generalized (population-average) estimating
-equations. E.g., second-hand smoking: what's the odds of a kid having a
-respiratory illness given that mom smokes? SS parameters give the OR for
-\emph{each individual child} having the illness, so it's what we would
-expect would happen if particular moms stopped smoking. PA parameters
-give the OR \emph{across the population}, so it explains the difference
-in prevalence we expect in the two groups. The first one is: \[
-\mathrm{OR}^\mathrm{SS} = \frac{P(Y_{it}=1 | X_{it}=1, \nu_i) / P(Y_{it}=0 | X_{it}=1, \nu_i)}{P(Y_{it}=1 | X_{it}=0, \nu_i) / P(Y_{it}=0 | X_{it}=0, \nu_i)}
-\] and the second is \[
-\mathrm{OR}^\mathrm{PA} = \frac{P(Y_{it}=1 | X_{it}=1) / P(Y_{it}=0 | X_{it}=1)}{P(Y_{it}=1 | X_{it}=0) / P(Y_{it}=0 | X_{it}=0)}.
-\] The difference, in case you didn't catch it, is whether you condition
-on the random effect \(\nu_i\). The SS estimate is for these particular
-people; the PA estimate marginalizes over the random effects.
-
-\section{Bayesian}\label{bayesian}
-
-One of the biggest sticking points about a Bayesian analysis is that it
-requires specification of a prior. It can be thought of as an advantage
-or a disadvantage, but I think it's better to think of it as a
-responsibility. Let me tell you an allegory.
-
-Once, a young statistician lived in her parents' house. She paid no rent
-and simply never considered her orientation in the world. Some year
-later, she left the home and had to do statistics in the wide world.
-Where would she live? How would she pay rent? These decisions brought
-power, since she was free to do things she couldn't do at home. She
-could live a life that was more accurate to the real world. This
-allegory is too long and rambly. But there's something in here.
-
-Frequentist statistics is correct so long as you use it exactly for what
-it is designed to do. The trouble is that we \emph{want} statistics to
-answer the kinds of questions that \emph{only} Bayesian statistics can
-answer. For example, how likely is it that this hypothesis is true? If
-you perfectly adhere to the frequentist interpretation, then you are in
-good shape. But if you deviate, if you start to say, ``Oh, the p-value
-is kind-of like the probability my hypothesis is false.'' Then you have
-SCREWED UP son.
-
-\section{Appendix}\label{appendix}
-
-\subsection{Random number generation}\label{random-number-generation}
-
-In many places in this book, we've relied on the ability to generate
-``random'' numbers. However, computers (in the sense of logical
-machines) have no way to generate truly random numbers. Instead, we have
-clever methods that get us something that's a pretty good approximation
-of random numbers.
-
-It's worth noting that a lot of the historical, conceptual directions in
-statistics are due to the fact that doing any kind of Monte Carlo
-methodology without computers is really onerous. Before we had today's
-technology (pseudorandom number generators, to be discussed below), we
-had tables of random numbers, the most notable being the hefty \emph{A
-Million Random Digits with 100,000 Normal Deviates} (where ``normal
-deviate'' means ``random number drawn from a standard normal
-distribution), published by the (coincidentally-named) RAND
-Corporation.\footnote{You can still get this book
-  \href{https://www.rand.org/pubs/monograph_reports/MR1418.html}{on
-  RAND's website} or
-  \href{https://www.amazon.com/Million-Random-Digits-Normal-Deviates/dp/0833030477/}{in
-  paperback}. The numbers were generated using an electronic device,
-  specifically designed to shuffle a sort-of random table of numbers,
-  attached to a computer. See the text about hardware random number
-  generators.} RAND published this book because they had a lot of
-engineers and researchers using Monte Carlo methods. Before the tables
-of random numbers, you had to generate the random numbers yourself,
-which was basically infeasible.\footnote{In 1777, Georges-Louis Leclerc,
-  Comte de Buffon posed a math problem that included probability and
-  geometry: if you throw needles (or matchsticks) onto a surface with
-  parallel stripes whose widths are equal to the length of the needles,
-  what fraction of the needles touch two stripes? It turns out that the
-  answer has \(\pi\) in it. So in 1901, Mario Lazzarini published that
-  he had tossed a needle 3,408 times and, using the analytical solution,
-  back-calculated \(\pi\) as \(\tfrac{355}{113}\). This estimate of
-  \(\pi\) was already known, and the fact that Lazzarini came up with
-  exactly that value is taken as strong evidence that he faked the
-  experiment. In other words, we have a pretty strong prior against
-  believing that someone in 1901 even bothered to throw a needle 3,000
-  times, much less the many more times than that that would be required
-  for random number generation for more interesting Monte Carlo
-  problems!}
-
-As mentioned, now we have \emph{pseudorandom number
-generators}\footnote{There is such a thing as a ``hardware'' random
-  number generator, which is some kind of device that measures something
-  that we think is truly noisy in the real world, like thermal noise or
-  (what we believe are truly random) quantum phenomena like
-  beamsplitting.}. These rely on some input \emph{seed}, which is the
-(hopefully) truly random thing, and from that seed it generates a
-deterministic list of numbers that, in the absence of knowing the seed,
-appear random.\footnote{It may seem weird that, given a seed, you get a
-  deterministic set of numbers. Most software with (pseudo)random number
-  generators pick a seed using whatever entropy they have access to when
-  you boot up the program, so you never notice that the seed is
-  different each time you run a simulation. You can, however, always
-  \emph{pick} the seed, which is nice, because it lets you repeat code
-  with a Monte Carlo method in it and always get the same result, which
-  is nice for testing and debugging.} Usually this seed comes from one
-of the many ``entropy sources'' that a computer has access to, things
-like the time between keystrokes, the time at which a process was
-started, time between network pings, etc.
-
-The pseudorandom number generator in most software now is the Mersenne
-Twister. This algorithm is remarkable for having a long \emph{period} of
-\(2^{19937} - 1\). (All pseudorandom number generators, started with
-with some seed, will eventually end up repeating their output. The
-period is the number of outputs you get before closing the loop.) The
-random things produced by the generators are typically mapped into
-uniformly distribution varibles over \([0, 1]\).
-
-\subsubsection{Generating non-uniformly-distributed
-numbers}\label{generating-non-uniformly-distributed-numbers}
-
-Drawing numbers from \([0, 1]\) usually isn't that interesting. We want
-to draw numbers from other distributions. There are two main approaches:
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  Clever transformations
-\item
-  Various forms of \emph{rejection sampling}
-\end{enumerate}
-
-The idea with clever transformations is to generate random numbers from
-the uniform distribution and somehow turn them into random numbers
-distributed according to some other distribution.
-
-Rejection sampling is a big class of approaches, including such notables
-as ``Metropolis-Hastings'' and ``Markov chain Monte Carlo'' (MCMC). They
-are very useful for the practical scientist.
-
-\textbf{inverse transform, ziggurat, rejection, Metropolis-Hastings and
-other Monte carlo mcmc stuff}
-
-Clever transformations are nice when you can do them, but it's unlikely
-you'll derive one for yourself. Basically, if a run-of-the-mill random
-number generation function in some software purports to be able to
-sample numbers from some distribution, it's doing this transformation. I
-don't think there's anything really practical to be gained from knowing
-these transformations, but they're fun, so I put them here.
-
-\paragraph{Clever transformations}\label{clever-transformations}
-
-If you can write the cdf of your distribution of interest, say
-\(F_X(x)\) and you invert it (i.e., solve for \(x\) in terms of
-\(F_X\)), then you can use a nice trick called \emph{inverse transform
-sampling}.
-
-\subparagraph{Normal distribution: Box-Muller
-transformation}\label{normal-distribution-box-muller-transformation}
-
-To generate normally-distributed numbers from uniformly distributed
-numbers, consider this trick.
-
-Think about a pair of independent, normally-distributed variables
-\(Z_1\) and \(Z_2\). Their joint pdf will be \[
-\begin{aligned}
-f_{Z_1,Z_2}(z_1, z_2) &=
-  \frac{1}{\sqrt{2\pi}} \exp\left\{ -\frac{z_1^2}{2} \right\} \times
-  \text{same thing for $z_2$} \\
-  &= \frac{1}{2\pi} \exp\left\{ -\frac{1}{2} \left( z_1^2 + z_2^2 \right) \right\}.
-\end{aligned}
-\] The trick is to think of \(z_1\) and \(z_2\) as Cartesian coordinates
-like \(x\) and \(y\), from which it's very natural to replace
-\(z_1^2 + z_2^2\) with \(r^2\) and define some \(\theta\) such that
-\(z_1 = r \sin \theta\) and \(z_2 = r \cos \theta\). My claim is that
-we'll be able to generate \(r\) and \(\theta\) from independent, uniform
-random variables.
-
-Because \(f_{Z_1,Z_2}\) is symmetric with respect to \(z_1\) and \(z_2\)
-(i.e., you could swap that subscripts and come out with the same
-expression), it must be that there isn't anything special about having
-sine versus cosine. In other words, there mustn't be anything special
-about \(\theta = 0\) versus \(\theta = \pi\). The origin can't matter.
-Thus, it must be that \(\theta\) is uniformly distributed over
-\([0, 2\pi]\). Any other distribution would end up treating \(z_1\) and
-\(z_2\) differently, which would break their independence.
-
-Generating \(r\) is a little more tricky. Let's look at the cumulative
-distribution function of the random variable \(R\): \[
-\begin{aligned}
-\mathbb{P}[R < r] &= \int_0^{2\pi} \int_0^r f_{Z_1, Z_2}
-    \,\mathrm{d}z_1 \, \mathrm{d}z_2 \\
-  &= \int_0^{2\pi} \int_0^r \frac{1}{2\pi} \exp\left\{-\frac{1}{2} r'^2\right\}
-    r' \,\mathrm{d}{r'} \,\mathrm{d}\theta \\
-  &= \int_0^r \exp\left\{-\frac{1}{2} r'^2\right\}
-    r' \,\mathrm{d}{r'} \,\mathrm{d}\theta \\
-  &= \int_0^{\tfrac{1}{2} r^2} \exp\left\{-s\right\} \,\mathrm{d}s,
-    \text{where $s = \tfrac{1}{2} r'^2$} \\
-  &= 1 - \exp\left\{ -\frac{1}{2} r^2 \right\}.
-\end{aligned}
-\] If we define \(r = \sqrt{-2 \log u}\), then
-\(\mathbb{P}[R < r] = 1 - u\), which is just the cdf for a uniformly
-distributed variable \(U\) on \([0, 1]\). So we generate \(r\) using
-that formula.
-
-It may seem a little strange that we can generate independent \(z_1\)
-and \(z_2\) using \(r\) and \(\theta\). You might think that if I know
-\(z_1\), then I can guess something about \(r\) or \(\theta\) and use
-that information to make a guess about the value of \(z_2\). However,
-because the Cartesian and polar coordinate systems encode exactly the
-same information, that argument is like saying that, because I told you
-\(x\), you might be able to guess \(y\), which is clearly impossible.
-
-\section{Unplaced}\label{unplaced}
-
-\subsection{Chebyshev's inequality}\label{chebyshevs-inequality}
-
-What's the relationship between confidence intervals and variance? We
-all know the relationship for the normal distribution.
-
-As a lemma, consider a random variable \(X\) that only takes on
-nonnegative values. Then \[
-\mathbb{E}[X] = \sum_{k=0}^\infty k \, f_X(k) \geq \sum_{k=1}^\infty f_X(k) = \mathbb{P}[X \geq 1].
-\] (To see the middle inequality, note that you can drop \(k=0\), and
-then, for all the \(k \geq 1\), you can replace \(k\) with \(1\), which
-makes that term in the sum smaller than it might be.) We'll use the
-reversed version: \(\mathbb{P}[X \geq 1] \leq \mathbb{E}[X]\).
-
-Now, Chebyshev's inequality is easy. Use the \[
-\begin{aligned}
-\mathbb{P}\left[|X - \mu| \geq k \sigma\right]
-  &= \mathbb{P}\left[ \frac{(X - \mu)^2}{k^2 \sigma^2} \geq 1 \right] \\
-  &\leq \mathbb{E}\left[ \frac{(X - \mu)^2}{k^2 \sigma^2} \right]
-    \quad \text{(by the lemma)} \\
-  &= \frac{1}{k^2 \sigma^2} \mathbb{E}\left[(X-\mu)^2\right] \\
-  &= \frac{1}{k^2}. \quad \text{(since that expected value is $\sigma^2$ by definition)}
-\end{aligned}
-\]
-
-For \(k=1\), we result is trivial: at most 100\% of values fall outside
-1 standard deviation from the mean. (An upper bound of 100\% tells us
-nothing.) For \(k=2\), at most \(1/4 = 25\%\) of values fall outside 2
-standard deviations. That is, 75\% fall inside. For \(k=3\), 89\% fall
-inside. These are much more conservative results than for the normal
-distribution, for which 95\% of values fall within 2 standard deviations
-and 99.7\% fall within 3.
-
-I'm not sure of the practical utility of this inequality. It requires
-knowing the true variance, which already requires a whole bunch of data.
-
-\subsection{\texorpdfstring{Visualiztion of how \(\hat{p}\) changes with
-\(n\)}{Visualiztion of how \textbackslash{}hat\{p\} changes with n}}\label{visualiztion-of-how-hatp-changes-with-n}
-
-\begin{verbatim}
-n = 1000
-p = 0.3
-x = rbinom(n, 1, p)
-cumx = cumsum(x)
-cumn = cumsum(rep(1, n))
-phat = cumx / cumn
-cil = mapply(function(x, n) binom.test(x, n)$conf.int[1], cumx, cumn)
-ciu = mapply(function(x, n) binom.test(x, n)$conf.int[2], cumx, cumn)
-
-data_frame(flip=x, phat, cil, ciu) %>%
-  mutate(x=1:n()) %>%
-  ggplot(aes(x, phat)) +
-  geom_ribbon(aes(ymin=cil, ymax=ciu), fill='grey80') +
-  geom_line() +
-  geom_hline(yintercept=p, linetype=2)
-\end{verbatim}
+\hl{Make this a chapter? In descriptive statistics? Or just say this regression is an ML problem? Link and error distributions.}
 
 \section{$\chi^2$ test}
+
+\hl{Merge with section above on chi-square}
 
 Say you have $k$ iid standard normal random variables:
 \begin{equation}
 X_i \stackrel{\text{iid}}{\sim} \mathcal{N}(0, 1).
 \end{equation}
-Then $Y = \sum_{i=1}^k$ is $\chi^2$-distributed with $k$ degrees of freedom.
+Then $Y = \sum_{i=1}^k x^2$ (??) is $\chi^2$-distributed with $k$ degrees of freedom.
 
 Let's start with a simple case where you have a table with two cells with
 expected probabilities $p_1$ or $p_2 = 1-p_1$. We got $n$ total observations,
@@ -1088,7 +562,7 @@ the central limit theorem. This special case, called the \emph{de Moive-Laplace
 theorem}, was first published by de Moivre in 1738. Laplace published
 the reverse result, that the binomial approximates the normal, 75 years later,
 in 1812. The general central limit theorem was proven, more than 150 years
-after de Moivre's original result only, in 1901 by Lyapunov.}
+after de Moivre's original result only, in 1901 by Lyapunov. \hl{Put CLT in with regression? Or z-test?}}
 
 So, so long as each cell has (ish) 5 or more counts, then we can approximate
 the binomial variables with normal variables, which means that the test
@@ -1107,5 +581,25 @@ many cells. Like we've seen before, covariance makes the calculations hard!
 Nevertheless, the same restrictions apply: you can only count on the normal
 approximation working if you have enough counts in every cell.
 
+\section{Coda}
+
+\hl{New material}
+
+- Bayes
+- Bayes sampling?
+- MCMC for copmlex models?
+- Nature Biotech Bayes example
+- Optimization for MLE
+- Regression and mixed models
+- Random variable neq variable with a random value
+- When discussing RVs, note that cdf defines it. Then don't ever talk about events, just look at joint cdfs, etc. Make this a whole section unto itself.
+- Do joint pdf's so it's easier to talk about independence
+
+Tony's ideas:
+
+- Neyman Pearson lemma
+- Likelihood ratio tests
+- Why is frequentist so good? CLT, convergence, etc.
+- Information theory, model simplicity, AIC?
 
 \end{document}

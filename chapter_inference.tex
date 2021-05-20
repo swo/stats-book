@@ -1,6 +1,6 @@
 %!TEX root=main.tex
 
-\chapter{A conceptual introduction to inference}
+\chapter{Statistical inference}
 
 The typical approach in statistics is to teach frequentist inference ---things like $t$-tests--- before Bayesian statistics. The reason is that Bayesian statistics is mathematically more complex, it was developed after frequentist statistics, and is more confusing. However, the reason Bayesian statistics is confusing is because inference is confusing, and pretending that it is not leads to some critical misunderstandings about statistical inference.
 
@@ -22,43 +22,15 @@ did this without worrying. Plato felt confident asserting that all humans are
 mortal because he had never heard a counterexample: because every human he
 observed or had heard about was mortal, he reasoned that \emph{every} human ---every one who ever lived and every one which will live--- is mortal.
 
-Thousands of years after Plato, the philosopher David Hume questioned this kind of logic. He said, ``Sure, every human \emph{so far} has been mortal. But that's not proof positive that \emph{no} human will ever be immortal.'' We today are very comfortable to say that ``correlation does not prove causation'', but Hume took that logic to its extreme: if correlation does not prove causation, then seeing that every single one of billions of human who lived is mortal does not prove that the next human is guaranteed to be mortal. If we can't even prove that humans are mortal, then how do we conclude anything?\footnote{This argument is usually couched as the ``sunrise problem'': given that the sun has risen every day, what's the probability it will rise tomorrow? Is that probability \emph{exactly} 1?}
+\hl{inverse probability}
+
+Thousands of years after Plato, the philosopher David Hume questioned this kind of logic. He said, ``Sure, every human \emph{so far} has been mortal. But that's not proof positive that \emph{no} human will ever be immortal.'' We today are very comfortable to say that ``correlation does not prove causation'', but Hume took that logic to its extreme: if correlation does not prove causation, then seeing that every single one of billions of human who lived is mortal does not prove that the next human is guaranteed to be mortal. If we can't even prove that humans are mortal, then how do we conclude anything?\footnote{This argument is usually couched as the \hl{``sunrise problem''}: given that the sun has risen every day, what's the probability it will rise tomorrow? Is that probability \emph{exactly} 1?}
 
 This may seem abstract, but I want to point out that inference is philosophically confusing so that you will not be surprised to hear that inferential statistics is confusing!
 
-\section{Inferential statistics is confusing}
+\section{Null hypotheses are our imperfect approach to frequentist inference}
 
-As I noted in chapter \ref{chapter:probability}, there are two ways to define
-``probability'', \emph{Bayesian} and \emph{frequentist}. So far, this book has
-all been about frequentist statistics, and I will continue in that vein in this
-chapter, even though frequentist statistics's primary weakness is in inference!
-
-To understand why, recall that, in frequentist statistics, probability is
-a \emph{proportion} (that is, a frequency): as the number of identical
-replicates of an experiment is increased to infinity, the proportion of those
-experiments that have some particular result will approach a proportion, which
-is the probability. If I flip a fair coin many times, the proportion of times
-it will land heads is $\tfrac{1}{2}$, so the probability of heads is
-$\tfrac{1}{2}$.
-
-The difficulty of using frequentist statistics for inference is that the whole
-point of inference is to draw a conclusion about the one, single world we are
-living in. Are humans mortal? This is a question to which we cannot assign
-a probability: either humans are mortal or not. It doesn't make sense to run
-``replicate universes'' in which humans may end up as mortal or not. We live in
-this universe, where humans are one or the other, and we want to know about
-what's happening in this universe, so the frequentist probability that humans
-are mortal is 1 if they are mortal and 0 if they are not mortal.\footnote{If
-this sounds stupid, consider this question: what is the probability that
-Socrates is mortal? Well, Socrates is dead, so of course he was mortal:
-probability equals one. The tough thing to understand is that, for frequentist
-statistics, the question ``What's the probability that my hypothesis is
-correct?'' sounds as bizarre as the question ``What's the probability that
-Socrates is mortal?''}
-
-This creates a paradox. I want to know what my data suggest about my hypothesis. Given this data, what's the probability that my hypothesis is correct? Frequentist statistics simply cannot assign a probability to the concept ``my hypothesis is correct'', except to make it 0 or 1. And yet we use frequentist statistics to do inferential reasoning all the time.
-
-\section{A null hypothesis is our imperfect approach to frequentist inference}
+\hl{1. Freq. stats cannot adress states of nature. 2. But we want $P[\theta|X]$. Waht to do? 3. Trick is to use $P[X|\theta]$ to make p-values and supplement that with CIs.}
 
 We resolve the paradox of using frequentist statistics to make inferences about the character of the universe ---things which do not have frequencies--- using a trick called a \emph{null hypothesis}. Rather than asking, ``Given the data, what's the probability that my hypothesis is correct?'', we construct an uninteresting, null hypothesis and then reverse the question, ``Imagine this null hypothesis were true. Then what's the probability of getting data like mine?''
 
@@ -71,7 +43,6 @@ natural inclination is to ask about $\prob{\theta | X}$. But in frequentist
 statistics, $\prob{\theta}$ is nonsense, either you are cheating or you are not.
 So we flip the question, instead asking about $\prob{X | \theta}$.
 
-\section{The null hypothesis approach cannot say whether your hypothesis is true}
 
 In the previous section, we replaced an induction question with a deduction question: $\prob{\theta | X}$ reasons from the specific $X$ to the general $\theta$, while $\prob{X | \theta}$ reasons from the general $\theta$ to the specific $X$. In other words, we replaced the hard, inference question (are you cheating? are all human mortal?) with the easier, deduction question: if you were not cheating, how likely are you to have gotten such lucky hands?
 
@@ -82,6 +53,8 @@ The prosecutor did a bait-and-switch. The null hypothesis $\theta$ is that the a
 If it's not obvious that this argument is fallacious, consider the more general proposition that $\prob{A | B}$ equals $\prob{B | A}$. For example, if it is snowing, what's the probability that the temperature is below freezing? Basically 100\%. But if it is below freezing, what is the probability that it is snowing? Clearly much less than 100\%. But clearly the two concepts have something to do with one another, which we will examine in the next section.
 
 \section{Bayes's theorem is the only way to ask about whether your hypothesis is correct}
+
+\hl{Move this to a Part IV}
 
 The relation between $\prob{X | \theta}$ and $\prob{\theta | X}$ is laid out in \emph{Bayes's theorem}:
 \begin{equation}
