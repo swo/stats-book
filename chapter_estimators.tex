@@ -290,9 +290,17 @@ parameters $\theta$ are relevant, we think of them as fixed. By contrast, we wri
 the likelihood function $L$ as $L(\theta; x) \defeq f_X(x; \theta)$. For likelihood,
 we consider the data fixed and vary the parameters.
 
-To see how this plays out, let's return to the German tank problem. Given some data
-points $x_i$, what is the probability density of drawing that data, for some varying
-parameter $B$?
+To see how this plays out, let's return to the German tank problem. Given some
+data points $x_i$, what is the probability density of that data, as we
+vary the parameter $B$? Earlier we saw that $f_X(x) = 1/B$ if $0 \leq x \leq B$.
+Clearly $f_X(x) = 0$ if $x > B$: the chance that any data point is over the maximum
+$B$ is zero. Thus, the joint probability density for all the data is:
+\begin{equation*}
+    f_X(x) = \begin{cases}
+        (1/B) \text{ if $0 \leq x \leq B$} \\
+        0 \text{ otherwise}
+    \end{cases}
+\end{equation*}
 
 \vspace{1in}
 
