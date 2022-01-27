@@ -279,8 +279,8 @@ specify a theoretical model for how your data are generated, and then you use op
 
 The word \emph{likelihood} is confusing because, in common speech, ``probability''
 and ``likelihood'' are synonymous. In statistics jargon, the likelihood function
-is actually related to the probability density function, only it emphasizes the
-parameters over the data. Say we have some data $x$ that was drawn from a probability 
+is just the probability density function, except that it treats the parameters as the varying input
+and the data as fixed. Say we have some data $x$ that was drawn from a probability 
 distribution with density function $f_X$. We often think about families of probability
 distributions and name them by their parameters. For example, we say that a normal
 distribution is defined by two parameters, its mean and its variance. So say that
@@ -303,7 +303,7 @@ function for all the measured data points $x_i$. This kind of optimization is ca
       0 &\text{ if } x_i > B
     \end{cases} \\
     &= \underset{B}{\operatorname{argmax}} \begin{cases}
-      (1/B)^n \&text{ if } x_i > B \text{ for any $i$} \\
+      (1/B)^n \& text{ if } x_i > B \text{ for any $i$} \\
       0 &\text{ otherwise}
      \end{cases} \\
     &= \max_i x_i
@@ -333,4 +333,9 @@ In words, the variance of the estimator is $1/n$ of the variance of the underlyi
 
 Because the \emph{standard deviation}, the square root of the variance, is more intuitive, one can say that the standard deviation of the estimator decreases with the square root of $n$. To distinguish the standard deviation of the estimator from the standard deviation of the underlying population, $\var{\hat{\mathbb{E}}_X}$ is also called the \emph{standard error of the mean}. With more data points $n$, you can get an ever more precise estimate of the mean, so the standard error of the mean declines, but the standard error of the underlying population $\var{X}$ is fixed.
 
-This result was surprising because it was expected that the standard error would scale like $1/n$ rather than $1/\sqrt{n}$. In other words, it was expected that, if you collected double the data, you would get double the precision, when in fact, you get only a $\sqrt{2}$ improvement, that is, a 41\% improvement. More starkly, if you take one hundred times the data, you get only a ten-fold increase in precision.
+This result was surprising because it was expected that the standard error
+would scale like $1/n$ rather than $1/\sqrt{n}$. In other words, it was
+expected that, if you collected double the data, you would get double the
+precision. In fact, when you double the data, you get only an improvement of $\sqrt{2}$,
+of 41\%, in standard error. More starkly, if you take one hundred times the data, you get only
+a ten-fold increase in precision.
