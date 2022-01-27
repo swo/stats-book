@@ -19,21 +19,28 @@ defined such that, for any parameter value $\theta$, it holds that:
   \prob{\hat{\theta}_- \leq \theta \leq \hat{\theta}_+} \geq 1 - \alpha.
 \end{equation}
 A typical value for $\alpha$ is 5\%, or $0.05$, which yields 95\% confidence intervals.
+A higher $\alpha$ corresponds to a lower probability of error, and thus wider confidence
+intervals, for which we are more sure that the interval actually contains the true value.
+Thus a 99\% confidence interval is wide and a 90\% confidence interval is narrow.
 
-In other words, in the frequentist approach, we develop two statistics ---functions
+This equation is typically read as saying ``the probability that the value of
+the unknown parameter $\theta$ is between $\hat{\theta}_-$ and $\hat{\theta}_+$ is
+95\%''. The typical conceptualization is then to imagine that $\theta$ is varying,
+bopping around inside the confidence interval set by $\hat{\theta}_-$ and
+$\hat{\theta}_+$. In fact, however, it is the intervals that are the random variables,
+and the parameter is the constant fixed point around which those random variables
+are bopping.
+
+Note that, in the frequentist approach, we develop two statistics ---functions
 of the observed data--- such that their corresponding estimators will, with some
 probability, enclose the true value, for every possible true value. Strictly speaking,
 you must select a method for constructing confidence intervals such that, for any
 parameter $\theta$ I choose, the proportion of infinitely many repeated trials will
 produce realizations of the confidence interval that enclose $\theta$.
 
-Note that $\alpha$ is the probability of an error, that is, of the confidence intervals not
-enclosing the true value. Thus, a higher confidence percentage, which translates to a lower 
-$\alpha$, means a lower probability of the
-confidence intervals being incorrect, and thus wider confidence intervals.
-
 \section{Meaning and interpretation}
 
+If this introduction has been a bit befuddling, then you are in good company.
 Confidence intervals are a very new concept. They were first introduced in the statistical literature in 1937 and become commonplace in scientific work only in the later 20th century.
 It is perhaps no surprise, given its youth, that the concept of the confidence interval
 is very confusing.
@@ -49,10 +56,16 @@ the true value with some ``confidence'' is a Bayesian concept, the \emph{credibl
 ``Confidence'' is part of the Bayesian definition of probability; it is foreign to the
 frequentist construction.
 
-To a practicing scientist, this distinction might appear entirely semantic. Regardless of
-what they specifically mean, it is useful to have some quantification of uncertainty.
+To a practicing scientist, this distinction might appear entirely semantic. But if anyone
+tells you there is a 95\% probability that the true value of a parameter falls within
+some fairly specific range, you should be very skeptical. Would you, for example, bet
+twenty-to-one odds that they were correct? I would not, not because they had miscomputed
+their statistics, but because their experimental approach is very likely imperfect.
 
 \section{Constructing intervals}
+
+Regardless of what confidence intervals really mean, they are useful for
+producing some quantification of uncertainty.
 
 To show how confidence intervals are constructed, consider the German
 tank problem again. Our unbiased point estimate is $\hat{B} = \tfrac{n+1}{n} \max_i X_i$.
@@ -67,9 +80,9 @@ confidence interval being wrong on either side is $2.5\%$, for a 5\% total proba
 error.
 
 To construct $\hat{B}_-$ and $\hat{B}_+$, we will find the range of values in which the point
-estimator $\hat{B}$ is expected fall, given $B$. We found that the cdf for the biased
+estimator $\hat{B}$ is to expected fall, given $B$. We found that the cdf for the biased
 estimator $\max_i X_i$ was $(x/B)^n$, so the cdf for the
-unbiased point estimator:
+unbiased point estimator is:
 \begin{equation*}
     \prob{\hat{B} \leq x} = \frac{n+1}{n} \left(\frac{x}{B}\right)^n
 \end{equation*}
@@ -98,8 +111,10 @@ we have $\hat{B} = 1.01$,
 $\hat{B}_- = 1.0004$, and $\hat{B}_+ = 1.04$. In both these cases, we do not say what $B$
 actually is, so we cannot say whether or not the confidence intervals contain the true value
 or not. We only know that, regardless of what $B$ is, there is a 95\% probability that the
-resulting data will produce, according to our definitions, a value of $\hat{B}_-$ and
-$\hat{B}_+$, that contain $B$.
+resulting data will produce, according to our definitions, values of $\hat{B}_-$ and
+$\hat{B}_+$ that contain $B$.
+
+\section{Properties of confidence intervals}
 
 We could have been much lazier with our confidence intervals. For example, I could have
 defined $\hat{B}_- = 0$. Because we know \textit{a priori} that $B>0$, this lower end
@@ -108,8 +123,28 @@ intervals will be contain $B$ with a probability greater than $1-\alpha$. This i
 undesirable feature. Confidence intervals with the desirable property that they have a
 error probability of exactly $\alpha$ and no more are termed \emph{valid} confidence intervals.
 
-\section{Bootstrapping}
+You might imagine that we could have constructed different confidence intervals. For example,
+if we relaxed the symmetry requirement, then we might be able to produce confidence intervals
+that are overall narrower. For certain situations, there is a well-acknowledged single best
+method for constructing a confidence interval. In other situations, there are multiple very
+reasonable ways to construct confidence intervals. For example, for the binomial distribution,
+there are pros and cons to the Wilson method and the Clopper-Pearson methods for computing
+confidence intervals.
 
-\section{Jackknife}
+\section{Resamplign methods}
+
+One might object that the approach this so far has been theoretically pleasant
+but practically nearly useless. As a scientist collecting data, one is often
+unsure what distribution the data will follow. More often, one might be
+confident that the data do not follow any well-studied statistical distribution
+and so cannot count on there being an already-derived methodology for computing
+confidence intervals. In these situations, we turn to resampling methods like the
+\emph{bootstrap} or the \emph{jackknife}.
+
+\subsection{Bootstrap}
+
+
+
+\subsection{Jackknife}
 
 \section{Profile method}
