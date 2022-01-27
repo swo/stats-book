@@ -111,7 +111,7 @@ use names like $b$. To be clear, $b$ is a function of numbers, although we also
 write $\hat{B} = b(X)$, where now ``$b$'' means some manipulation of a set of iid
 random variables to create a new random variable.
 
-\subsection{Consistent estimators}
+\section{Consistent estimators}
 
 Let me start with what will seem like a very inane choice of statistic.
 Maybe my favorite number is 3, so I will say that, regardless of what data I
@@ -193,7 +193,7 @@ so by falling short:
 For $\varepsilon > 0$, this limit of this number, as $n \to \infty$, is zero,
 and thus $\hat{B}_n$ converges to $B$, so $\hat{B}$ is a consistent estimator.
 
-\subsection{Unbiased estimators}
+\section{Unbiased estimators}
 
 It is a nice thing that our estimator $\hat{B}$ is consistent: as we get more
 and more data, the statistic $b$ will end up closer and closer to the true value
@@ -244,7 +244,7 @@ more straightforward explanation, which you can now understand, which is that th
 $n-1$ is there in the sample variance, instead of $n$, because it corrects for a
 bias.
 
-\subsection{Efficient estimators}
+\section{Efficient estimators}
 
 Consistency ensures that, in the limit of infinite data, our estimate approaches
 the true value. How can we be sure that we are getting the best estimate for our
@@ -269,12 +269,12 @@ hits the lower bound on variance and is maximally efficient.
 The math behind efficiency is somewhat complex, so I will simply tell you that
 a whole class of estimators, \emph{maximum likelihood} estimators, are efficient.
 
-\subsection{Maximum likelihood estimators}
+\section{Maximum likelihood estimators}
 
 The German tank problem has a useful toy example, but it's hard to imagine deriving
 estimators by hand for the kind of complex data analysis that most scientists do.
 Fortunately, modern computing means that we can address all sorts of complex data
-using a \emph{maximum likelihood} approach. In a maximum likelihood approach, you
+using a \emph{maximum likelihood} (ML) approach. In a maximum likelihood approach, you
 specify a theoretical model for how your data are generated, and then you use optimization to estimate values for the parameters that best ``fit'' the data.
 
 The word \emph{likelihood} is confusing because, in common speech, ``probability''
@@ -290,105 +290,47 @@ parameters $\theta$ are relevant, we think of them as fixed. By contrast, we wri
 the likelihood function $L$ as $L(\theta; x) \defeq f_X(x; \theta)$. For likelihood,
 we consider the data fixed and vary the parameters.
 
-To see how this plays out, let's return to the German tank problem. Given some
-data points $x_i$, what is the probability density of that data, as we
-vary the parameter $B$? Earlier we saw that $f_X(x) = 1/B$ if $0 \leq x \leq B$.
-Clearly $f_X(x) = 0$ if $x > B$: the chance that any data point is over the maximum
-$B$ is zero. Thus, the joint probability density for all the data is:
-\begin{equation*}
-    f_X(x) = \begin{cases}
-        (1/B) \text{ if $0 \leq x \leq B$} \\
-        0 \text{ otherwise}
-    \end{cases}
-\end{equation*}
+To see how this plays out, let's return to the German tank problem. Given some data
+points $x_i$, what is the probability density of drawing that data, for some varying
+parameter $B$? We look for the value of $B$ that maximizes the probability density
+function for all the measured data points $x_i$. This kind of optimization is called \emph{argmax}. While \emph{max} asks for the maximum value of some function $f(x)$ when varying $x$, argmax asks for the value of $x$ that leads to $f(x)$ being maximized. Thus:
 
-\vspace{1in}
-
-
-the two terms are related
-but subtly different. Both the probability and likelihood functions take data
-and parameters as input and return a probability or probability density as output.
-
-The probability function asks, given some parameters, how
-likely are the data you observed? (Or, more precisely, if you have continuous data,
-what is the value of the probability density function for the data you observed?)
-The likelihood function asks the reverse: given some data, what parameter values
-
-
-how you think your
-data are generated
-
-In the simple toy example of the German tank problem, it was pretty easy to
-cook up a good estimator. There was a very short chain of logic between ``want
-maximum $B$ of true distribution'' to ``look at maximum of observed values''.
-It's usually not this easy.
-
-For example, imagine you had never heard of least squares regression, but you
-have some pairs of points $(x_i, y_i)$ that you thought had some linear
-relationship $y_i = m x_i + b + \varepsilon_i$, where the $\varepsilon_i$ are
-some random error values. What's a good estimator $\hat{m}$ to estimate the
-slope $m$?
-
-\emph{Maximum likelihood} estimator is an algorithm for creating sensible
-estimators that doesn't require any reasoning about the problem. You put in
-the distributions of all the relevant variables, and it spits out an
-estimator. It was fun to think deeply about the German tank problem and
-derive a consistent, unbiased estimator, but it's very rare that we'll be
-able to pick up a pencil and paper and calculate out an answer like that.
-
-\emph{Likelihood} in ``maximum likelihood'' is a confusing word. In common
-speech, ``likelihood'' and ``probability'' are synonyms. In statistics jargon,
-they mean related but distinct things. A ``probability'' density function asks
-about the probability of different outcomes given some fixed parameters. A
-``likelihood'' functions asks about the probability density of some fixed
-outcome while varying the parameters. Imagine a probability density function
-$f_X$ for some data value $x$ and some parameter $\theta$. We say that $f_X(x;
-\theta)$, where $\theta$ is mostly fixed, is the probability function. We say
-$L(\theta; x) \defeq f_X(x; \theta)$, where $\theta$ varies and $x$ is fixed,
-is the likelihood function. We say ``maximum likelihood'' rather than
-``maximum probability'' as a way of emphasizing that the data points are
-fixed, and we're finding the parameters that best explain them.
-
-The maximum likelihood (ML) approach says: as an estimator, pick the value
-such that, if it were the true value, would maximize the probability density
-of the observed data. For the German tank problem, this would read:
-\begin{equation}
-\hat{B}_\text{ML} \defeq \max_{B'} \prod_i f_X(x_i; B')
-\end{equation}
-Note that $B$ is still some fixed, true value. We're fiddling with $B'$, a
-guess at $B$. When we find the $B'$ that best explains the data, that's our
-estimator $\hat{B}_\mathrm{ML}$.
-
-For any particular $B'$, the probability density for an $x$ to fall between 0
-and $B'$ is $1/B'$. The probability for $x$ to fall above $B'$ is zero, since
-it's impossible for a data point to fall above the maximum of its own
-distribution. Thus, the probability the density value for all the $n$ observed
-data points is 0 if any of the $x_i$ fall above $B'$ and $(1/B')^n$ if they all
-fall below $B'$:
 \begin{align*}
-\hat{B}_\text{ML} = \max_{B'} \begin{cases}
-0 &\text{if any $x_i > B'$} \\
-(1 / B')^n &\text{otherwise}
-\end{cases}
+    \hat{B}_\mathrm{ML}
+    &= \underset{B}{\operatorname{argmax}} \prod_i f_X(x_i; B) \\
+    &= \underset{B}{\operatorname{argmax}} \prod_i \begin{cases}
+      1/B &\text{ if } 0 \leq x_i \leq B \\
+      0 &\text{ if } x_i > B
+    \end{cases} \\
+    &= \underset{B}{\operatorname{argmax}} \begin{cases}
+      (1/B)^n \&text{ if } x_i > B \text{ for any $i$} \\
+      0 &\text{ otherwise}
+     \end{cases} \\
+    &= \max_i x_i
 \end{align*}
-The first case means that we can't overshoot at all, so $\hat{B}_\text{ML}$
-cannot be smaller than the maximum data point. The second case shows that,
-as $B'$ is increased, the likelihood of the observed data decreases. The maximum
-likelihood, then, is just the value of the maximum observed data point, which
-was the consistent estimator we guessed above.
+Note that, in the maximum likelihood approach, when computing $f_X(x_i; B)$, we assume that we know $B$, because it is the parameter we are optimizing over. This makes the maximum likelihood computation relatively simple: we cannot choose $\hat{B}_\mathrm{ML}$ to be smaller than the maximum of the observed values $x_i$, because that would make the observed data impossible, and we set $\hat{B}_\mathrm{ML}$ at exactly $\max_i x_i$ because choosing any greater value would make the observed data seem unusual. If $B$ were actually much, much higher than $\max_i x_i$, the observed data would be rare, being clustered very close to zero, relative to that very large $B$.
 
-In fact, all maximum likelihood estimators are consistent, and they are
-maximally efficient in the limit of large sample size. (It can be that other
-estimators are more efficient that the ML estimator for a finite sample size.)
-Maximum likelihood estimators are not guaranteed to be unbiased. Indeed, in this
-example, the maximum of the data is a biased estimator.
+Note also that the maximum likelihood approach for the German tank problem gave us a consistent estimator, but not an unbiased one. Given certain mathematical necessities that are probably true for your applications, maximum likelihood estimators are consistent, but they are in general not biased.
 
-Although ML estimators are not perfect, it's nice that they are consistent and
-have some guarantees on their efficiency. It's also really nice that they
-arise from an algorithmic approach. If you can write down the likelihood
-function, you can maximize it analytically, that is, exactly, by hand, like we
-did in this example. If you can't write down the likelihood function but you
-can sample from the distribution and compute the likelihood for every sample
-you draw, then you can still do a maximum likelihood estimate. The fact that
-you can take this algorithmic, computational approach means that maximum
-likelihood estimation is used a lot in complex models, like we'll see later.
+Again, a key practical advantage of maximum likelihood estimation is that it requires only a computer and an articulation of how the data are generated.
+
+
+\section{The arithmetic mean as an estimator}
+
+The German tank problem has simple math, but it is not a familiar application. Let us consider instead a very familiar estimator, the arithmetic mean, that is, the simple average of numbers. Just as the mean of some set of numbers $x_i$ is $(1/n) \sum_i x_i$, we analogously define the estimator $\hat{\mathbb{E}}_X \defeq (1/n) \sum_i X_i$ of the mean of i.i.d. random variables $X_i$.
+
+It is immediately clear that $\hat{\mathbb{E}}_X$ is an unbiased estimator of $\expect{X}$:
+\begin{equation*}
+    \expect{\hat{\mathbb{E}}_X} = \expect{\frac{1}{n} \sum_i X_i} = \frac{1}{n} \expect{X_i} = \expect{X}.
+\end{equation*}
+But is $\hat{\mathbb{E}}_X$ as consistent estimator of $\expect{X}$? The mathematician Jacob Bernoulli published the first proof of this fact for a special case of random variables (i.e., those following the Bernoulli distribution) in 1713. It took him 20 years to develop a rigorous proof for what he proudly called the ``Golden Theorem''. Now the proof is considerably simpler and broader, and we call it the \emph{law of large numbers}.
+
+The modern proof of the law of large numbers follows from an observation about the variance of the estimator $\hat{\mathbb{E}}_X$ that was surprising to many early statisticians:
+\begin{equation*}
+    \var{\hat{\mathbb{E}}_X} = \var{\frac{1}{n} \sum_i X_i} = \frac{1}{n^2} \sum_i \var{X_i} = \frac{1}{n} \var{X}
+\end{equation*}
+In words, the variance of the estimator is $1/n$ of the variance of the underlying random variable it is estimating. Intuitively, this means that, as you take more data, you are ever more likely to get an estimate near to the true mean of the underlying population you are sampling. This result makes it clear that $\hat{\mathbb{E}}_X$ is a consistent estimator, because for arbitrarily high $n$, it has arbitrarily low variance.
+
+Because the \emph{standard deviation}, the square root of the variance, is more intuitive, one can say that the standard deviation of the estimator decreases with the square root of $n$. To distinguish the standard deviation of the estimator from the standard deviation of the underlying population, $\var{\hat{\mathbb{E}}_X}$ is also called the \emph{standard error of the mean}. With more data points $n$, you can get an ever more precise estimate of the mean, so the standard error of the mean declines, but the standard error of the underlying population $\var{X}$ is fixed.
+
+This result was surprising because it was expected that the standard error would scale like $1/n$ rather than $1/\sqrt{n}$. In other words, it was expected that, if you collected double the data, you would get double the precision, when in fact, you get only a $\sqrt{2}$ improvement, that is, a 41\% improvement. More starkly, if you take one hundred times the data, you get only a ten-fold increase in precision.

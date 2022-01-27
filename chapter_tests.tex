@@ -2,6 +2,12 @@
 
 \chapter{Frequentist inferential statistics: statistical tests and confidence intervals}
 
+\hl{1. Define p-value (1 and 2-sided). 2. Zea mays example data. 3. Binomial sign test. 4. Fisher's weird sum. 5. Paired test (wilcox)?. 6. Paired t-test.}
+
+\hl{Add a chapter for statistical power and sample size. Define Type I and Type II errors. Chapters on parametric vs. nonparametric. Permutation tests.}
+
+$T=t(X)$ is statistic. $t^\star = t(x)$ is obs. value. $p=\prob{T>t^\star}$ or $\prob{T<t^\star}$. 2-sided is $\prob{T<t^\star \text{ or } T > t_0 + (t^\star-t_0)}$, where $t_0$ is some central value?
+
 The previous chapter laid out the conceptual points of inference. In this chapter, I lay out the nuts and bolts of what most people think statistics is: tests.
 
 The mathematics of statistical tests follows directly from the previous mathematical chapters: we define some \emph{estimators}, functions of the data that predict some property of the data, and determine their variance. We just give things different names and interpret them differently.
@@ -47,7 +53,7 @@ As laid out in the previous chapter, ``what is the probability that this data is
 
 I think my only take-away is that you should trust your gut more than a $p$-value. First, Fisher developed statistics as a way to rigorously show that data \emph{weren't} interesting, a mathematical counterbalance to humans' ability to find interesting patterns in data, especially their own. He meant $p$-values as a way to deflate puffed-up conclusions, not to puff them up. Second, Fisher, who invented $p$-values, couldn't really agree with other extremely intelligent people about exactly what they meant. So don't make yourself crazy trying to figure it out too precisely either! Just know that big $p$-values, where ``big'' depends on the intellectual context, mean the data aren't interesting, where ``interesting'' is defined by the null hypothesis.
 
-Confidence intervals were also controversial when first introduced, and they are also philosophically confusing. To say that the 95\% confidence interval on $X$ is from here to there means that, if the test statistic observed in this experiment were the true one (which it almost certainly is not), then if you repeated the experiment many times, in what interval would the measured test statistics tend to fall? This is \emph{not} the same as saying that there is a 95\% chance that the true value is in that interval, although exactly what it \emph{is} saying is confusing.
+\hl{Move all of the above to previous chapter where p-values are defined}
 
 \section{A test with a simple explanation but difficult math: the binomial proportion test}
 
@@ -80,6 +86,8 @@ more'' can mean 3 things:
     \item as large as what was observed, or larger, or
     \item as far away from the ``center'' as was observed, or further away.
 \end{itemize}
+
+\hl{Exact tests: you can count every possibility for a binomial}
 
 The first two cases call for \emph{one-sided} $p$-values and can be used if you
 have an \textit{a priori} hypothesis that the number of heads that you will
@@ -164,6 +172,8 @@ of heads larger than what you observed.
 
 If this seems like a big, confusing headache, I hope you take it as a sign that
 confidence intervals are confusing, not that you're not understanding!
+
+\hl{Now with computers, Clopper-Pearson is easy}
 
 \section{A test with simple math but a difficult explanation: the $z$-test}
 
@@ -583,6 +593,8 @@ Note that, if you fix \(n_1\), then you don't have to subtract the
 
 \section{Statistical power: Cochrane-Armitage
 test}\label{statistical-power-cochrane-armitage-test}
+
+\hl{Do I need this example, if I'm showing the Zea mays choices instead?}
 
 We never want to run just any test: we want to use the test that is most
 capable of distinguishing between the scenarios we're interested in.
