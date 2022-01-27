@@ -131,20 +131,44 @@ reasonable ways to construct confidence intervals. For example, for the binomial
 there are pros and cons to the Wilson method and the Clopper-Pearson methods for computing
 confidence intervals.
 
-\section{Resamplign methods}
+\section{Resampling methods}
 
-One might object that the approach this so far has been theoretically pleasant
-but practically nearly useless. As a scientist collecting data, one is often
-unsure what distribution the data will follow. More often, one might be
-confident that the data do not follow any well-studied statistical distribution
-and so cannot count on there being an already-derived methodology for computing
-confidence intervals. In these situations, we turn to resampling methods like the
-\emph{bootstrap} or the \emph{jackknife}.
+In the previous example, we used our knowledge about the distribution of the
+data to develop confidence intervals on the estimator $\hat{B}$. What would we
+do if we had an estimator ---that is, we knew what property of the data we
+wanted to measure--- but we did not know how the data were distributed?  In
+these situations, we turn to resampling methods like the \emph{bootstrap} or
+the \emph{jackknife}.
 
 \subsection{Bootstrap}
 
+A now-popular technique called \emph{bootstrapping}, which was first published in 1979, addresses this problem. Rather than asserting that we know the distribution of the data, in the bootstrapping approach, we assume that the data we collected is the best approximation we have for the true, underlying distribution of the data. In statistics jargon, this means we use the sampling distribution as if it were the population distribution. In other words, we sampled some data points $x_i$ from the true distribution $F_X$ of some i.i.d.~random variables $X$, and from that we construct a new set of i.d.d.~random variables $\hat{X}$, which are discrete random variables with probability mass function:
+\begin{equation*}
+    f_{\hat{X}}(x') = \frac{\#\{x' \in x_i\}}{n},
+\end{equation*}
+that is, the probability of drawing the value $x'$ is equal to the proportion of the data points $x_i$ equal to that value. If none of the $x_i$ are the same (i.e., every value is unique), then $f_{\hat{X}}(x') = 1/n$ if $x'$ is one of the values we drew and zero otherwise.
 
+Strictly speaking, there are a finite number of possible draws from this population, and so the probabilities $f_{\hat{X}}(x')$ can be computed exactly. For example, say you ran an experiment and drew three values $x_1, x_2, x_3$. Then $f_{\hat{X}}(x')$ is $\tfrac{1}{3}$ for $x' \in \{x_1,x_2,x_3\}$ and zero otherwise. There are only 10 possible data sets that can be drawn: $\{x_1,x_1,x_1\}$ with probability $\tfrac{1}{27}$, $\{x_1,x_1,x_3\}$ with probability $\tfrac{1}{9}$, and so on, finishing with $\{x_3,x_3,x_3\}$ with probability $\tfrac{1}{27}$.
 
-\subsection{Jackknife}
+Another way to say this is that bootstrapping represents \emph{resampling with replacement}. From the $n$ data points in our sample, we take a ``resample'' of $n$ data points. One of those resamples is just the original sample, that is, we pick each original data point exactly one. In the example above, this is the resample $\{x_1,x_2,x_3\}$. In all the other cases, we draw at least one data point multiple times. For example, in the resample $\{x_1,x_1,x_2\}$, we drew $x_1$ twice.
+
+Some combinatorics shows that there are $\binom{2n-1}{n}$ possible resamples. For $n=3$, this yields 10 possible resamples. For $n=10$, this yields $92,378$ possible resamples. For $n=25$, this yields more than $10^{13}$ possible resamples. Thus, for all but the smallest data sets, it is not feasible to consider all possible resamples. A scientific study might perform $1,000$ or 1 million bootstraps, randomly resampling the original data, and then stop, rather than exhaustively considering all the possible combinations.
+
+Bootstraps can be used to construct confidence intervals on some estimator. There are a few different mathematical approaches; the simplest is called the \emph{percentile method}. Given a statistic $t$ and data points $x_i$, draw many bootstraps $x^{(j)}$, and compute $t(x^{(j)})$ for each bootstrap. The lower confidence interval $\hat{T}_-$ is the $\tfrac{\alpha}{2}$ quantile of the bootstrapped statistics $t(x^{(j)})$, and the upper confidence interval $\hat{T}_+$ is the $1-\tfrac{\alpha}{2}$ quantile. In other words, the confidence intervals for the estimator are equal to the quantiles of the statistic computed on many bootstraps of the data.
+
+\section{Jackknife}
+
+The bootstrap and the \emph{jackknife} are the two most popular resampling techniques. In the bootstrap, we draw $n$ data points with replacement, for a total of $\binom{2n-1}{n}$ resamples. This number of resamples is typically very large, so, in effect, the bootstrap is a Monte Carlo method; we select and evaluate only a fixed number of resamples. The jackknife, by contrast, involves taking just $n$ resamples, each of size $n-1$. In each resample, one point is left out, so the jackknife is sometimes called ``delete-1'' resampling. The advantage of the jackknife is that evaluating $n$ resamples is usually computationally feasible, so it ceases to be a Monte Carlo method.
+
+Compute estimators $\hat{\theta}_{(i)}$, then pseudovalues $\tilde{\theta}_i = n \hat{\theta} -(n-1) \hat{\theta}_{(i)}$, bias-corrected estimator is $n\hat{\theta} - (n-1)\hat{\theta}_{(\cdot)} = \frac{1}{n}\sum_i \tilde{\theta}_i = \tilde{\theta}$, then get confidence intervals
+$$
+\frac{\tilde{\theta} - \theta}{\tilde{s}^2 /n} \approx t_{n-1}
+$$t
+
+But some problems, so you instead need to do delete-$d$ resampling, of which there are $\binom{n}{d}$ options
+
+Can show that jackknife is the Taylor series approximation for the bootstrap, in the space of which of the $x_i$ get selected\footnote{http://www.jstor.org/stable/2030104}
 
 \section{Profile method}
+
+Digest this: \texttt{https://personal.psu.edu/abs12/stat504/Lecture/lec3\_4up.pdf}
