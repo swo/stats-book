@@ -1,3 +1,5 @@
+Current status: Need to migrate to mkdocs and clean up extraneous material
+
 ---
 date: Jan 2021
 ---
