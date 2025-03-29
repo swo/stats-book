@@ -1,5 +1,4 @@
-.PHONY: watch
+.PHONY: serve
 
-watch:
-	# pipe from /dev/null to prevent interaction
-	latexmk --pdf -pvc main.tex < /dev/null
+serve:
+	uv run mkdocs serve
