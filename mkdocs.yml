@@ -2,6 +2,7 @@ site_name: A short introduction to advanced statistics for scientists
 
 nav:
   - Front Matter:
+      - index.md
       - preface.md
       - Introduction: introduction.md
   - Probability:
