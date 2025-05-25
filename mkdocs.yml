@@ -7,6 +7,15 @@ nav:
       - Introduction: introduction.md
   - Probability:
       - functions.md
+      - probability.md
+      - random_variables.md
+  - Descriptive statistics:
+      - statistics.md
+      - estimators.md
+      - confidence_intervals.md
+  - Inferential statistics:
+      - inference.md
+      - tests.md
 
 theme:
   name: "material"
