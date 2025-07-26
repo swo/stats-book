@@ -1,0 +1,15 @@
+# Regression
+
+"Regression" refers to a whole suite of tools, all of which have to do with fitting a model to data, predicting outputs from inputs. In a sense, the humble linear regression is the most basic machine learning technique: it is "trained" on some input data and then can make predictions.
+
+## The history and etymology of regression
+
+Francis Galton, a Victorian English scientist, was an early eugenicist: he was interested in how to improve humanity through selective breeding. He first asked if intelligence and "greatness" were hereditary.[^1] This presented some technical difficulties, so he next turned to an easier-to-quantify value: height. Do tall children tend to have taller children?
+
+Having developed an early form of what we call linear regression, he was distressed to find that the _regression coefficient_, that is, the relationship between inputs and outputs, was less than 1. In other words, parents who were taller than average tended to have taller-than-average children (i.e., the coefficient was greater than zero) but the children tended to not be as tall as the parents (i.e., the coefficient was less than 1). The converse was true for shorter parents: they tended to have shorter children, but not quite as short as they were. Galton summarized this phenomenon as "regression to the mean": both tall and short people tended to move back toward the middle. As a eugenicist, he would have preferred a coefficient greater than 1, so that tall people would have extra-tall children.
+
+Regression toward the mean is still an important concept. For example, a naive experimental design might be to take the 10% of students in a class with the worst grades on a test, do some intervention to try to improve their skills, and then administer a test again. Even if the intervention does nothing, you expect those 10% of students to perform better on the second test than on the first, simply because a student is more likely to produce a middling score than an extremely bad score, regardless of their performance on the first test.
+
+For the most part, however, "regression" is now used to refer to this suite of tools with no reference to Galton's original idea of regression "to the mean".
+
+[^1]: This was the subject of his 1869 _Hereditary Genius_. He found that "eminent" people were more likely to have "eminent" siblings, parents, and children, and that this relationship appeared to drop off with distance. Of course, "people" here means "men".
