@@ -6,9 +6,15 @@ This chapter introduces _random variables_. Mathematically, random variables lin
 
 ## A random variable is a function
 
-A _random variable_ is a function, common written $X$, that maps from the sample space, the set of all possible outcomes of an experiment, to the real numbers: $$X : \Omega \to \mathbb{R}$$ As mentioned above, I think of a random variable as a mathematical analog to scientific measurement: outcomes are the actual experimental outcomes, and a random variable maps that outcome to the number you would see on your measurement device.
+A _random variable_ is a function, common written $X$, that maps from the sample space, the set of all possible outcomes of an experiment, to the real numbers:
 
-Before learning probability, I thought of "random variables" as random number generators: I might "draw" ten values from a "normally-distributed random variable". However, as discussed in Chapter [\[chapter:functions\]](#chapter:functions){reference-type="ref" reference="chapter:functions"}, a random number generator is not a function in the mathematical sense. It is important to remember that, technically speaking, a random variable is a function.
+$$
+X : \Omega \to \mathbb{R}
+$$
+
+As mentioned above, I think of a random variable as a mathematical analog to scientific measurement: outcomes are the actual experimental outcomes, and a random variable maps that outcome to the number you would see on your measurement device.
+
+Before learning probability, I thought of "random variables" as random number generators: I might "draw" ten values from a "normally-distributed random variable". However, as discussed in [Functions](functions.md), a random number generator is not a function in the mathematical sense. It is important to remember that, technically speaking, a random variable is a function.
 
 It is also important to remember that "random variable" does not mean "a numerical variable that takes on a random value". It would be very hard to prove any theorems about random variables if "random" meant that, every time you looked at the page, "$X$" meant something different! In common speech we might say that a random variable "takes on" some value, but I advise you to shy away from that during this book, because it encourages you to think about "random variables" not as functions but instead as random number generators.
 
@@ -22,110 +28,70 @@ $$
 \begin{aligned}
 X[H] &= 1 \\
 X[T] &= 0
-\end{aligned}$$ There are other random variables you could define from
-this, say this silly example: $$\begin{aligned}
+\end{aligned}
+$$
+
+There are other random variables you could define from this, say this silly example:
+
+$$
+\begin{aligned}
 X[H] &= 5\pi \\
 X[T] &= -33
-\end{aligned}$$ But you clearly cannot map from a finite number of
-inputs to an infinite number of outputs.
+\end{aligned}
+$$
 
-In contrast, you can have an infinite space of outcomes and map it to a
-discrete set of values. For example, imagine I'm measuring the time
-required for a radioactive atom to decay. The outcomes are all possible
-times required for decay, which is an infinite number of possibilities.
-But I could define a simpler, discrete random variable that asks, "Did
-it take less than 1 second, between 1 and 2 seconds, or more than 2
-seconds?" and then map those three swaths of outcomes to three, but only
-three, different numbers.
+But you clearly cannot map from a finite number of inputs to an infinite number of outputs.
+
+In contrast, you can have an infinite space of outcomes and map it to a discrete set of values. For example, imagine I'm measuring the time required for a radioactive atom to decay. The outcomes are all possible times required for decay, which is an infinite number of possibilities. But I could define a simpler, discrete random variable that asks, "Did it take less than 1 second, between 1 and 2 seconds, or more than 2 seconds?" and then map those three swaths of outcomes to three, but only three, different numbers.
 
 ## Random variables abstract over outcomes
 
-The whole point of random variables is that we don't need to talk about
-individual outcomes. Enumerating the outcomes of a trial is easy when
-talking about flipping coins, or rolling a die, or drawing a card from a
-deck, but it's basically impossible to enumerate an infinite set of
-outcomes *without* referring to them by means of numbers. In other
-words, the only sensible way to talk about infinite sets of outcomes is
-to instead talk about the values that a random variable maps those
-outcomes to!
+The whole point of random variables is that we don't need to talk about individual outcomes. Enumerating the outcomes of a trial is easy when talking about flipping coins, or rolling a die, or drawing a card from a deck, but it's basically impossible to enumerate an infinite set of outcomes _without_ referring to them by means of numbers. In other words, the only sensible way to talk about infinite sets of outcomes is to instead talk about the values that a random variable maps those outcomes to!
 
-From this point forward, we will only refer to events by the values that
-a random variable maps those events to. For example, if $X$ represents
-the number of heads flipped on one coin toss, then $X \rveq 0$ refers to
-the *event* where the coin landed tails, and $X \rveq 1$ refers to the
-*event* where the coin landed heads. Because the probability function
-maps events to numbers, we can now write:
-$$\mathbb{P}[X \rveq 0] = \tfrac{1}{2}$$ Take careful note of all the pieces
-in this equation: $$\begin{aligned}
-  X &\text{ is a function mapping events to numbers} \\
-  X \rveq 0 &\text{ is the event composed of all the outcomes for which $X$ takes on the value zero} \\
-  \mathbb{P} &\text{ is a function mapping events to numbers between zero and one}
-\end{aligned}$$ I put the "rv" on top of the equal sign to emphasize
-that the notation $X=0$ does not that $X$ is a number and it is equal to
-the number zero. No one else puts that "rv" there, and I will drop that
-notation after this chapter. But I want it to be very clear that the
-equal sign in $X=0$ means something very different than the equals sign
-in $\mathbb{P}[H] = \tfrac{1}{2}$. $X \rveq 0$ is new kind of notation,
-a shorthand to refer to events, not an equalling of two numbers. To
-further emphasize that, consider this equation:
-$$(X \rveq 5) = \varnothing$$ It is impossible to flip five heads on a
-single coin flip, so the set of events that $X$ maps to the number five
-is the empty set. You will never see anyone else write an equation like
-this, but I put it there to scare you, to make you less sure of what an
-equal sign means.
+From this point forward, we will only refer to events by the values that a random variable maps those events to. For example, if $X$ represents the number of heads flipped on one coin toss, then $X = 0$ refers to the _event_ where the coin landed tails, and $X = 1$ refers to the _event_ where the coin landed heads.
 
-Again, the nice thing is that, although the probabilities of the
-outcomes heads and tails both remain $\tfrac{1}{2}$, we no longer need
-to think about exactly what outcomes there are, what probabilities they
-have, and to what number the random variable maps each outcome. Instead,
-we can just examine the random variable, which has abstracted over
-everything else. A very pedantic person might have argued that, when you
-flip a coin, "heads" is actually a grouping of an infinite number of
-distinct outcomes: the coin might fall with the face on the coin
-pointing north, or west, or north-north-west; or the coin might have
-fallen into between the cushions of the couch and actually been standing
-almost straight up. Discrete sample spaces are clearly a mathematical
-fiction. Nevertheless, discrete random variables allow me to deal with a
-finite number of interesting *events*, and continuous random variables
-allow me to abstract over whatever was happening in nature and simply
-say, I guess this or that number with some probability.
+!!! tip
 
-The previous chapter was not a waste, however, because the rules for
-manipulating probabilities work just as well for events like "$X =
-1$" as they did for outcomes like "flipped heads". The philosophical and
-technical definition of probability still holds. For example,
-$\mathbb{P}[(X = 1) \cup (X =
-0)]$, the probability of the events that $X$ maps to either zero or one,
-is the sum of the probabilities the two constituent, disjoint events
-$\mathbb{P}[X=1]$ and $\mathbb{P}[X=0]$.
+    Take careful note that $X=1$ is an *event*, a probability theory object. Reading probability equations can become very confusing if you don't know what is a number and what is random variable!
+
+Because the probability function maps events to numbers, we can now write:
+
+$$
+\mathbb{P}[X = 0] = \tfrac{1}{2}
+$$
+
+Take careful note of all the pieces in this equation:
+
+- $X$ is a function mapping events to numbers
+- $X = 0$ is the event composed of all the outcomes for which $X$ takes on the value zero
+- $\mathbb{P}$ is a function mapping events to numbers between zero and one
+
+Note that the same symbol $=$ is used to mean two different things in this equation! In the first case, $=$ turns a random variable (which is itself a function) and a number (0) to produce an event, while the second equals is an assertion that the two sides of the equation are the same number. To further emphasize that, consider this equation:
+
+$$
+(X = 5) = \varnothing
+$$
+
+It is impossible to flip five heads on a single coin flip, so the set of events that $X$ maps to the number five is the empty set. You will never see anyone else write an equation like this, but I put it there to scare you, to make you less sure of what an equal sign means.
+
+Again, the nice thing is that, although the probabilities of the outcomes heads and tails both remain $\tfrac{1}{2}$, we no longer need to think about exactly what outcomes there are, what probabilities they have, and to what number the random variable maps each outcome. Instead, we can just examine the random variable, which has abstracted over everything else. A very pedantic person might have argued that, when you flip a coin, "heads" is actually a grouping of an infinite number of distinct outcomes: the coin might fall with the face on the coin pointing north, or west, or north-north-west; or the coin might have fallen into between the cushions of the couch and actually been standing almost straight up. Discrete sample spaces are clearly a mathematical fiction. Nevertheless, discrete random variables allow me to deal with a finite number of interesting _events_, and continuous random variables allow me to abstract over whatever was happening in nature and simply say, I guess this or that number with some probability.
+
+The previous chapter was not a waste, however, because the rules for manipulating probabilities work just as well for events like "$X =
+1$" as they did for outcomes like "flipped heads". The philosophical and technical definition of probability still holds. For example, $\mathbb{P}[(X = 1) \cup (X = 0)]$, the probability of the events that $X$ maps to either zero or one, is the sum of the probabilities the two constituent, disjoint events $\mathbb{P}[X=1]$ and $\mathbb{P}[X=0]$.
 
 ## Cumulative distribution functions
 
-Now that we have random variables, we can ask how they are
-"distributed". If you are like me in days of yore, you think of random
-variables as random number generators that produce values to be
-visualized as a histogram, whose mathematical analog is the *probability
-density functions* (pdf's). In fact, it's mathematically more
-straightforward to define the *cumulative distribution functions*
-(cdf's) and use that to define the pdf.
+Now that we have random variables, we can ask how they are "distributed". If you are like me in days of yore, you think of random variables as random number generators that produce values to be visualized as a histogram, whose mathematical analog is the _probability density functions_ (pdf's). In fact, it's mathematically more straightforward to define the _cumulative distribution functions_ (cdf's) and use that to define the pdf.
 
-The cdf of a random variable $X$, canonically written $F_X$, is a
-function that maps from real numbers to the numbers between zero and
-one. It is the probability of the event that $X$ maps to any value equal
-to or less than the given input value: $$\begin{gathered}
+The cdf of a random variable $X$, canonically written $F_X$, is a function that maps from real numbers to the numbers between zero and one. It is the probability of the event that $X$ maps to any value equal to or less than the given input value: $$\begin{gathered}
 F_X : \mathbb{R} \to [0, 1] \\
-F_X(x) \defeq \mathbb{P}[X \stackrel{\mathrm{rv}}{\leq} x]
-\end{gathered}$$ Again, I put the "rv" of the less-than-or-equal sign to
-emphasize that $X$ is a function, $x$ is a number, and $X \leq x$ is an
-event. Note also that the cdf is a function of numbers $x$, which I
-emphasize by using regular parentheses around $x$ in $F_X(x)$.
+F_X(x) \defeq \mathbb{P}[X \stackrel{\mathrm{rv]}{\leq} x}
+\end{gathered}$$ Again, I put the "rv" of the less-than-or-equal sign to emphasize that $X$ is a function, $x$ is a number, and $X \leq x$ is an event. Note also that the cdf is a function of numbers $x$, which I emphasize by using regular parentheses around $x$ in $F_X(x)$.
 
-It follows that, for a discrete random variable, which takes on specific
-values $x_i$, the cdf is just the sum of the probabilities of those
-specific values smaller than the given $x$:
-$$F_X(x) = \mathbb{P}[X \leq x] = \sum_{j \,:\, x_j \leq x} \mathbb{P}[X = x_j]$$
-A discrete random variable therefore has maximum and minimum values:
-$$\begin{gathered}
+It follows that, for a discrete random variable, which takes on specific values $x_i$, the cdf is just the sum of the probabilities of those specific values smaller than the given $x$: $$F_X(x) = \mathbb{P}[X \leq x] = \sum_{j \,:\, x_j \leq x} \mathbb{P}[X = x_j]$$ A discrete random variable therefore has maximum and minimum values:
+
+$$
+\begin{gathered}
 \text{if } x < x_\mathrm{min} \text{, then } F_X(x) = 0 \\
 \text{if } x \geq x_\mathrm{max} \text{, then } F_X(x) = 1
 \end{gathered}
