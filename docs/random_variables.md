@@ -83,12 +83,24 @@ The previous chapter was not a waste, however, because the rules for manipulatin
 
 Now that we have random variables, we can ask how they are "distributed". If you are like me in days of yore, you think of random variables as random number generators that produce values to be visualized as a histogram, whose mathematical analog is the _probability density functions_ (pdf's). In fact, it's mathematically more straightforward to define the _cumulative distribution functions_ (cdf's) and use that to define the pdf.
 
-The cdf of a random variable $X$, canonically written $F_X$, is a function that maps from real numbers to the numbers between zero and one. It is the probability of the event that $X$ maps to any value equal to or less than the given input value: $$\begin{gathered}
-F_X : \mathbb{R} \to [0, 1] \\
-F_X(x) \defeq \mathbb{P}[X \stackrel{\mathrm{rv]}{\leq} x}
-\end{gathered}$$ Again, I put the "rv" of the less-than-or-equal sign to emphasize that $X$ is a function, $x$ is a number, and $X \leq x$ is an event. Note also that the cdf is a function of numbers $x$, which I emphasize by using regular parentheses around $x$ in $F_X(x)$.
+The cdf of a random variable $X$, canonically written $F_X$, is a function that maps from real numbers to the numbers between zero and one. It is the probability of the event that $X$ maps to any value equal to or less than the given input value:
 
-It follows that, for a discrete random variable, which takes on specific values $x_i$, the cdf is just the sum of the probabilities of those specific values smaller than the given $x$: $$F_X(x) = \mathbb{P}[X \leq x] = \sum_{j \,:\, x_j \leq x} \mathbb{P}[X = x_j]$$ A discrete random variable therefore has maximum and minimum values:
+$$
+\begin{gathered}
+F_X : \mathbb{R} \to [0, 1] \\
+F_X(x) \equiv \mathbb{P}[X \leq x]
+\end{gathered}
+$$
+
+Note that the cdf is a function of numbers $x$, which I emphasize by using regular parentheses around $x$ in $F_X(x)$.
+
+It follows that, for a discrete random variable, which takes on specific values $x_i$, the cdf is just the sum of the probabilities of those specific values smaller than the given $x$:
+
+$$
+F_X(x) = \mathbb{P}[X \leq x] = \sum_{j \,:\, x_j \leq x} \mathbb{P}[X = x_j]
+$$
+
+A discrete random variable therefore has maximum and minimum values:
 
 $$
 \begin{gathered}
@@ -97,22 +109,14 @@ $$
 \end{gathered}
 $$
 
-<figure id="fig:discrete-cdf">
+A continuous random variable can also have a minimum and maximum. However, there are continuous random variables that can take on any real number. In those cases, the cdf approaches zero and one as $x$ goes out toward infinity:
 
-<figcaption>Cumulative distribution function and probability mass
-function for a discrete random variable.</figcaption>
-</figure>
-
-A continuous random variable can also have a minimum and maximum. However, there are continuous random variables that can take on any real number. In those cases, the cdf approaches zero and one as $x$ goes out toward infinity: $$\begin{gathered}
+$$
+\begin{gathered}
 \lim_{x \to -\infty} F_X(x) = 0 \\
 \lim_{x \to \infty} F_X(x) = 1
-\end{gathered}$$
-
-<figure id="fig:continuous-pdf">
-
-<figcaption>Cumulative distribution function and probability density
-function for a continuous random variable.</figcaption>
-</figure>
+\end{gathered}
+$$
 
 ## Probability density functions
 
@@ -121,14 +125,18 @@ For a discrete random variable, it is straightforward to define its _probability
 $$
 \begin{gathered}
 f_X : \mathbb{R} \to [0, 1] \\
-f_X(x_i) \defeq \mathbb{P}[X = x_i]
+f_X(x_i) \equiv \mathbb{P}[X = x_i]
 \end{gathered}
 $$
 
-The analog for continuous random variables is the _probability density function_, abbreviated "pdf": $$\begin{gathered}
+The analog for continuous random variables is the _probability density function_, abbreviated "pdf":
+
+$$
+\begin{gathered}
 f_X(x) : \mathbb{R} \to [0, 1] \\
-f_X(x) \defeq \frac{d}{dx} F_X(x)
-\end{gathered}$$
+f_X(x) \equiv \frac{d}{dx} F_X(x)
+\end{gathered}
+$$
 
 Note that the pdf of a continuous random variable $f_X(x)$ is not $\mathbb{P}[X =
 x]$. This may seem like a pedantic diversion, but I actually think it's important to avoid confusion. For a continuous random variable, $\mathbb{P}[X = x]$ is basically zero for any value of $x$. For example, say $X$ takes on values between 0 and 1 uniformly. Then it follows that:
@@ -159,16 +167,43 @@ The definitions I've given are simple ones, and they need to be refined to deal 
 
 ### Independent, identically-distributed random variables
 
-If a random variable $X$ has the same cdf as another random variable $Y$ (and therefore also the same pdf), we say that $X$ is "distributed like" $Y$: $$\text{if } F_X(x) = F_Y(x) \text{ for all } x, \text{ then } X \sim Y.$$ Many cdf's are named. For example, you might say that a random variable $X$ is distributed like a normal random variable, with mean $\mu$ and variance $\sigma^2$: $$X \sim \mathcal{N}(x; \mu, \sigma^2).$$ This is shorthand for saying $$f_X(x) = f_\mathcal{N}(x; \mu, \sigma^2) \defeq
-  \frac{1}{\sqrt{2\pi\sigma^2}} \exp \left\{-\frac{1}{2} \frac{(x-\mu)^2}{\sigma^2} \right\}$$
+If a random variable $X$ has the same cdf as another random variable $Y$ (and therefore also the same pdf), we say that $X$ is "distributed like" $Y$:
+
+$$
+\text{if } F_X(x) = F_Y(x) \text{ for all } x, \text{ then } X \sim Y.
+$$
+
+Many cdf's are named. For example, you might say that a random variable $X$ is distributed like a normal random variable, with mean $\mu$ and variance $\sigma^2$:
+
+$$
+X \sim \mathcal{N}(x; \mu, \sigma^2).
+$$
+
+This is shorthand for saying
+
+$$
+f_X(x) = f_\mathcal{N}(x; \mu, \sigma^2) \equiv \frac{1}{\sqrt{2\pi\sigma^2}} \exp \left\{-\frac{1}{2} \frac{(x-\mu)^2}{\sigma^2} \right\}
+$$
 
 Critically, to say that $X \sim Y$ does not imply that $X$ and $Y$ are the same function. In fact, they might be defined in terms of completely different sample spaces. The random variable $X$ might be looking at stock prices and $Y$ might be looking at the time between solar flares. All that is required is that $X$ and $Y$ deliver the same numbers with the same probabilities.
 
-Because frequentist statistics is concerned with repeatable trials, we will often consider _independent, identically-distributed_, abbreviated "iid", random variables. _Identically-distributed_ means that all the random variables in the collection have the same cdf. _Independent_ means that the probabilities of "and" events multiply: $$\text{$X$ and $Y$ are independent if and only if }
-    \mathbb{P}[(X \rveq x) \cap (Y \rveq y)]
-    = \mathbb{P}[X \rveq x] \times \mathbb{P}[Y \rveq y]$$ It follows that, if the events in the sample spaces that $X$ and $Y$ map _from_ are independent, then $X$ and $Y$ will be independent. So if $X$ is defined with respect to one iteration of an experiment, and $Y$ is defined with respect to another, physically independent iteration of that experiment, then $X$ and $Y$ are independent.
+Because frequentist statistics is concerned with repeatable trials, we will often consider _independent, identically-distributed_, abbreviated "iid", random variables. _Identically-distributed_ means that all the random variables in the collection have the same cdf. _Independent_ means that the probabilities of "and" events multiply:
 
-In the context of iid random variables, it is actually common to write "$X$" as referring to a whole set of random variables. Thus, $$X \stackrel{\text{iid}}{\sim} \mathcal{N}(\mu, \sigma^2)$$ actually means that there is some set of random variables $X_1$, $X_2$, $\ldots$; that $f_{X_i}(x) = f_\mathcal{N}(x; \mu, \sigma^2)$ for every $i$; and that $X_i$ and $X_j$ are independent for all $i \neq j$.
+$$
+\text{$X$ and $Y$ are independent if and only if }
+  \mathbb{P}[(X = x) \cap (Y = y)]
+  = \mathbb{P}[X = x] \times \mathbb{P}[Y = y]
+$$
+
+It follows that, if the events in the sample spaces that $X$ and $Y$ map _from_ are independent, then $X$ and $Y$ will be independent. So if $X$ is defined with respect to one iteration of an experiment, and $Y$ is defined with respect to another, physically independent iteration of that experiment, then $X$ and $Y$ are independent.
+
+In the context of iid random variables, it is actually common to write "$X$" as referring to a whole set of random variables. Thus,
+
+$$
+X \stackrel{\text{iid}}{\sim} \mathcal{N}(\mu, \sigma^2)
+$$
+
+actually means that there is some set of random variables $X_1$, $X_2$, $\ldots$; that $f_{X_i}(x) = f_\mathcal{N}(x; \mu, \sigma^2)$ for every $i$; and that $X_i$ and $X_j$ are independent for all $i \neq j$.
 
 In day-to-day speech, we might say, "I draw $n$ values from this random variable $X$". Mathematically, this means, "Consider $n$ iid random variables distributed like $X$".
 
@@ -178,16 +213,26 @@ If you know the cdf and pdf for a random variable $X$, and you also know these v
 
 If $X$ and $Y$ are random variables, we define a new random variable $Z = X \stackrel{\mathrm{rv}}{+} Y$, where again, I put that little "rv" in there to remind you that the plus sign in $X + Y$, where $X$ and $Y$ are functions like random variables, cannot mean the same thing as the plus sign in $x + y$, where $x$ and $y$ are just numbers.
 
-The meaning of $X + Y$ feels intuitive, like in my example about drawing numbers from a random number generator. But how do we define $X + Y$ mathematically? Imagine first that $X$ and $Y$ are independent, discrete random variables. Then it should be that $\mathbb{P}[Z = z]$ is the probability of $X = x_i$ and $Y = y_j$ for all the cases where $x_i + y_i = z$. Note that this, given some $z$, this constrains $y_j$ to by $z - x_i$: $$\begin{aligned}
+The meaning of $X + Y$ feels intuitive, like in my example about drawing numbers from a random number generator. But how do we define $X + Y$ mathematically? Imagine first that $X$ and $Y$ are independent, discrete random variables. Then it should be that $\mathbb{P}[Z = z]$ is the probability of $X = x_i$ and $Y = y_j$ for all the cases where $x_i + y_i = z$. Note that this, given some $z$, this constrains $y_j$ to by $z - x_i$:
+
+$$
+\begin{aligned}
 f_Z(z) &= \sum_i \mathbb{P}[X=x_i] \mathbb{P}[Y=z-x_i] \\
   &= \sum_i f_X(x_i) f_Y(z - x_i).
-\end{aligned}$$ A similar definition holds for when $Z = X + Y$ is continuous. Rather than summing over all the outcomes in which $X$ takes on certain values, we integrate: $$f_Z(z) = \int f_X(x) f_Y(z - x) \,dx$$
+\end{aligned}
+$$
+
+A similar definition holds for when $Z = X + Y$ is continuous. Rather than summing over all the outcomes in which $X$ takes on certain values, we integrate:
+
+$$
+f_Z(z) = \int f_X(x) f_Y(z - x) \,dx
+$$
 
 For a product of random variables $Z = XY$, we need to use $f_Y(z/x)$, and for a ratio of random variables $Z = X/Y$, we need to use $f_Y(zx)$. Note that, in each of these cases, the notations like $X + Y$, $XY$, and $X/Y$ refer to a new random variable and also give us a hint about how to compute its pdf.
 
 ## Don't expect the expected value
 
-The _expected value_ $\expect{X}$ of a random variable $X$ is the probability-weighted average of the values it takes on. For a discrete random variable, you simply sum. For a continuous random variable, you need to integrate: $$\expect{X} \defeq \begin{dcases}
+The _expected value_ $\mathbb{E}[X]$ of a random variable $X$ is the probability-weighted average of the values it takes on. For a discrete random variable, you simply sum. For a continuous random variable, you need to integrate: $$\expect{X} \equiv \begin{dcases}
   \sum_i x_i f_X(x_i) & \text{ for discrete random variables} \\
   \int x f_X(x) \,dx & \text{ for continuous random variables}
 \end{dcases}$$ Thus, just like "maximum", "expected value" is a function that maps random variables to numbers: $$\mathbb{E} : \text{random variables} \to \mathbb{R}$$ I use square brackets with $\mathbb{E}$ to emphasize that this is a function that maps from something other than numbers.
@@ -198,7 +243,7 @@ A better way to think of the expected value is as a measure of _central position
 
 ## Variance
 
-If the expected value is a measure of central position, then _variance_ $\mathbb{V}$ is the corresponding measurement of spread or _scale_. It is a function of random variables that returns a nonnegative number: $$\mathbb{V} : \text{random variables} \to [0, \infty).$$ For a random variable $X$, the variance is the expected value of the square of the deviation of the random variable from its own expected value: $$\var{X} \defeq \expect{(X - \expect{X})^2}$$ Because all those nested brackets are confusing, people often replace the notation $\expect{X}$ with the notation $\mu$ so that the definition of variance reads $\var{X} = \expect{(X - \mu)^2}$.
+If the expected value is a measure of central position, then _variance_ $\mathbb{V}$ is the corresponding measurement of spread or _scale_. It is a function of random variables that returns a nonnegative number: $$\mathbb{V} : \text{random variables} \to [0, \infty).$$ For a random variable $X$, the variance is the expected value of the square of the deviation of the random variable from its own expected value: $$\var{X} \equiv \expect{(X - \expect{X})^2}$$ Because all those nested brackets are confusing, people often replace the notation $\expect{X}$ with the notation $\mu$ so that the definition of variance reads $\var{X} = \expect{(X - \mu)^2}$.
 
 Although $\mu$ is just a number when we say $\mu = \mathbb{E}[X]$, the same notation "$\mu$" cannot refer to a number when we write $X - \mu$. We can subtract numbers from the values that a function maps to, but we cannot subtract numbers from raw functions, any more than I can subtract a number from the operation of multiplication. In other words, $f(x) - 2$ makes sense, but $f - 2$ does not. Thus, "$\mu$" in $X - \mu$ is actually a trivial random variable that maps its whole sample space to $\mu$, so that $\mathbb{P}[\text{``}\mu\text{''} = \mu] = 1$. Similarly, $(X - \mu)^2 = (X - \mu) \stackrel{\mathrm{rv}}{\times} (X - \mu)$ is another new random variable. Given random variables $X$ and $Y$, we saw earlier how to compute the pdf of a new random variable $XY$, so we also know how to find the pdf for a random variable $X^2 = X \times X$.
 
@@ -206,13 +251,13 @@ Although $\mu$ is just a number when we say $\mu = \mathbb{E}[X]$, the same nota
 
 Starting with the definition of the expected value, you can easily show that it is a _linear_ function: $$\expect{aX + bY} = a \,\expect{X} + b \,\expect{Y}$$ Note that, just as $\mu$ transformed from a number to a random variable when we wrote $X + \mu$, so the number $a$ in this equation transforms into a random variable when we write $aX$.
 
-Variance, however is not linear. You can easily show that, for some number $a$, $$\var{aX} = \expect{(aX - \expect{aX})^2} = \expect{a^2(X - \expect{X})} = a^2 \, \expect{X}.$$ With some more algebra, you can show that $$\var{X + Y} = \var{X} + \var{Y} + 2 \,\cov{X, Y},$$ where $\cov{X, Y}$, the _covariance_ of $X$ and $Y$ is $$\cov{X, Y} \defeq \expect{(X - \expect{X})(Y - \expect{Y})}.$$ To avoid the nested brackets, this is sometimes written $$\cov{X, Y} = \expect{(X - \mu_X)(Y - \mu_Y)}.$$ In words, the covariance is the expected value of the product of the deviations between the values that $X$ and $Y$ map to and the expected values of those random variables. Note that covariance is a function of two random variables: $$\mathrm{Cov} : (\text{random variables})^2 \to \mathbb{R}.$$
+Variance, however is not linear. You can easily show that, for some number $a$, $$\var{aX} = \expect{(aX - \expect{aX})^2} = \expect{a^2(X - \expect{X})} = a^2 \, \expect{X}.$$ With some more algebra, you can show that $$\var{X + Y} = \var{X} + \var{Y} + 2 \,\cov{X, Y},$$ where $\cov{X, Y}$, the _covariance_ of $X$ and $Y$ is $$\cov{X, Y} \equiv \expect{(X - \expect{X})(Y - \expect{Y})}.$$ To avoid the nested brackets, this is sometimes written $$\cov{X, Y} = \expect{(X - \mu_X)(Y - \mu_Y)}.$$ In words, the covariance is the expected value of the product of the deviations between the values that $X$ and $Y$ map to and the expected values of those random variables. Note that covariance is a function of two random variables: $$\mathrm{Cov} : (\text{random variables})^2 \to \mathbb{R}.$$
 
 If $X$ and $Y$ are independent, then their covariance is zero. (The reverse is not necessarily true.) Some algebra will also show that $$\expect{XY} = \expect{X} \, \expect{Y} + \cov{X, Y}.$$ Thus, for independent random variables, which we will deal with a lot, the expected value of the produce of two random variables is simply the product of their expectation values. These properties of the expected value will come in very handy in future sections.
 
 You may be more familiar with _correlation_ than covariance. The most common definition of correlation, Pearson's correlation coefficient, typically written $\rho$, is just a rescaling of the covariance to values between $-1$ and $+1$: $$\begin{gathered}
 \rho : (\text{random variables})^2 \to [-1, 1] \\
-\rho[X, Y] \defeq \frac{\cov{X, Y}}{\sqrt{\var{X} \var{Y}}},
+\rho[X, Y] \equiv \frac{\cov{X, Y}}{\sqrt{\var{X} \var{Y}}},
 \end{gathered}$$ It turns out that dividing by that factor rescales the covariance, which can be any number, to a single range, $-1$ to $+1$. Thus, the correlation between two random variables does not depend on their scaling: $$\begin{gathered}
     \cov{aX, bY} = ab \,\cov{X, Y} \\
     \rho[aX, bY] = \rho[X, Y]
