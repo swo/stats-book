@@ -16,6 +16,8 @@ nav:
   - Inferential statistics:
       - inference.md
       - tests.md
+      - regression.md
+  - appendix.md
 
 repo_url: https://github.com/swo/stats-book
 
@@ -28,6 +30,7 @@ plugins:
   - search
 
 markdown_extensions:
+  - admonition
   - toc:
       permalink: true
   - pymdownx.highlight:

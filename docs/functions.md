@@ -34,4 +34,4 @@ In mathematics, polymorphism is mostly called "different notation". For example,
 
 The most important example of this confusion comes from the meaning of the equal sign ($=$). If I write $x=2$, it is most likely a definition: I'm asserting that the value of $x$ is $2$. But if I write $1=2$, and ask you, "Is this true?", you will say no. Many programming languages distinguish between the assignment operator `=` and the equality test operator `==`, so that `x=1` is a command "set $x$ to $1$!", while `x==2` is a question "is $x$ equal to 2?", to which the program will response `TRUE` or `FALSE`.
 
-To help ease some confusion, I will put little symbols on top of the equal signs to clarify what the equal sign means. For example, $f(x) \defeq x^2$ means that I'm defining the function $f$, while $x^2 = x \cdot x$ means that I'm showing you the steps in a proof, and $x \stackrel{?}{=} 2$ means that I'm asking a question.
+I'll use $\equiv$ to mean "equals as a matter of definition" and the normal $=$ for "equals as a matter of assertion."
