@@ -290,19 +290,19 @@ $$
 With some more algebra, you can show that
 
 $$
-\mathbb{V}[X + Y] = \mathbb{V}[X] + \mathbb{V}[Y] + 2 \,\cov{X, Y},
+\mathbb{V}[X + Y] = \mathbb{V}[X] + \mathbb{V}[Y] + 2 \,\mathrm{Cov}[X, Y],
 $$
 
-where $\cov{X, Y}$, the _covariance_ of $X$ and $Y$ is
+where $\mathrm{Cov}[X, Y]$, the _covariance_ of $X$ and $Y$ is
 
 $$
-\cov{X, Y} \equiv \mathbb{E}[(X - \mathbb{E}[X])(Y - \mathbb{E][Y])}.
+\mathrm{Cov}[X, Y] \equiv \mathbb{E}[(X - \mathbb{E}[X])(Y - \mathbb{E][Y])}.
 $$
 
 To avoid the nested brackets, this is sometimes written
 
 $$
-\cov{X, Y} = \mathbb{E}[(X - \mu_X)(Y - \mu_Y)].
+\mathrm{Cov}[X, Y] = \mathbb{E}[(X - \mu_X)(Y - \mu_Y)].
 $$
 
 In words, the covariance is the expected value of the product of the deviations between the values that $X$ and $Y$ map to and the expected values of those random variables. Note that covariance is a function of two random variables:
@@ -311,15 +311,25 @@ $$
 \mathrm{Cov} : (\text{random variables})^2 \to \mathbb{R}.
 $$
 
-If $X$ and $Y$ are independent, then their covariance is zero. (The reverse is not necessarily true.) Some algebra will also show that $$\mathbb{E}[XY] = \mathbb{E}[X] \, \mathbb{E}[Y] + \cov{X, Y}.$$ Thus, for independent random variables, which we will deal with a lot, the expected value of the produce of two random variables is simply the product of their expectation values. These properties of the expected value will come in very handy in future sections.
+If $X$ and $Y$ are independent, then their covariance is zero. (The reverse is not necessarily true.) Some algebra will also show that $$\mathbb{E}[XY] = \mathbb{E}[X] \, \mathbb{E}[Y] + \mathrm{Cov}[X, Y].$$ Thus, for independent random variables, which we will deal with a lot, the expected value of the produce of two random variables is simply the product of their expectation values. These properties of the expected value will come in very handy in future sections.
 
-You may be more familiar with _correlation_ than covariance. The most common definition of correlation, Pearson's correlation coefficient, typically written $\rho$, is just a rescaling of the covariance to values between $-1$ and $+1$: $$\begin{gathered}
+You may be more familiar with _correlation_ than covariance. The most common definition of correlation, Pearson's correlation coefficient, typically written $\rho$, is just a rescaling of the covariance to values between $-1$ and $+1$:
+
+$$
+\begin{gathered}
 \rho : (\text{random variables})^2 \to [-1, 1] \\
-\rho[X, Y] \equiv \frac{\cov{X, Y}}{\sqrt{\mathbb{V}[X] \mathbb{V}[Y]}},
-\end{gathered}$$ It turns out that dividing by that factor rescales the covariance, which can be any number, to a single range, $-1$ to $+1$. Thus, the correlation between two random variables does not depend on their scaling: $$\begin{gathered}
-    \cov{aX, bY} = ab \,\cov{X, Y} \\
+\rho[X, Y] \equiv \frac{\mathrm{Cov}[X, Y]}{\sqrt{\mathbb{V}[X] \mathbb{V}[Y]}},
+\end{gathered}
+$$
+
+It turns out that dividing by that factor rescales the covariance, which can be any number, to a single range, $-1$ to $+1$. Thus, the correlation between two random variables does not depend on their scaling:
+
+$$
+\begin{gathered}
+    \mathrm{Cov}[aX, bY] = ab \,\mathrm{Cov}[X, Y] \\
     \rho[aX, bY] = \rho[X, Y]
-\end{gathered}$$
+\end{gathered}
+$$
 
 ## Higher moments
 
