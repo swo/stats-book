@@ -55,7 +55,7 @@ the number of heads flipped on one coin toss, then $X \rveq 0$ refers to
 the *event* where the coin landed tails, and $X \rveq 1$ refers to the
 *event* where the coin landed heads. Because the probability function
 maps events to numbers, we can now write:
-$$\mathbb{P}{X \rveq 0} = \tfrac{1}{2}$$ Take careful note of all the pieces
+$$\mathbb{P}[X \rveq 0] = \tfrac{1}{2}$$ Take careful note of all the pieces
 in this equation: $$\begin{aligned}
   X &\text{ is a function mapping events to numbers} \\
   X \rveq 0 &\text{ is the event composed of all the outcomes for which $X$ takes on the value zero} \\
@@ -97,7 +97,7 @@ technical definition of probability still holds. For example,
 $\mathbb{P}{(X = 1) \cup (X =
 0)}$, the probability of the events that $X$ maps to either zero or one,
 is the sum of the probabilities the two constituent, disjoint events
-$\mathbb{P}{X=1}$ and $\mathbb{P}{X=0}$.
+$\mathbb{P}[X=1]$ and $\mathbb{P}[X=0]$.
 
 ## Cumulative distribution functions
 
@@ -114,7 +114,7 @@ function that maps from real numbers to the numbers between zero and
 one. It is the probability of the event that $X$ maps to any value equal
 to or less than the given input value: $$\begin{gathered}
 F_X : \mathbb{R} \to [0, 1] \\
-F_X(x) \defeq \mathbb{P}{X \stackrel{\mathrm{rv}}{\leq} x}
+F_X(x) \defeq \mathbb{P}[X \stackrel{\mathrm{rv}}{\leq} x]
 \end{gathered}$$ Again, I put the "rv" of the less-than-or-equal sign to
 emphasize that $X$ is a function, $x$ is a number, and $X \leq x$ is an
 event. Note also that the cdf is a function of numbers $x$, which I
@@ -123,7 +123,7 @@ emphasize by using regular parentheses around $x$ in $F_X(x)$.
 It follows that, for a discrete random variable, which takes on specific
 values $x_i$, the cdf is just the sum of the probabilities of those
 specific values smaller than the given $x$:
-$$F_X(x) = \mathbb{P}{X \leq x} = \sum_{j \,:\, x_j \leq x} \mathbb{P}{X = x_j}$$
+$$F_X(x) = \mathbb{P}[X \leq x] = \sum_{j \,:\, x_j \leq x} \mathbb{P}[X = x_j]$$
 A discrete random variable therefore has maximum and minimum values:
 $$\begin{gathered}
 \text{if } x < x_\mathrm{min} \text{, then } F_X(x) = 0 \\
@@ -155,7 +155,7 @@ For a discrete random variable, it is straightforward to define its _probability
 $$
 \begin{gathered}
 f_X : \mathbb{R} \to [0, 1] \\
-f_X(x_i) \defeq \mathbb{P}{X = x_i}
+f_X(x_i) \defeq \mathbb{P}[X = x_i]
 \end{gathered}
 $$
 

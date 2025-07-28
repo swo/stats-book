@@ -68,7 +68,7 @@ The axioms about probability functions also mean that there are specific rules a
 If $A$ and $B$ are two events that don't have any constituent outcomes in common, we call then _disjoint_, and their probabilities add. For example, the probability of flipping a heads _or_ flipping a tails is the probability of heads plus the probability of tails. Mathematically we write this as:
 
 $$
-\text{if } A \cap B = \varnothing \text{, then } \mathbb{P}{A \cup B} = \mathbb{P}{A} + \mathbb{P}{B},
+\text{if } A \cap B = \varnothing \text{, then } \mathbb{P}[A \cup B] = \mathbb{P}[A] + \mathbb{P}[B],
 $$
 
 where the "cap" $\cap$ means _intersection_ ("and") and the "cup" $\cup$ means _union_ ("or"), so this reads "if no outcomes are in both events $A$ and $B$, then the probability of $A$ or $B$ is the sum of their individual probabilities."
@@ -76,7 +76,7 @@ where the "cap" $\cap$ means _intersection_ ("and") and the "cup" $\cup$ means _
 If $A$ and $B$ do have some overlap, you need to subtract out the probability of the overlap. For example, consider drawing a card from a standard 52-card deck. What is the probability of drawing a Jack _or_ a Diamond? If you add up the probability of drawing a Jack and the probability of drawing a Diamond, you end up double-counting the Jack of Diamonds event. The solution is to subtract out the double-counted event:
 
 $$
-\mathbb{P}{A \cup B} = \mathbb{P}{A} + \mathbb{P}{B} - \mathbb{P}{A \cap B}.
+\mathbb{P}[A \cup B] = \mathbb{P}[A] + \mathbb{P}[B] - \mathbb{P}[A \cap B].
 $$
 
 If "or" adds probability, how do we find the probability of $A$ and $B$? Say I flip two coins. What's the probability that I flip heads on the first coin _and_ tails on the second? If $A$ and $B$ are _independent_ events, then their probabilities multiply. The probability of flipping a heads then a tails is $\tfrac{1}{2} \times \tfrac{1}{2} = \tfrac{1}{4}$. (The probability that I flip heads and tails on the _same_ flip is zero, since $\mathbb{P}[H \cap T] = \mathbb{P}[\varnothing] = 0$.)
@@ -90,7 +90,7 @@ Intuitively, two events are independent if they do not depend on each other. If 
 It turns out that the simple phrase "depends on" produces deep philosophical questions. Just as "probability" had frequentist and Bayesian definitions, so there are multiple definitions of _conditional probability_. The easiest definition is:
 
 $$
-\mathbb{P}[A | B] \equiv \frac{\mathbb{P}{A \cap B}}{\mathbb{P}{B}},
+\mathbb{P}[A | B] \equiv \frac{\mathbb{P}[A \cap B]}{\mathbb{P}[B]},
 $$
 
 where $\mathbb{P}[A | B]$ is pronounced "the probability of $A$ given $B$".
