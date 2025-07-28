@@ -94,8 +94,8 @@ The previous chapter was not a waste, however, because the rules for
 manipulating probabilities work just as well for events like "$X =
 1$" as they did for outcomes like "flipped heads". The philosophical and
 technical definition of probability still holds. For example,
-$\mathbb{P}{(X = 1) \cup (X =
-0)}$, the probability of the events that $X$ maps to either zero or one,
+$\mathbb{P}[(X = 1) \cup (X =
+0)]$, the probability of the events that $X$ maps to either zero or one,
 is the sum of the probabilities the two constituent, disjoint events
 $\mathbb{P}[X=1]$ and $\mathbb{P}[X=0]$.
 
@@ -164,16 +164,16 @@ f_X(x) : \mathbb{R} \to [0, 1] \\
 f_X(x) \defeq \frac{d}{dx} F_X(x)
 \end{gathered}$$
 
-Note that the pdf of a continuous random variable $f_X(x)$ is not $\mathbb{P}{X =
-x}$. This may seem like a pedantic diversion, but I actually think it's important to avoid confusion. For a continuous random variable, $\mathbb{P}{X = x}$ is basically zero for any value of $x$. For example, say $X$ takes on values between 0 and 1 uniformly. Then it follows that:
+Note that the pdf of a continuous random variable $f_X(x)$ is not $\mathbb{P}[X =
+x]$. This may seem like a pedantic diversion, but I actually think it's important to avoid confusion. For a continuous random variable, $\mathbb{P}[X = x]$ is basically zero for any value of $x$. For example, say $X$ takes on values between 0 and 1 uniformly. Then it follows that:
 
 $$
 \begin{aligned}
-\mathbb{P}{0 \leq X \leq 1} &= 1 \\
-\mathbb{P}{0.495 \leq X \leq 0.505} &= 0.1 \\
-\mathbb{P}{0.4995 \leq X \leq 0.5005} &= 0.01
+\mathbb{P}[0 \leq X \leq 1] &= 1 \\
+\mathbb{P}[0.495 \leq X \leq 0.505] &= 0.1 \\
+\mathbb{P}[0.4995 \leq X \leq 0.5005] &= 0.01
 \end{aligned}$$ and so on. We normally don't say that
-$\mathbb{P}{X = 0.500\ldots} = 0$, since that makes it sound like it's
+$\mathbb{P}[X = 0.500\ldots] = 0$, since that makes it sound like it's
 impossible for $X$ to take on the value $0.5$. Nevertheless, it should
 be clear that, from any practical point of view, the probability of
 getting exactly $0.500\ldots$ from your experiment is essentially zero.
@@ -182,7 +182,7 @@ of $X$ at 0.5, i.e., $f_X(0.5)$.
 
 The word "density" in probability density function emphasizes that the
 pdf, when integrated, gives a probability: $$\label{eq:integrated_pdf}
-\int_{x_0}^{x_1} f_X(x) \dd x = F_X(x_1) - F_X(x_0) = \mathbb{P}{x_0 < X \leq x_1}
+\int_{x_0}^{x_1} f_X(x) \dd x = F_X(x_1) - F_X(x_0) = \mathbb{P}[x_0 < X \leq x_1]
 $$
 
 In other words, the little-$f$ pdf $f_X$ is the derivative of the big-$F$ cdf $F_X$.
@@ -213,7 +213,7 @@ If you know the cdf and pdf for a random variable $X$, and you also know these v
 If $X$ and $Y$ are random variables, we define a new random variable $Z = X \stackrel{\mathrm{rv}}{+} Y$, where again, I put that little "rv" in there to remind you that the plus sign in $X + Y$, where $X$ and $Y$ are functions like random variables, cannot mean the same thing as the plus sign in $x + y$, where $x$ and $y$ are just numbers.
 
 The meaning of $X + Y$ feels intuitive, like in my example about drawing numbers from a random number generator. But how do we define $X + Y$ mathematically? Imagine first that $X$ and $Y$ are independent, discrete random variables. Then it should be that $\mathbb{P}[Z = z]$ is the probability of $X = x_i$ and $Y = y_j$ for all the cases where $x_i + y_i = z$. Note that this, given some $z$, this constrains $y_j$ to by $z - x_i$: $$\begin{aligned}
-f_Z(z) &= \sum_i \mathbb{P}{X=x_i} \mathbb{P}{Y=z-x_i} \\
+f_Z(z) &= \sum_i \mathbb{P}[X=x_i] \mathbb{P}[Y=z-x_i] \\
   &= \sum_i f_X(x_i) f_Y(z - x_i).
 \end{aligned}$$ A similar definition holds for when $Z = X + Y$ is continuous. Rather than summing over all the outcomes in which $X$ takes on certain values, we integrate: $$f_Z(z) = \int f_X(x) f_Y(z - x) \,dx$$
 
@@ -226,7 +226,7 @@ The _expected value_ $\expect{X}$ of a random variable $X$ is the probability-we
   \int x f_X(x) \,dx & \text{ for continuous random variables}
 \end{dcases}$$ Thus, just like "maximum", "expected value" is a function that maps random variables to numbers: $$\mathbb{E} : \text{random variables} \to \mathbb{R}$$ I use square brackets with $\mathbb{E}$ to emphasize that this is a function that maps from something other than numbers.
 
-The name "expected value" is misleading. We previously noted that, for continuous random variables, the probability of getting any particular number is essentially zero, so there's no particular number you should "expect". For discrete random variables, where there is finite probability of getting each particular number, the expected value actually need not be any of the values that $X$ maps to. In our coin flip example, the random variable $X$ measuring the number of heads flipped has expectation value: $$\expect{X} = 0 \times \mathbb{P}{T} + 1 \times \mathbb{P}{H} = \tfrac{1}{2}.$$ You certainly don't ever expect to flip $0.5$ heads!
+The name "expected value" is misleading. We previously noted that, for continuous random variables, the probability of getting any particular number is essentially zero, so there's no particular number you should "expect". For discrete random variables, where there is finite probability of getting each particular number, the expected value actually need not be any of the values that $X$ maps to. In our coin flip example, the random variable $X$ measuring the number of heads flipped has expectation value: $$\expect{X} = 0 \times \mathbb{P}[T] + 1 \times \mathbb{P}[H] = \tfrac{1}{2}.$$ You certainly don't ever expect to flip $0.5$ heads!
 
 A better way to think of the expected value is as a measure of _central position_. There are of course multiple ways to quantify central position beyond the expected value, which is analogous to the mean or average. You can certainly map random variables to their medians and modes, but those mappings are substantially more complex and not as useful for our purposes.
 
