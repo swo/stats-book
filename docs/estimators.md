@@ -75,7 +75,7 @@ It is a nice thing that our estimator $\hat{B}$ is consistent: as we get more an
 
 Consider the extreme case where $n=1$: we draw only one data point $x$, which is somewhere between $0$ and $B$. Intuitively, I might expect $x$ to be about halfway between $0$ and $B$, that is, that $x \approx \tfrac{1}{2}B$, so that $b$ underestimates $B$ by a factor of $\tfrac{1}{2}$. And if $n=2$, then I might expect those points, roughly speaking, to land somewhere like $\tfrac{1}{3}B$ and $\tfrac{2}{3}B$, so that $b$ underestimates $B$ by a factor of about $\tfrac{1}{3}$. These factors appear to shrink as $n$ increases, which makes sense, since $\hat{B}$ is a consistent estimator. But can we do something to figure out, mathematically, what that factor should be?
 
-We do this by examining the expected value of the estimator: $$\expect{\hat{B}} = \int_0^B x \, f_{\hat{B}}(x) \, dx.$$ We said above that $F_{\hat{B}} = (x/B)^n$, from which it follows that $$f_{\hat{B}}(x) = \frac{d}{dx} F_{\hat{B}} = \frac{n}{B^n} x^{n-1}.$$ Plugging this definition of $f_{\hat{B}}$ into the integral gives $$\expect{\hat{B}} = \int_0^B \frac{n}{B^n} x^n \, dx = \frac{n}{n+1} B.$$ This result accords exactly with our intuition above: for $n=1$, the expected value of $\hat{B}$ is $\tfrac{1}{2}B$. For $n=2$, it is $\tfrac{2}{3}B$, and so forth. Based on this finding, we can define a new estimator: $$\hat{B}_\mathrm{unbiased} \defeq \frac{n+1}{n} \max_i X_i.$$ This ensures that our estimates for $B$ are "centered" around $B$, because $\expect{\hat{B}_\mathrm{unbiased}} = B$. More generally, we say that an estimator is _unbiased_ if its expected value is equal to the parameter it is estimating.
+We do this by examining the expected value of the estimator: $$\mathbb{E}[\hat{B]} = \int_0^B x \, f_{\hat{B}}(x) \, dx.$$ We said above that $F_{\hat{B}} = (x/B)^n$, from which it follows that $$f_{\hat{B}}(x) = \frac{d}{dx} F_{\hat{B}} = \frac{n}{B^n} x^{n-1}.$$ Plugging this definition of $f_{\hat{B}}$ into the integral gives $$\mathbb{E}[\hat{B]} = \int_0^B \frac{n}{B^n} x^n \, dx = \frac{n}{n+1} B.$$ This result accords exactly with our intuition above: for $n=1$, the expected value of $\hat{B}$ is $\tfrac{1}{2}B$. For $n=2$, it is $\tfrac{2}{3}B$, and so forth. Based on this finding, we can define a new estimator: $$\hat{B}_\mathrm{unbiased} \defeq \frac{n+1}{n} \max_i X_i.$$ This ensures that our estimates for $B$ are "centered" around $B$, because $\mathbb{E}[\hat{B]_\mathrm{unbiased}} = B$. More generally, we say that an estimator is _unbiased_ if its expected value is equal to the parameter it is estimating.
 
 Note the subtlety in what we did: without actually knowing what $B$ is, we found a way to adjust the way that we estimate $B$ to ensure that we come up with a more accurate estimate. I was mystified in introductory statistics that, while we computed variance as $\tfrac{1}{n} \sum_i (x_i - \mu)^2$, we computed _sample variance_ as $\tfrac{1}{n-1} \sum_i (x_i - \mu)^2$. The standard explanation has something to do with "degrees of freedom", which I never understood. There is, I think, a more straightforward explanation, which you can now understand, which is that the $n-1$ is there in the sample variance, instead of $n$, because it corrects for a bias.
 
@@ -140,9 +140,9 @@ define the estimator $\hat{\mathbb{E}}_X \defeq (1/n) \sum_i X_i$ of the
 mean of i.i.d. random variables $X_i$.
 
 It is immediately clear that $\hat{\mathbb{E}}_X$ is an unbiased
-estimator of $\expect{X}$:
-$$\expect{\hat{\mathbb{E}}_X} = \expect{\frac{1}{n} \sum_i X_i} = \frac{1}{n} \expect{X_i} = \expect{X}.$$
-But is $\hat{\mathbb{E}}_X$ as consistent estimator of $\expect{X}$? The
+estimator of $\mathbb{E}[X]$:
+$$\mathbb{E}[\hat{\mathbb{E]}_X} = \mathbb{E}[\frac{1]{n} \sum_i X_i} = \frac{1}{n} \mathbb{E}[X_i] = \mathbb{E}[X].$$
+But is $\hat{\mathbb{E}}_X$ as consistent estimator of $\mathbb{E}[X]$? The
 mathematician Jacob Bernoulli published the first proof of this fact for
 a special case of random variables (i.e., those following the Bernoulli
 distribution) in 1713. It took him 20 years to develop a rigorous proof

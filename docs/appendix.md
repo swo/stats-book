@@ -1,18 +1,18 @@
 Before diving into that equation, note that the $X_i$ and $e{X}$ are random variables, and note that they are not independent: the value of $\overline{X}$ certainly depends on each of the $X_i$. So first let's imagine a simpler case, where we're in a universe where happen to know the expected value of the distribution we're trying to determine the variance of. To make the equations simpler to read, I'll use the standard notation $\mu \defeq
-\expect{X}$.[^1] In this case, having known expected value ("kEV"), our estimator will be a little simpler: $$\hat{\mathbb{V}}_{X,\mathrm{kEV}} = \frac{1}{N} \sum_i ( X_i - \mu )^2$$
+\mathbb{E}[X]$.[^1] In this case, having known expected value ("kEV"), our estimator will be a little simpler: $$\hat{\mathbb{V}}_{X,\mathrm{kEV}} = \frac{1}{N} \sum_i ( X_i - \mu )^2$$
 
 ### Bias in estimators of variance
 
 The known-expected-value estimator is unbiased: $$\begin{aligned}
-\expect{\hat{\mathbb{V}}_{X,\mathrm{kEV}}}
-  &= \expect{\frac{1}{N} \sum_i ( X_i - \mu )^2} \\
-  &= \frac{1}{N} \sum_i \expect{X_i^2 - 2\mu X_i + \mu^2} \\
-  &= \expect{X^2} - 2 \mu \expect{X} + \mu^2 \quad\text{(since $X_i$ are identic. distrib.)} \\
-  &= \expect{X^2} - \mu^2 \\
-  &= \var{X}. \quad\text{(since $\var{X} = \expect{X^2} - \expect{X}^2$)}
+\mathbb{E}[\hat{\mathbb{V]}_{X,\mathrm{kEV}}}
+  &= \mathbb{E}[\frac{1]{N} \sum_i ( X_i - \mu )^2} \\
+  &= \frac{1}{N} \sum_i \mathbb{E}[X_i^2 - 2\mu X_i + \mu^2] \\
+  &= \mathbb{E}[X^2] - 2 \mu \mathbb{E}[X] + \mu^2 \quad\text{(since $X_i$ are identic. distrib.)} \\
+  &= \mathbb{E}[X^2] - \mu^2 \\
+  &= \var{X}. \quad\text{(since $\var{X} = \mathbb{E}[X^2] - \mathbb{E}[X]^2$)}
 \end{aligned}$$ So if we happen to know the true expected value $\mu$, then we can compute variance in the naive way, and it's exactly correct.
 
-Now we can use this result to pull a little mathematical trick. Even if we don't know $\mu$ and $\var{X}$, we do know they exist, so we can manipulate [\[eq:estimator-vx1\]](#eq:estimator-vx1){reference-type="eqref" reference="eq:estimator-vx1"} to make it easier to work with. Specifically, I'm going to write "standardized"[^2] random variables: $$Z_i = \frac{X_i - \mu}{\sqrt{\var{X}}} \implies X_i = \sqrt{\var{X}} Z_i + \mu$$ It should be easy to see that $Z_i$ has expected value 0 and variance $\expect{Z_i^2} = 1$, and $\overline{Z}$ has expected value 0 and variance $\expect{\overline{Z}^2} = 1/n$. Now I'll rewrite [\[eq:estimator-vx1\]](#eq:estimator-vx1){reference-type="eqref" reference="eq:estimator-vx1"} so it has $Z_i$ instead of $X_i$:
+Now we can use this result to pull a little mathematical trick. Even if we don't know $\mu$ and $\var{X}$, we do know they exist, so we can manipulate [\[eq:estimator-vx1\]](#eq:estimator-vx1){reference-type="eqref" reference="eq:estimator-vx1"} to make it easier to work with. Specifically, I'm going to write "standardized"[^2] random variables: $$Z_i = \frac{X_i - \mu}{\sqrt{\var{X}}} \implies X_i = \sqrt{\var{X}} Z_i + \mu$$ It should be easy to see that $Z_i$ has expected value 0 and variance $\mathbb{E}[Z_i^2] = 1$, and $\overline{Z}$ has expected value 0 and variance $\mathbb{E}[\overline{Z]^2} = 1/n$. Now I'll rewrite [\[eq:estimator-vx1\]](#eq:estimator-vx1){reference-type="eqref" reference="eq:estimator-vx1"} so it has $Z_i$ instead of $X_i$:
 
 $$
 \begin{aligned}
@@ -21,13 +21,13 @@ $$
   &= \frac{1}{n} \sum_i \left( \left[\sqrt{\var{X}} Z_i + \mu\right] - \left[ \sqrt{\var{X}} \overline{Z} + \mu \right] \right)^2 \\
   &= \frac{\var{X}}{n} \sum_i \left( Z_i - \overline{Z} \right)^2
 \end{aligned}$$ Analogous to how we showed that
-$\var{X} = \expect{X^2} - \expect{X}^2$, some algebra shows that
+$\var{X} = \mathbb{E}[X^2] - \mathbb{E}[X]^2$, some algebra shows that
 $$\sum_i \left(Z_i - \overline{Z}\right)^2 = \sum_i Z_i^2 - n \overline{Z}^2.$$
 Thus, the expected value of this estimator is $$\begin{aligned}
-\expect{\hat{\mathbb{V}}_X}
-  &= \expect{\frac{\var{X}}{n} \sum_i \left( Z_i - \overline{Z} \right)^2} \\
-  &= \frac{\var{X}}{n} \expect{\sum_i Z_i^2 - n \overline{Z}^2} \\
-  &= \frac{\var{X}}{n} \left( \sum_i \expect{Z_i^2} - n \expect{\overline{Z}^2} \right)\\
+\mathbb{E}[\hat{\mathbb{V]}_X}
+  &= \mathbb{E}[\frac{\var{X]}{n} \sum_i \left( Z_i - \overline{Z} \right)^2} \\
+  &= \frac{\var{X}}{n} \mathbb{E}[\sum_i Z_i^2 - n \overline{Z]^2} \\
+  &= \frac{\var{X}}{n} \left( \sum_i \mathbb{E}[Z_i^2] - n \mathbb{E}[\overline{Z]^2} \right)\\
   &= \frac{\var{X}}{n} (n - 1) \quad\text{(using the little identities)} \\
   &= \frac{n-1}{n} \var{X}.
 \end{aligned}$$ Note that the expected value of our estimator is not
@@ -51,7 +51,7 @@ the denominator but variance had $n-1$.[^4] This is why! The point is to
 make an unbiased estimator.
 
 [^1]: Do remember, however, that $\overline{X}$ is a random variable---a
-    function of the data---while $\expect{X}$ is a function of the
+    function of the data---while $\mathbb{E}[X]$ is a function of the
     distribution, and therefore just a single matter-of-fact number.
 
 [^2]: You're probably used to seeing standardized *normal* variables
@@ -168,10 +168,10 @@ The cons are that it doesn't always work. For example, a jackknife estimate of t
 There's some true distribution $f_X(x)$, and you're approximating it with $\hat{f}_X(x)$, which is a pmf. If you took $N$ data points, then bootstrapping means that you're picking a vector $\vec{c}$, where $c_i$ is the number of times that the $i$-th data point makes it into the bootstrap sample. This begs the question, how is $\vec{c}$ behaved? It's just a multinomial, with probability $1/N$ for each of the $N$ cells.
 
 Normally you compute a statistic $T(\vec{x})$ of the data. Instead, formulate this in terms of a function $g(\vec{c})$ If you can write $T(\vec{x}) = \sum_i t(x_i)$, then $g(\vec{c}) = \sum_i (c_i/N) t(x_i)$. In a Taylor expansion around $\vec{c}_\mathrm{ML} = (1, 1, \ldots, 1)$: $$g(\vec{c}) = g(\vec{c}_\mathrm{ML}) + \sum_i \frac{dg}{dc_i} (c_i - 1) + \mathcal{O}(c_i^2)$$ So the variance of the values $g(\vec{c})$ that you will get from bootstrapping is approximately $$\begin{aligned}
-\expect{\left[g(\vec{c}) - g(\vec{c}_\mathrm{ML})\right]^2}
-  &= \expect{\left(\sum_i \frac{dg}{dc_i} (c_i-1)\right)^2} + \mathcal{O}(c_i^2) \\
-  &= \expect{\sum_i \left( \frac{dg}{dc_i} (c_i-1)\right)^2} + \mathcal{O}(c_i^2) \\
-  &= \sum_i \left(\frac{dg}{dc_i}\right)^2 \expect{(c_i-1)^2} + \mathcal{O}(c_i^2) \\
+\mathbb{E}[\left[g(\vec{c]) - g(\vec{c}_\mathrm{ML})\right]^2}
+  &= \mathbb{E}[\left(\sum_i \frac{dg]{dc_i} (c_i-1)\right)^2} + \mathcal{O}(c_i^2) \\
+  &= \mathbb{E}[\sum_i \left( \frac{dg]{dc_i} (c_i-1)\right)^2} + \mathcal{O}(c_i^2) \\
+  &= \sum_i \left(\frac{dg}{dc_i}\right)^2 \mathbb{E}[(c_i-1)^2] + \mathcal{O}(c_i^2) \\
 \end{aligned}$$
 
 And then an $n^2$ comes out? The point is that the jackknife is basically doing a finite estimation of the gradient, by leaving out a single point at a time.

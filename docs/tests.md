@@ -85,7 +85,7 @@ The first two cases call for _one-sided_ $p$-values and can be used if you have 
 In this example, the null hypothesis of a fair coin means that all the possible sequences of heads and tails are equally likely, so to compute a one-sided $p$-value, I just need to count up the number of sequences that are more extreme than the observed one: $$\text{one-sided $p$-value} = \frac{\text{number of possible sequences more extreme than observed}}{\text{total number of sequences}}$$ You may know that the number of length-$n$ heads-tails sequences is $2^n$ and that the number of those sequences that has $x$ heads is $\binom{n}{x} = n! /
 \left[ x! (n-x)! \right]$. Thus, for this example, if we have a "low-sided" expectation about the number of heads: $$\text{``low-sided'' one-sided $p$-value} = \frac{\sum_{y=0}^x \binom{n}{x}}{2^n}$$ A "high-sided" $p$-value would sum from $x$ up to $n$.
 
-For the two-sided $p$-value, we need to sum up the "low-side" and "high-side" $p$-values. Because the observed $x$ falls to one side of the central expectation $\expect{x} = n/2$, we need to symmetrize to find the other value. For example if $x$ is low, we make another, mirrored "high" $x_\mathrm{hi} = n-x$: $$\text{two-sided $p$-value} = \frac{\sum_{y=0}^x \binom{n}{x} + \sum_{y=n-x}^n \binom{n}{x}}{2^n}$$ If $x > n/2$, then the sums would go from $0$ to $n-x$ and from $x$ to $n$.
+For the two-sided $p$-value, we need to sum up the "low-side" and "high-side" $p$-values. Because the observed $x$ falls to one side of the central expectation $\mathbb{E}[x] = n/2$, we need to symmetrize to find the other value. For example if $x$ is low, we make another, mirrored "high" $x_\mathrm{hi} = n-x$: $$\text{two-sided $p$-value} = \frac{\sum_{y=0}^x \binom{n}{x} + \sum_{y=n-x}^n \binom{n}{x}}{2^n}$$ If $x > n/2$, then the sums would go from $0$ to $n-x$ and from $x$ to $n$.
 
 ## Checking for a specified unfairness of a coin
 
@@ -301,7 +301,7 @@ squares: $$\begin{aligned}
 \hat{\mathbb{V}}_{X,p} &= C \left[ \sum_i (X_{1i} - \overline{X}_1)^2 + \ldots \right] \\
   &= C \left[ \sigma^2 \sum_i (Z_{1i} - \overline{Z}_1^2 ) + \ldots \right] \\
   &= C \sigma^2 \left[ \sum_i Z_{1i}^2 - n \overline{Z}_1^2 + \ldots \right] \\
-\expect{\hat{\mathbb{V}}_{X,p}} &= C \sigma^2 \left[ \sum_i \expect{Z_{1i}^2} - n \expect{\overline{Z}_1^2} + \ldots \right] \\
+\mathbb{E}[\hat{\mathbb{V]}_{X,p}} &= C \sigma^2 \left[ \sum_i \mathbb{E}[Z_{1i]^2} - n \mathbb{E}[\overline{Z]_1^2} + \ldots \right] \\
   &= C \sigma^2 \left( n_1 - 1 + n_2 - 1 \right) \\
 \end{aligned}$$ which implies that $$C = \frac{1}{n_1 + n_2 - 2}.$$
 
