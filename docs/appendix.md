@@ -9,27 +9,27 @@ The known-expected-value estimator is unbiased: $$\begin{aligned}
   &= \frac{1}{N} \sum_i \mathbb{E}[X_i^2 - 2\mu X_i + \mu^2] \\
   &= \mathbb{E}[X^2] - 2 \mu \mathbb{E}[X] + \mu^2 \quad\text{(since $X_i$ are identic. distrib.)} \\
   &= \mathbb{E}[X^2] - \mu^2 \\
-  &= \var{X}. \quad\text{(since $\var{X} = \mathbb{E}[X^2] - \mathbb{E}[X]^2$)}
+  &= \mathbb{V}[X]. \quad\text{(since $\mathbb{V}[X] = \mathbb{E}[X^2] - \mathbb{E}[X]^2$)}
 \end{aligned}$$ So if we happen to know the true expected value $\mu$, then we can compute variance in the naive way, and it's exactly correct.
 
-Now we can use this result to pull a little mathematical trick. Even if we don't know $\mu$ and $\var{X}$, we do know they exist, so we can manipulate [\[eq:estimator-vx1\]](#eq:estimator-vx1){reference-type="eqref" reference="eq:estimator-vx1"} to make it easier to work with. Specifically, I'm going to write "standardized"[^2] random variables: $$Z_i = \frac{X_i - \mu}{\sqrt{\var{X}}} \implies X_i = \sqrt{\var{X}} Z_i + \mu$$ It should be easy to see that $Z_i$ has expected value 0 and variance $\mathbb{E}[Z_i^2] = 1$, and $\overline{Z}$ has expected value 0 and variance $\mathbb{E}[\overline{Z]^2} = 1/n$. Now I'll rewrite [\[eq:estimator-vx1\]](#eq:estimator-vx1){reference-type="eqref" reference="eq:estimator-vx1"} so it has $Z_i$ instead of $X_i$:
+Now we can use this result to pull a little mathematical trick. Even if we don't know $\mu$ and $\mathbb{V}[X]$, we do know they exist, so we can manipulate [\[eq:estimator-vx1\]](#eq:estimator-vx1){reference-type="eqref" reference="eq:estimator-vx1"} to make it easier to work with. Specifically, I'm going to write "standardized"[^2] random variables: $$Z_i = \frac{X_i - \mu}{\sqrt{\mathbb{V}[X]}} \implies X_i = \sqrt{\mathbb{V}[X]} Z_i + \mu$$ It should be easy to see that $Z_i$ has expected value 0 and variance $\mathbb{E}[Z_i^2] = 1$, and $\overline{Z}$ has expected value 0 and variance $\mathbb{E}[\overline{Z]^2} = 1/n$. Now I'll rewrite [\[eq:estimator-vx1\]](#eq:estimator-vx1){reference-type="eqref" reference="eq:estimator-vx1"} so it has $Z_i$ instead of $X_i$:
 
 $$
 \begin{aligned}
 \hat{\mathbb{V}}_X
   &= \frac{1}{n} \sum_i \left( X_i - \overline{X} \right)^2 \\
-  &= \frac{1}{n} \sum_i \left( \left[\sqrt{\var{X}} Z_i + \mu\right] - \left[ \sqrt{\var{X}} \overline{Z} + \mu \right] \right)^2 \\
-  &= \frac{\var{X}}{n} \sum_i \left( Z_i - \overline{Z} \right)^2
+  &= \frac{1}{n} \sum_i \left( \left[\sqrt{\mathbb{V}[X]} Z_i + \mu\right] - \left[ \sqrt{\mathbb{V}[X]} \overline{Z} + \mu \right] \right)^2 \\
+  &= \frac{\mathbb{V}[X]}{n} \sum_i \left( Z_i - \overline{Z} \right)^2
 \end{aligned}$$ Analogous to how we showed that
-$\var{X} = \mathbb{E}[X^2] - \mathbb{E}[X]^2$, some algebra shows that
+$\mathbb{V}[X] = \mathbb{E}[X^2] - \mathbb{E}[X]^2$, some algebra shows that
 $$\sum_i \left(Z_i - \overline{Z}\right)^2 = \sum_i Z_i^2 - n \overline{Z}^2.$$
 Thus, the expected value of this estimator is $$\begin{aligned}
 \mathbb{E}[\hat{\mathbb{V]}_X}
-  &= \mathbb{E}[\frac{\var{X]}{n} \sum_i \left( Z_i - \overline{Z} \right)^2} \\
-  &= \frac{\var{X}}{n} \mathbb{E}[\sum_i Z_i^2 - n \overline{Z]^2} \\
-  &= \frac{\var{X}}{n} \left( \sum_i \mathbb{E}[Z_i^2] - n \mathbb{E}[\overline{Z]^2} \right)\\
-  &= \frac{\var{X}}{n} (n - 1) \quad\text{(using the little identities)} \\
-  &= \frac{n-1}{n} \var{X}.
+  &= \mathbb{E}[\frac{\mathbb{V}[X]]{n} \sum_i \left( Z_i - \overline{Z} \right)^2} \\
+  &= \frac{\mathbb{V}[X]}{n} \mathbb{E}[\sum_i Z_i^2 - n \overline{Z]^2} \\
+  &= \frac{\mathbb{V}[X]}{n} \left( \sum_i \mathbb{E}[Z_i^2] - n \mathbb{E}[\overline{Z]^2} \right)\\
+  &= \frac{\mathbb{V}[X]}{n} (n - 1) \quad\text{(using the little identities)} \\
+  &= \frac{n-1}{n} \mathbb{V}[X].
 \end{aligned}$$ Note that the expected value of our estimator is not
 equal to the thing we're trying to estimate, so this estimator is
 biased! It systematically *underestimate* the true variance.

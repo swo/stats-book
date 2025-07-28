@@ -232,18 +232,48 @@ For a product of random variables $Z = XY$, we need to use $f_Y(z/x)$, and for a
 
 ## Don't expect the expected value
 
-The _expected value_ $\mathbb{E}[X]$ of a random variable $X$ is the probability-weighted average of the values it takes on. For a discrete random variable, you simply sum. For a continuous random variable, you need to integrate: $$\mathbb{E}[X] \equiv \begin{dcases}
+The _expected value_ $\mathbb{E}[X]$ of a random variable $X$ is the probability-weighted average of the values it takes on. For a discrete random variable, you simply sum. For a continuous random variable, you need to integrate:
+
+$$
+\mathbb{E}[X] \equiv \begin{dcases}
   \sum_i x_i f_X(x_i) & \text{ for discrete random variables} \\
   \int x f_X(x) \,dx & \text{ for continuous random variables}
-\end{dcases}$$ Thus, just like "maximum", "expected value" is a function that maps random variables to numbers: $$\mathbb{E} : \text{random variables} \to \mathbb{R}$$ I use square brackets with $\mathbb{E}$ to emphasize that this is a function that maps from something other than numbers.
+\end{dcases}
+$$
 
-The name "expected value" is misleading. We previously noted that, for continuous random variables, the probability of getting any particular number is essentially zero, so there's no particular number you should "expect". For discrete random variables, where there is finite probability of getting each particular number, the expected value actually need not be any of the values that $X$ maps to. In our coin flip example, the random variable $X$ measuring the number of heads flipped has expectation value: $$\mathbb{E}[X] = 0 \times \mathbb{P}[T] + 1 \times \mathbb{P}[H] = \tfrac{1}{2}.$$ You certainly don't ever expect to flip $0.5$ heads!
+Thus, just like "maximum", "expected value" is a function that maps random variables to numbers:
+
+$$
+\mathbb{E} : \text{random variables} \to \mathbb{R}
+$$
+
+I use square brackets with $\mathbb{E}$ to emphasize that this is a function that maps from something other than numbers.
+
+The name "expected value" is misleading. We previously noted that, for continuous random variables, the probability of getting any particular number is essentially zero, so there's no particular number you should "expect". For discrete random variables, where there is finite probability of getting each particular number, the expected value actually need not be any of the values that $X$ maps to. In our coin flip example, the random variable $X$ measuring the number of heads flipped has expectation value:
+
+$$
+\mathbb{E}[X] = 0 \times \mathbb{P}[T] + 1 \times \mathbb{P}[H] = \tfrac{1}{2}.
+$$
+
+You certainly don't ever expect to flip $0.5$ heads!
 
 A better way to think of the expected value is as a measure of _central position_. There are of course multiple ways to quantify central position beyond the expected value, which is analogous to the mean or average. You can certainly map random variables to their medians and modes, but those mappings are substantially more complex and not as useful for our purposes.
 
 ## Variance
 
-If the expected value is a measure of central position, then _variance_ $\mathbb{V}$ is the corresponding measurement of spread or _scale_. It is a function of random variables that returns a nonnegative number: $$\mathbb{V} : \text{random variables} \to [0, \infty).$$ For a random variable $X$, the variance is the expected value of the square of the deviation of the random variable from its own expected value: $$\var{X} \equiv \mathbb{E}[(X - \mathbb{E}[X])^2]$$ Because all those nested brackets are confusing, people often replace the notation $\mathbb{E}[X]$ with the notation $\mu$ so that the definition of variance reads $\var{X} = \mathbb{E}[(X - \mu)^2]$.
+If the expected value is a measure of central position, then _variance_ $\mathbb{V}$ is the corresponding measurement of spread or _scale_. It is a function of random variables that returns a nonnegative number:
+
+$$
+\mathbb{V} : \text{random variables} \to [0, \infty).
+$$
+
+For a random variable $X$, the variance is the expected value of the square of the deviation of the random variable from its own expected value:
+
+$$
+\mathbb{V}[X] \equiv \mathbb{E}[(X - \mathbb{E}[X])^2]
+$$
+
+Because all those nested brackets are confusing, people often replace the notation $\mathbb{E}[X]$ with the notation $\mu$ so that the definition of variance reads $\mathbb{V}[X] = \mathbb{E}[(X - \mu)^2]$.
 
 Although $\mu$ is just a number when we say $\mu = \mathbb{E}[X]$, the same notation "$\mu$" cannot refer to a number when we write $X - \mu$. We can subtract numbers from the values that a function maps to, but we cannot subtract numbers from raw functions, any more than I can subtract a number from the operation of multiplication. In other words, $f(x) - 2$ makes sense, but $f - 2$ does not. Thus, "$\mu$" in $X - \mu$ is actually a trivial random variable that maps its whole sample space to $\mu$, so that $\mathbb{P}[\text{``}\mu\text{''} = \mu] = 1$. Similarly, $(X - \mu)^2 = (X - \mu) \stackrel{\mathrm{rv}}{\times} (X - \mu)$ is another new random variable. Given random variables $X$ and $Y$, we saw earlier how to compute the pdf of a new random variable $XY$, so we also know how to find the pdf for a random variable $X^2 = X \times X$.
 
@@ -251,13 +281,41 @@ Although $\mu$ is just a number when we say $\mu = \mathbb{E}[X]$, the same nota
 
 Starting with the definition of the expected value, you can easily show that it is a _linear_ function: $$\mathbb{E}[aX + bY] = a \,\mathbb{E}[X] + b \,\mathbb{E}[Y]$$ Note that, just as $\mu$ transformed from a number to a random variable when we wrote $X + \mu$, so the number $a$ in this equation transforms into a random variable when we write $aX$.
 
-Variance, however is not linear. You can easily show that, for some number $a$, $$\var{aX} = \mathbb{E}[(aX - \mathbb{E}[aX])^2] = \mathbb{E}[a^2(X - \mathbb{E}[X])] = a^2 \, \mathbb{E}[X].$$ With some more algebra, you can show that $$\var{X + Y} = \var{X} + \var{Y} + 2 \,\cov{X, Y},$$ where $\cov{X, Y}$, the _covariance_ of $X$ and $Y$ is $$\cov{X, Y} \equiv \mathbb{E}[(X - \mathbb{E}[X])(Y - \mathbb{E][Y])}.$$ To avoid the nested brackets, this is sometimes written $$\cov{X, Y} = \mathbb{E}[(X - \mu_X)(Y - \mu_Y)].$$ In words, the covariance is the expected value of the product of the deviations between the values that $X$ and $Y$ map to and the expected values of those random variables. Note that covariance is a function of two random variables: $$\mathrm{Cov} : (\text{random variables})^2 \to \mathbb{R}.$$
+Variance, however is not linear. You can easily show that, for some number $a$,
+
+$$
+\mathbb{V}[aX] = \mathbb{E}[(aX - \mathbb{E}[aX])^2] = \mathbb{E}[a^2(X - \mathbb{E}[X])] = a^2 \, \mathbb{E}[X].
+$$
+
+With some more algebra, you can show that
+
+$$
+\mathbb{V}[X + Y] = \mathbb{V}[X] + \mathbb{V}[Y] + 2 \,\cov{X, Y},
+$$
+
+where $\cov{X, Y}$, the _covariance_ of $X$ and $Y$ is
+
+$$
+\cov{X, Y} \equiv \mathbb{E}[(X - \mathbb{E}[X])(Y - \mathbb{E][Y])}.
+$$
+
+To avoid the nested brackets, this is sometimes written
+
+$$
+\cov{X, Y} = \mathbb{E}[(X - \mu_X)(Y - \mu_Y)].
+$$
+
+In words, the covariance is the expected value of the product of the deviations between the values that $X$ and $Y$ map to and the expected values of those random variables. Note that covariance is a function of two random variables:
+
+$$
+\mathrm{Cov} : (\text{random variables})^2 \to \mathbb{R}.
+$$
 
 If $X$ and $Y$ are independent, then their covariance is zero. (The reverse is not necessarily true.) Some algebra will also show that $$\mathbb{E}[XY] = \mathbb{E}[X] \, \mathbb{E}[Y] + \cov{X, Y}.$$ Thus, for independent random variables, which we will deal with a lot, the expected value of the produce of two random variables is simply the product of their expectation values. These properties of the expected value will come in very handy in future sections.
 
 You may be more familiar with _correlation_ than covariance. The most common definition of correlation, Pearson's correlation coefficient, typically written $\rho$, is just a rescaling of the covariance to values between $-1$ and $+1$: $$\begin{gathered}
 \rho : (\text{random variables})^2 \to [-1, 1] \\
-\rho[X, Y] \equiv \frac{\cov{X, Y}}{\sqrt{\var{X} \var{Y}}},
+\rho[X, Y] \equiv \frac{\cov{X, Y}}{\sqrt{\mathbb{V}[X] \mathbb{V}[Y]}},
 \end{gathered}$$ It turns out that dividing by that factor rescales the covariance, which can be any number, to a single range, $-1$ to $+1$. Thus, the correlation between two random variables does not depend on their scaling: $$\begin{gathered}
     \cov{aX, bY} = ab \,\cov{X, Y} \\
     \rho[aX, bY] = \rho[X, Y]

@@ -81,7 +81,7 @@ Note the subtlety in what we did: without actually knowing what $B$ is, we found
 
 ## Efficient estimators
 
-Consistency ensures that, in the limit of infinite data, our estimate approaches the true value. How can we be sure that we are getting the best estimate for our data, given the fact that we can't collect infinite data? This question relates to the concept of _efficiency_. One unbiased estimator $\hat{X}_1$ is more _efficient_ than another unbiased estimator $\hat{X}_2$ if it has lower variance: $$\var{\hat{X}_1} < \var{\hat{X}_2}.$$ As we will see, confidence intervals are related to the variance of an estimator, so a more efficient estimator means that we can get more narrow confidence intervals for the same amount of data, which is clearly a desirable thing. I don't want to appear more ignorant than I have to be, just because I picked a poor estimator!
+Consistency ensures that, in the limit of infinite data, our estimate approaches the true value. How can we be sure that we are getting the best estimate for our data, given the fact that we can't collect infinite data? This question relates to the concept of _efficiency_. One unbiased estimator $\hat{X}_1$ is more _efficient_ than another unbiased estimator $\hat{X}_2$ if it has lower variance: $$\mathbb{V}[\hat{X]_1} < \mathbb{V}[\hat{X]_2}.$$ As we will see, confidence intervals are related to the variance of an estimator, so a more efficient estimator means that we can get more narrow confidence intervals for the same amount of data, which is clearly a desirable thing. I don't want to appear more ignorant than I have to be, just because I picked a poor estimator!
 
 It turns out that there is a theoretical lower limit to the variance of estimators called the _Cramér-Rao bound_, and many estimators actually hit this limit. Therefore, rather than saying that one estimator is _more_ efficient than another, we usually just say that an estimator is "efficient", meaning that it hits the lower bound on variance and is maximally efficient.
 
@@ -153,7 +153,7 @@ numbers*.
 The modern proof of the law of large numbers follows from an observation
 about the variance of the estimator $\hat{\mathbb{E}}_X$ that was
 surprising to many early statisticians:
-$$\var{\hat{\mathbb{E}}_X} = \var{\frac{1}{n} \sum_i X_i} = \frac{1}{n^2} \sum_i \var{X_i} = \frac{1}{n} \var{X}$$
+$$\mathbb{V}[\hat{\mathbb{E]}_X} = \mathbb{V}[\frac{1]{n} \sum_i X_i} = \frac{1}{n^2} \sum_i \mathbb{V}[X_i] = \frac{1}{n} \mathbb{V}[X]$$
 In words, the variance of the estimator is $1/n$ of the variance of the
 underlying random variable it is estimating. Intuitively, this means
 that, as you take more data, you are ever more likely to get an estimate
@@ -166,10 +166,10 @@ Because the *standard deviation*, the square root of the variance, is
 more intuitive, one can say that the standard deviation of the estimator
 decreases with the square root of $n$. To distinguish the standard
 deviation of the estimator from the standard deviation of the underlying
-population, $\var{\hat{\mathbb{E}}_X}$ is also called the *standard
+population, $\mathbb{V}[\hat{\mathbb{E]}_X}$ is also called the *standard
 error of the mean*. With more data points $n$, you can get an ever more
 precise estimate of the mean, so the standard error of the mean
-declines, but the standard error of the underlying population $\var{X}$
+declines, but the standard error of the underlying population $\mathbb{V}[X]$
 is fixed.
 
 This result was surprising because it was expected that the standard
