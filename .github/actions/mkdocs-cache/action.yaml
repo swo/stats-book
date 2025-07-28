@@ -12,4 +12,4 @@ runs:
         enable-cache: true
         version: 0.7.8
     - run: uv sync
-    - shell: bash
+      shell: bash
