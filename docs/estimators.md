@@ -52,18 +52,18 @@ This is clearly a bad estimator. No matter how much data I accumulate, my estima
 
 Mathematically, I want the probability that $\hat{B}$ takes on a value far from $B$ to get close to zero as I collect more and more data. This requires defining what a "limit" is for a series of random variables. For a sequence of numbers, a limit means that, for any _a priori_, fixed threshold $\varepsilon > 0$, there is some integer $n$ such that every value in the sequence after the $n$-th one is within $\varepsilon$ of the true value: $$\lim_{n\to\infty} a_n = L \text{ means that for any $\varepsilon > 0$ there exists some $n$ such that } |a_i - L| < \varepsilon \text{ for all $i \geq n$}.$$ For example, given the geometric series $1, \tfrac{1}{2}, \tfrac{1}{4}, \ldots$, if you pick the threshold $\varepsilon = \tfrac{1}{100}$, I can pick $n=7$, since the terms in the series are equal to $\tfrac{1}{2^n}$, and $\tfrac{1}{2^7} = \tfrac{1}{128}$. All subsequent terms in the series will be even closer to zero than that term.
 
-In probability, if you give me $\varepsilon$, in most cases I cannot pick an $n$ such that the estimator maps all values outside that threshold to zero probability. Casually speaking, even after a trillion data points, there is no guarantee that a series of random data points won't stray from their limit. Instead, in probability, we say that a sequence of random variables $X_n$ _converges_ toward a number $a$ if $$\lim_{n \to \infty} \prob{|X_n - a| > \varepsilon} = 0,$$ that is, if the probability that $X_n$ takes on a value more than $\varepsilon$ away from $a$ approaches zero as $n$ increases. An estimator is _consistent_ if the series of random variables corresponding to collecting more and more data converge toward the true value.
+In probability, if you give me $\varepsilon$, in most cases I cannot pick an $n$ such that the estimator maps all values outside that threshold to zero probability. Casually speaking, even after a trillion data points, there is no guarantee that a series of random data points won't stray from their limit. Instead, in probability, we say that a sequence of random variables $X_n$ _converges_ toward a number $a$ if $$\lim_{n \to \infty} \mathbb{P}{|X_n - a| > \varepsilon} = 0,$$ that is, if the probability that $X_n$ takes on a value more than $\varepsilon$ away from $a$ approaches zero as $n$ increases. An estimator is _consistent_ if the series of random variables corresponding to collecting more and more data converge toward the true value.
 
 In our example, $\hat{B}_1$ corresponds to the estimator when we only collect 1 data point, $\hat{B}_2$ when we collect 2, and so on. In the dumb example where $\hat{B}$ only takes on the value 3, the $\hat{B}_n$ converge to 3, but not to $B$, except in the unlikely case that $B$ just happens to be 3.
 
 For our second guess, let's use a more reasonable statistic. Say that $b$ is the maximum of whatever data points we collected: $$b(x_1, \ldots, x_n) = \max_i x_i.$$ I know I can write out an analogous equation to define the estimator: $$\hat{B} = \max_i X_i.$$ But what does it mean to take the maximum of two random variables? Recall that, we computed the distribution of a sum of two random variables $Z = X + Y$ as $f_Z(z) = \int f_X(x) f_Y(z-x) \,dx$. For a maximum, it is easier to express the new variable's distribution using its cdf. To say $Z = \max[X, Y]$ means that, if $X$ and $Y$ are independent, $$\begin{aligned}
-    F_Z(z) &= \prob{Z \leq z} \\
-    &= \prob{(X \leq x) \cap (Y \leq y)} \\
-    &= \prob{X \leq x} \, \prob{Y \leq y} \\
+    F_Z(z) &= \mathbb{P}{Z \leq z} \\
+    &= \mathbb{P}{(X \leq x) \cap (Y \leq y)} \\
+    &= \mathbb{P}{X \leq x} \, \mathbb{P}{Y \leq y} \\
     &= F_X(x) F_Y(y)
 \end{aligned}$$ So if $F_X(x) = x/B$, then $F_{\hat{B}_n} = (x/B)^n$. Note that $\hat{B}_n$ can only take on values between $0$ and $B$, so if it diverges from $B$, it will do so by falling short: $$\begin{aligned}
-    \prob{|\hat{B}_n - B| > \varepsilon}
-    &= \prob{\hat{B}_n \leq B - \varepsilon} \\
+    \mathbb{P}{|\hat{B}_n - B| > \varepsilon}
+    &= \mathbb{P}{\hat{B}_n \leq B - \varepsilon} \\
     &= F_{\hat{B}_n}(B - \varepsilon) \\
     &= \left(\frac{B - \varepsilon}{B}\right)^n \\
     &= \left(1 - \frac{\varepsilon}{B}\right)^n.

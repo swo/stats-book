@@ -19,7 +19,7 @@ Things to do:
 
 [Add a chapter for statistical power and sample size. Define Type I and Type II errors. Chapters on parametric vs. nonparametric. Permutation tests.]{.mark}
 
-$T=t(X)$ is statistic. $t^\star = t(x)$ is obs. value. $p=\prob{T>t^\star}$ or $\prob{T<t^\star}$. 2-sided is $\prob{T<t^\star \text{ or } T > t_0 + (t^\star-t_0)}$, where $t_0$ is some central value?
+$T=t(X)$ is statistic. $t^\star = t(x)$ is obs. value. $p=\mathbb{P}{T>t^\star}$ or $\mathbb{P}{T<t^\star}$. 2-sided is $\mathbb{P}{T<t^\star \text{ or } T > t_0 + (t^\star-t_0)}$, where $t_0$ is some central value?
 
 The previous chapter laid out the conceptual points of inference. In this chapter, I lay out the nuts and bolts of what most people think statistics is: tests.
 
@@ -53,7 +53,7 @@ Later, Neyman and Pearson (the younger) reformulated Fisher's method as a kind o
 
 Although Fisher furiously disagreed with Neyman and Pearson about how to interpret $p$-values, the canonical $\alpha = 0.05$ somehow made it into the scientific literature.
 
-As laid out in the previous chapter, "what is the probability that this data is true, given the data?" is a very tricky question. The critical point is that the $p$-value is, in the language of that chapter, $\prob{X | \theta}$, but we want to know about $\prob{\theta | X}$. The link between these is the mysterious prior probability $\prob{\theta}$.
+As laid out in the previous chapter, "what is the probability that this data is true, given the data?" is a very tricky question. The critical point is that the $p$-value is, in the language of that chapter, $\mathbb{P}{X | \theta}$, but we want to know about $\mathbb{P}{\theta | X}$. The link between these is the mysterious prior probability $\mathbb{P}{\theta}$.
 
 I think my only take-away is that you should trust your gut more than a $p$-value. First, Fisher developed statistics as a way to rigorously show that data _weren't_ interesting, a mathematical counterbalance to humans' ability to find interesting patterns in data, especially their own. He meant $p$-values as a way to deflate puffed-up conclusions, not to puff them up. Second, Fisher, who invented $p$-values, couldn't really agree with other extremely intelligent people about exactly what they meant. So don't make yourself crazy trying to figure it out too precisely either! Just know that big $p$-values, where "big" depends on the intellectual context, mean the data aren't interesting, where "interesting" is defined by the null hypothesis.
 
@@ -130,13 +130,13 @@ In this example, rather than summing up over the _discrete_ universe of possibil
 
 $$
 \begin{aligned}
-1 - \alpha &= \prob{X_- \leq \mu \leq X_+} \\
-\alpha / 2 &= \prob{X_- \geq \mu}
+1 - \alpha &= \mathbb{P}{X_- \leq \mu \leq X_+} \\
+\alpha / 2 &= \mathbb{P}{X_- \geq \mu}
 \end{aligned}$$ Making the inspired guess that
 $$\frac{X_- - \mu}{\sigma} = \frac{X - \mu}{\sigma} - b$$ that is, that
 $X_- = X - \sigma b$, we find that $$\begin{aligned}
-  \alpha/2 &= \prob{X - \sigma b \geq \mu} \\
-  &= \prob{\frac{X - \mu}{\sigma} > b},
+  \alpha/2 &= \mathbb{P}{X - \sigma b \geq \mu} \\
+  &= \mathbb{P}{\frac{X - \mu}{\sigma} > b},
 \end{aligned}$$ which you can find that, for $\alpha = 0.05$, you get
 $b = 1.96$.
 
