@@ -40,7 +40,7 @@ If it's not obvious that this argument is fallacious, consider the more general 
 
 [Move this to a Part IV]{.mark}
 
-The relation between $\mathbb{P}[X | \theta]$ and $\mathbb{P}[\theta | X]$ is laid out in _Bayes's theorem_: $$\mathbb{P}[\theta | X] = \frac{\mathbb{P}[X | \theta] \mathbb{P}[\theta]}{\mathbb{P}[X]}.$$ This result follows almost immediately from the definition of conditional probability, laid out in chapter [\[chapter:probability\]](#chapter:probability){reference-type="ref" reference="chapter:probability"}.
+The relation between $\mathbb{P}[X | \theta]$ and $\mathbb{P}[\theta | X]$ is laid out in _Bayes's theorem_: $$\mathbb{P}[\theta | X] = \frac{\mathbb{P}[X | \theta] \mathbb{P}[\theta]}{\mathbb{P}[X]}.$$ This result follows almost immediately from the definition of conditional probability, laid out in [Probability](probability.md).
 
 Note that there are four terms in Bayes's theorem:
 
