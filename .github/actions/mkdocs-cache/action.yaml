@@ -1,0 +1,15 @@
+name: mkdocs-cache
+description: Cache mkdocs
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version-file: ".python-version"
+    - uses: astral-sh/setup-uv@v6
+      with:
+        enable-cache: true
+        version: 0.7.8
+    - run: uv sync
+      shell: bash
