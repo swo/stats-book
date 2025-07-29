@@ -1,4 +1,4 @@
-Before diving into that equation, note that the $X_i$ and $e{X}$ are random variables, and note that they are not independent: the value of $\overline{X}$ certainly depends on each of the $X_i$. So first let's imagine a simpler case, where we're in a universe where happen to know the expected value of the distribution we're trying to determine the variance of. To make the equations simpler to read, I'll use the standard notation $\mu \defeq
+Before diving into that equation, note that the $X_i$ and $e{X}$ are random variables, and note that they are not independent: the value of $\overline{X}$ certainly depends on each of the $X_i$. So first let's imagine a simpler case, where we're in a universe where happen to know the expected value of the distribution we're trying to determine the variance of. To make the equations simpler to read, I'll use the standard notation $\mu \equiv
 \mathbb{E}[X]$.[^1] In this case, having known expected value ("kEV"), our estimator will be a little simpler: $$\hat{\mathbb{V}}_{X,\mathrm{kEV}} = \frac{1}{N} \sum_i ( X_i - \mu )^2$$
 
 ### Bias in estimators of variance

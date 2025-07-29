@@ -138,30 +138,39 @@ f_X(x) \equiv \frac{d}{dx} F_X(x)
 \end{gathered}
 $$
 
-Note that the pdf of a continuous random variable $f_X(x)$ is not $\mathbb{P}[X =
-x]$. This may seem like a pedantic diversion, but I actually think it's important to avoid confusion. For a continuous random variable, $\mathbb{P}[X = x]$ is basically zero for any value of $x$. For example, say $X$ takes on values between 0 and 1 uniformly. Then it follows that:
+Note that the pdf of a continuous random variable $f_X(x)$ is not $\mathbb{P}[X = x]$. This may seem like a pedantic diversion, but I actually think it's important to avoid confusion. For a continuous random variable, $\mathbb{P}[X = x]$ is basically zero for any value of $x$. For example, say $X$ takes on values between 0 and 1 uniformly. Then it follows that:
 
 $$
 \begin{aligned}
 \mathbb{P}[0 \leq X \leq 1] &= 1 \\
 \mathbb{P}[0.495 \leq X \leq 0.505] &= 0.1 \\
 \mathbb{P}[0.4995 \leq X \leq 0.5005] &= 0.01
-\end{aligned}$$ and so on. We normally don't say that
-$\mathbb{P}[X = 0.500\ldots] = 0$, since that makes it sound like it's
-impossible for $X$ to take on the value $0.5$. Nevertheless, it should
-be clear that, from any practical point of view, the probability of
-getting exactly $0.500\ldots$ from your experiment is essentially zero.
-On the other hand, It does make sense to write ask about the *density*
-of $X$ at 0.5, i.e., $f_X(0.5)$.
+\end{aligned}
+$$
 
-The word "density" in probability density function emphasizes that the
-pdf, when integrated, gives a probability: $$\label{eq:integrated_pdf}
-\int_{x_0}^{x_1} f_X(x) \dd x = F_X(x_1) - F_X(x_0) = \mathbb{P}[x_0 < X \leq x_1]
+and so on. We normally don't say that $\mathbb{P}[X = 0.500\ldots] = 0$, since that makes it sound like it's impossible for $X$ to take on the value $0.5$. Nevertheless, it should be clear that, from any practical point of view, the probability of getting exactly $0.500\ldots$ from your experiment is essentially zero. On the other hand, It does make sense to write ask about the _density_ of $X$ at 0.5, i.e., $f_X(0.5)$.
+
+The word "density" in probability density function emphasizes that the pdf, when integrated, gives a probability:
+
+$$
+\int_{x_0}^{x_1} f_X(x) \,dx = F_X(x_1) - F_X(x_0) = \mathbb{P}[x_0 < X \leq x_1]
 $$
 
 In other words, the little-$f$ pdf $f_X$ is the derivative of the big-$F$ cdf $F_X$.
 
-It follows from the definition of the cdf and some fundamental calculus that $$\int_{-\infty}^\infty f_X(x) \dd x = 1$$ In other words, all probability density must be somewhere. This also requires that $$\lim_{x \to \pm \infty} f_X(x) = 0$$ so that probability density can't be "hiding" infinitely far away from the origin.
+It follows from the definition of the cdf and some fundamental calculus that
+
+$$
+\int_{-\infty}^\infty f_X(x) \,dx = 1
+$$
+
+In other words, all probability density must be somewhere. This also requires that
+
+$$
+\lim_{x \to \pm \infty} f_X(x) = 0
+$$
+
+so that probability density can't be "hiding" infinitely far away from the origin.
 
 The definitions I've given are simple ones, and they need to be refined to deal with more complicated functions. For example, if the cdf has discontinuities, you need careful with the limits on the integrals.
 
@@ -190,9 +199,7 @@ Critically, to say that $X \sim Y$ does not imply that $X$ and $Y$ are the same 
 Because frequentist statistics is concerned with repeatable trials, we will often consider _independent, identically-distributed_, abbreviated "iid", random variables. _Identically-distributed_ means that all the random variables in the collection have the same cdf. _Independent_ means that the probabilities of "and" events multiply:
 
 $$
-\text{$X$ and $Y$ are independent if and only if }
-  \mathbb{P}[(X = x) \cap (Y = y)]
-  = \mathbb{P}[X = x] \times \mathbb{P}[Y = y]
+\text{$X$ and $Y$ are independent} \iff \mathbb{P}[(X = x) \cap (Y = y)] = \mathbb{P}[X = x] \mathbb{P}[Y = y]
 $$
 
 It follows that, if the events in the sample spaces that $X$ and $Y$ map _from_ are independent, then $X$ and $Y$ will be independent. So if $X$ is defined with respect to one iteration of an experiment, and $Y$ is defined with respect to another, physically independent iteration of that experiment, then $X$ and $Y$ are independent.
@@ -218,7 +225,7 @@ The meaning of $X + Y$ feels intuitive, like in my example about drawing numbers
 $$
 \begin{aligned}
 f_Z(z) &= \sum_i \mathbb{P}[X=x_i] \mathbb{P}[Y=z-x_i] \\
-  &= \sum_i f_X(x_i) f_Y(z - x_i).
+&= \sum_i f_X(x_i) f_Y(z - x_i).
 \end{aligned}
 $$
 
@@ -235,10 +242,10 @@ For a product of random variables $Z = XY$, we need to use $f_Y(z/x)$, and for a
 The _expected value_ $\mathbb{E}[X]$ of a random variable $X$ is the probability-weighted average of the values it takes on. For a discrete random variable, you simply sum. For a continuous random variable, you need to integrate:
 
 $$
-\mathbb{E}[X] \equiv \begin{dcases}
-  \sum_i x_i f_X(x_i) & \text{ for discrete random variables} \\
-  \int x f_X(x) \,dx & \text{ for continuous random variables}
-\end{dcases}
+\mathbb{E}[X] \equiv \begin{cases}
+\sum_i x_i f_X(x_i) & \text{ for discrete random variables} \\
+\int x f_X(x) \,dx & \text{ for continuous random variables}
+\end{cases}
 $$
 
 Thus, just like "maximum", "expected value" is a function that maps random variables to numbers:
@@ -317,8 +324,7 @@ You may be more familiar with _correlation_ than covariance. The most common def
 
 $$
 \begin{gathered}
-\rho : (\text{random variables})^2 \to [-1, 1] \\
-\rho[X, Y] \equiv \frac{\mathrm{Cov}[X, Y]}{\sqrt{\mathbb{V}[X] \mathbb{V}[Y]}},
+\rho : (\text{random variables})^2 \to [-1, 1] \\ \rho[X, Y] \equiv \frac{\mathrm{Cov}[X, Y]}{\sqrt{\mathbb{V}[X] \mathbb{V}[Y]}},
 \end{gathered}
 $$
 
@@ -326,8 +332,7 @@ It turns out that dividing by that factor rescales the covariance, which can be 
 
 $$
 \begin{gathered}
-    \mathrm{Cov}[aX, bY] = ab \,\mathrm{Cov}[X, Y] \\
-    \rho[aX, bY] = \rho[X, Y]
+\mathrm{Cov}[aX, bY] = ab \,\mathrm{Cov}[X, Y] \\ \rho[aX, bY] = \rho[X, Y]
 \end{gathered}
 $$
 
