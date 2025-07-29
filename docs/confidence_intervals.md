@@ -63,7 +63,7 @@ One might be tempted to proceed with the jackknife in the same way we did the bo
 
 The process of correctly accounting for the narrowness of these values is:
 
-1.  Compute the jackknifed _replicates_ $t^{(j)} \defeq t(x^{(j)})$
+1.  Compute the jackknifed _replicates_ $t^{(j)} \equiv t(x^{(j)})$
 
 2.  Compute the jackknifed _statistic_, which is the mean of the replicates: $t_\mathrm{jack} = \tfrac{1}{n} \sum_j t^{(j)}$
 
