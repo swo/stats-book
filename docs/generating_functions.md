@@ -39,4 +39,37 @@ Because each infectee lands, on average, in the middle of the infector's infecti
 
 ### Size bias with CFs
 
-[Show how you can could do the above but without needing to integrals]
+The math worked out here for the exponential distribution, but in general integrals are hard and this sort of math won't work out for other distributions.
+
+Rather than working with pdf's, we can instead work with their transforms. Just as logarithms make difficult multiplication into easy addition, so these transformations can make things difficult things like adding random variables into simpler multiplication.
+
+Define the _characteristic function_ of a random variable $X$ as:
+
+```math
+\phi_X(u) = \mathbb{E}[e^{iuX}]
+```
+
+The expected value of a random variable is:
+
+```math
+\mathbb{E}[X] = i^{-1} \phi_X'(0)
+```
+
+Note also that:
+
+$$
+\phi_{X^\mathrm{s}}(u) = \frac{1}{i \mathbb{E}[X]} \phi_X'(u)
+$$
+
+Given the characteristic function for an exponential is $\phi(u) = (1 - i \lambda^{-1} u)^{-1}$, it is relatively straigthforward to compute the mean of the size biased exponential:
+
+$$
+\begin{align*}
+\mathbb{E}[X^\mathrm{s}] &= i^{-1} \phi_{X^\mathrm{s}}'(0) \\
+&= i^{-1} \frac{1}{i \lambda^{-1}} \frac{d}{du} \left[ i \lambda^{-1} (1-i\lambda^{-1} u)^{-2} \right]\Big|_{u=0} \\
+&= 2 (1-i\lambda^{-1}u)^{-3} \big|_{u=0} \\
+&= 2
+\end{align*}
+$$
+
+This same procedure could be followed for other distributions, which would be impossible to integrate.
