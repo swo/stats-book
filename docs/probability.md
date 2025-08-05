@@ -81,6 +81,34 @@ $$
 
 If "or" adds probability, how do we find the probability of $A$ and $B$? Say I flip two coins. What's the probability that I flip heads on the first coin _and_ tails on the second? If $A$ and $B$ are _independent_ events, then their probabilities multiply. The probability of flipping a heads then a tails is $\tfrac{1}{2} \times \tfrac{1}{2} = \tfrac{1}{4}$. (The probability that I flip heads and tails on the _same_ flip is zero, since $\mathbb{P}[H \cap T] = \mathbb{P}[\varnothing] = 0$.)
 
+### Example: Waring's theorem
+
+Say there are $n$ events $A_1, \ldots, A_n$ that are not necessarily disjoint. What is the probability that exactly $r$ of these events occur?
+
+For example, consider $n=2$ and $r=1$. The result is:
+
+$$
+\mathbb{P}[A_1] + \mathbb{P}[A_2] - \mathbb{P}[A_1 \cap A_2]
+$$
+
+In other words, the chance that one of $A_1$ or $A_2$ happens is the probability that either or both of them happen, minus the probability that both happen.
+
+If you had $n=3$ and $r=1$, then you would need to start with the probability that any of the events happened, then subtract the two-way overlap, but then add back in the 3-way overlap.
+
+Some tedious thinking will get you to _Waring's theorem_, that this probability is equal to:
+
+$$
+\sum_{t=0}^{n-r} (-1)^t \binom{r+t}{t} S_{r+t}
+$$
+
+where
+
+$$
+S_k = \sum_{i_1 < i_2 < \ldots < i_k} \mathbb{P}[A_{i_1} \cap A_{i_2} \cap \ldots \cap A_{i_k}]
+$$
+
+To understand the logic, start with the $t=0$ term.
+
 ## Independence and conditional probability
 
 Mathematically, $A$ and $B$ are independent if and only if their probabilities multiply. This might feel circular, so I will show you the logic.
@@ -105,3 +133,13 @@ I like to think of conditional probability as "zooming in" to a smaller sample s
 If $A$ and $B$ are independent, then $A$ does not "depend on" $B$: the probability of $A$ given that $B$ happened is equal to the probability of $A$ without knowing anything about $B$: if $A$ and $B$ are independent, then $\mathbb{P}[A | B] = \mathbb{P}[A]$, and thus $\mathbb{P}[A \cap B] = \mathbb{P}[A] \times \mathbb{P}[B]$.
 
 Given these rules, you can compute the probability of things like particular poker hands.
+
+### Partitions
+
+[TBD. Define a partition, then show how you can use conditioning with that.]
+
+### Examples
+
+#### Monty Hall problem
+
+[Monty Hall problem. The result isn't surprising if you condition on the event in which you *a priori* picked the door with the car.]
