@@ -1,8 +1,12 @@
 # Generating functions
 
-[PGFs, CFs, MGFs]
+## Probability generating functions
 
-## Application: Size bias
+[TBD]
+
+## Characteristic functions
+
+### Application: Size bias
 
 We often talk about sampling from a distribution, thinking about i.i.d. variables $X$ and their distribution. Sometimes, we don't directly sample from the distribution, but from a _size-biased_ version of that distribution, in which the probability of drawing a value is proportional to the value itself.
 
@@ -35,6 +39,8 @@ Make a chance of variables $y=\lambda x$ so that:
 \mathbb{E}[X^\mathrm{s}] = \frac{1}{\lambda} \int_0^\infty y^2 e^{-y} \,dy = \frac{2}{\lambda} = 2 \mathbb{E}[X]
 ```
 
+(This integral relied on multiple applications of integration by parts, which worked in this specific example, for the exponential distribution.)
+
 Because each infectee lands, on average, in the middle of the infector's infectious period, then the average time to infection is $\mathbb{E}[X]$, that is, equal to the average duration of infectiousness.
 
 ### Size bias with CFs
@@ -49,13 +55,19 @@ Define the _characteristic function_ of a random variable $X$ as:
 \phi_X(u) = \mathbb{E}[e^{iuX}]
 ```
 
-The expected value of a random variable is:
+This form may look strange, but it allows us to extract moments of $X$, notably the expected value, from derivatives. Note that:
 
 ```math
-\mathbb{E}[X] = i^{-1} \phi_X'(0)
+\begin{align*}
+\phi_X(u) &= \mathbb{E}[e^{iuX}] = \int e^{iux} f_X(x) \,dx \\
+\phi_X'(u) &= \int ix e^{iux} f_X(x) \,dx \\
+\phi_X'(0) &= i \int x f_X(x) \,dx = i \mathbb{E}[X]
+\end{align*}
 ```
 
-Note also that:
+Thus, the expected value of a random variable is $\mathbb{E}[X] = \frac{1}{i} \phi_X'(0)$.
+
+By a similar calculation, one can show that the characteristic of a size-biased random variable is closely related to the distribution of the associated unbiased variable:
 
 $$
 \phi_{X^\mathrm{s}}(u) = \frac{1}{i \mathbb{E}[X]} \phi_X'(u)
@@ -65,11 +77,28 @@ Given the characteristic function for an exponential is $\phi(u) = (1 - i \lambd
 
 $$
 \begin{align*}
-\mathbb{E}[X^\mathrm{s}] &= i^{-1} \phi_{X^\mathrm{s}}'(0) \\
-&= i^{-1} \frac{1}{i \lambda^{-1}} \frac{d}{du} \left[ i \lambda^{-1} (1-i\lambda^{-1} u)^{-2} \right]\Big|_{u=0} \\
-&= 2 (1-i\lambda^{-1}u)^{-3} \big|_{u=0} \\
-&= 2
+\mathbb{E}[X^\mathrm{s}] &= \frac{1}{i} \phi_{X^\mathrm{s}}'(0) \\
+&= \frac{1}{i^2 \mathbb{E}[X]} \phi_X''(0) \\
+&= \frac{-1}{\mathbb{E}[X]} \phi_X''(0)
 \end{align*}
 $$
 
+The derivatives are relatively straightforward:
+
+$$
+\begin{align*}
+\phi_X'(u) &= (-1)(-i \lambda^{-1}) (1 - i \lambda^{-1}u)^{-2} \\
+&= i \lambda^{-1} (1 - i\lambda^{-1}u)^{-2} \\
+\phi_X''(u) &= (-2)(-i \lambda^{-1})(i \lambda^{-1})(1 - i \lambda^{-1} u)^{-3} \\
+&= -2 \lambda^{-2} (1-i\lambda^{-1}u)^{-3} \\
+\phi_X''(0) &= -2 \lambda^{-2}
+\end{align*}
+$$
+
+And thus $\mathbb{E}[X^\mathrm{s}] = 2 \lambda^{-1} = 2 \mathbb{E}[X]$.
+
 This same procedure could be followed for other distributions, which would be impossible to integrate.
+
+## Moment generating functions
+
+[TBD]
