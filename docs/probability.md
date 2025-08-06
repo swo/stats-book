@@ -81,6 +81,36 @@ $$
 
 If "or" adds probability, how do we find the probability of $A$ and $B$? Say I flip two coins. What's the probability that I flip heads on the first coin _and_ tails on the second? If $A$ and $B$ are _independent_ events, then their probabilities multiply. The probability of flipping a heads then a tails is $\tfrac{1}{2} \times \tfrac{1}{2} = \tfrac{1}{4}$. (The probability that I flip heads and tails on the _same_ flip is zero, since $\mathbb{P}[H \cap T] = \mathbb{P}[\varnothing] = 0$.)
 
+### Example: Waring's theorem
+
+With these simple rules of "and" and "or," you can compute the probability of all sorts of things, like particular poker hands.
+
+Beyond some simple examples, these sorts of calculations can become very tedious. For example, say there are $n$ events $A_1, \ldots, A_n$ that are not necessarily disjoint. What is the probability that exactly $r$ of these events occur?
+
+Consider first the simple case with $n=2$ and $r=1$. The result is:
+
+$$
+\mathbb{P}[A_1] + \mathbb{P}[A_2] - \mathbb{P}[A_1 \cap A_2]
+$$
+
+In other words, the chance that one of $A_1$ or $A_2$ happens is the probability that either or both of them happen, minus the probability that both happen.
+
+If you had $n=3$ and $r=1$, then you would need to start with the probabilities like $\mathbb{P}[A_1]$ that any of the three events happened, then subtract the three 2-way overlaps like $\mathbb{P}[A_1 \cap A_2]$, but then add back in the single 3-way overlap $\mathbb{P}[A_1 \cap A_2 \cap A_3]$.
+
+Extending this logic arrives _Waring's theorem_, which gives the generalized probability of exactly $r$ events occurring as:
+
+$$
+\sum_{t=0}^{n-r} (-1)^t \binom{r+t}{t} S_{r+t}
+$$
+
+where
+
+$$
+S_k = \sum_{i_1 < i_2 < \ldots < i_k} \mathbb{P}[A_{i_1} \cap A_{i_2} \cap \ldots \cap A_{i_k}]
+$$
+
+This sort of result is powerful, but only for these limited kind of counting problems.
+
 ## Independence and conditional probability
 
 Mathematically, $A$ and $B$ are independent if and only if their probabilities multiply. This might feel circular, so I will show you the logic.
@@ -104,4 +134,63 @@ I like to think of conditional probability as "zooming in" to a smaller sample s
 
 If $A$ and $B$ are independent, then $A$ does not "depend on" $B$: the probability of $A$ given that $B$ happened is equal to the probability of $A$ without knowing anything about $B$: if $A$ and $B$ are independent, then $\mathbb{P}[A | B] = \mathbb{P}[A]$, and thus $\mathbb{P}[A \cap B] = \mathbb{P}[A] \times \mathbb{P}[B]$.
 
-Given these rules, you can compute the probability of things like particular poker hands.
+### Partitions
+
+Many problems become much easier with _partitions._ A partition is a set of mutually-disjoint events $B_1, \ldots, B_n$ that cover the whole space of events:
+
+$$
+\begin{gather*}
+B_i \cap B_j = \varnothing \text{ for } i \neq j \\
+\cup_{i=1}^n B_n = \Omega
+\end{gather*}
+$$
+
+Then you can break down any event based on this partition:
+
+$$
+\mathbb{P}[A] = \sum_{i=1}^n \mathbb{P}[A|B_i] P[B_i]
+$$
+
+The proof is elementary, but the impacts are very useful.
+
+### Example: Monty Hall problem
+
+You are on a gameshow. There are three closed doors. Behind one door is a brand new card; behind the other two doors are "zonks," nominally worthless things like a live goat or an old sweater. You pick a door at random but, to create tension, the host does not open the door you picked, but instead opens one of the other two doors, revealing a zonk. You are given a choice: do you stick with the door you initially picked, or switch to the other unopened door?
+
+It's clear that, initially, you have a 1 in 3 chance of picking the car. Naively, it might seem like, after the other door is opened, you have a 1 in 2 chance of picking the car either way, so that it doesn't matter if you switch.
+
+In fact, it is much better to switch. To see why, let $S$ be the event that you get the car upon switching doors, and then partition on the events $C$ and $Z$ that you _a priori_ picked the car or a zonk. Then:
+
+$$
+\mathbb{P}[S] = \mathbb{P}[S|C] \mathbb{P}[C] + \mathbb{P}[S|Z] \mathbb{P}[Z] = 0 \cdot \tfrac{1}{3} + 1 \cdot \tfrac{2}{3} = \tfrac{2}{3}
+$$
+
+In other words, you are twice as likely to get the car if you switch.
+
+Another way to think about the problem is that: if you commit to not switching, then you keep that original 1 in 3 chance of getting the car, so it must be that switching has the remaining 2 in 3 chance.
+
+### Example: Simpson's paradox
+
+You run a clinical trial comparing two ways to treat kidney stones. Of the 350 patients who get treatment A, 273 have a good outcome. Of the 350 who get treatment B, 289 have a good outcome. Naively, it looks like treatment B is better.
+
+But now stratify the analysis by whether the kidney stones are large or small:
+
+| Stone size | Treatment A   | Treatment B   |
+| ---------- | ------------- | ------------- |
+| Small      | 81/87 (93%)   | 234/270 (87%) |
+| Large      | 192/263 (73%) | 55/80 (68%)   |
+| Total      | 273/350 (78%) | 289/350 (83%) |
+
+Note that treatment A outperforms treatment B for each of the two stone sizes but appears to performs worse overall.
+
+To show how this relates to partitions, write $A$ for having a good outcome from treatment A, and $S$ and $L$ for having a large or small stone:
+
+$$
+\mathbb{P}[A] = \mathbb{P}[A|S] \mathbb{P}[S] + \mathbb{P}[A|L] \mathbb{P}[L]
+$$
+
+and similarly for $B$.
+
+Clearly, as a patient, I have either a small stone or a large stone, so I would seem to prefer A. Then how is it that B performs better overall?
+
+The answer is that stone size and treatment are not independent: more of the small stones, which have overall better outcomes, are treated with treatment B. Although B has a lower success rate for small stones, it appears to win out overall, since it gets used on more of the easy cases. (In reality, this is because treatment A was more invasive, and so doctors and patients opted for the less invasive but less effective treatment when the stone was smaller.)
