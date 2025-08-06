@@ -1,0 +1,1944 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../generating_functions/">
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.3">
+    
+    
+      
+        <title>Appendix - A short introduction to advanced statistics for scientists</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.d7758b05.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#bias-in-estimators-of-variance" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="A short introduction to advanced statistics for scientists" class="md-header__button md-logo" aria-label="A short introduction to advanced statistics for scientists" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            A short introduction to advanced statistics for scientists
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Appendix
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/swo/stats-book" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="A short introduction to advanced statistics for scientists" class="md-nav__button md-logo" aria-label="A short introduction to advanced statistics for scientists" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    A short introduction to advanced statistics for scientists
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/swo/stats-book" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Probability
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Probability
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../functions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Functions
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../probability/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Probability
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../random_variables/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Random variables
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Descriptive statistics
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Descriptive statistics
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../statistics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Statistics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../estimators/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Estimators
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../confidence_intervals/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Confidence intervals
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Inferential statistics
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Inferential statistics
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../inference/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Statistical inference
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tests/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tests
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../regression/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Regression
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../generating_functions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Generating functions
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Appendix
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Appendix
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#bias-in-estimators-of-variance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bias in estimators of variance
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#things-to-include" class="md-nav__link">
+    <span class="md-ellipsis">
+      Things to include
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Things to include">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#estimators-about-estimators" class="md-nav__link">
+    <span class="md-ellipsis">
+      Estimators about estimators
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Estimators about estimators">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#jackknife" class="md-nav__link">
+    <span class="md-ellipsis">
+      Jackknife
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Jackknife">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#jackknife-variance-estimator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Jackknife variance estimator
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jackknife-bias-estimator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Jackknife bias estimator
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pros-and-cons-of-the-jackknife" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pros and cons of the jackknife
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bootstrap" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bootstrap
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-from-efron-thinking-the-unthinkable" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example from Efron, "Thinking the unthinkable"
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-does-it-mean-to-sample" class="md-nav__link">
+    <span class="md-ellipsis">
+      What does it mean to "sample"?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What does it mean to "sample"?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#t-distribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      t-distribution
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contingency-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Contingency tables
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Contingency tables">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#barnards-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      Barnard's test
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fishers-test-to-the-rescue" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fisher's test to the rescue(?)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#regression" class="md-nav__link">
+    <span class="md-ellipsis">
+      Regression
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chi2-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      \(\chi^2\) test
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#coda" class="md-nav__link">
+    <span class="md-ellipsis">
+      Coda
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#from-the-readme-material-to-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      From the Readme : Material to fix
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="From the Readme : Material to fix">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probability" class="md-nav__link">
+    <span class="md-ellipsis">
+      Probability
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#random-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Random variables
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Random variables">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#underlying-distribution-vs-sample-distribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Underlying distribution vs. sample distribution
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#distributions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Distributions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#estimators" class="md-nav__link">
+    <span class="md-ellipsis">
+      Estimators
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#confidence-intervals" class="md-nav__link">
+    <span class="md-ellipsis">
+      Confidence intervals
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tests
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tests">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#constructing-the-t-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      Constructing the t test
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cookbook" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cookbook
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cookbook">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-normal-distribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      The normal distribution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jackknife-and-bootstrap" class="md-nav__link">
+    <span class="md-ellipsis">
+      Jackknife and bootstrap
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#permutations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Permutations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#regression_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Regression
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#miscellany" class="md-nav__link">
+    <span class="md-ellipsis">
+      Miscellany
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bayesian" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bayesian
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Bayesian">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bayesian-inference" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bayesian inference
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#random-number-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Random number generation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#bias-in-estimators-of-variance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bias in estimators of variance
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#things-to-include" class="md-nav__link">
+    <span class="md-ellipsis">
+      Things to include
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Things to include">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#estimators-about-estimators" class="md-nav__link">
+    <span class="md-ellipsis">
+      Estimators about estimators
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Estimators about estimators">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#jackknife" class="md-nav__link">
+    <span class="md-ellipsis">
+      Jackknife
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Jackknife">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#jackknife-variance-estimator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Jackknife variance estimator
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jackknife-bias-estimator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Jackknife bias estimator
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pros-and-cons-of-the-jackknife" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pros and cons of the jackknife
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bootstrap" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bootstrap
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-from-efron-thinking-the-unthinkable" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example from Efron, "Thinking the unthinkable"
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-does-it-mean-to-sample" class="md-nav__link">
+    <span class="md-ellipsis">
+      What does it mean to "sample"?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What does it mean to "sample"?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#t-distribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      t-distribution
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contingency-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Contingency tables
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Contingency tables">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#barnards-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      Barnard's test
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fishers-test-to-the-rescue" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fisher's test to the rescue(?)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#regression" class="md-nav__link">
+    <span class="md-ellipsis">
+      Regression
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chi2-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      \(\chi^2\) test
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#coda" class="md-nav__link">
+    <span class="md-ellipsis">
+      Coda
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#from-the-readme-material-to-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      From the Readme : Material to fix
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="From the Readme : Material to fix">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probability" class="md-nav__link">
+    <span class="md-ellipsis">
+      Probability
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#random-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Random variables
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Random variables">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#underlying-distribution-vs-sample-distribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Underlying distribution vs. sample distribution
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#distributions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Distributions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#estimators" class="md-nav__link">
+    <span class="md-ellipsis">
+      Estimators
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#confidence-intervals" class="md-nav__link">
+    <span class="md-ellipsis">
+      Confidence intervals
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tests
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tests">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#constructing-the-t-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      Constructing the t test
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cookbook" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cookbook
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cookbook">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-normal-distribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      The normal distribution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jackknife-and-bootstrap" class="md-nav__link">
+    <span class="md-ellipsis">
+      Jackknife and bootstrap
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#permutations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Permutations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#regression_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Regression
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#miscellany" class="md-nav__link">
+    <span class="md-ellipsis">
+      Miscellany
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bayesian" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bayesian
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Bayesian">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bayesian-inference" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bayesian inference
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#random-number-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Random number generation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<p>Before diving into that equation, note that the <span class="arithmatex">\(X_i\)</span> and <span class="arithmatex">\(e{X}\)</span> are random variables, and note that they are not independent: the value of <span class="arithmatex">\(\overline{X}\)</span> certainly depends on each of the <span class="arithmatex">\(X_i\)</span>. So first let's imagine a simpler case, where we're in a universe where happen to know the expected value of the distribution we're trying to determine the variance of. To make the equations simpler to read, I'll use the standard notation <span class="arithmatex">\(\mu \equiv
+\mathbb{E}[X]\)</span>.[^1] In this case, having known expected value ("kEV"), our estimator will be a little simpler: <span class="arithmatex">\(<span class="arithmatex">\(\hat{\mathbb{V}}_{X,\mathrm{kEV}} = \frac{1}{N} \sum_i ( X_i - \mu )^2\)</span>\)</span></p>
+<h3 id="bias-in-estimators-of-variance">Bias in estimators of variance<a class="headerlink" href="#bias-in-estimators-of-variance" title="Permanent link">&para;</a></h3>
+<p>The known-expected-value estimator is unbiased: <span class="arithmatex">\(<span class="arithmatex">(\begin{aligned}
+\mathbb{E}[\hat{\mathbb{V]}_{X,\mathrm{kEV}}}
+  &amp;= \mathbb{E}[\frac{1]{N} \sum_i ( X_i - \mu )^2} \
+  &amp;= \frac{1}{N} \sum_i \mathbb{E}[X_i^2 - 2\mu X_i + \mu^2] \
+  &amp;= \mathbb{E}[X^2] - 2 \mu \mathbb{E}[X] + \mu^2 \quad\text{(since <span class="arithmatex">\(X_i\)</span> are identic. distrib.)} \
+  &amp;= \mathbb{E}[X^2] - \mu^2 \
+  &amp;= \mathbb{V}[X]. \quad\text{(since <span class="arithmatex">\(\mathbb{V}[X] = \mathbb{E}[X^2] - \mathbb{E}[X]^2\)</span>)}
+\end{aligned}\)</span>\)</span> So if we happen to know the true expected value <span class="arithmatex">\(\mu\)</span>, then we can compute variance in the naive way, and it's exactly correct.</p>
+<p>Now we can use this result to pull a little mathematical trick. Even if we don't know <span class="arithmatex">\(\mu\)</span> and <span class="arithmatex">\(\mathbb{V}[X]\)</span>, we do know they exist, so we can manipulate <a href="#eq:estimator-vx1">[eq:estimator-vx1]</a>{reference-type="eqref" reference="eq:estimator-vx1"} to make it easier to work with. Specifically, I'm going to write "standardized"[^2] random variables: <span class="arithmatex">\(<span class="arithmatex">\(Z_i = \frac{X_i - \mu}{\sqrt{\mathbb{V}[X]}} \implies X_i = \sqrt{\mathbb{V}[X]} Z_i + \mu\)</span>\)</span> It should be easy to see that <span class="arithmatex">\(Z_i\)</span> has expected value 0 and variance <span class="arithmatex">\(\mathbb{E}[Z_i^2] = 1\)</span>, and <span class="arithmatex">\(\overline{Z}\)</span> has expected value 0 and variance <span class="arithmatex">\(\mathbb{E}[\overline{Z]^2} = 1/n\)</span>. Now I'll rewrite <a href="#eq:estimator-vx1">[eq:estimator-vx1]</a>{reference-type="eqref" reference="eq:estimator-vx1"} so it has <span class="arithmatex">\(Z_i\)</span> instead of <span class="arithmatex">\(X_i\)</span>:</p>
+<p>$$
+\begin{aligned}
+\hat{\mathbb{V}}_X
+  &amp;= \frac{1}{n} \sum_i \left( X_i - \overline{X} \right)^2 \
+  &amp;= \frac{1}{n} \sum_i \left( \left[\sqrt{\mathbb{V}[X]} Z_i + \mu\right] - \left[ \sqrt{\mathbb{V}[X]} \overline{Z} + \mu \right] \right)^2 \
+  &amp;= \frac{\mathbb{V}[X]}{n} \sum_i \left( Z_i - \overline{Z} \right)^2
+\end{aligned}$$ Analogous to how we showed that
+<span class="arithmatex">\(\mathbb{V}[X] = \mathbb{E}[X^2] - \mathbb{E}[X]^2\)</span>, some algebra shows that
+<span class="arithmatex">\(<span class="arithmatex">\(\sum_i \left(Z_i - \overline{Z}\right)^2 = \sum_i Z_i^2 - n \overline{Z}^2.\)</span>\)</span>
+Thus, the expected value of this estimator is <span class="arithmatex">\(<span class="arithmatex">\(\begin{aligned}
+\mathbb{E}[\hat{\mathbb{V]}_X}
+  &amp;= \mathbb{E}[\frac{\mathbb{V}[X]]{n} \sum_i \left( Z_i - \overline{Z} \right)^2} \\
+  &amp;= \frac{\mathbb{V}[X]}{n} \mathbb{E}[\sum_i Z_i^2 - n \overline{Z]^2} \\
+  &amp;= \frac{\mathbb{V}[X]}{n} \left( \sum_i \mathbb{E}[Z_i^2] - n \mathbb{E}[\overline{Z]^2} \right)\\
+  &amp;= \frac{\mathbb{V}[X]}{n} (n - 1) \quad\text{(using the little identities)} \\
+  &amp;= \frac{n-1}{n} \mathbb{V}[X].
+\end{aligned}\)</span>\)</span> Note that the expected value of our estimator is not
+equal to the thing we're trying to estimate, so this estimator is
+biased! It systematically <em>underestimate</em> the true variance.
+Interestingly, like when we tried to cook up an estimator for the upper
+limit of a uniform distribution, we ended up with something that was off
+by a multiplicative factor. The solution is to make a new estimator that
+has the inverse, cancelling factor out front:
+<span class="arithmatex">\(<span class="arithmatex">\(\hat{\mathbb{V}}_{X,\mathrm{unbiased}}
+  = \frac{n}{n-1} \times \frac{1}{n} \sum_i \left(X_i - \overline{X}\right)^2
+  = \frac{1}{n-1} \sum_i \left(X_i - \overline{X}\right)^2.\)</span>\)</span> Using
+<span class="arithmatex">\(n-1\)</span> instead of <span class="arithmatex">\(n\)</span> in the denominator is known as Bessel's
+correction.[^3]</p>
+<p>This equation may look familiar as the "sample variance", typically
+written
+<span class="arithmatex">\(<span class="arithmatex">\(s^2 = \frac{1}{n-1} \sum_i \left(x_i - \overline{x}\right)^2.\)</span>\)</span> I
+always wondered why, in Stats 101, I was told that the mean had <span class="arithmatex">\(n\)</span> in
+the denominator but variance had <span class="arithmatex">\(n-1\)</span>.[^4] This is why! The point is to
+make an unbiased estimator.</p>
+<p>[^1]: Do remember, however, that <span class="arithmatex">\(\overline{X}\)</span> is a random variable---a
+    function of the data---while <span class="arithmatex">\(\mathbb{E}[X]\)</span> is a function of the
+    distribution, and therefore just a single matter-of-fact number.</p>
+<p>[^2]: You're probably used to seeing standardized <em>normal</em> variables
+    written this way, but note that I haven't assumed that the <span class="arithmatex">\(X_i\)</span> are
+    normally distributed. This logic holds for any random variable that
+    has a well-defined expected value and variance.</p>
+<p>[^3]: Gauss was using the correction before Bessel discovered it, as
+    early as 1823. I hope the late date, 1823, impresses upon you how
+    subtle this reasoning must be. The ancient Greeks were using the
+    arithmetic mean, but an unbiased estimator for standard deviation
+    took thousands of years.</p>
+<p>[^4]: The traditional answer says that it's about "degrees of freedom":
+    you're "using up" one "degree of freedom" when computing
+    <span class="arithmatex">\(\overline{x}\)</span>, so you only have <span class="arithmatex">\(n-1\)</span> to compute <span class="arithmatex">\(s^2\)</span>. "Degrees of
+    freedom" is an ill-defined concept that I don't think it useful.
+    Explaining one mystery in terms of another mystery is not good
+    pedagogy!</p>
+<h1 id="things-to-include">Things to include<a class="headerlink" href="#things-to-include" title="Permanent link">&para;</a></h1>
+<ul>
+<li>Gauss: a minimum-variance, mean-unbiased estimator minimizes the
+  squared-error loss function. Laplace: among median-unbiased
+  estimators, a minimum-average-absolute-deviation estimator minimizes
+  the absolute loss function. Maybe it's better to allow some bias so
+  you can get less variance. That's the domain of statistical theory.
+  [Move to MLE section?]{.mark}</li>
+</ul>
+<ul>
+<li>Fisher's crazy sum test is the same thing as is used in <em>TRANSIT</em>
+  (DeJesus <em>et al</em>.): they treat TA sites in the same gene as
+  independent; the statistic is the difference in the sum of the
+  (normalized) number of insertions in two treatments; the null
+  distribution is generated by shuffling the values across the two
+  datasets. OK, it's not <em>exactly</em> like Fisher's test, since it's not
+  paired, but it's pretty close. Fisher probably wouldn't have wanted to
+  to the <span class="arithmatex">\(\binom{n}{2}\)</span> options, compared to the <span class="arithmatex">\(2^n\)</span> that he did.
+  [Example of how people come up with tests?]{.mark}</li>
+</ul>
+<h2 id="estimators-about-estimators">Estimators about estimators<a class="headerlink" href="#estimators-about-estimators" title="Permanent link">&para;</a></h2>
+<p>[Move this up, into the descriptive section]{.mark}</p>
+<h3 id="jackknife">Jackknife<a class="headerlink" href="#jackknife" title="Permanent link">&para;</a></h3>
+<p>You have <span class="arithmatex">\(n\)</span> data points and compute an estimator <span class="arithmatex">\(\hat{\theta}\)</span> for
+some population parameter <span class="arithmatex">\(\theta\)</span>. If you don't know how the population
+is structured, then it's not clear what you expect the variance of
+<span class="arithmatex">\(\hat{\theta}\)</span> to be. How sure can you be of this value? In terms of
+inference, can you make any inference with it?</p>
+<p>Compute the <em>jackknife replicates</em>[^1] <span class="arithmatex">\(\hat{\theta}_j\)</span>, which are the
+estimators computed using all the data points except the <span class="arithmatex">\(j\)</span>-th one.</p>
+<p>That seems like a weird thing to have done, but you can use them to
+compute two handy things:</p>
+<ol>
+<li>
+<p>An estimate of the variance of the estimator. This can help you for
+    description---by giving a confidence interval(?)---and for
+    inference---by giving you a sense of the "random" ranges you would
+    expect from two samples.</p>
+</li>
+<li>
+<p>An estimate of the bias in the estimator. This is helpful if you
+    don't want want your estimator to be biased but you don't know how
+    to fix it.</p>
+</li>
+</ol>
+<h4 id="jackknife-variance-estimator">Jackknife variance estimator<a class="headerlink" href="#jackknife-variance-estimator" title="Permanent link">&para;</a></h4>
+<p>The variance estimator is
+<span class="arithmatex">\(<span class="arithmatex">\(\widehat{\mathrm{Var}}_\mathrm{jk}[\hat{\theta}] := \frac{n-1}{n}  \sum_j \left( \hat{\theta}_j - \hat{\theta}_{(\cdot)} \right)^2,\)</span>\)</span>
+where <span class="arithmatex">\(\hat{\theta}_{(\cdot)}\)</span> is the average of the jackknife
+replicates:
+<span class="arithmatex">\(<span class="arithmatex">\(\hat{\theta}_{(\cdot)} := \frac{1}{n} \sum_j \hat{\theta}_j.\)</span>\)</span> In
+other words, it's the variance of the jackknife replicates with some
+rescaling:
+$$\mathrm{Var}[\hat{\theta}<em>j] = \frac{1}{n-1} \sum_j \left( \hat{\theta}_j - \hat{\theta}</em>{(\cdot)} \right)^2 \implies
+  \widehat{\mathrm{Var}}_\mathrm{jk}[\hat{\theta}] = \frac{(n-1)^2}{n} \mathrm{Var}[\hat{\theta}_j].
+$$</p>
+<p>The reason for that scaling factor is beyond the scope of this book (Efron &amp; Stein 1981?), but the exercise gives you a sense of why it has to be true for a specific case.</p>
+<p>Some other work, also beyond the scope of this book, shows that the jackknife estimate of variance is biased: it tends to overestimate the true variance. This makes the jackknife a conservative tool.</p>
+<p><strong>Exercise</strong>. Let <span class="arithmatex">\(\theta\)</span> be the mean. Show that the scaling factor is what we think. Hints:</p>
+<ul>
+<li>Show that <span class="arithmatex">\(\hat{\theta}_{(\cdot)}\)</span> is the sample mean.</li>
+</ul>
+<ul>
+<li>Show that <span class="arithmatex">\(\hat{\theta}_j - \hat{\theta}_{(\cdot)} = (n \overline{x} - x_j) / (n - 1)\)</span>.</li>
+</ul>
+<ul>
+<li>Show that that value is equal to <span class="arithmatex">\((\overline{x} - x_j) / (n - 1)\)</span>.</li>
+</ul>
+<p>That exercise is from McIntosh's bioRxiv about jackknife resampling.</p>
+<h4 id="jackknife-bias-estimator">Jackknife bias estimator<a class="headerlink" href="#jackknife-bias-estimator" title="Permanent link">&para;</a></h4>
+<p>The jackknife estimate of bias is <span class="arithmatex">\((n-1) \left( \hat{\theta}_{(\cdot)} - \theta \right)\)</span>. This is the sum of the deviations of the jackknife replicates from the observed value <span class="arithmatex">\(\hat{\theta}\)</span>. Again, the reason that you would take the average deviation and scale it up to the sum is beyond the scope.</p>
+<p>However, if you have an expectation about the bias in an estimator, you can make an unbiased estimator by subtracting out that bias: <span class="arithmatex">\(<span class="arithmatex">\(\hat{\theta}_\mathrm{jk} := \hat{\theta} - \widehat{\mathrm{Bias}}_\mathrm{jk}[\theta].\)</span>\)</span></p>
+<p><strong>Exercise</strong>. Show that the jackknife estimate of bias for the variance gives you the familiar unbiased variance estimator.</p>
+<p><strong>Exercise</strong>. Something about the maximum estimator?</p>
+<h4 id="pros-and-cons-of-the-jackknife">Pros and cons of the jackknife<a class="headerlink" href="#pros-and-cons-of-the-jackknife" title="Permanent link">&para;</a></h4>
+<p>It's a piece of cake to implement. There are only <span class="arithmatex">\(n\)</span> replicates to do, so it's tractable. Those replicates are deterministic, so you only run it once.</p>
+<p>The cons are that it doesn't always work. For example, a jackknife estimate of the variance of a median (<strong>swo check Knight</strong>) is not consistent. It's also overly conservative: it's biased toward higher variances. You can rescue some properties if you move to a delete-<span class="arithmatex">\(d\)</span> resampling and pick <span class="arithmatex">\(d\)</span> from the correct range.</p>
+<h3 id="bootstrap">Bootstrap<a class="headerlink" href="#bootstrap" title="Permanent link">&para;</a></h3>
+<h1 id="example-from-efron-thinking-the-unthinkable">Example from Efron, "Thinking the unthinkable"<a class="headerlink" href="#example-from-efron-thinking-the-unthinkable" title="Permanent link">&para;</a></h1>
+<p>There's some true distribution <span class="arithmatex">\(f_X(x)\)</span>, and you're approximating it with <span class="arithmatex">\(\hat{f}_X(x)\)</span>, which is a pmf. If you took <span class="arithmatex">\(N\)</span> data points, then bootstrapping means that you're picking a vector <span class="arithmatex">\(\vec{c}\)</span>, where <span class="arithmatex">\(c_i\)</span> is the number of times that the <span class="arithmatex">\(i\)</span>-th data point makes it into the bootstrap sample. This begs the question, how is <span class="arithmatex">\(\vec{c}\)</span> behaved? It's just a multinomial, with probability <span class="arithmatex">\(1/N\)</span> for each of the <span class="arithmatex">\(N\)</span> cells.</p>
+<p>Normally you compute a statistic <span class="arithmatex">\(T(\vec{x})\)</span> of the data. Instead, formulate this in terms of a function <span class="arithmatex">\(g(\vec{c})\)</span> If you can write <span class="arithmatex">\(T(\vec{x}) = \sum_i t(x_i)\)</span>, then <span class="arithmatex">\(g(\vec{c}) = \sum_i (c_i/N) t(x_i)\)</span>. In a Taylor expansion around <span class="arithmatex">\(\vec{c}_\mathrm{ML} = (1, 1, \ldots, 1)\)</span>: <span class="arithmatex">\(<span class="arithmatex">\(g(\vec{c}) = g(\vec{c}_\mathrm{ML}) + \sum_i \frac{dg}{dc_i} (c_i - 1) + \mathcal{O}(c_i^2)\)</span>\)</span> So the variance of the values <span class="arithmatex">\(g(\vec{c})\)</span> that you will get from bootstrapping is approximately <span class="arithmatex">\(<span class="arithmatex">\(\begin{aligned}
+\mathbb{E}[\left[g(\vec{c]) - g(\vec{c}_\mathrm{ML})\right]^2}
+  &amp;= \mathbb{E}[\left(\sum_i \frac{dg]{dc_i} (c_i-1)\right)^2} + \mathcal{O}(c_i^2) \\
+  &amp;= \mathbb{E}[\sum_i \left( \frac{dg]{dc_i} (c_i-1)\right)^2} + \mathcal{O}(c_i^2) \\
+  &amp;= \sum_i \left(\frac{dg}{dc_i}\right)^2 \mathbb{E}[(c_i-1)^2] + \mathcal{O}(c_i^2) \\
+\end{aligned}\)</span>\)</span></p>
+<p>And then an <span class="arithmatex">\(n^2\)</span> comes out? The point is that the jackknife is basically doing a finite estimation of the gradient, by leaving out a single point at a time.</p>
+<h1 id="what-does-it-mean-to-sample">What does it mean to "sample"?<a class="headerlink" href="#what-does-it-mean-to-sample" title="Permanent link">&para;</a></h1>
+<p>[Earlier in text, get clearer about RVs and their "realizations". and "samples"]{.mark}</p>
+<p>Does it make sense to compute a confidence interval when you're sampled all the 50 United States?</p>
+<p><strong>Finite correction factor</strong> to point out that there's a difference between simple random sampling and something else. Then need to explain what simple random sampling is!</p>
+<h2 id="t-distribution"><em>t</em>-distribution<a class="headerlink" href="#t-distribution" title="Permanent link">&para;</a></h2>
+<p>[Maybe just mention in passing how difficult the math gets when you want to estimate many quantities simultaneously? Contrast t- and z-tests]{.mark}</p>
+<p>Let's think about how to construct that method. Say you knew the true variance <span class="arithmatex">\(\sigma^2\)</span>. Then we know that the sample means are drawn from <span class="arithmatex">\(\mathcal{N}(0, \sigma^2/n)\)</span>. So it's pretty easy to see that <span class="arithmatex">\((\overline{x} - \mu) / (\sigma^2) \sim \mathcal{N}(0, 1)\)</span>, from which the familiar <span class="arithmatex">\(1.96\)</span>, etc. come.</p>
+<p>What if you <em>don't</em> know the true variance? The means are still drawn from <span class="arithmatex">\(\mathcal{N}(0, \sigma^2/n)\)</span>, but now the sample variance is also a random variable.</p>
+<p>We know the confidence interval is some function of the sample mean and variance, and let's guess that it's symmetric about the sample mean and is some linear function of sample variance: <span class="arithmatex">\(<span class="arithmatex">\(\mathrm{CI}_\pm(\overline{x}, s) = \overline{x} \pm A s.\)</span>\)</span> We want to find <span class="arithmatex">\(A\)</span> such that <span class="arithmatex">\(<span class="arithmatex">\(\mathbb{P}\left[ \mathrm{CI}_- &lt; \mu &lt; \mathrm{CI}_+ \right] = 95\%,\)</span>\)</span> or, if we're willing to trust in symmetry, <span class="arithmatex">\(<span class="arithmatex">\(2.5\% = \mathbb{P}\left[ \mathrm{CI}_- &gt; \mu \right] = \mathbb{P}\left[ \frac{\overline{x} - \mu}{A} - s &gt; 0 \right].\)</span>\)</span> We know the distribution of the first thing: <span class="arithmatex">\(<span class="arithmatex">\((\overline{x}-\mu)/A \sim \mathcal{N}\left(0, \frac{\sigma^2}{n A^2}\right).\)</span>\)</span> Some math shows that <span class="arithmatex">\(<span class="arithmatex">\(\frac{(n-1) s^2}{\sigma^2} \sim \chi^2(n-1).\)</span>\)</span></p>
+<p>Call the first thing <span class="arithmatex">\(K\)</span> and the second <span class="arithmatex">\(L\)</span>. We're interested in the distribution of <span class="arithmatex">\(M \equiv K - L\)</span>: <span class="arithmatex">\(<span class="arithmatex">\(f_M(m) = \int_0^\infty f_K(m + l) f_L(l) \,\mathrm{d}l,\)</span>\)</span></p>
+<p>where the limits come from the fact that variance is positive. You're probably not excited to do this integral, which was considered a major achievement (well, it was the thought leading up to the integral, which we've just outlined, but whatever). This major achievement was made by William Sealy Gosset, who made it while he was a researcher for Guinness ensuring the quality of their beer. Guinness had a policy of not allowing its employee to publish their results, so Gosset signed his paper "a student", so the result of that integral is now called Student's <em>t</em>-distribution:</p>
+<p>$$
+f_t(x; \nu) = \frac{\Gamma(\frac{\nu+1}{2})}{\sqrt{\nu\pi} \Gamma\left(\frac{\nu}{2}\right)}
+  \left(1+ \frac{x^2}{\nu}\right)^{-\frac{\nu+1}{2}},$$ where the (badly
+named) "degrees of freedom" <span class="arithmatex">\(\nu\)</span> is <span class="arithmatex">\(n-1\)</span> for our purposes. I write
+this out fully because it is one of the things we will <em>not</em> derive in
+this book.</p>
+<h1 id="contingency-tables">Contingency tables<a class="headerlink" href="#contingency-tables" title="Permanent link">&para;</a></h1>
+<p>[Move Fisher's exact, Barnard, chi-square up, into a section on
+p-values? Or maybe statistical power?]{.mark}</p>
+<p>These are nice examples for how to do statistical thinking.</p>
+<h2 id="barnards-test">Barnard's test<a class="headerlink" href="#barnards-test" title="Permanent link">&para;</a></h2>
+<p>The classic example is whether a certain treatment causes more of the
+outcome of interest than just doing nothing. In medicine, that means
+splitting your participants into a placebo group and a treatment group
+and asking what fraction of each gets well. In a biology experiment, you
+might split your mice into a treatment group and a control group and ask
+what proportion of the mice in each group get cancer.</p>
+<p>In statistics jargon, this is called a <span class="arithmatex">\(2 \times 2\)</span> contingency table:</p>
+<p>Group         Outcome <span class="arithmatex">\(p\)</span>   Outcome not-<span class="arithmatex">\(p\)</span>   Row sums</p>
+<hr />
+<p>A             <span class="arithmatex">\(a\)</span>           <span class="arithmatex">\(c\)</span>               <span class="arithmatex">\(m\)</span>
+  B             <span class="arithmatex">\(b\)</span>           <span class="arithmatex">\(d\)</span>               <span class="arithmatex">\(n\)</span>
+  Column sums   <span class="arithmatex">\(r\)</span>           <span class="arithmatex">\(s\)</span>               <span class="arithmatex">\(N\)</span></p>
+<p>Because we picked <span class="arithmatex">\(m\)</span> and <span class="arithmatex">\(n\)</span>, the sizes of the two groups, those are
+fixed parameters. The question is whether the way that <span class="arithmatex">\(m\)</span> gets
+distributed into <span class="arithmatex">\(a\)</span> and <span class="arithmatex">\(c\)</span> (and that way that the <span class="arithmatex">\(n\)</span> get put into the
+<span class="arithmatex">\(b\)</span> and <span class="arithmatex">\(d\)</span>) is consistent with there being a common probability <span class="arithmatex">\(p\)</span> of
+the outcome of interest.</p>
+<p>So we might say that <span class="arithmatex">\(a\)</span> is distributed like a binomial distribution
+with <span class="arithmatex">\(m\)</span> draws and probability <span class="arithmatex">\(p_a\)</span> of success, and <span class="arithmatex">\(b\)</span> is distributed
+like a binomial with <span class="arithmatex">\(n\)</span> draws and a probability of <span class="arithmatex">\(p_b\)</span> of success.
+The null hypothesis is that <span class="arithmatex">\(p_a = p_b\)</span>. What's the likelihood of the
+data given the null?</p>
+<p>If we didn't assume the null, and gave the two binomials their own
+probabilities, the likelihood of the data would be:
+<span class="arithmatex">\(<span class="arithmatex">\(P(a, b | p_a, p_b) = \mathrm{Bin}(a; m, p_a) \times \mathrm{Bin}(b; n, p_b).\)</span>\)</span>
+But, given that the probabilities are the same, we can collapse it:
+$$\begin{aligned}
+\mathcal{P}[a, b | p_a = p_b = p] &amp;= \mathrm{Bin}(a; m, p) \times \mathrm{Bin}(b; n, p) \
+  &amp;= \binom{m}{a} p^a (1-p)^{m-a} \times \binom{n}{b} p^b (1-p)^{n-b} \
+  &amp;= \binom{m}{a} \binom{n}{b} p^{a+b} (1-p)^{m+n-(a+b)} \
+  &amp;= \frac{m! \, n!}{a! \, b! \, c! \, d!} p^r (1-p)^s.
+\end{aligned}
+$$</p>
+<p>This result is a little confusing[^2], for two reasons:</p>
+<ol>
+<li>
+<p>The probability <span class="arithmatex">\(p\)</span> of the outcome of interest might be interesting to design a later experiment, but it's <em>not</em> interesting for designing a test. We certainly don't want to deliver a result like, "Well, if the null hypothesis is true, <em>and</em> <span class="arithmatex">\(p\)</span> happens to be exactly such-and-such, then your <span class="arithmatex">\(p\)</span>-value is so-and-so." The value <span class="arithmatex">\(p\)</span> is called a <em>nuisance parameter</em> since we don't actually care about its value.</p>
+</li>
+<li>
+<p>We're usually not interested in the likelihood of exactly this data, but rather in the likelihood of data <em>at least this extreme</em>. We usually measure "extremeness" using a statistic---a single number---so it's clear that "more extreme" means "bigger" (or "smaller" or "bigger or smaller", depending on if it's a one-sided or two-sided test). Here, we have two numbers, <span class="arithmatex">\(a\)</span> and <span class="arithmatex">\(b\)</span>, so there aren't two "sides" to the distribution: there are four!</p>
+</li>
+</ol>
+<p>To resolve the first point, we say that the null hypothesis <span class="arithmatex">\(p_a = p_b = p\)</span> doesn't restrict us to a particular value of <span class="arithmatex">\(p\)</span>. In other words, the null hypothesis, which functions as a sort of Annoying Skeptic, is free to pick <span class="arithmatex">\(p\)</span> to make our results as uninteresting as possible. Mathematically, this means that, when computing the <span class="arithmatex">\(p\)</span>-value, we should optimize over all values of <span class="arithmatex">\(p\)</span>, choosing the one that makes our results as uninteresting as possible (i.e., which maximizes the <span class="arithmatex">\(p\)</span>-value).</p>
+<p>We can't really "resolve" the second point, since it demonstrates that our previous way of thinking about extremeness was not sufficient for all cases. As Barnard notes in his original paper[^3], there are actually many ways to choose the pairs <span class="arithmatex">\((a, b)\)</span> that produce a <span class="arithmatex">\(p\)</span>-value more than our threshold. This gets into some fancy footwork to articulate exactly how you should pick this area, but the basic results are pretty intuitive: when <span class="arithmatex">\(a/m\)</span> and <span class="arithmatex">\(b/n\)</span> are similar, you tend to be under the rejection threshold; when they are far apart, you tend to be over.</p>
+<p>The interesting point here is that, whatever fancy footwork you pick to choose that region, and no matter how "reasonable" your footwork is, it's still footwork that doesn't obviously follow from the simple definition of a hypothesis test. We'll encounter this problem again in Bayesian statistics, when we find that the Bayesian analog of a confidence interval is not unique: there are many ranges of values that are compatible with our ignorance.</p>
+<h2 id="fishers-test-to-the-rescue">Fisher's test to the rescue(?)<a class="headerlink" href="#fishers-test-to-the-rescue" title="Permanent link">&para;</a></h2>
+<p>If you've worked with contingency tables, you're probably saying, "I've never heard of this crazy Bernard's test, with its weird multi-sided rejection space and its requirement to maximize over <span class="arithmatex">\(p\)</span>. We have Fisher's exact test, which is the exactly right test to use here!"</p>
+<p>Looking at the same contingency table, Fisher's test asks, given the row marginals <span class="arithmatex">\(m\)</span> and <span class="arithmatex">\(n\)</span>, the first column marginal <span class="arithmatex">\(r\)</span>, and the grand total <span class="arithmatex">\(N\)</span>, what is the probability of a table at least this extreme?</p>
+<p>This is just a combinatoric problem: if you're as likely to assign items in <span class="arithmatex">\(m\)</span> to <span class="arithmatex">\(a\)</span> as to <span class="arithmatex">\(c\)</span> (and, analogously, to assign items from <span class="arithmatex">\(n\)</span> to <span class="arithmatex">\(b\)</span> or <span class="arithmatex">\(d\)</span>), then "what's the probability of this table" is equivalent to asking "given the marginals, how many ways are there to choose this table?". More specifically, how many ways are there to choose <span class="arithmatex">\(a\)</span> items from a bank of <span class="arithmatex">\(m\)</span> items and <span class="arithmatex">\(b\)</span> items from a bank of <span class="arithmatex">\(n\)</span>, given that we chose <span class="arithmatex">\(r = a + b\)</span> items from the total <span class="arithmatex">\(N\)</span>? Mathematically: <span class="arithmatex">\(<span class="arithmatex">\(\mathbb{P}[a | m, n, r, s] = \frac{\binom{m}{a} \binom{n}{b}}{\binom{N}{r}} = \frac{m! \, n! \, r! \, s!}{N! \, a! \, b! \, c! \, d!}.\)</span>\)</span></p>
+<p>Computing the <span class="arithmatex">\(p\)</span>-value is easier here than with Barnard's test because we need to keep the row <em>and column</em> marginals the same. In Barnard's test, we just kept the row marginals constant, because we considered those as fixed parameters, corresponding to things like the number of patients we assigned to each of the placebo and treatment groups. It doesn't make sense to allow the Annoying Skeptic to fiddle with those values.</p>
+<p>In Banard's test, we <em>did</em> allow the Annoying Skeptic to fiddle with the column marginals, since it wasn't clear, before the experiment began, that <span class="arithmatex">\(r\)</span> would have the outcome of interest. In other words, we didn't know that <span class="arithmatex">\(r\)</span> people in both the placebo and treatment groups would get well.</p>
+<p>Fisher's test, however, <em>does</em> keep the column marginal constant. This makes it a lot easier to compute the <span class="arithmatex">\(p\)</span>-value. First, the nuisance parameter <span class="arithmatex">\(p\)</span> doesn't appear in the likelihood, so we don't need to do the weird maximization. Second, we only need to vary one value, <span class="arithmatex">\(a\)</span> (or, equivalently, <span class="arithmatex">\(b\)</span>), since, if you know the marginals, there is only one axis along which to change the values in the table. In other words, if you know <span class="arithmatex">\(<span class="arithmatex">\(\begin{aligned}
+a + c &amp;= m \\
+b + d &amp;= n \\
+a + b &amp;= r,
+\end{aligned}\)</span>\)</span> then that's three equations with four unknowns (<span class="arithmatex">\(a\)</span>, <span class="arithmatex">\(b\)</span>, <span class="arithmatex">\(c\)</span>, <span class="arithmatex">\(d\)</span>), so specifying any one of <span class="arithmatex">\(a\)</span>, <span class="arithmatex">\(b\)</span>, <span class="arithmatex">\(c\)</span>, or <span class="arithmatex">\(d\)</span> specifies all the others. (You might be looking for a fourth equation <span class="arithmatex">\(c + d = s\)</span>, but you can get that by adding the first two equations and subtracting the third.)</p>
+<p>Here's an example:</p>
+<p>Group Success Failure Row sums</p>
+<hr />
+<p>A 1 9 10 B 11 3 14 Column sums 12 12 14</p>
+<p>There's only one way to make this table more "extreme" without changing the marginals: you can take the one group A success and make it a group A failure and simultaneously make a group B failure into a group B success. Similarly, there's only one way to make this table less extreme: turn a group A failure into success, and turn a group B success into failure.</p>
+<p>So keeping the column sums constant made it way easier to compute the <span class="arithmatex">\(p\)</span>-value: count this table and all the tables with a more extreme upper-left or bottom-right and see if your summed probability hits the rejection threshold.</p>
+<p>However, this simplicity came at a cost, which you may have noticed: does it make sense to keep the columns constant? Experimentally, this means that you're restricting the Annoying Skeptic to only consider cases in which, say, the number of patients who got well <em>in both groups</em> is equal to the experimentally observed value. This is a little weird. It suggest that your experimental design was like this:</p>
+<ol>
+<li>
+<p>Pick <span class="arithmatex">\(m\)</span>, <span class="arithmatex">\(n\)</span>, and <span class="arithmatex">\(r\)</span>.</p>
+</li>
+<li>
+<p>Assign <span class="arithmatex">\(m\)</span> patients to placebo and <span class="arithmatex">\(n\)</span> to treatment.</p>
+</li>
+<li>
+<p>Wait until <span class="arithmatex">\(r\)</span> patients <em>across both groups</em> have gotten well.</p>
+</li>
+<li>
+<p>Stop the experiment.</p>
+</li>
+</ol>
+<p>This is almost certainly not reflective of how typical experiments are run[^4].</p>
+<p><strong>Fisherian small data</strong></p>
+<p><strong>What happens if I use the "wrong" test? Chi-square as an example of wrongness</strong></p>
+<h1 id="regression">Regression<a class="headerlink" href="#regression" title="Permanent link">&para;</a></h1>
+<p>[Make this a chapter? In descriptive statistics? Or just say this regression is an ML problem? Link and error distributions.]{.mark}</p>
+<h1 id="chi2-test"><span class="arithmatex">\(\chi^2\)</span> test<a class="headerlink" href="#chi2-test" title="Permanent link">&para;</a></h1>
+<p>[Merge with section above on chi-square]{.mark}</p>
+<p>Say you have <span class="arithmatex">\(k\)</span> iid standard normal random variables: <span class="arithmatex">\(<span class="arithmatex">\(X_i \stackrel{\text{iid}}{\sim} \mathcal{N}(0, 1).\)</span>\)</span> Then <span class="arithmatex">\(Y = \sum_{i=1}^k x^2\)</span> (??) is <span class="arithmatex">\(\chi^2\)</span>-distributed with <span class="arithmatex">\(k\)</span> degrees of freedom.</p>
+<p>Let's start with a simple case where you have a table with two cells with expected probabilities <span class="arithmatex">\(p_1\)</span> or <span class="arithmatex">\(p_2 = 1-p_1\)</span>. We got <span class="arithmatex">\(n\)</span> total observations, with <span class="arithmatex">\(O_1\)</span> in the first cell and <span class="arithmatex">\(O_2 = n - O_1\)</span> in the second. You probably remember how to compute the test statistic from Stats 101: <span class="arithmatex">\(<span class="arithmatex">\(\chi^2 = \sum_{k=1}^2 \frac{(O_i - E_i)^2}{E_i} = \frac{(O_1 - np_1)^2}{np_1} + \frac{(O_2 - np_2)^2}{np_2},\)</span>\)</span> where <span class="arithmatex">\(E_i\)</span> is the "expected" number of counts in each cell.</p>
+<p>Consider the numerator of the second term: <span class="arithmatex">\(<span class="arithmatex">\((O_2 - np_2)^2 = \left[(n - O_1) - n(1 - p_1)\right]^2 = (-O_1 + np_1)^2 = (O_1 - np_1)^2.\)</span>\)</span> Handy, that's the same as numerator of the first term! That means we can re-write things: <span class="arithmatex">\(<span class="arithmatex">\(\chi^2 = \frac{(O_1 - np_1)^2}{n}\left( \frac{1}{p_1} + \frac{1}{p_2}\right).\)</span>\)</span> A little algebra shows that <span class="arithmatex">\(1/p_1 + 1/p_2 = 1/p_1(1-p_1)\)</span>, so that <span class="arithmatex">\(<span class="arithmatex">\(\chi^2 = \frac{(O_1 - np_1)^2}{np_1(1-p_1)} = \left( \frac{O_1-np_1}{\sqrt{np_1(1-p_1)}} \right)^2.\)</span>\)</span> That might look terrible, but it's actually pretty cool. Here's why: <span class="arithmatex">\(O_1\)</span> is the observed value, <span class="arithmatex">\(np_1\)</span> is the expected mean, and <span class="arithmatex">\(\sqrt{np_1(1-p_1)}\)</span> is the standard deviation of the binomial distribution. I'll re-write that last equation with more suggestive notation: <span class="arithmatex">\(<span class="arithmatex">\(\chi^2 = \left( \frac{x_1 - \mu_1}{\sigma_1} \right)^2\)</span>\)</span></p>
+<p>This certainly <em>looks</em> like a <span class="arithmatex">\(\mathcal{N}(0, 1)\)</span> variable, although we said previously that the counts in the two cells follow a binomial distribution. This is where the central limit theorem comes in: the sum of any large set of (well-behaved) iid random variables approaches a normal distribution. The binomial distribution approaches the normal distribution particularly quickly such that (if the distribution is not highly skewed) you only need about 5 counts for the normal approximation to be pretty good.[^5]</p>
+<p>So, so long as each cell has (ish) 5 or more counts, then we can approximate the binomial variables with normal variables, which means that the test statistic <span class="arithmatex">\(\chi^2\)</span> that I wrote is actually just the square of a single, standard normal variable, which happens to be <span class="arithmatex">\(\chi^2\)</span>-square distributed with 1 degree of freedom. Two cells in the table (<span class="arithmatex">\(k=2\)</span>) meant <span class="arithmatex">\(k-1=1\)</span> degrees of for the <span class="arithmatex">\(\chi^2\)</span> distribution.</p>
+<p>The same result holds, that the sum of the <span class="arithmatex">\((O_i - E_i)^2/E_i\)</span> values follows a <span class="arithmatex">\(\chi^2\)</span> distribution with <span class="arithmatex">\(k-1\)</span> degrees of freedom, for <span class="arithmatex">\(k&gt;2\)</span>. The math is a lot more involved because the <span class="arithmatex">\(k\)</span> cells in the table are distributed according to a multinomial distribution. In other words, conditioned on the total number <span class="arithmatex">\(n\)</span> of counts, the values in the different cells are not independent: if cell 1 has a lot of counts, cells 2, 3, etc. can't have that many cells. Like we've seen before, covariance makes the calculations hard! Nevertheless, the same restrictions apply: you can only count on the normal approximation working if you have enough counts in every cell.</p>
+<h1 id="coda">Coda<a class="headerlink" href="#coda" title="Permanent link">&para;</a></h1>
+<p>[New material]{.mark}</p>
+<p>- Bayes - Bayes sampling? - MCMC for copmlex models? - Nature Biotech Bayes example - Optimization for MLE - Regression and mixed models - Random variable neq variable with a random value - When discussing RVs, note that cdf defines it. Then don't ever talk about events, just look at joint cdfs, etc. Make this a whole section unto itself. - Do joint pdf's so it's easier to talk about independence</p>
+<p>Tony's ideas:</p>
+<p>- Neyman Pearson lemma - Likelihood ratio tests - Why is frequentist so good? CLT, convergence, etc. - Information theory, model simplicity, AIC?</p>
+<p>[^1]: The "jackknife" method is so called because Tukey compared the method, which is "rough-and-ready", to another rough-and-ready tool, the pocket knife, also known as a jackknife. Although this name has the disadvantage of giving you no clue what it is about, it had the advantage of having more brevity and vivacity than "delete-1 resampling", which is probably the more accurate name.
+[^2]: I trotted out this test because these two confusions are actually great learning opportunities.
+[^3]: Barnard conceived of the <span class="arithmatex">\((a, b)\)</span> as points "in a plane lattice diagram of points with integer co-ordinates", that is, that <span class="arithmatex">\(a\)</span> is like the <span class="arithmatex">\(x\)</span>-axis and <span class="arithmatex">\(b\)</span> is like the <span class="arithmatex">\(y\)</span>-axis. Then the possible outcomes of the experiment are the points in the rectangle bounded by the horizontal lines <span class="arithmatex">\(a = 0\)</span> and <span class="arithmatex">\(a = m\)</span> and the vertical lines <span class="arithmatex">\(b = 0\)</span> and <span class="arithmatex">\(b = n\)</span>. He then said that you should pick the non-extremal points (i.e., the values of <span class="arithmatex">\((a, b)\)</span> for which you would not reject the null) such that they "consist of as many points as possible, and should like away from that diagonal of the rectangle which passes through the origin. Formulated mathematically, these latter requirements mean that the [points for which you would reject the null] must in a certain sense be convex, symmetrical and minimal."
+[^4]: It is, however, the way the famous "lady tea tasting" experiment was designed. The myth is that Fisher didn't believe it when a high-class lady told him that she could detect whether tea was added to a cup with milk in it or whether the milk was added to the tea. He designed an experiment with <span class="arithmatex">\(m\)</span> cups prepared one way, <span class="arithmatex">\(n\)</span> prepared the other, and told her to detect the <span class="arithmatex">\(r = m\)</span> cups that were prepared the first way. A Barnard-style experiment, in which the same <span class="arithmatex">\(m\)</span> and <span class="arithmatex">\(n\)</span> cups
+[^5]: The normal approximation to the binomial was proved long before the central limit theorem. This special case, called the <em>de Moive-Laplace theorem</em>, was first published by de Moivre in 1738. Laplace published the reverse result, that the binomial approximates the normal, 75 years later, in 1812. The general central limit theorem was proven, more than 150 years after de Moivre's original result only, in 1901 by Lyapunov. [Put CLT in with regression? Or z-test?]{.mark}</p>
+<h1 id="from-the-readme-material-to-fix">From the Readme : Material to fix<a class="headerlink" href="#from-the-readme-material-to-fix" title="Permanent link">&para;</a></h1>
+<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Universality of statistics<ul>
+<li>Aside from the scientific method in general, and numbers, there is no other thing as widespread in the sciences</li>
+<li>Scientific questions eventually boil down to numbers, and so down to statistics. Your beautiful fascinating theory about frog evolution and flight paths or whatever eventually comes down to whether this heap of numbers is bigger than that heap, or whether this function is a better fit to this data than that function.</li>
+</ul>
+</li>
+<li>linear mixed models for GWAS is a good example of when biology becomes numbers</li>
+<li>mixing around counts for TnSeq is another good example</li>
+<li>Combination of observations<ul>
+<li>historical challenge of what to do with multiple observations</li>
+<li>temptation that persists to simply pick the best one</li>
+<li>crowdsourcing, poll the audience (who wants $1 million)</li>
+</ul>
+</li>
+</ul>
+<h2 id="probability">Probability<a class="headerlink" href="#probability" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Probability as counting techniques, which assumes that all events are equiprobable<ul>
+<li>law of ignorance</li>
+</ul>
+</li>
+<li>also need some more discussion earlier to say that thinking about <span class="arithmatex">\(\Omega\)</span> is really confusing. What sample space would give rise to a normally-distributed variable, for example? And where do we draw the liens around the universe we're interested in?<ul>
+<li>eg "heads" is an event, not an outcome. Exactly where the coin lands, etc. is the outcome. But we're always thinking at some level of abstraction. The theory is robust to that, thankfully.</li>
+</ul>
+</li>
+<li>Joint probability distributions, and how for iid, you get products</li>
+<li>Venn in 1866 saying that probability should be interpreted as frequency, not as educated guesses<ul>
+<li>If that seems backwards, recall that we're trying to understand what probability is, and in this case we're following the math to the world, not the other way around!</li>
+</ul>
+</li>
+</ul>
+<h2 id="random-variables">Random variables<a class="headerlink" href="#random-variables" title="Permanent link">&para;</a></h2>
+<ul>
+<li>How you make RVs that are functions of other RV(s)<ul>
+<li>The sum as a simple example, which gives you the sample mean</li>
+<li>Then the difference</li>
+<li>And then the most general case</li>
+</ul>
+</li>
+<li>There's a <code>sample'' probability distribution $\hat{f}_X$. It's hard to say whether this is a maximum likelihood estimator or something. What does</code>sample'' mean? Like "sample mean"?</li>
+<li>cdf is also the quantile function</li>
+</ul>
+<h3 id="underlying-distribution-vs-sample-distribution">Underlying distribution vs. sample distribution<a class="headerlink" href="#underlying-distribution-vs-sample-distribution" title="Permanent link">&para;</a></h3>
+<p>Up to this point, I've used the word <code>distribution'' in the mathematical probability sense: it's the cdf $F_X$ or the pmf/pdf $f_X$. It it now crucial to distinguish between these mathematical probability objects and, on the other hand, the mass of data that we get from an experiment, which might also be called the</code>distribution'' of the data. (As we'll see later, this confusion of language is not totally unwarranted, because the mass of data is itself a complicated estimator of the mathematical distribution.)</p>
+<p>The distinction between mathematical distributions and data distributions is usually made in the jargon of the social sciences: from some \emph{population}, you draw a \emph{sample}. The sample refers to the numbers you collected; the population refers to the larger universe of numbers your sample was drawn from. We use the sample to estimate properties of the population. For example, if you're interested in the height of men versus women in the US, then your target populations will be, say, all American males and all American females. The sample is whatever heights you actually measure. We then try to make some inference about all Americans based on our sample.</p>
+<p><strong>Improve the formalism</strong>: A sample is the realization of a set of iid RVs, e.g. And then the statistic is itself an RV, that can have a realization.</p>
+<p>In the heights example, the target population is finite. There are only 300 million Americans. It is therefore theoretically possible to make a list of the heights of all Americans. In a repeatable experiment, on the other hand, the target population is infinite: you could theoretically repeat an experiment infinitely many times, drawing an infinite number of data points. In most cases, statistics proceeds as if the target population were infinite, although there are corrections you can make when your sample size starts to approach the size of the target population.</p>
+<p>Many statistical methods also assume that the target population follows some known distribution. The classic example is that the <span class="arithmatex">\(t\)</span>-test assumes that the target populations are normally distributed. This can make the language a little confusing. If you are using the <span class="arithmatex">\(t\)</span>-test to compare the heights of males and females, is the <code>true'' population the actual distribution of heights among the 300 million Americans, or is the</code>true'' population the normal distribution? In most cases, ``true'' is used to refer to the abstract mathematical distribution rather than the actual distribution of the target population.</p>
+<p>The important point is that the <code>sample'' distribution refers to the data you collected, while the</code>true'' or ``theoretical'' distribution refers to the theoretical approximation of the target population your data came from.</p>
+<hr />
+<p>In the <code>hard'' experimental sciences, this language about</code>population'' may sound weird. If I'm trying to measure the speed of light, I repeat my experiment many times and get many different values. Those values are the sample, but what is the population? We think there is a single, true speed of light, not a distribution of speeds of lights. In this case, the ``population'' refers, somewhat tautologically, to the distribution of the values that would come from an infinite number of repetitions of our experiment. In other words, the sample defines the population, not the other way around.</p>
+<p>In the social sciences example, the shape of the distribution of measured values says something about the variation of the values in the target population. We get a range of measured values because people are different heights. In the physics example, the shape of the distribution has everything lot to do with the precision in our experiment. We get a range of measured values because of all sorts of error that arise the in the process of experimentation.</p>
+<p>In biology, the situation is somewhere in between. We think there is true variation in, say, the physiology of the cells used in an experiment. We might wish there weren't. It would be easier to do some experiments if all cells started in exactly the same state and responded exactly the same way to an experimental condition. The meaning of the range of values we get is then something of a philosophical one. To what degree do we treat the range of values as due to error, because we couldn't make all the cells the same, and to what degree is it an honest report about the heterogeneity of behavior in some ``target population'' of cells? Multilevel models, which will come up later, are an attempt to deal with multiple sources of variation.</p>
+<h2 id="distributions">Distributions<a class="headerlink" href="#distributions" title="Permanent link">&para;</a></h2>
+<ul>
+<li>descriptions of the different distributions<ul>
+<li>mixture distributions</li>
+<li>Poisson as horse kicks, or cells in droplets</li>
+</ul>
+</li>
+<li>How these relate to each other</li>
+<li>Mean, variance, skew, kurtosis: legacy of Pearson's biometrics, thinking that all distributions could be described this way.<ul>
+<li>Something about moments in general</li>
+</ul>
+</li>
+<li>Gumbel, Tippet, Weibull for extreme events (maximum of distribution?)</li>
+</ul>
+<h2 id="estimators">Estimators<a class="headerlink" href="#estimators" title="Permanent link">&para;</a></h2>
+<ul>
+<li>efficiency and cramer rao for talking about the variance of estimators<ul>
+<li>probably bring this up but don't go too much into it, except to say that it's definitely going to be important for doing inferences.</li>
+</ul>
+</li>
+<li>Robustness using Efron's example: if you flip a coin 100 times, and get <span class="arithmatex">\(p=0.3\)</span>, then throwing away any one particular data point will have a small effect. But Mariner space probe bacteria swabs are a different story, with two huge outliers.</li>
+<li>consistency of the arithmetic mean using Chebyshev's identity. That's called the weak law of large numbers. Bernoulli proved a special case long ago.</li>
+<li>Tukey's stuff as true stuff for descriptive statistics</li>
+</ul>
+<h2 id="confidence-intervals">Confidence intervals<a class="headerlink" href="#confidence-intervals" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Bowley's confidence trick: "I am not at all sure that the 'confidence' is not a 'confidence trick'." "Does it really lead us towards what we need--the chance that in the universe which we are sampling the proportion is within these certain limits?" (1934, on Neyman)</li>
+</ul>
+<h2 id="tests">Tests<a class="headerlink" href="#tests" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Neyman-Pearson hypothesis testing, which they never did, as decision-making, and as one of the most broadly-used tools in science</li>
+<li>multiple hypothesis correction should always start with examining the distribution of pvalues</li>
+<li>Fisher's p-value examples: 10^-4 was too small, 0.3 was too large, 0.04 meant that you probalby needed to do some more experiments</li>
+<li>Significance vs. hypothesis testing</li>
+</ul>
+<h3 id="constructing-the-t-test">Constructing the t test<a class="headerlink" href="#constructing-the-t-test" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Gosset's t-test because you couldn't expect to have hundreds or thousands of samples as Pearson assumed</li>
+</ul>
+<h2 id="cookbook">Cookbook<a class="headerlink" href="#cookbook" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Note about <a href="http://www.biostathandbook.com/">biostats handbook</a>. I don't want to be as "cookbook"y.</li>
+</ul>
+<h3 id="the-normal-distribution">The normal distribution<a class="headerlink" href="#the-normal-distribution" title="Permanent link">&para;</a></h3>
+<ul>
+<li>normal distribution as arising from the poisson, or whatever you want</li>
+</ul>
+<h3 id="jackknife-and-bootstrap">Jackknife and bootstrap<a class="headerlink" href="#jackknife-and-bootstrap" title="Permanent link">&para;</a></h3>
+<ul>
+<li>So if there are more and more <span class="arithmatex">\(X_i\)</span> with iid <span class="arithmatex">\(F_X\)</span>, then the idea is that the estimator of the <span class="arithmatex">\(\hat{\theta}(\vec{x})\)</span> should approach <span class="arithmatex">\(\theta(F_X)\)</span>.</li>
+<li>Glivenko-Cantelli theorem about why you can (asymptotically) use the empirical distribution function to approximate the real one</li>
+</ul>
+<h3 id="permutations">Permutations<a class="headerlink" href="#permutations" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Cohen's kappa as example for permutation?</li>
+<li>cross validation vs. the jackknife. CV is just a kind of resampling, like bootstrap and jackknife.</li>
+</ul>
+<h3 id="regression_1">Regression<a class="headerlink" href="#regression_1" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Censored data should be easy to understand if you do the MLE approach for talking about regression. Rather than allowing each point to be in particular places, you allow for it to be in <em>many</em> possible places.</li>
+<li>historical note about what "regression means"</li>
+<li>Simpson's paradox for need to have other variables</li>
+<li>Berkson's paradox for problems with including this that aren't causal</li>
+<li>Cook's distance <span class="arithmatex">\(D_i = \sum_{j=1}^n (\hat{y}_j  - \hat{y}_{j(i)})^2 / ps^2\)</span>, where <span class="arithmatex">\(p\)</span> is the number of parameters, <span class="arithmatex">\(y_{j(i)}\)</span> is the predicted value for <span class="arithmatex">\(y_j\)</span> when you remove point <span class="arithmatex">\(i\)</span>. <span class="arithmatex">\(n\)</span> must be the number of data points <em>minus one</em>. <span class="arithmatex">\(s^2\)</span> is the mean squared error of the regression model. Some people say <span class="arithmatex">\(D_i &gt; 1\)</span> means a point is an outlier. Note the similarity to the jackknife, which will also do estimates with a leave-one-out kind of procedure.</li>
+<li>probit analysis<ul>
+<li>logit makes sense if you're thinking about odds ratios (well, probably risk ratios, but there are some nice things about odds ratios)</li>
+<li>probit analysis makes sense if you're thinking aobut the proportion that's going to hit some mark; which is just what you'd want for an LD-50 experiment</li>
+</ul>
+</li>
+</ul>
+<h3 id="miscellany">Miscellany<a class="headerlink" href="#miscellany" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Expectation maximization for fitting, e.g., mixed models, data clustering, etc.</li>
+</ul>
+<h2 id="bayesian">Bayesian<a class="headerlink" href="#bayesian" title="Permanent link">&para;</a></h2>
+<ul>
+<li>include a bayesian introduction before any inferential?</li>
+<li>introduce priors with the beta binomial</li>
+<li>credible intervals, which align with confidence intervals in very particular cases</li>
+</ul>
+<h3 id="bayesian-inference">Bayesian inference<a class="headerlink" href="#bayesian-inference" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Bayes factor as alternative to pvalue (if you have two models)</li>
+<li>MCMC as example for complex SIR-like models. It's really clear how to turn the crank, but it's not easy to say how the inputs should relate to the outputs. Or my funny hierarchical thing.<ul>
+<li>how does ABC compare for this?</li>
+</ul>
+</li>
+</ul>
+<h2 id="random-number-generation">Random number generation<a class="headerlink" href="#random-number-generation" title="Permanent link">&para;</a></h2>
+<ul>
+<li>How RNGs work and maintain state</li>
+<li>Where seeds come from</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections"], "search": "../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.f1b6f286.min.js"></script>
+      
+        <script src="../javascript/katex.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+    
+  </body>
+</html>

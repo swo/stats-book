@@ -1,0 +1,928 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../confidence_intervals/">
+      
+      
+        <link rel="next" href="../tests/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.3">
+    
+    
+      
+        <title>Statistical inference - A short introduction to advanced statistics for scientists</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.d7758b05.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#statistical-inference" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="A short introduction to advanced statistics for scientists" class="md-header__button md-logo" aria-label="A short introduction to advanced statistics for scientists" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            A short introduction to advanced statistics for scientists
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Statistical inference
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/swo/stats-book" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="A short introduction to advanced statistics for scientists" class="md-nav__button md-logo" aria-label="A short introduction to advanced statistics for scientists" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    A short introduction to advanced statistics for scientists
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/swo/stats-book" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Probability
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Probability
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../functions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Functions
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../probability/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Probability
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../random_variables/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Random variables
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Descriptive statistics
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Descriptive statistics
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../statistics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Statistics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../estimators/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Estimators
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../confidence_intervals/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Confidence intervals
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Inferential statistics
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Inferential statistics
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Statistical inference
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Statistical inference
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#statistical-testing-is-young" class="md-nav__link">
+    <span class="md-ellipsis">
+      Statistical testing is young
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#statistical-inference-is-philosophically-confusing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Statistical inference is philosophically confusing
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inference-is-philosophically-confusing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Inference is philosophically confusing
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#null-hypotheses-are-our-imperfect-approach-to-frequentist-inference" class="md-nav__link">
+    <span class="md-ellipsis">
+      Null hypotheses are our imperfect approach to frequentist inference
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bayess-theorem-is-the-only-way-to-ask-about-whether-your-hypothesis-is-correct" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bayes's theorem is the only way to ask about whether your hypothesis is correct
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bayess-theorem-is-about-updating-not-defining-probabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bayes's theorem is about updating, not defining, probabilities
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tests/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tests
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../regression/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Regression
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../generating_functions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Generating functions
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Appendix
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#statistical-testing-is-young" class="md-nav__link">
+    <span class="md-ellipsis">
+      Statistical testing is young
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#statistical-inference-is-philosophically-confusing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Statistical inference is philosophically confusing
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inference-is-philosophically-confusing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Inference is philosophically confusing
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#null-hypotheses-are-our-imperfect-approach-to-frequentist-inference" class="md-nav__link">
+    <span class="md-ellipsis">
+      Null hypotheses are our imperfect approach to frequentist inference
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bayess-theorem-is-the-only-way-to-ask-about-whether-your-hypothesis-is-correct" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bayes's theorem is the only way to ask about whether your hypothesis is correct
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bayess-theorem-is-about-updating-not-defining-probabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bayes's theorem is about updating, not defining, probabilities
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="statistical-inference">Statistical inference<a class="headerlink" href="#statistical-inference" title="Permanent link">&para;</a></h1>
+<p>The typical approach in statistics is to teach frequentist inference ---things like <span class="arithmatex">\(t\)</span>-tests--- before Bayesian statistics. The reason is that Bayesian statistics is mathematically more complex, it was developed after frequentist statistics, and is more confusing. However, the reason Bayesian statistics is confusing is because inference is confusing, and pretending that it is not leads to some critical misunderstandings about statistical inference.</p>
+<p>Rather than hide the fact that inference is confusing, I introduce the concept of inference in this chapter, contrasting frequentist and Bayesian inference, and showing very little math.</p>
+<p>Having dealt with inference's limitations, I will go on to the nuts and bolts of "doing" statistical inference. But read this chapter first, so you don't hold on to some critical misconceptions.</p>
+<h2 id="statistical-testing-is-young">Statistical testing is young<a class="headerlink" href="#statistical-testing-is-young" title="Permanent link">&para;</a></h2>
+<p>Statistical hypothesis testing, or "significance testing", is one of the most widespread methods in science. If you pick up an article of <em>Science</em> or <em>Nature</em> and read any scientific article, there will almost certainly be a <span class="arithmatex">\(p\)</span>-value in it. I put statistical tests after the incredibly fundamental concepts of observation, quantitation, and experimentation as the building blocks of contemporary science.</p>
+<p>Of these fundamental scientific concepts, statistical testing is by far the youngest. In the Western scientific tradition, observation as a method goes back to Aristotle (b. 384 BC). Other ancient Greeks were using quantitative measurements and geometry to determine things like the diameter of the Earth. Experimentation may as we now think of it was championed by Francis Bacon (b. 1561 AD) but probably has much older roots. Our earliest examples of statistical hypothesis testing date to the 1700s --one of the early examples will be explored in a later chapter-- but testing as we now understand it was formalized by Ronald Fisher (b. 1890), Jerzy Neyman (b. 1894), and Egon Pearson (b. 1895).</p>
+<p>The fact that a young method, whose formalization is less than 100 years old, has permeated nearly all of science speaks to its intellectual appeal. I think it also clarifies why statistical testing and interpretation of <span class="arithmatex">\(p\)</span>-values is such a controversial issue in contemporary science: we as a scientific community simply have not had enough time to fully digest the idea. Not only is the conceptual basis of statistical testing not fully refined, we have also not found the best ways to explain this concept to one another.</p>
+<h2 id="statistical-inference-is-philosophically-confusing">Statistical inference is philosophically confusing<a class="headerlink" href="#statistical-inference-is-philosophically-confusing" title="Permanent link">&para;</a></h2>
+<p>Not only is statistical testing a relatively young idea, but statistical inference as a conceptual approach is deeply entwined with some of the fundamental philosophical questions that underly probability theory. In my experience, the students and practitioners that are my target audience for this book are challenged by these philosophical problems of statistical inference just as much as they stuggle with the mathematical aspects of statistical testing!</p>
+<p>Rather than sweep those philosophical questions under the rug, I will lay them out, to avoid confusion later.</p>
+<h2 id="inference-is-philosophically-confusing">Inference is philosophically confusing<a class="headerlink" href="#inference-is-philosophically-confusing" title="Permanent link">&para;</a></h2>
+<p><em>Inference</em> means taking some concrete cases and making a broader conclusion. Inference is always contrasted with deduction, which does the opposite, reasoning from broad rules to particular circumstances. The classic example of deduction is: all humans are mortal, Socrates is human, therefore Socrates is mortal. We reason from a general rule about mortality to a particular case of Socrates's mortality.</p>
+<p>Inference goes from particular to general. For most of humanity's history, we did this without worrying. Plato felt confident asserting that all humans are mortal because he had never heard a counterexample: because every human he observed or had heard about was mortal, he reasoned that <em>every</em> human ---every one who ever lived and every one which will live--- is mortal.</p>
+<p>[inverse probability]{.mark}</p>
+<p>Thousands of years after Plato, the philosopher David Hume questioned this kind of logic. He said, "Sure, every human <em>so far</em> has been mortal. But that's not proof positive that <em>no</em> human will ever be immortal." We today are very comfortable to say that "correlation does not prove causation", but Hume took that logic to its extreme: if correlation does not prove causation, then seeing that every single one of billions of human who lived is mortal does not prove that the next human is guaranteed to be mortal. If we can't even prove that humans are mortal, then how do we conclude anything?[^1]</p>
+<p>This may seem abstract, but I want to point out that inference is philosophically confusing so that you will not be surprised to hear that inferential statistics is confusing!</p>
+<h2 id="null-hypotheses-are-our-imperfect-approach-to-frequentist-inference">Null hypotheses are our imperfect approach to frequentist inference<a class="headerlink" href="#null-hypotheses-are-our-imperfect-approach-to-frequentist-inference" title="Permanent link">&para;</a></h2>
+<p>[1. Freq. stats cannot adress states of nature. 2. But we want <span class="arithmatex">\(P[\theta|X]\)</span>. Waht to do? 3. Trick is to use <span class="arithmatex">\(P[X|\theta]\)</span> to make p-values and supplement that with CIs.]{.mark}</p>
+<p>We resolve the paradox of using frequentist statistics to make inferences about the character of the universe ---things which do not have frequencies--- using a trick called a <em>null hypothesis</em>. Rather than asking, "Given the data, what's the probability that my hypothesis is correct?", we construct an uninteresting, null hypothesis and then reverse the question, "Imagine this null hypothesis were true. Then what's the probability of getting data like mine?"</p>
+<p>For example, if I think you're cheating in a card game, the natural question is to ask, "Given the cards I've seen you draw, what's the probability that you're cheating?" The point of a null hypothesis is to flip it around: "Imagine that you were playing fair. What's the probability you would be winning this month?"</p>
+<p>To emphasize how these two questions are different, I'll introduce the typical mathematical symbols for these concepts: <span class="arithmatex">\(\theta\)</span> is the event that the null hypothesis is correct, and <span class="arithmatex">\(X\)</span> is the event that I observed the data I did. Our natural inclination is to ask about <span class="arithmatex">\(\mathbb{P}[\theta | X]\)</span>. But in frequentist statistics, <span class="arithmatex">\(\mathbb{P}[\theta]\)</span> is nonsense, either you are cheating or you are not. So we flip the question, instead asking about <span class="arithmatex">\(\mathbb{P}[X | \theta]\)</span>.</p>
+<p>In the previous section, we replaced an induction question with a deduction question: <span class="arithmatex">\(\mathbb{P}[\theta | X]\)</span> reasons from the specific <span class="arithmatex">\(X\)</span> to the general <span class="arithmatex">\(\theta\)</span>, while <span class="arithmatex">\(\mathbb{P}[X | \theta]\)</span> reasons from the general <span class="arithmatex">\(\theta\)</span> to the specific <span class="arithmatex">\(X\)</span>. In other words, we replaced the hard, inference question (are you cheating? are all human mortal?) with the easier, deduction question: if you were not cheating, how likely are you to have gotten such lucky hands?</p>
+<p>It's tempting to equate <span class="arithmatex">\(\mathbb{P}[\theta | X]\)</span> and <span class="arithmatex">\(\mathbb{P}[X | \theta]\)</span>. This is called the <em>prosecutor's fallacy</em>. Imagine there was a crime, and the perpetrator left type AB negative blood at the scene. A person with type AB negative blood is accused of the crime. The prosecutor will say, "Only 1% of Americans have type AB negative blood. So if this person were innocent, there is only a 1% chance that type AB negative blood would be found at the crime site. Thus, there is a 1% chance that this person is innocent."</p>
+<p>The prosecutor did a bait-and-switch. The null hypothesis <span class="arithmatex">\(\theta\)</span> is that the accused is innocent, and some random American committed the crime. The data <span class="arithmatex">\(X\)</span> is having found AB negative blood. The prosecutor accurately concluded that <span class="arithmatex">\(\mathbb{P}[X | \theta] = 1\%\)</span>. But then they fallaciously concluded that <span class="arithmatex">\(\mathbb{P}[\theta | X] = 1\%\)</span>.</p>
+<p>If it's not obvious that this argument is fallacious, consider the more general proposition that <span class="arithmatex">\(\mathbb{P}[A | B]\)</span> equals <span class="arithmatex">\(\mathbb{P}[B | A]\)</span>. For example, if it is snowing, what's the probability that the temperature is below freezing? Basically 100%. But if it is below freezing, what is the probability that it is snowing? Clearly much less than 100%. But clearly the two concepts have something to do with one another, which we will examine in the next section.</p>
+<h2 id="bayess-theorem-is-the-only-way-to-ask-about-whether-your-hypothesis-is-correct">Bayes's theorem is the only way to ask about whether your hypothesis is correct<a class="headerlink" href="#bayess-theorem-is-the-only-way-to-ask-about-whether-your-hypothesis-is-correct" title="Permanent link">&para;</a></h2>
+<p>[Move this to a Part IV]{.mark}</p>
+<p>The relation between <span class="arithmatex">\(\mathbb{P}[X | \theta]\)</span> and <span class="arithmatex">\(\mathbb{P}[\theta | X]\)</span> is laid out in <em>Bayes's theorem</em>: <span class="arithmatex">\(<span class="arithmatex">\(\mathbb{P}[\theta | X] = \frac{\mathbb{P}[X | \theta] \mathbb{P}[\theta]}{\mathbb{P}[X]}.\)</span>\)</span> This result follows almost immediately from the definition of conditional probability, laid out in <a href="../probability/">Probability</a>.</p>
+<p>Note that there are four terms in Bayes's theorem:</p>
+<ul>
+<li><span class="arithmatex">\(\mathbb{P}[\theta | X]\)</span>: Given the data, what's the probability that hypothesis is true? This is what the court is trying to figure out: given the evidence, what's the probability that the accused is innocent (or guilty)?</li>
+</ul>
+<ul>
+<li><span class="arithmatex">\(\mathbb{P}[X | \theta]\)</span>: Given the hypothesis, or null hypothesis, what's the probability of observing the data we did?[^2]</li>
+</ul>
+<ul>
+<li><span class="arithmatex">\(\mathbb{P}[X]\)</span>: What's the probability of observing this data? In this case, this is essentially the same as <span class="arithmatex">\(\mathbb{P}[X | \theta]\)</span>.</li>
+</ul>
+<ul>
+<li><span class="arithmatex">\(\mathbb{P}[\theta]\)</span>: What's the probability, not considering the evidence, that this person is innocent?</li>
+</ul>
+<p>In the courtroom example, <span class="arithmatex">\(\mathbb{P}[X]\)</span> is the probability that, if we walked into a random courtroom trying a case with blood evidence, that the blood would be of type AB negative. If 1% of Americans have type AB negative blood, and people of different blood types commit crimes at the same rates, then <span class="arithmatex">\(\mathbb{P}[X] = 1\%\)</span>.</p>
+<p>In this example, <span class="arithmatex">\(\mathbb{P}[X | \theta]\)</span> is very similar to <span class="arithmatex">\(\mathbb{P}[X]\)</span>. Say there are 300 million Americans, of whom 1%, or 3 million, have type AB negative blood. If the accused is innocent, there are 299,999,999 type AB negative people left, so the probability of observing type AB negative blood is <span class="arithmatex">\((3\text{ million} - 1) / (300\text{ million}) = 1\% - 1 / (300\text{ million})\)</span>, or just slightly smaller than 1%.</p>
+<p>So, plugging in <span class="arithmatex">\(\mathbb{P}[X]\)</span> and <span class="arithmatex">\(\mathbb{P}[X | \theta]\)</span>, which we computed based on our knowledge about blood types, we can conclude that <span class="arithmatex">\(\mathbb{P}[\theta | X]\)</span> is just slightly smaller than <span class="arithmatex">\(\mathbb{P}[\theta]\)</span>. In other words, the probability that the accused is innocent given the blood evidence is only very slightly smaller than the probability that they are innocent when not considering that evidence. Without any evidence, the probability that some random accused person happens to be the perpetrator is small, say 1 in 300 million. In other words, the prosecutor, if they have only the blood evidence, has a very bad case.</p>
+<h2 id="bayess-theorem-is-about-updating-not-defining-probabilities">Bayes's theorem is about updating, not defining, probabilities<a class="headerlink" href="#bayess-theorem-is-about-updating-not-defining-probabilities" title="Permanent link">&para;</a></h2>
+<p>In the example from the previous section, I showed that we can use data to compute the relationship between <span class="arithmatex">\(\mathbb{P}[\theta]\)</span>, the probability that a hypothesis is correct not considering the data, and <span class="arithmatex">\(\mathbb{P}[\theta | X]\)</span>, the probability that a hypothesis is correct given the data. In the language of Bayesian statistics, <span class="arithmatex">\(\mathbb{P}[\theta]\)</span> is called the <em>prior probability</em> of <span class="arithmatex">\(\theta\)</span>, and <span class="arithmatex">\(\mathbb{P}[\theta | X]\)</span> is the <em>posterior probability</em>. In other words, the data "updated" the prior, pre-data-collection probability.</p>
+<p>The blood type example worked because the choice of <span class="arithmatex">\(\mathbb{P}[\theta]\)</span> was pretty clear: if we picked an Amercian at random, what's the chance they are innocent of this particular crime? (Or, conversely, what's the chance that a randomly-selected person is the perpretrator?)</p>
+<p>In other cases, when <span class="arithmatex">\(\theta\)</span> is a hypothesis, <span class="arithmatex">\(\mathbb{P}[\theta]\)</span> becomes extremely problematic. Take the Socrates example: what's the probability, if you hadn't observed the lives and deaths of any human, that all humans are mortal? Or take a science example: if Einstein had showed you his general theory of relativity, but neither you nor he had ever observed any experimental evidence or astronomical data, what would you say is the prior, pre-data-collection probability that his data is correct?</p>
+<p>As I discussed above, it only makes sense to assign probability to hypotheses in a Bayesian context. It doesn't make sense to ask on what fraction of replicates of Earth humans are mortal; instead you ask how confident you are that humans are mortal.</p>
+<p>Again, Bayes's theorem, is a perfectly mathematically sound theorem, but it only <em>updates</em> probabilities. Given a prior probability, and the data, it gives a posterior probability. But it can never tell you the prior probability. This is why people don't like Bayesian statistics. How can you put a prior probability on a hypothesis? Do you make a guess? "Well, Einstein was smart, so that's a plus, but his theory sounds complicated, so that's a minus, and so I think maybe fifty-fifty?"</p>
+<p>There's no mathematically sound answer to this question because there is no philosophically sound answer to this question. In other words, frequentist statistics and Bayesian statistics are both rigorous mathematical systems, and there is clear link between experimental science and the proportion-probabilities of frequentist statistics, but the link betwen Bayesian degree-of-confidence probabilities and what we have in our heads is not so clear.</p>
+<p>Having filled your mind with this philosophical cloud, let's get down to the nuts and bolts of statistical inference.</p>
+<p>[^1]: This argument is usually couched as the ["sunrise problem"]{.mark}: given that the sun has risen every day, what's the probability it will rise tomorrow? Is that probability <em>exactly</em> 1?
+[^2]: You may recognize that this wording is the definition of the <span class="arithmatex">\(p\)</span>-value. In a way, the point of this chapter is to conceptually prepare you to be critical of the <span class="arithmatex">\(p\)</span>-value, and to understand that is is <em>not</em> <span class="arithmatex">\(\mathbb{P}[\theta | X]\)</span>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections"], "search": "../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.f1b6f286.min.js"></script>
+      
+        <script src="../javascript/katex.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,1120 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../functions/">
+      
+      
+        <link rel="next" href="../random_variables/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.3">
+    
+    
+      
+        <title>Probability - A short introduction to advanced statistics for scientists</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.d7758b05.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#probability" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="A short introduction to advanced statistics for scientists" class="md-header__button md-logo" aria-label="A short introduction to advanced statistics for scientists" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            A short introduction to advanced statistics for scientists
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Probability
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/swo/stats-book" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="A short introduction to advanced statistics for scientists" class="md-nav__button md-logo" aria-label="A short introduction to advanced statistics for scientists" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    A short introduction to advanced statistics for scientists
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/swo/stats-book" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Probability
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Probability
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../functions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Functions
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Probability
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Probability
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#probability-has-at-least-two-definitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Probability has at least two definitions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-frequentist-interpretation-cannot-assign-probabilities-to-states-of-nature" class="md-nav__link">
+    <span class="md-ellipsis">
+      A frequentist interpretation cannot assign probabilities to states of nature
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#probability-is-a-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      Probability is a function
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#or-adds-event-probabilities-and-multiplies" class="md-nav__link">
+    <span class="md-ellipsis">
+      "Or" adds event probabilities; "and" multiplies
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=""Or" adds event probabilities; "and" multiplies">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-warings-theorem" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example: Waring's theorem
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#independence-and-conditional-probability" class="md-nav__link">
+    <span class="md-ellipsis">
+      Independence and conditional probability
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Independence and conditional probability">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#partitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Partitions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-monty-hall-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example: Monty Hall problem
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-simpsons-paradox" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example: Simpson's paradox
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../random_variables/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Random variables
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Descriptive statistics
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Descriptive statistics
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../statistics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Statistics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../estimators/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Estimators
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../confidence_intervals/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Confidence intervals
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Inferential statistics
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Inferential statistics
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../inference/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Statistical inference
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tests/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tests
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../regression/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Regression
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../generating_functions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Generating functions
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Appendix
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#probability-has-at-least-two-definitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Probability has at least two definitions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-frequentist-interpretation-cannot-assign-probabilities-to-states-of-nature" class="md-nav__link">
+    <span class="md-ellipsis">
+      A frequentist interpretation cannot assign probabilities to states of nature
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#probability-is-a-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      Probability is a function
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#or-adds-event-probabilities-and-multiplies" class="md-nav__link">
+    <span class="md-ellipsis">
+      "Or" adds event probabilities; "and" multiplies
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=""Or" adds event probabilities; "and" multiplies">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-warings-theorem" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example: Waring's theorem
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#independence-and-conditional-probability" class="md-nav__link">
+    <span class="md-ellipsis">
+      Independence and conditional probability
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Independence and conditional probability">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#partitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Partitions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-monty-hall-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example: Monty Hall problem
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-simpsons-paradox" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example: Simpson's paradox
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="probability">Probability<a class="headerlink" href="#probability" title="Permanent link">&para;</a></h1>
+<p>To develop a robust understanding of statistics, it is critical to understand basic concepts in probability theory. Probability theory is an entire branch of mathematics, and a very complicated one. Here I will give only the essentials as they have a direct bearing on statistics. I will leave many things out; what you see here is not a complete theory of probability.</p>
+<h2 id="probability-has-at-least-two-definitions">Probability has at least two definitions<a class="headerlink" href="#probability-has-at-least-two-definitions" title="Permanent link">&para;</a></h2>
+<p>We think about probability every day, for example, for prediction. Given the weather report, is it worth it for me to carry an umbrella? As a practicing scientist, you might ask yourself a different kind of question every day: given the results of my experiments, how likely is it that my hypothesis is correct?</p>
+<p>For such a familiar concept, probability is actually very philosophically thorny, and there are multiple <em>interpretations</em> of the concept of probability. Our intuitive sense of probability mostly aligns with the <em>Bayesian</em> interpretation, under which <em>probability</em> refers to a sense of confidence about an unknown thing, often a future event. If I say the probability of an event is 1%, it means, in a practical sense, that I'm willing to bet a fair amount of money it won't happen. Philosophically, it's hard to say what "1% confident" really means, but the concept should be very intuitive.</p>
+<p>Unfortunately, Bayesian statistics is mathematically and technically challenging. It also requires an assertion of a <em>prior probability</em>: you must state the probability that your hypothesis was true before you started the experiment. The apparent subjectivity of prior probabilities was repugnant to some early, prominent statisticians, who mostly directed the field of statistics away from the Bayesian interpretation and toward the <em>frequentist</em> interpretation of probability.</p>
+<p>In the <em>frequentist</em> interpretation, the probability of an outcome is the proportion, or frequency, of a that outcome when a trial is repeatedly many times. To say there is a 50% probability of flipping a coin and seeing heads means that, as you flip the coin over and over again, the proportion of flips that come up heads will approach 50%.</p>
+<p>For technical, philosophical, and historical reasons, when we talked about "statistics" with no modifier, we mean frequentist statistics. For better or worse, frequentist is the default; Bayesian is the exception.</p>
+<h2 id="a-frequentist-interpretation-cannot-assign-probabilities-to-states-of-nature">A frequentist interpretation cannot assign probabilities to states of nature<a class="headerlink" href="#a-frequentist-interpretation-cannot-assign-probabilities-to-states-of-nature" title="Permanent link">&para;</a></h2>
+<p>A problem with the frequentist definition is that probabilities can only be assigned to experiments or situations that can be repeated infinitely many times. It does not make sense to ask about the probability that it will rain tomorrow any more than it makes sense to ask about the probability than it makes sense to ask about the probability that it rained yesterday: it either rained or it didn't, either it will rain or it won't.</p>
+<p>The fact that we live in just one universe means that, under the frequentist interpretation, you cannot ask about the probability of a state of nature. Critically, you cannot ask about the probability your hypothesis is correct. Your hypothesis is either correct or not, so the probability that it is correct is either zero or one. You just don't know which of those two possibilities is right!</p>
+<p>As a scientist, this is deeply dissatisying. The whole point of statistical inference is to figure out what's going on in the world. I don't want to feed my hard-won experimental data into a statistical algorithm that says, "If your hypothesis is true, then it is; and if it's not, it's not."</p>
+<p>Imagine that I show you a coin, then put my hands behind my back, and tell you the coin is in one of my hands. I ask you, "What is the probability the coin is in my left hand?" In the frequentist interpretation, probability is a fixed, objective thing. The fact that you know less than me about where the coin's location is irrelevant; the fact that the coin truly is in one hand or the other is all the frequentist interpretation knows.</p>
+<p>The Bayesian approach is more appealing in that it does in fact allow you to ask about the probability of states of nature. There is such a thing as a Bayesian probability that it will rain tomorrow or that your scientific hypothesis is correct. In a Bayesian interpretation, where probability can be subjective, it is OK that I put the probability of the coin being in my left hand as 0% or 100%, even while you assign the probability as just 50%. Nevertheless, we will pursue a frequentist interpretation here.</p>
+<h2 id="probability-is-a-function">Probability is a function<a class="headerlink" href="#probability-is-a-function" title="Permanent link">&para;</a></h2>
+<p>The frequentist definition of probability has to do with the proportions of infinitely-repeatable trials that have some <em>outcome</em>. An outcome is any thing that can happen as a result of an infinitely-repeatable trial. For example, if you flip a coin, you will get heads, or you will get tails.</p>
+<p>The <em>sample space</em>, written <span class="arithmatex">\(\Omega\)</span>, consists of all outcomes as well as all possible combinations of outcomes. A combination of outcomes is called an <em>event</em> and written <span class="arithmatex">\(\omega\)</span>. In other words, outcomes are individual, real things that might happen, while events are abstract groupings of outcomes. The sample space is the set of all events, which includes outcomes.</p>
+<p>In the context of flipping a coin, "flipped heads" is an outcome and an event. The empty set <span class="arithmatex">\(\varnothing\)</span> ("nothing happened") and the set of all outcomes <span class="arithmatex">\(\Omega\)</span> event ("something happened") are both events, but they are not outcomes. Some other examples of outcomes, events, and sample spaces are in Table <a href="#tab:outcome-event">1.1</a>{reference-type="ref" reference="tab:outcome-event"}.</p>
+<table>
+<thead>
+<tr>
+<th>Situation</th>
+<th>Outcomes</th>
+<th>Events</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Flipping a coin</td>
+<td>heads (<span class="arithmatex">\(H\)</span>), tails (<span class="arithmatex">\(T\)</span>)</td>
+<td><span class="arithmatex">\(\varnothing\)</span>, <span class="arithmatex">\(H\)</span>, <span class="arithmatex">\(T\)</span>, <span class="arithmatex">\(\Omega\)</span></td>
+</tr>
+<tr>
+<td>Rolling a die</td>
+<td><span class="arithmatex">\(1, 2, \ldots, 6\)</span></td>
+<td><span class="arithmatex">\(\varnothing\)</span>; the outcomes <span class="arithmatex">\(1, 2, \ldots, 6\)</span>; <span class="arithmatex">\(\binom{6}{2}\)</span> 2-event outcomes (e.g., 1 or 2); <span class="arithmatex">\(\binom{6}{3}\)</span> 3-outcome events (e.g., 1, 2, or 3); <span class="arithmatex">\(\ldots\)</span>; <span class="arithmatex">\(\binom{6}{5}\)</span> 5-outcome events (e.g., any except 1); <span class="arithmatex">\(\Omega\)</span></td>
+</tr>
+<tr>
+<td>Drawing a card</td>
+<td>2 of Clubs, <span class="arithmatex">\(\ldots\)</span>, Ace of Hearts</td>
+<td><span class="arithmatex">\(\varnothing\)</span>; the 52 outcomes (e.g., 2 of Clubs); <span class="arithmatex">\(\binom{52}{2}\)</span> 2-outcome events (e.g., a black Ace); <span class="arithmatex">\(\ldots\)</span>; <span class="arithmatex">\(\binom{52}{51}\)</span> 51-outcome events (e.g., any card except 2 of Clubs); <span class="arithmatex">\(\Omega\)</span></td>
+</tr>
+<tr>
+<td>Pick a random decimal number between 0 and 1</td>
+<td>All real numbers between 0 and 1</td>
+<td><span class="arithmatex">\(\varnothing\)</span>; intervals like <span class="arithmatex">\([0, \tfrac{1}{2}]\)</span>; "all subsets" of <span class="arithmatex">\([0, 1]\)</span>; <span class="arithmatex">\(\Omega\)</span></td>
+</tr>
+<tr>
+<td>Your experiment</td>
+<td>Each possible configuration of atoms at the moment of measurement</td>
+<td>"Cancer cell died", "Electron had energy between 1 and 2 eV", etc.</td>
+</tr>
+</tbody>
+</table>
+<p>As an aside, I note that defining "all possible subsets of outcomes" is straightforward for a discrete case like flipping a coin or drawing a card, but it is complicated for a continuous case like drawing a random real number between <span class="arithmatex">\(0\)</span> and <span class="arithmatex">\(1\)</span>. In continuous cases, a rigorous definition for the event space <span class="arithmatex">\(\Omega\)</span> requires concepts from <em>measure theory</em>, including a <span class="arithmatex">\(\sigma\)</span>-<em>algebra</em>. I avoid these complexities in this chapter at the cost of presenting a mathematically incomplete theory of probability.</p>
+<p>The <em>probability function</em> <span class="arithmatex">\(\mathbb{P}\)</span> maps events to numbers between <span class="arithmatex">\(0\)</span> and <span class="arithmatex">\(1\)</span>:</p>
+<div class="arithmatex">\[
+\mathbb{P} : \Omega \to [0, 1]
+\]</div>
+<p>For example, if <span class="arithmatex">\(H\)</span> is the event of flipping heads, then <span class="arithmatex">\(\mathbb{P}[H] = \tfrac{1}{2}\)</span>. I use the square brackets to emphasize that <span class="arithmatex">\(\mathbb{P}\)</span> is a function of something other than numbers: <span class="arithmatex">\(H\)</span> is not a number like <span class="arithmatex">\(5\)</span>, it is an <em>event</em>, a distinct mathematical object.</p>
+<p>Basic axioms of probability theory require that, for any probability function, the probability that "nothing happened" is zero and the probability that "something happened" is one:</p>
+<div class="arithmatex">\[
+\begin{align*}
+\mathbb{P}[\varnothing] &amp;= 0 \\
+\mathbb{P}[\Omega] &amp;= 1
+\end{align*}
+\]</div>
+<h2 id="or-adds-event-probabilities-and-multiplies">"Or" adds event probabilities; "and" multiplies<a class="headerlink" href="#or-adds-event-probabilities-and-multiplies" title="Permanent link">&para;</a></h2>
+<p>The axioms about probability functions also mean that there are specific rules around manipulating probabilities. For example, we're often interested in the relationships between events. What is that probability that this <em>or</em> that happened? What is the probability that this <em>and</em> that happened?</p>
+<p>If <span class="arithmatex">\(A\)</span> and <span class="arithmatex">\(B\)</span> are two events that don't have any constituent outcomes in common, we call then <em>disjoint</em>, and their probabilities add. For example, the probability of flipping a heads <em>or</em> flipping a tails is the probability of heads plus the probability of tails. Mathematically we write this as:</p>
+<div class="arithmatex">\[
+\text{if } A \cap B = \varnothing \text{, then } \mathbb{P}[A \cup B] = \mathbb{P}[A] + \mathbb{P}[B],
+\]</div>
+<p>where the "cap" <span class="arithmatex">\(\cap\)</span> means <em>intersection</em> ("and") and the "cup" <span class="arithmatex">\(\cup\)</span> means <em>union</em> ("or"), so this reads "if no outcomes are in both events <span class="arithmatex">\(A\)</span> and <span class="arithmatex">\(B\)</span>, then the probability of <span class="arithmatex">\(A\)</span> or <span class="arithmatex">\(B\)</span> is the sum of their individual probabilities."</p>
+<p>If <span class="arithmatex">\(A\)</span> and <span class="arithmatex">\(B\)</span> do have some overlap, you need to subtract out the probability of the overlap. For example, consider drawing a card from a standard 52-card deck. What is the probability of drawing a Jack <em>or</em> a Diamond? If you add up the probability of drawing a Jack and the probability of drawing a Diamond, you end up double-counting the Jack of Diamonds event. The solution is to subtract out the double-counted event:</p>
+<div class="arithmatex">\[
+\mathbb{P}[A \cup B] = \mathbb{P}[A] + \mathbb{P}[B] - \mathbb{P}[A \cap B].
+\]</div>
+<p>If "or" adds probability, how do we find the probability of <span class="arithmatex">\(A\)</span> and <span class="arithmatex">\(B\)</span>? Say I flip two coins. What's the probability that I flip heads on the first coin <em>and</em> tails on the second? If <span class="arithmatex">\(A\)</span> and <span class="arithmatex">\(B\)</span> are <em>independent</em> events, then their probabilities multiply. The probability of flipping a heads then a tails is <span class="arithmatex">\(\tfrac{1}{2} \times \tfrac{1}{2} = \tfrac{1}{4}\)</span>. (The probability that I flip heads and tails on the <em>same</em> flip is zero, since <span class="arithmatex">\(\mathbb{P}[H \cap T] = \mathbb{P}[\varnothing] = 0\)</span>.)</p>
+<h3 id="example-warings-theorem">Example: Waring's theorem<a class="headerlink" href="#example-warings-theorem" title="Permanent link">&para;</a></h3>
+<p>With these simple rules of "and" and "or," you can compute the probability of all sorts of things, like particular poker hands.</p>
+<p>Beyond some simple examples, these sorts of calculations can become very tedious. For example, say there are <span class="arithmatex">\(n\)</span> events <span class="arithmatex">\(A_1, \ldots, A_n\)</span> that are not necessarily disjoint. What is the probability that exactly <span class="arithmatex">\(r\)</span> of these events occur?</p>
+<p>Consider first the simple case with <span class="arithmatex">\(n=2\)</span> and <span class="arithmatex">\(r=1\)</span>. The result is:</p>
+<div class="arithmatex">\[
+\mathbb{P}[A_1] + \mathbb{P}[A_2] - \mathbb{P}[A_1 \cap A_2]
+\]</div>
+<p>In other words, the chance that one of <span class="arithmatex">\(A_1\)</span> or <span class="arithmatex">\(A_2\)</span> happens is the probability that either or both of them happen, minus the probability that both happen.</p>
+<p>If you had <span class="arithmatex">\(n=3\)</span> and <span class="arithmatex">\(r=1\)</span>, then you would need to start with the probabilities like <span class="arithmatex">\(\mathbb{P}[A_1]\)</span> that any of the three events happened, then subtract the three 2-way overlaps like <span class="arithmatex">\(\mathbb{P}[A_1 \cap A_2]\)</span>, but then add back in the single 3-way overlap <span class="arithmatex">\(\mathbb{P}[A_1 \cap A_2 \cap A_3]\)</span>.</p>
+<p>Extending this logic arrives <em>Waring's theorem</em>, which gives the generalized probability of exactly <span class="arithmatex">\(r\)</span> events occurring as:</p>
+<div class="arithmatex">\[
+\sum_{t=0}^{n-r} (-1)^t \binom{r+t}{t} S_{r+t}
+\]</div>
+<p>where</p>
+<div class="arithmatex">\[
+S_k = \sum_{i_1 &lt; i_2 &lt; \ldots &lt; i_k} \mathbb{P}[A_{i_1} \cap A_{i_2} \cap \ldots \cap A_{i_k}]
+\]</div>
+<p>This sort of result is powerful, but only for these limited kind of counting problems.</p>
+<h2 id="independence-and-conditional-probability">Independence and conditional probability<a class="headerlink" href="#independence-and-conditional-probability" title="Permanent link">&para;</a></h2>
+<p>Mathematically, <span class="arithmatex">\(A\)</span> and <span class="arithmatex">\(B\)</span> are independent if and only if their probabilities multiply. This might feel circular, so I will show you the logic.</p>
+<p>Intuitively, two events are independent if they do not depend on each other. If I flip two separate coins, or I flip the same coin twice, the one flip doesn't affect the other flip.</p>
+<p>It turns out that the simple phrase "depends on" produces deep philosophical questions. Just as "probability" had frequentist and Bayesian definitions, so there are multiple definitions of <em>conditional probability</em>. The easiest definition is:</p>
+<div class="arithmatex">\[
+\mathbb{P}[A | B] \equiv \frac{\mathbb{P}[A \cap B]}{\mathbb{P}[B]},
+\]</div>
+<p>where <span class="arithmatex">\(\mathbb{P}[A | B]\)</span> is pronounced "the probability of <span class="arithmatex">\(A\)</span> given <span class="arithmatex">\(B\)</span>".</p>
+<p>Although the definition of conditional probability is a mathematical axiom that cannot be proven or disproven, it is easy to get an intuitive picture of why it is chosen as an axiom. In a frequentist interpretation of probability, <span class="arithmatex">\(\mathbb{P}[A
+| B]\)</span> is, on a denominator of the trials in which <span class="arithmatex">\(B\)</span> happened, the proportion of trials in which <span class="arithmatex">\(A\)</span> also happened. Say <span class="arithmatex">\(n_B\)</span> is the number of trials in which <span class="arithmatex">\(B\)</span> happened, <span class="arithmatex">\(n_{AB}\)</span> is the number of trials in which <span class="arithmatex">\(A\)</span> and <span class="arithmatex">\(B\)</span> happened, and <span class="arithmatex">\(n\)</span> is the total number of trials. Then the proportion we're talking about is <span class="arithmatex">\(n_{AB} / n_B\)</span>, which corresponds to <span class="arithmatex">\(\mathbb{P}[A \cap B] / \mathbb{P}[B]\)</span>.</p>
+<p>I like to think of conditional probability as "zooming in" to a smaller sample space: rather than thinking about all of <span class="arithmatex">\(\Omega\)</span>, we are thinking only about the subset of outcomes <span class="arithmatex">\(\omega\)</span> where <span class="arithmatex">\(B\)</span> happened. To find <span class="arithmatex">\(\mathbb{P}[A|B]\)</span>, we imagine that <span class="arithmatex">\(B\)</span> is the entire sample space and consider the probability of <span class="arithmatex">\(A \cap B\)</span> in that space.</p>
+<p><img alt="" src="../img/conditional-probability.png" /></p>
+<p>If <span class="arithmatex">\(A\)</span> and <span class="arithmatex">\(B\)</span> are independent, then <span class="arithmatex">\(A\)</span> does not "depend on" <span class="arithmatex">\(B\)</span>: the probability of <span class="arithmatex">\(A\)</span> given that <span class="arithmatex">\(B\)</span> happened is equal to the probability of <span class="arithmatex">\(A\)</span> without knowing anything about <span class="arithmatex">\(B\)</span>: if <span class="arithmatex">\(A\)</span> and <span class="arithmatex">\(B\)</span> are independent, then <span class="arithmatex">\(\mathbb{P}[A | B] = \mathbb{P}[A]\)</span>, and thus <span class="arithmatex">\(\mathbb{P}[A \cap B] = \mathbb{P}[A] \times \mathbb{P}[B]\)</span>.</p>
+<h3 id="partitions">Partitions<a class="headerlink" href="#partitions" title="Permanent link">&para;</a></h3>
+<p>Many problems become much easier with <em>partitions.</em> A partition is a set of mutually-disjoint events <span class="arithmatex">\(B_1, \ldots, B_n\)</span> that cover the whole space of events:</p>
+<div class="arithmatex">\[
+\begin{gather*}
+B_i \cap B_j = \varnothing \text{ for } i \neq j \\
+\cup_{i=1}^n B_n = \Omega
+\end{gather*}
+\]</div>
+<p>Then you can break down any event based on this partition:</p>
+<div class="arithmatex">\[
+\mathbb{P}[A] = \sum_{i=1}^n \mathbb{P}[A|B_i] P[B_i]
+\]</div>
+<p>The proof is elementary, but the impacts are very useful.</p>
+<h3 id="example-monty-hall-problem">Example: Monty Hall problem<a class="headerlink" href="#example-monty-hall-problem" title="Permanent link">&para;</a></h3>
+<p>You are on a gameshow. There are three closed doors. Behind one door is a brand new card; behind the other two doors are "zonks," nominally worthless things like a live goat or an old sweater. You pick a door at random but, to create tension, the host does not open the door you picked, but instead opens one of the other two doors, revealing a zonk. You are given a choice: do you stick with the door you initially picked, or switch to the other unopened door?</p>
+<p>It's clear that, initially, you have a 1 in 3 chance of picking the car. Naively, it might seem like, after the other door is opened, you have a 1 in 2 chance of picking the car either way, so that it doesn't matter if you switch.</p>
+<p>In fact, it is much better to switch. To see why, let <span class="arithmatex">\(S\)</span> be the event that you get the car upon switching doors, and then partition on the events <span class="arithmatex">\(C\)</span> and <span class="arithmatex">\(Z\)</span> that you <em>a priori</em> picked the car or a zonk. Then:</p>
+<div class="arithmatex">\[
+\mathbb{P}[S] = \mathbb{P}[S|C] \mathbb{P}[C] + \mathbb{P}[S|Z] \mathbb{P}[Z] = 0 \cdot \tfrac{1}{3} + 1 \cdot \tfrac{2}{3} = \tfrac{2}{3}
+\]</div>
+<p>In other words, you are twice as likely to get the car if you switch.</p>
+<p>Another way to think about the problem is that: if you commit to not switching, then you keep that original 1 in 3 chance of getting the car, so it must be that switching has the remaining 2 in 3 chance.</p>
+<h3 id="example-simpsons-paradox">Example: Simpson's paradox<a class="headerlink" href="#example-simpsons-paradox" title="Permanent link">&para;</a></h3>
+<p>You run a clinical trial comparing two ways to treat kidney stones. Of the 350 patients who get treatment A, 273 have a good outcome. Of the 350 who get treatment B, 289 have a good outcome. Naively, it looks like treatment B is better.</p>
+<p>But now stratify the analysis by whether the kidney stones are large or small:</p>
+<table>
+<thead>
+<tr>
+<th>Stone size</th>
+<th>Treatment A</th>
+<th>Treatment B</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Small</td>
+<td>81/87 (93%)</td>
+<td>234/270 (87%)</td>
+</tr>
+<tr>
+<td>Large</td>
+<td>192/263 (73%)</td>
+<td>55/80 (68%)</td>
+</tr>
+<tr>
+<td>Total</td>
+<td>273/350 (78%)</td>
+<td>289/350 (83%)</td>
+</tr>
+</tbody>
+</table>
+<p>Note that treatment A outperforms treatment B for each of the two stone sizes but appears to performs worse overall.</p>
+<p>To show how this relates to partitions, write <span class="arithmatex">\(A\)</span> for having a good outcome from treatment A, and <span class="arithmatex">\(S\)</span> and <span class="arithmatex">\(L\)</span> for having a large or small stone:</p>
+<div class="arithmatex">\[
+\mathbb{P}[A] = \mathbb{P}[A|S] \mathbb{P}[S] + \mathbb{P}[A|L] \mathbb{P}[L]
+\]</div>
+<p>and similarly for <span class="arithmatex">\(B\)</span>.</p>
+<p>Clearly, as a patient, I have either a small stone or a large stone, so I would seem to prefer A. Then how is it that B performs better overall?</p>
+<p>The answer is that stone size and treatment are not independent: more of the small stones, which have overall better outcomes, are treated with treatment B. Although B has a lower success rate for small stones, it appears to win out overall, since it gets used on more of the easy cases. (In reality, this is because treatment A was more invasive, and so doctors and patients opted for the less invasive but less effective treatment when the stone was smaller.)</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections"], "search": "../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.f1b6f286.min.js"></script>
+      
+        <script src="../javascript/katex.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+    
+  </body>
+</html>

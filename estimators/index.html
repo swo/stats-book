@@ -1,0 +1,1027 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../statistics/">
+      
+      
+        <link rel="next" href="../confidence_intervals/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.3">
+    
+    
+      
+        <title>Estimators - A short introduction to advanced statistics for scientists</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.d7758b05.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#estimators" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="A short introduction to advanced statistics for scientists" class="md-header__button md-logo" aria-label="A short introduction to advanced statistics for scientists" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            A short introduction to advanced statistics for scientists
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Estimators
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/swo/stats-book" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="A short introduction to advanced statistics for scientists" class="md-nav__button md-logo" aria-label="A short introduction to advanced statistics for scientists" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    A short introduction to advanced statistics for scientists
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/swo/stats-book" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Probability
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Probability
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../functions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Functions
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../probability/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Probability
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../random_variables/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Random variables
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Descriptive statistics
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Descriptive statistics
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../statistics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Statistics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Estimators
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Estimators
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#parameters-populations-and-samples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parameters, populations, and samples
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-useful-example-the-german-tank-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      A useful example: the "German tank" problem
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consistent-estimators" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consistent estimators
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unbiased-estimators" class="md-nav__link">
+    <span class="md-ellipsis">
+      Unbiased estimators
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#efficient-estimators" class="md-nav__link">
+    <span class="md-ellipsis">
+      Efficient estimators
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#maximum-likelihood-estimators" class="md-nav__link">
+    <span class="md-ellipsis">
+      Maximum likelihood estimators
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-arithmetic-mean-as-an-estimator" class="md-nav__link">
+    <span class="md-ellipsis">
+      The arithmetic mean as an estimator
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../confidence_intervals/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Confidence intervals
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Inferential statistics
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Inferential statistics
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../inference/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Statistical inference
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tests/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tests
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../regression/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Regression
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../generating_functions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Generating functions
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Appendix
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#parameters-populations-and-samples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parameters, populations, and samples
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-useful-example-the-german-tank-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      A useful example: the "German tank" problem
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consistent-estimators" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consistent estimators
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unbiased-estimators" class="md-nav__link">
+    <span class="md-ellipsis">
+      Unbiased estimators
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#efficient-estimators" class="md-nav__link">
+    <span class="md-ellipsis">
+      Efficient estimators
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#maximum-likelihood-estimators" class="md-nav__link">
+    <span class="md-ellipsis">
+      Maximum likelihood estimators
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-arithmetic-mean-as-an-estimator" class="md-nav__link">
+    <span class="md-ellipsis">
+      The arithmetic mean as an estimator
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="estimators">Estimators<a class="headerlink" href="#estimators" title="Permanent link">&para;</a></h1>
+<h2 id="parameters-populations-and-samples">Parameters, populations, and samples<a class="headerlink" href="#parameters-populations-and-samples" title="Permanent link">&para;</a></h2>
+<p>Some people refer to statistics (the functions) as <em>sample statistics</em> to emphasize that they are functions of a sample of data that was drawn from some larger <em>population</em>, which has some fixed an unknowable <em>parameters</em> that describe it. For example, if you draw many data points <span class="arithmatex">\(x_i\)</span> from a distribution and compute the mean of the drawn data points, you do not expect that the <em>sample</em> mean that you compute will be exactly equal to the true <em>population</em> mean.</p>
+<p>In mathematical terms, we say that a random variable <span class="arithmatex">\(X\)</span> has some expected value <span class="arithmatex">\(\mathbb{E}[X]\)</span> that is fixed. A random variable is a function, and the expected value is another function that links the random variable with a single number. There is nothing "random" about this so far. The analogy to the random sample are iid random variables <span class="arithmatex">\(X_i\)</span>, so the sample mean is analogous to the estimator <span class="arithmatex">\(t(X)\)</span>.</p>
+<p>Ideally, the estimator <span class="arithmatex">\(t(X)\)</span> will actually reflect the parameter <span class="arithmatex">\(\mathbb{E}[X]\)</span> that we wanted to learn about. The rest of this section will discuss what makes a "good" estimator.</p>
+<h2 id="a-useful-example-the-german-tank-problem">A useful example: the "German tank" problem<a class="headerlink" href="#a-useful-example-the-german-tank-problem" title="Permanent link">&para;</a></h2>
+<p>To examine the properties of estimators and what makes an estimator a "good" one, I will use an example that is mathematically tractable but just unfamiliar enough to make you think.</p>
+<p>During World War II, it was important to the Allies to know how many tanks Germany was producing. The traditional approach was to use spies and aerial reconnaissance. The new approach was to use statistics on serial numbers, which turned out to be much more accurate.</p>
+<p>A serial number is a unique number written on a manufactured part. Serial numbers are usually assigned in sequential order, so that older parts have lower serial numbers and newer parts have higher numbers. German tanks had serial numbers. When the Allies captured German tanks, they took note of those numbers, which gave them a clue about how may thanks there were. For example, if you captured three tanks and found serial numbers 1, 3, and 5, you know there are at least 5 tanks total, and there probably aren't more than 10 or so. If you find serial numbers 100, 300, and 500, then you know there are at least 500 tanks, and there are probably more like 1,000.</p>
+<p>The Allies had a fairly complex problem, because they wanted to estimate the rate of production, and they had many serial numbers on many different parts of the tank, some of which were not exactly sequential. Let's instead consider an abstracted, simplified version of this problem. Say you drew <span class="arithmatex">\(n\)</span> numbers from <em>uniform distribution</em> ranging from <span class="arithmatex">\(A\)</span> to some unknown upper limit <span class="arithmatex">\(B\)</span>. You want to estimate <span class="arithmatex">\(B\)</span>, which is analogous to the number of German tanks out there.</p>
+<p>Mathematically, we are interested in iid random variables <span class="arithmatex">\(X\)</span> that follow the uniform distribution:</p>
+<div class="arithmatex">\[
+\begin{gathered}
+f_X(x) = \frac{1}{B-A} \text{ for } A \leq x \leq B \\
+F_X(x) = \frac{x-A}{B-A} \text{ for } A \leq x \leq B
+\end{gathered}
+\]</div>
+<p>For simplicity, let's say that <span class="arithmatex">\(A=0\)</span> so that <span class="arithmatex">\(f_X(x) = 1/B\)</span> and <span class="arithmatex">\(f_X(x) = x/B\)</span> for <span class="arithmatex">\(0 \leq x \leq B\)</span>.</p>
+<p>Our challenge is to create a statistic, a function of the data, that estimates the parameter <span class="arithmatex">\(B\)</span> and then examine the mathematical properties of the corresponding estimator. It's typical to denote estimators with a "hat", so we will write our estimators like <span class="arithmatex">\(\hat{B}\)</span>. It's also typical to denote statistics with lower-case letters reminiscent of the true value, so we'll use names like <span class="arithmatex">\(b\)</span>. To be clear, <span class="arithmatex">\(b\)</span> is a function of numbers, although we also write <span class="arithmatex">\(\hat{B} = b(X)\)</span>, where now "<span class="arithmatex">\(b\)</span>" means some manipulation of a set of iid random variables to create a new random variable.</p>
+<h2 id="consistent-estimators">Consistent estimators<a class="headerlink" href="#consistent-estimators" title="Permanent link">&para;</a></h2>
+<p>Let me start with what will seem like a very inane choice of statistic. Maybe my favorite number is 3, so I will say that, regardless of what data I collect, I will just always guess that <span class="arithmatex">\(B\)</span> is 3:</p>
+<div class="arithmatex">\[
+b(x_1, \ldots, x_n) \equiv 3.
+\]</div>
+<p>The corresponding estimator <span class="arithmatex">\(\hat{B}\)</span> is very simple. It takes on the value 3 with 100% probability:</p>
+<div class="arithmatex">\[
+f_{\hat{B}}(x) = \begin{cases}
+1 &amp;\text{if $x = 3$} \\
+0 &amp;\text{otherwise}
+\end{cases}
+\]</div>
+<p>This is clearly a bad estimator. No matter how much data I accumulate, my estimate doesn't improve. I will only be "right" if <span class="arithmatex">\(B\)</span>, by some miracle, happens to be exactly <span class="arithmatex">\(3\)</span>. By contrast, my expectation would be that, in the limit of collecting a lot of data, the statistic <span class="arithmatex">\(b\)</span> would be almost guaranteed to be very close to <span class="arithmatex">\(B\)</span>. This requirement is called <em>consistency</em>.</p>
+<p>Mathematically, I want the probability that <span class="arithmatex">\(\hat{B}\)</span> takes on a value far from <span class="arithmatex">\(B\)</span> to get close to zero as I collect more and more data. This requires defining what a "limit" is for a series of random variables. For a sequence of numbers, a limit means that, for any <em>a priori</em>, fixed threshold <span class="arithmatex">\(\varepsilon &gt; 0\)</span>, there is some integer <span class="arithmatex">\(n\)</span> such that every value in the sequence after the <span class="arithmatex">\(n\)</span>-th one is within <span class="arithmatex">\(\varepsilon\)</span> of the true value:</p>
+<div class="arithmatex">\[
+\lim_{n\to\infty} a_n = L \implies \text{for any $\varepsilon &gt; 0$ there exists some $n$ such that } |a_i - L| &lt; \varepsilon \text{ for all $i \geq n$}.
+\]</div>
+<p>For example, given the geometric series <span class="arithmatex">\(1, \tfrac{1}{2}, \tfrac{1}{4}, \ldots\)</span>, if you pick the threshold <span class="arithmatex">\(\varepsilon = \tfrac{1}{100}\)</span>, I can pick <span class="arithmatex">\(n=7\)</span>, since the terms in the series are equal to <span class="arithmatex">\(\tfrac{1}{2^n}\)</span>, and <span class="arithmatex">\(\tfrac{1}{2^7} = \tfrac{1}{128}\)</span>. All subsequent terms in the series will be even closer to zero than that term.</p>
+<p>In probability, if you give me <span class="arithmatex">\(\varepsilon\)</span>, in most cases I cannot pick an <span class="arithmatex">\(n\)</span> such that the estimator maps all values outside that threshold to zero probability. Casually speaking, even after a trillion data points, there is no guarantee that a series of random data points won't stray from their limit. Instead, in probability, we say that a sequence of random variables <span class="arithmatex">\(X_n\)</span> <em>converges</em> toward a number <span class="arithmatex">\(a\)</span> if</p>
+<div class="arithmatex">\[
+\lim_{n \to \infty} \mathbb{P}[|X_n - a| &gt; \varepsilon] = 0,
+\]</div>
+<p>that is, if the probability that <span class="arithmatex">\(X_n\)</span> takes on a value more than <span class="arithmatex">\(\varepsilon\)</span> away from <span class="arithmatex">\(a\)</span> approaches zero as <span class="arithmatex">\(n\)</span> increases. An estimator is <em>consistent</em> if the series of random variables corresponding to collecting more and more data converge toward the true value.</p>
+<p>In our example, <span class="arithmatex">\(\hat{B}_1\)</span> corresponds to the estimator when we only collect 1 data point, <span class="arithmatex">\(\hat{B}_2\)</span> when we collect 2, and so on. In the dumb example where <span class="arithmatex">\(\hat{B}\)</span> only takes on the value 3, the <span class="arithmatex">\(\hat{B}_n\)</span> converge to 3, but not to <span class="arithmatex">\(B\)</span>, except in the unlikely case that <span class="arithmatex">\(B\)</span> just happens to be 3.</p>
+<p>For our second guess, let's use a more reasonable statistic. Say that <span class="arithmatex">\(b\)</span> is the maximum of whatever data points we collected:</p>
+<div class="arithmatex">\[
+b(x_1, \ldots, x_n) = \max_i x_i.
+\]</div>
+<p>I know I can write out an analogous equation to define the estimator:</p>
+<div class="arithmatex">\[
+\hat{B} = \max_i X_i.
+\]</div>
+<p>But what does it mean to take the maximum of two random variables? Recall that, we computed the distribution of a sum of two random variables <span class="arithmatex">\(Z = X + Y\)</span> as <span class="arithmatex">\(f_Z(z) = \int f_X(x) f_Y(z-x) \,dx\)</span>. For a maximum, it is easier to express the new variable's distribution using its cdf. To say <span class="arithmatex">\(Z = \max[X, Y]\)</span> means that, if <span class="arithmatex">\(X\)</span> and <span class="arithmatex">\(Y\)</span> are independent,</p>
+<div class="arithmatex">\[
+\begin{aligned}
+F_Z(z) &amp;= \mathbb{P}[Z \leq z] \\
+&amp;= \mathbb{P}[(X \leq x) \cap (Y \leq y)] \\
+&amp;= \mathbb{P}[X \leq x] \, \mathbb{P}[Y \leq y] \\
+&amp;= F_X(x) F_Y(y)
+\end{aligned}
+\]</div>
+<p>So if <span class="arithmatex">\(F_X(x) = x/B\)</span>, then <span class="arithmatex">\(F_{\hat{B}_n} = (x/B)^n\)</span>. Note that <span class="arithmatex">\(\hat{B}_n\)</span> can only take on values between <span class="arithmatex">\(0\)</span> and <span class="arithmatex">\(B\)</span>, so if it diverges from <span class="arithmatex">\(B\)</span>, it will do so by falling short:</p>
+<div class="arithmatex">\[
+\begin{aligned}
+\mathbb{P}\left[ |\hat{B}_n - B| &gt; \varepsilon \right]
+&amp;= \mathbb{P}[\hat{B}_n \leq B - \varepsilon] \\
+&amp;= F_{\hat{B}_n}(B - \varepsilon) \\
+&amp;= \left(\frac{B - \varepsilon}{B}\right)^n \\
+&amp;= \left(1 - \frac{\varepsilon}{B}\right)^n.
+\end{aligned}
+\]</div>
+<p>For <span class="arithmatex">\(\varepsilon &gt; 0\)</span>, this limit of this number, as <span class="arithmatex">\(n \to \infty\)</span>, is zero, and thus <span class="arithmatex">\(\hat{B}_n\)</span> converges to <span class="arithmatex">\(B\)</span>, so <span class="arithmatex">\(\hat{B}\)</span> is a consistent estimator.</p>
+<h2 id="unbiased-estimators">Unbiased estimators<a class="headerlink" href="#unbiased-estimators" title="Permanent link">&para;</a></h2>
+<p>It is a nice thing that our estimator <span class="arithmatex">\(\hat{B}\)</span> is consistent: as we get more and more data, the statistic <span class="arithmatex">\(b\)</span> will end up closer and closer to the true value <span class="arithmatex">\(B\)</span>. It is disappointing, though, that <span class="arithmatex">\(b\)</span> is always an underestimate. If the data points <span class="arithmatex">\(x_i\)</span> are randomly distributed between <span class="arithmatex">\(0\)</span> and <span class="arithmatex">\(B\)</span>, and we take <span class="arithmatex">\(b = \max_i x_i\)</span>, it is necessarily the case that <span class="arithmatex">\(b &lt; B\)</span>. Because <span class="arithmatex">\(b\)</span> is not "centered around" <span class="arithmatex">\(B\)</span>, we say that <span class="arithmatex">\(\hat{B}\)</span> is a <em>biased</em> estimator.</p>
+<p>Consider the extreme case where <span class="arithmatex">\(n=1\)</span>: we draw only one data point <span class="arithmatex">\(x\)</span>, which is somewhere between <span class="arithmatex">\(0\)</span> and <span class="arithmatex">\(B\)</span>. Intuitively, I might expect <span class="arithmatex">\(x\)</span> to be about halfway between <span class="arithmatex">\(0\)</span> and <span class="arithmatex">\(B\)</span>, that is, that <span class="arithmatex">\(x \approx \tfrac{1}{2}B\)</span>, so that <span class="arithmatex">\(b\)</span> underestimates <span class="arithmatex">\(B\)</span> by a factor of <span class="arithmatex">\(\tfrac{1}{2}\)</span>. And if <span class="arithmatex">\(n=2\)</span>, then I might expect those points, roughly speaking, to land somewhere like <span class="arithmatex">\(\tfrac{1}{3}B\)</span> and <span class="arithmatex">\(\tfrac{2}{3}B\)</span>, so that <span class="arithmatex">\(b\)</span> underestimates <span class="arithmatex">\(B\)</span> by a factor of about <span class="arithmatex">\(\tfrac{1}{3}\)</span>. These factors appear to shrink as <span class="arithmatex">\(n\)</span> increases, which makes sense, since <span class="arithmatex">\(\hat{B}\)</span> is a consistent estimator. But can we do something to figure out, mathematically, what that factor should be?</p>
+<p>We do this by examining the expected value of the estimator:</p>
+<div class="arithmatex">\[
+\mathbb{E}[\hat{B]} = \int_0^B x \, f_{\hat{B}}(x) \, dx.
+\]</div>
+<p>We said above that <span class="arithmatex">\(F_{\hat{B}} = (x/B)^n\)</span>, from which it follows that</p>
+<div class="arithmatex">\[
+f_{\hat{B}}(x) = \frac{d}{dx} F_{\hat{B}} = \frac{n}{B^n} x^{n-1}.
+\]</div>
+<p>Plugging this definition of <span class="arithmatex">\(f_{\hat{B}}\)</span> into the integral gives</p>
+<div class="arithmatex">\[
+\mathbb{E}[\hat{B]} = \int_0^B \frac{n}{B^n} x^n \, dx = \frac{n}{n+1} B.
+\]</div>
+<p>This result accords exactly with our intuition above: for <span class="arithmatex">\(n=1\)</span>, the expected value of <span class="arithmatex">\(\hat{B}\)</span> is <span class="arithmatex">\(\tfrac{1}{2}B\)</span>. For <span class="arithmatex">\(n=2\)</span>, it is <span class="arithmatex">\(\tfrac{2}{3}B\)</span>, and so forth. Based on this finding, we can define a new estimator:</p>
+<div class="arithmatex">\[
+\hat{B}_\mathrm{unbiased} \equiv \frac{n+1}{n} \max_i X_i.
+\]</div>
+<p>This ensures that our estimates for <span class="arithmatex">\(B\)</span> are "centered" around <span class="arithmatex">\(B\)</span>, because <span class="arithmatex">\(\mathbb{E}[\hat{B}_\mathrm{unbiased}] = B\)</span>. More generally, we say that an estimator is <em>unbiased</em> if its expected value is equal to the parameter it is estimating.</p>
+<p>Note the subtlety in what we did: without actually knowing what <span class="arithmatex">\(B\)</span> is, we found a way to adjust the way that we estimate <span class="arithmatex">\(B\)</span> to ensure that we come up with a more accurate estimate. I was mystified in introductory statistics that, while we computed variance as <span class="arithmatex">\(\tfrac{1}{n} \sum_i (x_i - \mu)^2\)</span>, we computed <em>sample variance</em> as <span class="arithmatex">\(\tfrac{1}{n-1} \sum_i (x_i - \mu)^2\)</span>. The standard explanation has something to do with "degrees of freedom", which I never understood. There is, I think, a more straightforward explanation, which you can now understand, which is that the <span class="arithmatex">\(n-1\)</span> is there in the sample variance, instead of <span class="arithmatex">\(n\)</span>, because it corrects for a bias.</p>
+<h2 id="efficient-estimators">Efficient estimators<a class="headerlink" href="#efficient-estimators" title="Permanent link">&para;</a></h2>
+<p>Consistency ensures that, in the limit of infinite data, our estimate approaches the true value. How can we be sure that we are getting the best estimate for our data, given the fact that we can't collect infinite data? This question relates to the concept of <em>efficiency</em>. One unbiased estimator <span class="arithmatex">\(\hat{X}_1\)</span> is more <em>efficient</em> than another unbiased estimator <span class="arithmatex">\(\hat{X}_2\)</span> if it has lower variance:</p>
+<div class="arithmatex">\[
+\mathbb{V}[\hat{X}_1] &lt; \mathbb{V}[\hat{X}_2].
+\]</div>
+<p>As we will see, confidence intervals are related to the variance of an estimator, so a more efficient estimator means that we can get more narrow confidence intervals for the same amount of data, which is clearly a desirable thing. I don't want to appear more ignorant than I have to be, just because I picked a poor estimator!</p>
+<p>It turns out that there is a theoretical lower limit to the variance of estimators called the <em>Cramér-Rao bound</em>, and many estimators actually hit this limit. Therefore, rather than saying that one estimator is <em>more</em> efficient than another, we usually just say that an estimator is "efficient", meaning that it hits the lower bound on variance and is maximally efficient.</p>
+<p>The math behind efficiency is somewhat complex, so I will simply tell you that a whole class of estimators, <em>maximum likelihood</em> estimators, are efficient.</p>
+<h2 id="maximum-likelihood-estimators">Maximum likelihood estimators<a class="headerlink" href="#maximum-likelihood-estimators" title="Permanent link">&para;</a></h2>
+<p>The German tank problem has a useful toy example, but it's hard to imagine deriving estimators by hand for the kind of complex data analysis that most scientists do. Fortunately, modern computing means that we can address all sorts of complex data using a <em>maximum likelihood</em> (ML) approach. In a maximum likelihood approach, you specify a theoretical model for how your data are generated, and then you use optimization to estimate values for the parameters that best "fit" the data.</p>
+<p>The word <em>likelihood</em> is confusing because, in common speech, "probability" and "likelihood" are synonymous. In statistics jargon, the likelihood function is just the probability density function, except that it treats the parameters as the varying input and the data as fixed. Say we have some data <span class="arithmatex">\(x\)</span> that was drawn from a probability distribution with density function <span class="arithmatex">\(f_X\)</span>. We often think about families of probability distributions and name them by their parameters. For example, we say that a normal distribution is defined by two parameters, its mean and its variance. So say that the density function <span class="arithmatex">\(f_X\)</span> changes depending on some parameter (or parameters) <span class="arithmatex">\(\theta\)</span>. We write the density function as <span class="arithmatex">\(f_X(x; \theta)\)</span> to emphasize that, while the parameters <span class="arithmatex">\(\theta\)</span> are relevant, we think of them as fixed. By contrast, we write the likelihood function <span class="arithmatex">\(L\)</span> as <span class="arithmatex">\(L(\theta; x) \equiv f_X(x; \theta)\)</span>. For likelihood, we consider the data fixed and vary the parameters.</p>
+<p>To see how this plays out, let's return to the German tank problem. Given some data points <span class="arithmatex">\(x_i\)</span>, what is the probability density of drawing that data, for some varying parameter <span class="arithmatex">\(B\)</span>? We look for the value of <span class="arithmatex">\(B\)</span> that maximizes the probability density function for all the measured data points <span class="arithmatex">\(x_i\)</span>. This kind of optimization is called <em>argmax</em>. While <em>max</em> asks for the maximum value of some function <span class="arithmatex">\(f(x)\)</span> when varying <span class="arithmatex">\(x\)</span>, argmax asks for the value of <span class="arithmatex">\(x\)</span> that leads to <span class="arithmatex">\(f(x)\)</span> being maximized. Thus:</p>
+<div class="arithmatex">\[
+\begin{aligned}
+    \hat{B}_\mathrm{ML}
+    &amp;= \argmax_B \prod_i f_X(x_i; B) \\
+    &amp;= \argmax_B \prod_i \begin{cases}
+      1/B &amp; 0 \leq x_i \leq B \\
+      0 &amp; x_i &gt; B
+    \end{cases} \\
+    &amp;= \argmax_B \begin{cases}
+      (1/B)^n &amp; x_i &gt; B \text{ for any $i$} \\
+      0 &amp; \text{otherwise}
+     \end{cases} \\
+    &amp;= \max_i x_i
+\end{aligned}
+\]</div>
+<p>Note that, in the maximum likelihood approach, when computing <span class="arithmatex">\(f_X(x_i; B)\)</span>, we assume that we know <span class="arithmatex">\(B\)</span>, because it is the parameter we are optimizing over. This makes the maximum likelihood computation relatively simple: we cannot choose <span class="arithmatex">\(\hat{B}_\mathrm{ML}\)</span> to be smaller than the maximum of the observed values <span class="arithmatex">\(x_i\)</span>, because that would make the observed data impossible, and we set <span class="arithmatex">\(\hat{B}_\mathrm{ML}\)</span> at exactly <span class="arithmatex">\(\max_i x_i\)</span> because choosing any greater value would make the observed data seem unusual. If <span class="arithmatex">\(B\)</span> were actually much, much higher than <span class="arithmatex">\(\max_i x_i\)</span>, the observed data would be rare, being clustered very close to zero, relative to that very large <span class="arithmatex">\(B\)</span>.</p>
+<p>Note also that the maximum likelihood approach for the German tank problem gave us a consistent estimator, but not an unbiased one. Given certain mathematical necessities that are probably true for your applications, maximum likelihood estimators are consistent, but they are in general not biased.</p>
+<p>Again, a key practical advantage of maximum likelihood estimation is that it requires only a computer and an articulation of how the data are generated.</p>
+<h2 id="the-arithmetic-mean-as-an-estimator">The arithmetic mean as an estimator<a class="headerlink" href="#the-arithmetic-mean-as-an-estimator" title="Permanent link">&para;</a></h2>
+<p>The German tank problem has simple math, but it is not a familiar application. Let us consider instead a very familiar estimator, the arithmetic mean, that is, the simple average of numbers. Just as the mean of some set of numbers <span class="arithmatex">\(x_i\)</span> is <span class="arithmatex">\((1/n) \sum_i x_i\)</span>, we analogously define the estimator <span class="arithmatex">\(\hat{\mathbb{E}}_X \equiv (1/n) \sum_i X_i\)</span> of the mean of i.i.d. random variables <span class="arithmatex">\(X_i\)</span>.</p>
+<p>It is immediately clear that <span class="arithmatex">\(\hat{\mathbb{E}}_X\)</span> is an unbiased estimator of <span class="arithmatex">\(\mathbb{E}[X]\)</span>:</p>
+<div class="arithmatex">\[
+\mathbb{E}[\hat{\mathbb{E}}_X] = \mathbb{E}\left[\frac{1}{n} \sum_i X_i \right] = \frac{1}{n} \mathbb{E}[X_i] = \mathbb{E}[X].
+\]</div>
+<p>But is <span class="arithmatex">\(\hat{\mathbb{E}}_X\)</span> as consistent estimator of <span class="arithmatex">\(\mathbb{E}[X]\)</span>? The mathematician Jacob Bernoulli published the first proof of this fact for a special case of random variables (i.e., those following the Bernoulli distribution) in 1713. It took him 20 years to develop a rigorous proof for what he proudly called the "Golden Theorem". Now the proof is considerably simpler and broader, and we call it the <em>law of large numbers</em>.</p>
+<p>The modern proof of the law of large numbers follows from an observation about the variance of the estimator <span class="arithmatex">\(\hat{\mathbb{E}}_X\)</span> that was surprising to many early statisticians:</p>
+<div class="arithmatex">\[
+\mathbb{V}\left[\hat{\mathbb{E}}_X \right] = \mathbb{V}\left[\frac{1}{n} \sum_i X_i \right] = \frac{1}{n^2} \sum_i \mathbb{V}[X_i] = \frac{1}{n} \mathbb{V}[X]
+\]</div>
+<p>In words, the variance of the estimator is <span class="arithmatex">\(1/n\)</span> of the variance of the underlying random variable it is estimating. Intuitively, this means that, as you take more data, you are ever more likely to get an estimate near to the true mean of the underlying population you are sampling. This result makes it clear that <span class="arithmatex">\(\hat{\mathbb{E}}_X\)</span> is a consistent estimator, because for arbitrarily high <span class="arithmatex">\(n\)</span>, it has arbitrarily low variance.</p>
+<p>Because the <em>standard deviation</em>, the square root of the variance, is more intuitive, one can say that the standard deviation of the estimator decreases with the square root of <span class="arithmatex">\(n\)</span>. To distinguish the standard deviation of the estimator from the standard deviation of the underlying population, <span class="arithmatex">\(\mathbb{V}[\hat{\mathbb{E}}_X]\)</span> is also called the <em>standard error of the mean</em>. With more data points <span class="arithmatex">\(n\)</span>, you can get an ever more precise estimate of the mean, so the standard error of the mean declines, but the standard error of the underlying population <span class="arithmatex">\(\mathbb{V}[X]\)</span> is fixed.</p>
+<p>This result was surprising because it was expected that the standard error would scale like <span class="arithmatex">\(1/n\)</span> rather than <span class="arithmatex">\(1/\sqrt{n}\)</span>. In other words, it was expected that, if you collected double the data, you would get double the precision. In fact, when you double the data, you get only an improvement of <span class="arithmatex">\(\sqrt{2}\)</span>, of 41%, in standard error. More starkly, if you take one hundred times the data, you get only a ten-fold increase in precision.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections"], "search": "../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.f1b6f286.min.js"></script>
+      
+        <script src="../javascript/katex.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+    
+  </body>
+</html>

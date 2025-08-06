@@ -1,0 +1,974 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../estimators/">
+      
+      
+        <link rel="next" href="../inference/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.3">
+    
+    
+      
+        <title>Confidence intervals - A short introduction to advanced statistics for scientists</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.d7758b05.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#confidence-intervals" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="A short introduction to advanced statistics for scientists" class="md-header__button md-logo" aria-label="A short introduction to advanced statistics for scientists" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            A short introduction to advanced statistics for scientists
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Confidence intervals
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/swo/stats-book" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="A short introduction to advanced statistics for scientists" class="md-nav__button md-logo" aria-label="A short introduction to advanced statistics for scientists" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    A short introduction to advanced statistics for scientists
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/swo/stats-book" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Probability
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Probability
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../functions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Functions
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../probability/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Probability
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../random_variables/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Random variables
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Descriptive statistics
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Descriptive statistics
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../statistics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Statistics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../estimators/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Estimators
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Confidence intervals
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Confidence intervals
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      Definition
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#meaning-and-interpretation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Meaning and interpretation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#constructing-intervals" class="md-nav__link">
+    <span class="md-ellipsis">
+      Constructing intervals
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#properties-of-confidence-intervals" class="md-nav__link">
+    <span class="md-ellipsis">
+      Properties of confidence intervals
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resampling-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      Resampling methods
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Resampling methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bootstrap" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bootstrap
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jackknife" class="md-nav__link">
+    <span class="md-ellipsis">
+      Jackknife
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#profile-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      Profile method
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Inferential statistics
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Inferential statistics
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../inference/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Statistical inference
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tests/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tests
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../regression/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Regression
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../generating_functions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Generating functions
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Appendix
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      Definition
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#meaning-and-interpretation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Meaning and interpretation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#constructing-intervals" class="md-nav__link">
+    <span class="md-ellipsis">
+      Constructing intervals
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#properties-of-confidence-intervals" class="md-nav__link">
+    <span class="md-ellipsis">
+      Properties of confidence intervals
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resampling-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      Resampling methods
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Resampling methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bootstrap" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bootstrap
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jackknife" class="md-nav__link">
+    <span class="md-ellipsis">
+      Jackknife
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#profile-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      Profile method
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="confidence-intervals">Confidence intervals<a class="headerlink" href="#confidence-intervals" title="Permanent link">&para;</a></h1>
+<h2 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link">&para;</a></h2>
+<p>So far we have worked with <em>point estimates</em>, that is, guesses for population parameters that are just a single number. This presents a problem, because statistics and probability are all about uncertainty, and we know that the point estimate we make for, say, <span class="arithmatex">\(B\)</span> in the German tank problem will likely never be exactly correct, even if the estimator is consistent, unbiased, and efficient.</p>
+<p>In the frequentist framework, the approach for expressing uncertainty is using <em>confidence intervals</em>. A confidence interval for a parameter <span class="arithmatex">\(\theta\)</span> with estimator <span class="arithmatex">\(\hat{\theta}\)</span> at <em>level</em> <span class="arithmatex">\(1-\alpha\)</span> is a pair of estimators <span class="arithmatex">\(\hat{\theta}_-\)</span> and <span class="arithmatex">\(\hat{\theta}_+\)</span> defined such that, for any parameter value <span class="arithmatex">\(\theta\)</span>, it holds that: <span class="arithmatex">\(<span class="arithmatex">\(\mathbb{P}[\hat{\theta]_- \leq \theta \leq \hat{\theta}_+} \geq 1 - \alpha.\)</span>\)</span> A typical value for <span class="arithmatex">\(\alpha\)</span> is 5%, or <span class="arithmatex">\(0.05\)</span>, which yields 95% confidence intervals. A higher <span class="arithmatex">\(\alpha\)</span> corresponds to a lower probability of error, and thus wider confidence intervals, for which we are more sure that the interval actually contains the true value. Thus a 99% confidence interval is wide and a 90% confidence interval is narrow.</p>
+<p>This equation is typically read as saying "the probability that the value of the unknown parameter <span class="arithmatex">\(\theta\)</span> is between <span class="arithmatex">\(\hat{\theta}_-\)</span> and <span class="arithmatex">\(\hat{\theta}_+\)</span> is 95%". The typical conceptualization is then to imagine that <span class="arithmatex">\(\theta\)</span> is varying, bopping around inside the confidence interval set by <span class="arithmatex">\(\hat{\theta}_-\)</span> and <span class="arithmatex">\(\hat{\theta}_+\)</span>. In fact, however, it is the intervals that are the random variables, and the parameter is the constant fixed point around which those random variables are bopping.</p>
+<p>Note that, in the frequentist approach, we develop two statistics ---functions of the observed data--- such that their corresponding estimators will, with some probability, enclose the true value, for every possible true value. Strictly speaking, you must select a method for constructing confidence intervals such that, for any parameter <span class="arithmatex">\(\theta\)</span> I choose, the proportion of infinitely many repeated trials will produce realizations of the confidence interval that enclose <span class="arithmatex">\(\theta\)</span>.</p>
+<h2 id="meaning-and-interpretation">Meaning and interpretation<a class="headerlink" href="#meaning-and-interpretation" title="Permanent link">&para;</a></h2>
+<p>If this introduction has been a bit befuddling, then you are in good company. Confidence intervals are a very new concept. They were first introduced in the statistical literature in 1937 and become commonplace in scientific work only in the later 20th century. It is perhaps no surprise, given its youth, that the concept of the confidence interval is very confusing.</p>
+<p>The most common misconception about confidence intervals is that they represent <em>confidence</em>. (One might argue that "confidence" was a poor word to use to name this thing!) In this misconception, we can have 95% confidence that the true parameter <span class="arithmatex">\(\theta\)</span> lies inside the confidence interval constructed after the experimental data has been gathered. Strictly speaking, this is incorrect. In a frequentist framework, the true value is either inside the realized confidence interval, or it is not; our ignorance of the true value has nothing to do with probability. In fact, the interval that encloses the true value with some "confidence" is a Bayesian concept, the <em>credible interval</em>. "Confidence" is part of the Bayesian definition of probability; it is foreign to the frequentist construction.</p>
+<p>To a practicing scientist, this distinction might appear entirely semantic. But if anyone tells you there is a 95% probability that the true value of a parameter falls within some fairly specific range, you should be very skeptical. Would you, for example, bet twenty-to-one odds that they were correct? I would not, not because they had miscomputed their statistics, but because their experimental approach is very likely imperfect.</p>
+<h2 id="constructing-intervals">Constructing intervals<a class="headerlink" href="#constructing-intervals" title="Permanent link">&para;</a></h2>
+<p>Regardless of what confidence intervals really mean, they are useful for producing some quantification of uncertainty.</p>
+<p>To show how confidence intervals are constructed, consider the German tank problem again. Our unbiased point estimate is <span class="arithmatex">\(\hat{B} = \tfrac{n+1}{n} \max_i X_i\)</span>. We will design a <em>symmetric</em> confidence interval, which means that: <span class="arithmatex">\(<span class="arithmatex">\(\mathbb{P}[\hat{B]_- \leq B} = \mathbb{P}[\hat{B]_+ \geq B} = 1 - \frac{\alpha}{2}\)</span>\)</span> This confidence interval is symmetric because the probability that the confidence interval will not include <span class="arithmatex">\(B\)</span> because it is too low is equal to the probability that it will not include <span class="arithmatex">\(B\)</span> because it is too high. For a 95% confidence interval, the probability of the confidence interval being wrong on either side is <span class="arithmatex">\(2.5\%\)</span>, for a 5% total probability of error.</p>
+<p>To construct <span class="arithmatex">\(\hat{B}_-\)</span> and <span class="arithmatex">\(\hat{B}_+\)</span>, we will find the range of values in which the point estimator <span class="arithmatex">\(\hat{B}\)</span> is to expected fall, given <span class="arithmatex">\(B\)</span>. We found that the cdf for the biased estimator <span class="arithmatex">\(\max_i X_i\)</span> was <span class="arithmatex">\((x/B)^n\)</span>, so the cdf for the unbiased point estimator is: <span class="arithmatex">\(<span class="arithmatex">\(\mathbb{P}[\hat{B] \leq x} = \frac{n+1}{n} \left(\frac{x}{B}\right)^n\)</span>\)</span> First, we use this cdf to find the value of <span class="arithmatex">\(x\)</span> such that <span class="arithmatex">\(\hat{B}\)</span> will fall below it with probability <span class="arithmatex">\(1-\frac{\alpha}{2}\)</span>: <span class="arithmatex">\(<span class="arithmatex">\(\mathbb{P}[\hat{B] \leq x} = 1 - \frac{\alpha}{2} \implies x = \left( \frac{\alpha}{2} \frac{n}{n+1}\right)^{1/n} B\)</span>\)</span> Next, we "invert" this relationship: <span class="arithmatex">\(<span class="arithmatex">\(1 - \frac{\alpha}{2}
+    = \mathbb{P}[\hat{B] \leq \left( \frac{\alpha}{2} \frac{n}{n+1}\right)^{1/n} B}
+    = \mathbb{P}[\left( \frac{\alpha]{2} \frac{n}{n+1}\right)^{-1/n} \hat{B} \leq B}\)</span>\)</span> And thus, we have found our lower confidence interval: <span class="arithmatex">\(<span class="arithmatex">\(\hat{B}_- = \left( \frac{\alpha}{2} \frac{n}{n+1}\right)^{-1/n} \hat{B}\)</span>\)</span> A similar exercise shows that: <span class="arithmatex">\(<span class="arithmatex">\(\hat{B}_+ = \left[ \left(1- \frac{\alpha}{2}\right) \frac{n}{n+1}\right]^{-1/n} \hat{B}\)</span>\)</span></p>
+<p>As an example, for <span class="arithmatex">\(n=5\)</span>, <span class="arithmatex">\(\max x_i = 1\)</span>, and <span class="arithmatex">\(\alpha = 5\%\)</span>, we have <span class="arithmatex">\(\hat{B} = 1.2\)</span>, <span class="arithmatex">\(\hat{B}_- = 1.04\)</span> and <span class="arithmatex">\(\hat{B}_+ = 2.17\)</span>. For <span class="arithmatex">\(n=100\)</span> and the same observed maximum <span class="arithmatex">\(1\)</span>, we have <span class="arithmatex">\(\hat{B} = 1.01\)</span>, <span class="arithmatex">\(\hat{B}_- = 1.0004\)</span>, and <span class="arithmatex">\(\hat{B}_+ = 1.04\)</span>. In both these cases, we do not say what <span class="arithmatex">\(B\)</span> actually is, so we cannot say whether or not the confidence intervals contain the true value or not. We only know that, regardless of what <span class="arithmatex">\(B\)</span> is, there is a 95% probability that the resulting data will produce, according to our definitions, values of <span class="arithmatex">\(\hat{B}_-\)</span> and <span class="arithmatex">\(\hat{B}_+\)</span> that contain <span class="arithmatex">\(B\)</span>.</p>
+<h2 id="properties-of-confidence-intervals">Properties of confidence intervals<a class="headerlink" href="#properties-of-confidence-intervals" title="Permanent link">&para;</a></h2>
+<p>We could have been much lazier with our confidence intervals. For example, I could have defined <span class="arithmatex">\(\hat{B}_- = 0\)</span>. Because we know <em>a priori</em> that <span class="arithmatex">\(B&gt;0\)</span>, this lower end of the confidence interval will always be correct. In fact, it means that the confidence intervals will be contain <span class="arithmatex">\(B\)</span> with a probability greater than <span class="arithmatex">\(1-\alpha\)</span>. This is an undesirable feature. Confidence intervals with the desirable property that they have a error probability of exactly <span class="arithmatex">\(\alpha\)</span> and no more are termed <em>valid</em> confidence intervals.</p>
+<p>You might imagine that we could have constructed different confidence intervals. For example, if we relaxed the symmetry requirement, then we might be able to produce confidence intervals that are overall narrower. For certain situations, there is a well-acknowledged single best method for constructing a confidence interval. In other situations, there are multiple very reasonable ways to construct confidence intervals. For example, for the binomial distribution, there are pros and cons to the Wilson method and the Clopper-Pearson methods for computing confidence intervals.</p>
+<h2 id="resampling-methods">Resampling methods<a class="headerlink" href="#resampling-methods" title="Permanent link">&para;</a></h2>
+<p>In the previous example, we used our knowledge about the distribution of the data to develop confidence intervals on the estimator <span class="arithmatex">\(\hat{B}\)</span>. What would we do if we had an estimator ---that is, we knew what property of the data we wanted to measure--- but we did not know how the data were distributed? In these situations, we turn to resampling methods like the <em>bootstrap</em> or the <em>jackknife</em>.</p>
+<h3 id="bootstrap">Bootstrap<a class="headerlink" href="#bootstrap" title="Permanent link">&para;</a></h3>
+<p>In the bootstrap approach, we do no assert that we know the statistical distribution that the data were drawn from. Instead, we assume that the data we collected is the best approximation we have for the true, underlying distribution of the data. In statistics jargon, this means we use the sampling distribution as if it were the population distribution. In other words, we sampled some number <span class="arithmatex">\(n\)</span> of data points <span class="arithmatex">\(x_i\)</span> from the true distribution <span class="arithmatex">\(F_X\)</span> of some i.i.d. random variables <span class="arithmatex">\(X\)</span>, and from those observed data points we construct a new set of i.d.d. random variables <span class="arithmatex">\(\hat{X}\)</span>, which are discrete random variables with probability mass function: <span class="arithmatex">\(<span class="arithmatex">\(f_{\hat{X}}(x') = \frac{\#\{x' \in x_i\}}{n},\)</span>\)</span> The probability of drawing the value <span class="arithmatex">\(x'\)</span> is equal to the proportion of the data points <span class="arithmatex">\(x_i\)</span> equal to that value. If none of the <span class="arithmatex">\(x_i\)</span> are the same (i.e., every value is unique), then: <span class="arithmatex">\(<span class="arithmatex">\(f_{\hat{X}}(x') = \begin{cases}
+        \tfrac{1}{n} &amp;\text{ if } x' \in x_i \\
+        0 &amp;\text{ otherwise}
+    \end{cases}\)</span>\)</span></p>
+<p>Strictly speaking, there are a finite number of possible draws from this population, and so the probabilities <span class="arithmatex">\(f_{\hat{X}}(x')\)</span> can be computed exactly. For example, say you ran an experiment and drew three values <span class="arithmatex">\(x_1, x_2, x_3\)</span>. Then <span class="arithmatex">\(f_{\hat{X}}(x')\)</span> is <span class="arithmatex">\(\tfrac{1}{3}\)</span> for <span class="arithmatex">\(x' \in \{x_1,x_2,x_3\}\)</span> and zero otherwise. There are only 10 possible data sets that can be drawn: <span class="arithmatex">\(\{x_1,x_1,x_1\}\)</span> with probability <span class="arithmatex">\(\tfrac{1}{27}\)</span>, <span class="arithmatex">\(\{x_1,x_1,x_3\}\)</span> with probability <span class="arithmatex">\(\tfrac{1}{9}\)</span>, and so on, finishing with <span class="arithmatex">\(\{x_3,x_3,x_3\}\)</span> with probability <span class="arithmatex">\(\tfrac{1}{27}\)</span>.</p>
+<p>Another way to say this is that bootstrapping represents <em>resampling with replacement</em>. From the <span class="arithmatex">\(n\)</span> data points in our sample, we take a "resample" of <span class="arithmatex">\(n\)</span> data points, allowing replacement. One of the possible resamples is the original sample. In the example above, this is the resample <span class="arithmatex">\(\{x_1,x_2,x_3\}\)</span>. In all the other cases, we draw at least one data point multiple times. For example, in the resample <span class="arithmatex">\(\{x_1,x_1,x_2\}\)</span>, we drew <span class="arithmatex">\(x_1\)</span> twice.</p>
+<p>Some combinatorics shows that there are <span class="arithmatex">\(\binom{2n-1}{n}\)</span> possible resamples. For <span class="arithmatex">\(n=3\)</span>, this yields 10 possible resamples. For <span class="arithmatex">\(n=10\)</span>, this yields <span class="arithmatex">\(92,378\)</span> possible resamples. For <span class="arithmatex">\(n=25\)</span>, this yields more than <span class="arithmatex">\(10^{13}\)</span> possible resamples. Thus, for all but the smallest data sets, it is not feasible to consider all possible resamples. A scientific study might perform <span class="arithmatex">\(1,000\)</span> or 1 million bootstraps, randomly resampling the original data <span class="arithmatex">\(1,000\)</span> or 1 million times, and then stop. Very few studies exhaustively considering all the possible combinations. This means there is some stochasticity in practical applications of the bootstrap. In practice, the number of bootstraps is chosen to be quite large in order to minimize any of these stochastic effects.</p>
+<p>Bootstraps can be used to construct confidence intervals on some estimator. There are a few different mathematical approaches, the simplest of which is called the <em>percentile method</em>. Given a statistic <span class="arithmatex">\(t\)</span> and data points <span class="arithmatex">\(x_i\)</span>, draw many bootstraps <span class="arithmatex">\(x^{(j)}\)</span>, and compute <span class="arithmatex">\(t(x^{(j)})\)</span> for each bootstrap. The lower confidence interval <span class="arithmatex">\(\hat{T}_-\)</span> is the <span class="arithmatex">\(\tfrac{\alpha}{2}\)</span> quantile of the bootstrapped statistics <span class="arithmatex">\(t(x^{(j)})\)</span>, and the upper confidence interval <span class="arithmatex">\(\hat{T}_+\)</span> is the <span class="arithmatex">\(1-\tfrac{\alpha}{2}\)</span> quantile. In other words, the confidence intervals for the estimator are equal to the quantiles of the statistic computed on many bootstraps of the data.</p>
+<h3 id="jackknife">Jackknife<a class="headerlink" href="#jackknife" title="Permanent link">&para;</a></h3>
+<p>In the bootstrap, we draw <span class="arithmatex">\(n\)</span> data points with replacement, yielding possible <span class="arithmatex">\(\binom{2n-1}{n}\)</span> resamples, and we select a subset at random to analyze. The <em>jackknife</em>, by contrast, involves taking just <span class="arithmatex">\(n\)</span> resamples, each of size <span class="arithmatex">\(n-1\)</span>. In each resample, all the original data points are used, except one, which is left out. The jackknife is therefore sometimes called "delete-1" resampling. The advantage of the jackknife is that evaluating <span class="arithmatex">\(n\)</span> resamples is computationally feasible, so it ceases to be a Monte Carlo method.</p>
+<p>One might be tempted to proceed with the jackknife in the same way we did the bootstrap: for a statistic <span class="arithmatex">\(t\)</span>, enumerate the <span class="arithmatex">\(n\)</span> resamples <span class="arithmatex">\(x^{(j)}\)</span>, compute the jackknifed statistics <span class="arithmatex">\(t(x^{(j)})\)</span>, and then look at the distribution of those jackknife statistics to compute the confidence interval. This approach would be mistaken because the resamples are all quite similar to one another, having <span class="arithmatex">\(n-2\)</span> of <span class="arithmatex">\(n-1\)</span> data points in common. Thus, the distribution of the jackknifed statistics <span class="arithmatex">\(t(x^{(j)})\)</span> is much narrower than the distribution of the bootstrapped statistics would be.</p>
+<p>The process of correctly accounting for the narrowness of these values is:</p>
+<ol>
+<li>
+<p>Compute the jackknifed <em>replicates</em> <span class="arithmatex">\(t^{(j)} \equiv t(x^{(j)})\)</span></p>
+</li>
+<li>
+<p>Compute the jackknifed <em>statistic</em>, which is the mean of the replicates: <span class="arithmatex">\(t_\mathrm{jack} = \tfrac{1}{n} \sum_j t^{(j)}\)</span></p>
+</li>
+<li>
+<p>Compute the jackknife estimate of the variance of <span class="arithmatex">\(T\)</span> as <span class="arithmatex">\(\frac{n-1}{n} \sum_j \left( t^{(j)} - t_\mathrm{jack} \right)^2\)</span></p>
+</li>
+<li>
+<p>Get the confidence intervals from the Student's <span class="arithmatex">\(t\)</span>-distribution with <span class="arithmatex">\(n-1\)</span> degrees of freedom and multiply them by the jackknife estimate of the variance</p>
+</li>
+</ol>
+<p>Those familiar with Taylor series may appreciate that the jackknife is the first-order approximation for the bootstrap in the space of the observed data <span class="arithmatex">\(x_i\)</span><a href="http://www.jstor.org/stable/2030104">^1</a>. Starting from the observed data, the jackknife moves a little bit in every "direction" by deleting a single data point and seeing what effect that has on the computed statistic. The bootstrap, on the other hand, moves about in every direction at once, wildly exploring the large but ultimately finite space of possible resamples.</p>
+<p>The jackknife has some notable flaws. For example, the jackknife performs badly when estimating used to estimate confidence intervals for the sample median. In these cases, one needs to resort to the bootstrap or to other resampling methods, such as delete-<span class="arithmatex">\(d\)</span> resampling, which yields <span class="arithmatex">\(\binom{n}{d}\)</span> possible resamples.</p>
+<h2 id="profile-method">Profile method<a class="headerlink" href="#profile-method" title="Permanent link">&para;</a></h2>
+<p>Digest this: <code>https://personal.psu.edu/abs12/stat504/Lecture/lec3_4up.pdf</code></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections"], "search": "../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.f1b6f286.min.js"></script>
+      
+        <script src="../javascript/katex.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+    
+  </body>
+</html>

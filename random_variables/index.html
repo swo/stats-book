@@ -1,0 +1,1203 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../probability/">
+      
+      
+        <link rel="next" href="../statistics/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.3">
+    
+    
+      
+        <title>Random variables - A short introduction to advanced statistics for scientists</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.d7758b05.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#random-variables" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="A short introduction to advanced statistics for scientists" class="md-header__button md-logo" aria-label="A short introduction to advanced statistics for scientists" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            A short introduction to advanced statistics for scientists
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Random variables
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/swo/stats-book" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="A short introduction to advanced statistics for scientists" class="md-nav__button md-logo" aria-label="A short introduction to advanced statistics for scientists" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    A short introduction to advanced statistics for scientists
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/swo/stats-book" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Probability
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Probability
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../functions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Functions
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../probability/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Probability
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Random variables
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Random variables
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#a-random-variable-is-a-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      A random variable is a function
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#random-variables-are-classified-by-how-many-values-they-map-to" class="md-nav__link">
+    <span class="md-ellipsis">
+      Random variables are classified by how many values they map to
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#random-variables-abstract-over-outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Random variables abstract over outcomes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cumulative-distribution-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cumulative distribution functions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#probability-density-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Probability density functions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Probability density functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#independent-identically-distributed-random-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Independent, identically-distributed random variables
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sums-and-products-of-random-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sums and products of random variables
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dont-expect-the-expected-value" class="md-nav__link">
+    <span class="md-ellipsis">
+      Don't expect the expected value
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#variance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Variance
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#covariance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Covariance
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#higher-moments" class="md-nav__link">
+    <span class="md-ellipsis">
+      Higher moments
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Descriptive statistics
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Descriptive statistics
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../statistics/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Statistics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../estimators/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Estimators
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../confidence_intervals/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Confidence intervals
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Inferential statistics
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Inferential statistics
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../inference/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Statistical inference
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tests/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tests
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../regression/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Regression
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../generating_functions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Generating functions
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Appendix
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#a-random-variable-is-a-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      A random variable is a function
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#random-variables-are-classified-by-how-many-values-they-map-to" class="md-nav__link">
+    <span class="md-ellipsis">
+      Random variables are classified by how many values they map to
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#random-variables-abstract-over-outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Random variables abstract over outcomes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cumulative-distribution-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cumulative distribution functions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#probability-density-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Probability density functions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Probability density functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#independent-identically-distributed-random-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Independent, identically-distributed random variables
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sums-and-products-of-random-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sums and products of random variables
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dont-expect-the-expected-value" class="md-nav__link">
+    <span class="md-ellipsis">
+      Don't expect the expected value
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#variance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Variance
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#covariance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Covariance
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#higher-moments" class="md-nav__link">
+    <span class="md-ellipsis">
+      Higher moments
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="random-variables">Random variables<a class="headerlink" href="#random-variables" title="Permanent link">&para;</a></h1>
+<p>The math in the last chapter is perfectly good for computing the probability of flipping a coin and getting a certain number of heads in a row, or for computing the probability of a winning poker hand, but not much more.</p>
+<p>This chapter introduces <em>random variables</em>. Mathematically, random variables link outcomes with numbers. Intuitively, this link mirrors scientific measurement, the act of associating an outcome of an experiment with a number. Moving away from counting individual outcomes and events to looking at numbers will provide both useful mathematical abstraction as well as a more intuitive way to think about a scientific experiment.</p>
+<h2 id="a-random-variable-is-a-function">A random variable is a function<a class="headerlink" href="#a-random-variable-is-a-function" title="Permanent link">&para;</a></h2>
+<p>A <em>random variable</em> is a function, common written <span class="arithmatex">\(X\)</span>, that maps from the sample space, the set of all possible outcomes of an experiment, to the real numbers:</p>
+<div class="arithmatex">\[
+X : \Omega \to \mathbb{R}
+\]</div>
+<p>As mentioned above, I think of a random variable as a mathematical analog to scientific measurement: outcomes are the actual experimental outcomes, and a random variable maps that outcome to the number you would see on your measurement device.</p>
+<p>Before learning probability, I thought of "random variables" as random number generators: I might "draw" ten values from a "normally-distributed random variable". However, as discussed in <a href="../functions/">Functions</a>, a random number generator is not a function in the mathematical sense. It is important to remember that, technically speaking, a random variable is a function.</p>
+<p>It is also important to remember that "random variable" does not mean "a numerical variable that takes on a random value". It would be very hard to prove any theorems about random variables if "random" meant that, every time you looked at the page, "<span class="arithmatex">\(X\)</span>" meant something different! In common speech we might say that a random variable "takes on" some value, but I advise you to shy away from that during this book, because it encourages you to think about "random variables" not as functions but instead as random number generators.</p>
+<h2 id="random-variables-are-classified-by-how-many-values-they-map-to">Random variables are classified by how many values they map to<a class="headerlink" href="#random-variables-are-classified-by-how-many-values-they-map-to" title="Permanent link">&para;</a></h2>
+<p>Random variables come in two major flavors, <em>discrete</em> and <em>continuous</em>. A discrete random variable <span class="arithmatex">\(X\)</span> associates outcomes <span class="arithmatex">\(\omega \in \Omega\)</span> with a finite set of numbers <span class="arithmatex">\(x_i\)</span>, while a continuous random variable maps events to an infinite number of numbers.</p>
+<p>Note that the distinction between discrete and continuous random variables only has to do with the values they map <em>to</em>, not with the sample space they map <em>from</em>. If the sample space is discrete, we can clearly only have a discrete random variable. For example, when flipping a coin, there are only two outcomes, heads <span class="arithmatex">\(H\)</span> or tails <span class="arithmatex">\(T\)</span>. You could imagine a random variable <span class="arithmatex">\(X\)</span> encoding "number of heads flipped":</p>
+<div class="arithmatex">\[
+\begin{aligned}
+X[H] &amp;= 1 \\
+X[T] &amp;= 0
+\end{aligned}
+\]</div>
+<p>There are other random variables you could define from this, say this silly example:</p>
+<div class="arithmatex">\[
+\begin{aligned}
+X[H] &amp;= 5\pi \\
+X[T] &amp;= -33
+\end{aligned}
+\]</div>
+<p>But you clearly cannot map from a finite number of inputs to an infinite number of outputs.</p>
+<p>In contrast, you can have an infinite space of outcomes and map it to a discrete set of values. For example, imagine I'm measuring the time required for a radioactive atom to decay. The outcomes are all possible times required for decay, which is an infinite number of possibilities. But I could define a simpler, discrete random variable that asks, "Did it take less than 1 second, between 1 and 2 seconds, or more than 2 seconds?" and then map those three swaths of outcomes to three, but only three, different numbers.</p>
+<h2 id="random-variables-abstract-over-outcomes">Random variables abstract over outcomes<a class="headerlink" href="#random-variables-abstract-over-outcomes" title="Permanent link">&para;</a></h2>
+<p>The whole point of random variables is that we don't need to talk about individual outcomes. Enumerating the outcomes of a trial is easy when talking about flipping coins, or rolling a die, or drawing a card from a deck, but it's basically impossible to enumerate an infinite set of outcomes <em>without</em> referring to them by means of numbers. In other words, the only sensible way to talk about infinite sets of outcomes is to instead talk about the values that a random variable maps those outcomes to!</p>
+<p>From this point forward, we will only refer to events by the values that a random variable maps those events to. For example, if <span class="arithmatex">\(X\)</span> represents the number of heads flipped on one coin toss, then <span class="arithmatex">\(X = 0\)</span> refers to the <em>event</em> where the coin landed tails, and <span class="arithmatex">\(X = 1\)</span> refers to the <em>event</em> where the coin landed heads.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Take careful note that <span class="arithmatex">\(X=1\)</span> is an <em>event</em>, a probability theory object. Reading probability equations can become very confusing if you don't know what is a number and what is random variable!</p>
+</div>
+<p>Because the probability function maps events to numbers, we can now write:</p>
+<div class="arithmatex">\[
+\mathbb{P}[X = 0] = \tfrac{1}{2}
+\]</div>
+<p>Take careful note of all the pieces in this equation:</p>
+<ul>
+<li><span class="arithmatex">\(X\)</span> is a function mapping events to numbers</li>
+<li><span class="arithmatex">\(X = 0\)</span> is the event composed of all the outcomes for which <span class="arithmatex">\(X\)</span> takes on the value zero</li>
+<li><span class="arithmatex">\(\mathbb{P}\)</span> is a function mapping events to numbers between zero and one</li>
+</ul>
+<p>Note that the same symbol <span class="arithmatex">\(=\)</span> is used to mean two different things in this equation! In the first case, <span class="arithmatex">\(=\)</span> turns a random variable (which is itself a function) and a number (0) to produce an event, while the second equals is an assertion that the two sides of the equation are the same number. To further emphasize that, consider this equation:</p>
+<div class="arithmatex">\[
+(X = 5) = \varnothing
+\]</div>
+<p>It is impossible to flip five heads on a single coin flip, so the set of events that <span class="arithmatex">\(X\)</span> maps to the number five is the empty set. You will never see anyone else write an equation like this, but I put it there to scare you, to make you less sure of what an equal sign means.</p>
+<p>Again, the nice thing is that, although the probabilities of the outcomes heads and tails both remain <span class="arithmatex">\(\tfrac{1}{2}\)</span>, we no longer need to think about exactly what outcomes there are, what probabilities they have, and to what number the random variable maps each outcome. Instead, we can just examine the random variable, which has abstracted over everything else. A very pedantic person might have argued that, when you flip a coin, "heads" is actually a grouping of an infinite number of distinct outcomes: the coin might fall with the face on the coin pointing north, or west, or north-north-west; or the coin might have fallen into between the cushions of the couch and actually been standing almost straight up. Discrete sample spaces are clearly a mathematical fiction. Nevertheless, discrete random variables allow me to deal with a finite number of interesting <em>events</em>, and continuous random variables allow me to abstract over whatever was happening in nature and simply say, I guess this or that number with some probability.</p>
+<p>The previous chapter was not a waste, however, because the rules for manipulating probabilities work just as well for events like "<span class="arithmatex">\(X =
+1\)</span>" as they did for outcomes like "flipped heads". The philosophical and technical definition of probability still holds. For example, <span class="arithmatex">\(\mathbb{P}[(X = 1) \cup (X = 0)]\)</span>, the probability of the events that <span class="arithmatex">\(X\)</span> maps to either zero or one, is the sum of the probabilities the two constituent, disjoint events <span class="arithmatex">\(\mathbb{P}[X=1]\)</span> and <span class="arithmatex">\(\mathbb{P}[X=0]\)</span>.</p>
+<h2 id="cumulative-distribution-functions">Cumulative distribution functions<a class="headerlink" href="#cumulative-distribution-functions" title="Permanent link">&para;</a></h2>
+<p>Now that we have random variables, we can ask how they are "distributed". If you are like me in days of yore, you think of random variables as random number generators that produce values to be visualized as a histogram, whose mathematical analog is the <em>probability density functions</em> (pdf's). In fact, it's mathematically more straightforward to define the <em>cumulative distribution functions</em> (cdf's) and use that to define the pdf.</p>
+<p>The cdf of a random variable <span class="arithmatex">\(X\)</span>, canonically written <span class="arithmatex">\(F_X\)</span>, is a function that maps from real numbers to the numbers between zero and one. It is the probability of the event that <span class="arithmatex">\(X\)</span> maps to any value equal to or less than the given input value:</p>
+<div class="arithmatex">\[
+\begin{gathered}
+F_X : \mathbb{R} \to [0, 1] \\
+F_X(x) \equiv \mathbb{P}[X \leq x]
+\end{gathered}
+\]</div>
+<p>Note that the cdf is a function of numbers <span class="arithmatex">\(x\)</span>, which I emphasize by using regular parentheses around <span class="arithmatex">\(x\)</span> in <span class="arithmatex">\(F_X(x)\)</span>.</p>
+<p>It follows that, for a discrete random variable, which takes on specific values <span class="arithmatex">\(x_i\)</span>, the cdf is just the sum of the probabilities of those specific values smaller than the given <span class="arithmatex">\(x\)</span>:</p>
+<div class="arithmatex">\[
+F_X(x) = \mathbb{P}[X \leq x] = \sum_{j \,:\, x_j \leq x} \mathbb{P}[X = x_j]
+\]</div>
+<p>A discrete random variable therefore has maximum and minimum values:</p>
+<div class="arithmatex">\[
+\begin{gathered}
+\text{if } x &lt; x_\mathrm{min} \text{, then } F_X(x) = 0 \\
+\text{if } x \geq x_\mathrm{max} \text{, then } F_X(x) = 1
+\end{gathered}
+\]</div>
+<p>A continuous random variable can also have a minimum and maximum. However, there are continuous random variables that can take on any real number. In those cases, the cdf approaches zero and one as <span class="arithmatex">\(x\)</span> goes out toward infinity:</p>
+<div class="arithmatex">\[
+\begin{gathered}
+\lim_{x \to -\infty} F_X(x) = 0 \\
+\lim_{x \to \infty} F_X(x) = 1
+\end{gathered}
+\]</div>
+<h2 id="probability-density-functions">Probability density functions<a class="headerlink" href="#probability-density-functions" title="Permanent link">&para;</a></h2>
+<p>For a discrete random variable, it is straightforward to define its <em>probability mass function</em> or "pmf", canonically written <span class="arithmatex">\(f_X\)</span>, which is just the probability that it takes on each discrete value <span class="arithmatex">\(x_i\)</span>:</p>
+<div class="arithmatex">\[
+\begin{gathered}
+f_X : \mathbb{R} \to [0, 1] \\
+f_X(x_i) \equiv \mathbb{P}[X = x_i]
+\end{gathered}
+\]</div>
+<p>The analog for continuous random variables is the <em>probability density function</em>, abbreviated "pdf":</p>
+<div class="arithmatex">\[
+\begin{gathered}
+f_X(x) : \mathbb{R} \to [0, 1] \\
+f_X(x) \equiv \frac{d}{dx} F_X(x)
+\end{gathered}
+\]</div>
+<p>Note that the pdf of a continuous random variable <span class="arithmatex">\(f_X(x)\)</span> is not <span class="arithmatex">\(\mathbb{P}[X = x]\)</span>. This may seem like a pedantic diversion, but I actually think it's important to avoid confusion. For a continuous random variable, <span class="arithmatex">\(\mathbb{P}[X = x]\)</span> is basically zero for any value of <span class="arithmatex">\(x\)</span>. For example, say <span class="arithmatex">\(X\)</span> takes on values between 0 and 1 uniformly. Then it follows that:</p>
+<div class="arithmatex">\[
+\begin{aligned}
+\mathbb{P}[0 \leq X \leq 1] &amp;= 1 \\
+\mathbb{P}[0.495 \leq X \leq 0.505] &amp;= 0.1 \\
+\mathbb{P}[0.4995 \leq X \leq 0.5005] &amp;= 0.01
+\end{aligned}
+\]</div>
+<p>and so on. We normally don't say that <span class="arithmatex">\(\mathbb{P}[X = 0.500\ldots] = 0\)</span>, since that makes it sound like it's impossible for <span class="arithmatex">\(X\)</span> to take on the value <span class="arithmatex">\(0.5\)</span>. Nevertheless, it should be clear that, from any practical point of view, the probability of getting exactly <span class="arithmatex">\(0.500\ldots\)</span> from your experiment is essentially zero. On the other hand, It does make sense to write ask about the <em>density</em> of <span class="arithmatex">\(X\)</span> at 0.5, i.e., <span class="arithmatex">\(f_X(0.5)\)</span>.</p>
+<p>The word "density" in probability density function emphasizes that the pdf, when integrated, gives a probability:</p>
+<div class="arithmatex">\[
+\int_{x_0}^{x_1} f_X(x) \,dx = F_X(x_1) - F_X(x_0) = \mathbb{P}[x_0 &lt; X \leq x_1]
+\]</div>
+<p>In other words, the little-<span class="arithmatex">\(f\)</span> pdf <span class="arithmatex">\(f_X\)</span> is the derivative of the big-<span class="arithmatex">\(F\)</span> cdf <span class="arithmatex">\(F_X\)</span>.</p>
+<p>It follows from the definition of the cdf and some fundamental calculus that</p>
+<div class="arithmatex">\[
+\int_{-\infty}^\infty f_X(x) \,dx = 1
+\]</div>
+<p>In other words, all probability density must be somewhere. This also requires that</p>
+<div class="arithmatex">\[
+\lim_{x \to \pm \infty} f_X(x) = 0
+\]</div>
+<p>so that probability density can't be "hiding" infinitely far away from the origin.</p>
+<p>The definitions I've given are simple ones, and they need to be refined to deal with more complicated functions. For example, if the cdf has discontinuities, you need careful with the limits on the integrals.</p>
+<h3 id="independent-identically-distributed-random-variables">Independent, identically-distributed random variables<a class="headerlink" href="#independent-identically-distributed-random-variables" title="Permanent link">&para;</a></h3>
+<p>If a random variable <span class="arithmatex">\(X\)</span> has the same cdf as another random variable <span class="arithmatex">\(Y\)</span> (and therefore also the same pdf), we say that <span class="arithmatex">\(X\)</span> is "distributed like" <span class="arithmatex">\(Y\)</span>:</p>
+<div class="arithmatex">\[
+\text{if } F_X(x) = F_Y(x) \text{ for all } x, \text{ then } X \sim Y.
+\]</div>
+<p>Many cdf's are named. For example, you might say that a random variable <span class="arithmatex">\(X\)</span> is distributed like a normal random variable, with mean <span class="arithmatex">\(\mu\)</span> and variance <span class="arithmatex">\(\sigma^2\)</span>:</p>
+<div class="arithmatex">\[
+X \sim \mathcal{N}(x; \mu, \sigma^2).
+\]</div>
+<p>This is shorthand for saying</p>
+<div class="arithmatex">\[
+f_X(x) = f_\mathcal{N}(x; \mu, \sigma^2) \equiv \frac{1}{\sqrt{2\pi\sigma^2}} \exp \left\{-\frac{1}{2} \frac{(x-\mu)^2}{\sigma^2} \right\}
+\]</div>
+<p>Critically, to say that <span class="arithmatex">\(X \sim Y\)</span> does not imply that <span class="arithmatex">\(X\)</span> and <span class="arithmatex">\(Y\)</span> are the same function. In fact, they might be defined in terms of completely different sample spaces. The random variable <span class="arithmatex">\(X\)</span> might be looking at stock prices and <span class="arithmatex">\(Y\)</span> might be looking at the time between solar flares. All that is required is that <span class="arithmatex">\(X\)</span> and <span class="arithmatex">\(Y\)</span> deliver the same numbers with the same probabilities.</p>
+<p>Because frequentist statistics is concerned with repeatable trials, we will often consider <em>independent, identically-distributed</em>, abbreviated "iid", random variables. <em>Identically-distributed</em> means that all the random variables in the collection have the same cdf. <em>Independent</em> means that the probabilities of "and" events multiply:</p>
+<div class="arithmatex">\[
+\text{$X$ and $Y$ are independent} \iff \mathbb{P}[(X = x) \cap (Y = y)] = \mathbb{P}[X = x] \mathbb{P}[Y = y]
+\]</div>
+<p>It follows that, if the events in the sample spaces that <span class="arithmatex">\(X\)</span> and <span class="arithmatex">\(Y\)</span> map <em>from</em> are independent, then <span class="arithmatex">\(X\)</span> and <span class="arithmatex">\(Y\)</span> will be independent. So if <span class="arithmatex">\(X\)</span> is defined with respect to one iteration of an experiment, and <span class="arithmatex">\(Y\)</span> is defined with respect to another, physically independent iteration of that experiment, then <span class="arithmatex">\(X\)</span> and <span class="arithmatex">\(Y\)</span> are independent.</p>
+<p>In the context of iid random variables, it is actually common to write "<span class="arithmatex">\(X\)</span>" as referring to a whole set of random variables. Thus,</p>
+<div class="arithmatex">\[
+X \stackrel{\text{iid}}{\sim} \mathcal{N}(\mu, \sigma^2)
+\]</div>
+<p>actually means that there is some set of random variables <span class="arithmatex">\(X_1\)</span>, <span class="arithmatex">\(X_2\)</span>, <span class="arithmatex">\(\ldots\)</span>; that <span class="arithmatex">\(f_{X_i}(x) = f_\mathcal{N}(x; \mu, \sigma^2)\)</span> for every <span class="arithmatex">\(i\)</span>; and that <span class="arithmatex">\(X_i\)</span> and <span class="arithmatex">\(X_j\)</span> are independent for all <span class="arithmatex">\(i \neq j\)</span>.</p>
+<p>In day-to-day speech, we might say, "I draw <span class="arithmatex">\(n\)</span> values from this random variable <span class="arithmatex">\(X\)</span>". Mathematically, this means, "Consider <span class="arithmatex">\(n\)</span> iid random variables distributed like <span class="arithmatex">\(X\)</span>".</p>
+<h2 id="sums-and-products-of-random-variables">Sums and products of random variables<a class="headerlink" href="#sums-and-products-of-random-variables" title="Permanent link">&para;</a></h2>
+<p>If you know the cdf and pdf for a random variable <span class="arithmatex">\(X\)</span>, and you also know these values for another random variable <span class="arithmatex">\(Y\)</span>, you might be interested in the behavior of these two variables together. Say, for example, that I draw two random numbers from a normal distribution using a random number generation. What is the probability that their sum is above or below some threshold?</p>
+<p>If <span class="arithmatex">\(X\)</span> and <span class="arithmatex">\(Y\)</span> are random variables, we define a new random variable <span class="arithmatex">\(Z = X \stackrel{\mathrm{rv}}{+} Y\)</span>, where again, I put that little "rv" in there to remind you that the plus sign in <span class="arithmatex">\(X + Y\)</span>, where <span class="arithmatex">\(X\)</span> and <span class="arithmatex">\(Y\)</span> are functions like random variables, cannot mean the same thing as the plus sign in <span class="arithmatex">\(x + y\)</span>, where <span class="arithmatex">\(x\)</span> and <span class="arithmatex">\(y\)</span> are just numbers.</p>
+<p>The meaning of <span class="arithmatex">\(X + Y\)</span> feels intuitive, like in my example about drawing numbers from a random number generator. But how do we define <span class="arithmatex">\(X + Y\)</span> mathematically? Imagine first that <span class="arithmatex">\(X\)</span> and <span class="arithmatex">\(Y\)</span> are independent, discrete random variables. Then it should be that <span class="arithmatex">\(\mathbb{P}[Z = z]\)</span> is the probability of <span class="arithmatex">\(X = x_i\)</span> and <span class="arithmatex">\(Y = y_j\)</span> for all the cases where <span class="arithmatex">\(x_i + y_i = z\)</span>. Note that this, given some <span class="arithmatex">\(z\)</span>, this constrains <span class="arithmatex">\(y_j\)</span> to by <span class="arithmatex">\(z - x_i\)</span>:</p>
+<div class="arithmatex">\[
+\begin{aligned}
+f_Z(z) &amp;= \sum_i \mathbb{P}[X=x_i] \mathbb{P}[Y=z-x_i] \\
+&amp;= \sum_i f_X(x_i) f_Y(z - x_i).
+\end{aligned}
+\]</div>
+<p>A similar definition holds for when <span class="arithmatex">\(Z = X + Y\)</span> is continuous. Rather than summing over all the outcomes in which <span class="arithmatex">\(X\)</span> takes on certain values, we integrate:</p>
+<div class="arithmatex">\[
+f_Z(z) = \int f_X(x) f_Y(z - x) \,dx
+\]</div>
+<p>For a product of random variables <span class="arithmatex">\(Z = XY\)</span>, we need to use <span class="arithmatex">\(f_Y(z/x)\)</span>, and for a ratio of random variables <span class="arithmatex">\(Z = X/Y\)</span>, we need to use <span class="arithmatex">\(f_Y(zx)\)</span>. Note that, in each of these cases, the notations like <span class="arithmatex">\(X + Y\)</span>, <span class="arithmatex">\(XY\)</span>, and <span class="arithmatex">\(X/Y\)</span> refer to a new random variable and also give us a hint about how to compute its pdf.</p>
+<h2 id="dont-expect-the-expected-value">Don't expect the expected value<a class="headerlink" href="#dont-expect-the-expected-value" title="Permanent link">&para;</a></h2>
+<p>The <em>expected value</em> <span class="arithmatex">\(\mathbb{E}[X]\)</span> of a random variable <span class="arithmatex">\(X\)</span> is the probability-weighted average of the values it takes on. For a discrete random variable, you simply sum. For a continuous random variable, you need to integrate:</p>
+<div class="arithmatex">\[
+\mathbb{E}[X] \equiv \begin{cases}
+\sum_i x_i f_X(x_i) &amp; \text{ for discrete random variables} \\
+\int x f_X(x) \,dx &amp; \text{ for continuous random variables}
+\end{cases}
+\]</div>
+<p>Thus, just like "maximum", "expected value" is a function that maps random variables to numbers:</p>
+<div class="arithmatex">\[
+\mathbb{E} : \text{random variables} \to \mathbb{R}
+\]</div>
+<p>I use square brackets with <span class="arithmatex">\(\mathbb{E}\)</span> to emphasize that this is a function that maps from something other than numbers.</p>
+<p>The name "expected value" is misleading. We previously noted that, for continuous random variables, the probability of getting any particular number is essentially zero, so there's no particular number you should "expect". For discrete random variables, where there is finite probability of getting each particular number, the expected value actually need not be any of the values that <span class="arithmatex">\(X\)</span> maps to. In our coin flip example, the random variable <span class="arithmatex">\(X\)</span> measuring the number of heads flipped has expectation value:</p>
+<div class="arithmatex">\[
+\mathbb{E}[X] = 0 \times \mathbb{P}[T] + 1 \times \mathbb{P}[H] = \tfrac{1}{2}.
+\]</div>
+<p>You certainly don't ever expect to flip <span class="arithmatex">\(0.5\)</span> heads!</p>
+<p>A better way to think of the expected value is as a measure of <em>central position</em>. There are of course multiple ways to quantify central position beyond the expected value, which is analogous to the mean or average. You can certainly map random variables to their medians and modes, but those mappings are substantially more complex and not as useful for our purposes.</p>
+<h2 id="variance">Variance<a class="headerlink" href="#variance" title="Permanent link">&para;</a></h2>
+<p>If the expected value is a measure of central position, then <em>variance</em> <span class="arithmatex">\(\mathbb{V}\)</span> is the corresponding measurement of spread or <em>scale</em>. It is a function of random variables that returns a nonnegative number:</p>
+<div class="arithmatex">\[
+\mathbb{V} : \text{random variables} \to [0, \infty).
+\]</div>
+<p>For a random variable <span class="arithmatex">\(X\)</span>, the variance is the expected value of the square of the deviation of the random variable from its own expected value:</p>
+<div class="arithmatex">\[
+\mathbb{V}[X] \equiv \mathbb{E}[(X - \mathbb{E}[X])^2]
+\]</div>
+<p>Because all those nested brackets are confusing, people often replace the notation <span class="arithmatex">\(\mathbb{E}[X]\)</span> with the notation <span class="arithmatex">\(\mu\)</span> so that the definition of variance reads <span class="arithmatex">\(\mathbb{V}[X] = \mathbb{E}[(X - \mu)^2]\)</span>.</p>
+<p>Although <span class="arithmatex">\(\mu\)</span> is just a number when we say <span class="arithmatex">\(\mu = \mathbb{E}[X]\)</span>, the same notation "<span class="arithmatex">\(\mu\)</span>" cannot refer to a number when we write <span class="arithmatex">\(X - \mu\)</span>. We can subtract numbers from the values that a function maps to, but we cannot subtract numbers from raw functions, any more than I can subtract a number from the operation of multiplication. In other words, <span class="arithmatex">\(f(x) - 2\)</span> makes sense, but <span class="arithmatex">\(f - 2\)</span> does not. Thus, "<span class="arithmatex">\(\mu\)</span>" in <span class="arithmatex">\(X - \mu\)</span> is actually a trivial random variable that maps its whole sample space to <span class="arithmatex">\(\mu\)</span>, so that <span class="arithmatex">\(\mathbb{P}[\text{``}\mu\text{''} = \mu] = 1\)</span>. Similarly, <span class="arithmatex">\((X - \mu)^2 = (X - \mu) \stackrel{\mathrm{rv}}{\times} (X - \mu)\)</span> is another new random variable. Given random variables <span class="arithmatex">\(X\)</span> and <span class="arithmatex">\(Y\)</span>, we saw earlier how to compute the pdf of a new random variable <span class="arithmatex">\(XY\)</span>, so we also know how to find the pdf for a random variable <span class="arithmatex">\(X^2 = X \times X\)</span>.</p>
+<h2 id="covariance">Covariance<a class="headerlink" href="#covariance" title="Permanent link">&para;</a></h2>
+<p>Starting with the definition of the expected value, you can easily show that it is a <em>linear</em> function: <span class="arithmatex">\(<span class="arithmatex">\(\mathbb{E}[aX + bY] = a \,\mathbb{E}[X] + b \,\mathbb{E}[Y]\)</span>\)</span> Note that, just as <span class="arithmatex">\(\mu\)</span> transformed from a number to a random variable when we wrote <span class="arithmatex">\(X + \mu\)</span>, so the number <span class="arithmatex">\(a\)</span> in this equation transforms into a random variable when we write <span class="arithmatex">\(aX\)</span>.</p>
+<p>Variance, however is not linear. You can easily show that, for some number <span class="arithmatex">\(a\)</span>,</p>
+<div class="arithmatex">\[
+\mathbb{V}[aX] = \mathbb{E}[(aX - \mathbb{E}[aX])^2] = \mathbb{E}[a^2(X - \mathbb{E}[X])] = a^2 \, \mathbb{E}[X].
+\]</div>
+<p>With some more algebra, you can show that</p>
+<div class="arithmatex">\[
+\mathbb{V}[X + Y] = \mathbb{V}[X] + \mathbb{V}[Y] + 2 \,\mathrm{Cov}[X, Y],
+\]</div>
+<p>where <span class="arithmatex">\(\mathrm{Cov}[X, Y]\)</span>, the <em>covariance</em> of <span class="arithmatex">\(X\)</span> and <span class="arithmatex">\(Y\)</span> is</p>
+<div class="arithmatex">\[
+\mathrm{Cov}[X, Y] \equiv \mathbb{E}[(X - \mathbb{E}[X])(Y - \mathbb{E][Y])}.
+\]</div>
+<p>To avoid the nested brackets, this is sometimes written</p>
+<div class="arithmatex">\[
+\mathrm{Cov}[X, Y] = \mathbb{E}[(X - \mu_X)(Y - \mu_Y)].
+\]</div>
+<p>In words, the covariance is the expected value of the product of the deviations between the values that <span class="arithmatex">\(X\)</span> and <span class="arithmatex">\(Y\)</span> map to and the expected values of those random variables. Note that covariance is a function of two random variables:</p>
+<div class="arithmatex">\[
+\mathrm{Cov} : (\text{random variables})^2 \to \mathbb{R}.
+\]</div>
+<p>If <span class="arithmatex">\(X\)</span> and <span class="arithmatex">\(Y\)</span> are independent, then their covariance is zero. (The reverse is not necessarily true.) Some algebra will also show that <span class="arithmatex">\(<span class="arithmatex">\(\mathbb{E}[XY] = \mathbb{E}[X] \, \mathbb{E}[Y] + \mathrm{Cov}[X, Y].\)</span>\)</span> Thus, for independent random variables, which we will deal with a lot, the expected value of the produce of two random variables is simply the product of their expectation values. These properties of the expected value will come in very handy in future sections.</p>
+<p>You may be more familiar with <em>correlation</em> than covariance. The most common definition of correlation, Pearson's correlation coefficient, typically written <span class="arithmatex">\(\rho\)</span>, is just a rescaling of the covariance to values between <span class="arithmatex">\(-1\)</span> and <span class="arithmatex">\(+1\)</span>:</p>
+<div class="arithmatex">\[
+\begin{gathered}
+\rho : (\text{random variables})^2 \to [-1, 1] \\ \rho[X, Y] \equiv \frac{\mathrm{Cov}[X, Y]}{\sqrt{\mathbb{V}[X] \mathbb{V}[Y]}},
+\end{gathered}
+\]</div>
+<p>It turns out that dividing by that factor rescales the covariance, which can be any number, to a single range, <span class="arithmatex">\(-1\)</span> to <span class="arithmatex">\(+1\)</span>. Thus, the correlation between two random variables does not depend on their scaling:</p>
+<div class="arithmatex">\[
+\begin{gathered}
+\mathrm{Cov}[aX, bY] = ab \,\mathrm{Cov}[X, Y] \\ \rho[aX, bY] = \rho[X, Y]
+\end{gathered}
+\]</div>
+<h2 id="higher-moments">Higher moments<a class="headerlink" href="#higher-moments" title="Permanent link">&para;</a></h2>
+<p>The expected value and the variance are two in a series of properties of random variables called <em>moments</em>. Just as the variance has a square in it, <em>skewness</em> has a cube and <em>kurtosis</em> has a fourth power. The pdf's of random variables with positive skewness have an asymmetric tail, trailing out to the right; negative skewness means a tail to the left. Kurtosis measures the "fatness" or "heaviness" of the tails.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections"], "search": "../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.f1b6f286.min.js"></script>
+      
+        <script src="../javascript/katex.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+    
+  </body>
+</html>
