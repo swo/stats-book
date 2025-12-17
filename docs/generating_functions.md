@@ -12,9 +12,9 @@ We often talk about sampling from a distribution, thinking about i.i.d. variable
 
 If a random variable $X \geq 0$ is distributed with pdf $f_X$, then the pdf of the associated size-biased random variable $X^\mathrm{s}$ is:
 
-```math
+$$
 f_{X^\mathrm{s}}(x) = \frac{x \, f_X(x)}{\mathbb{E}[X]}
-```
+$$
 
 The value of $\mathbb{E}[X]$ in the denominator is the normalization constant.
 
@@ -24,20 +24,20 @@ More concretely, imagine that, in the context of an infectious disease, infected
 
 First, we consider the size-biased variable $X^\mathrm{s}$, which represents selecting an _infectee_ at random and asking about their infector's infectious period. The expected value of this random variable is:
 
-```math
+$$
 \begin{align*}
 \mathbb{E}[X^\mathrm{s}] &= \int_0^\infty x f_{X^\mathrm{s}}(x) \,dx \\
 &= \int_0^\infty x \frac{x f_X(x)}{\mathbb{E}[X]} \,dx \\
 &= \int_0^\infty x \frac{x \lambda e^{-\lambda x}}{1/\lambda} \,dx \\
 &= \int_0^\infty (\lambda x)^2 e^{-\lambda x} \,dx
 \end{align*}
-```
+$$
 
 Make a chance of variables $y=\lambda x$ so that:
 
-```math
+$$
 \mathbb{E}[X^\mathrm{s}] = \frac{1}{\lambda} \int_0^\infty y^2 e^{-y} \,dy = \frac{2}{\lambda} = 2 \mathbb{E}[X]
-```
+$$
 
 (This integral relied on multiple applications of integration by parts, which worked in this specific example, for the exponential distribution.)
 
@@ -51,19 +51,19 @@ Rather than working with pdf's, we can instead work with their transforms. Just 
 
 Define the _characteristic function_ of a random variable $X$ as:
 
-```math
+$$
 \phi_X(u) = \mathbb{E}[e^{iuX}]
-```
+$$
 
 This form may look strange, but it allows us to extract moments of $X$, notably the expected value, from derivatives. Note that:
 
-```math
+$$
 \begin{align*}
 \phi_X(u) &= \mathbb{E}[e^{iuX}] = \int e^{iux} f_X(x) \,dx \\
 \phi_X'(u) &= \int ix e^{iux} f_X(x) \,dx \\
 \phi_X'(0) &= i \int x f_X(x) \,dx = i \mathbb{E}[X]
 \end{align*}
-```
+$$
 
 Thus, the expected value of a random variable is $\mathbb{E}[X] = \frac{1}{i} \phi_X'(0)$.
 
