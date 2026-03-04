@@ -15,6 +15,7 @@ nav:
       - tests.md
       - regression.md
   - generating_functions.md
+  - mcmc.md
   - appendix.md
 
 repo_url: https://github.com/swo/stats-book
