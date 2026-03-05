@@ -2,102 +2,93 @@
 
 ## Particle marginal Metropolis-Hastings sampler
 
-Section 2.4.2 in Andrieu et al
+### To do
 
-### Motivation
+- Under what conditions do these iterates converge to posterior samples?
+- Provide nice reference to section 2.4.2 in [Andrieu et al. (2010)](https://dx.doi.org/10.1111/j.1467-9868.2009.00736.x)
 
-The observed data are a time series $\mathbf{y} = (y_1, \ldots, y_T)$ generated from a known likelihood function $p(\mathbf{y} | \mathbf{x}, \theta)$ that depends on an unknown set of parameters $\theta$ and an unobserved state space $\mathbf{x} = (x_1, \ldots x_T)$.
+### Overview
 
-In each iteration $i$ of this algorithm, we use the previous posterior sample $\theta^{(i)}$ to generate
+The observed data are a time series $\mathbf{y} = (y_1, \ldots, y_T)$ generated from a known likelihood function $p(\mathbf{y} | \mathbf{x}, \theta)$ that depends on an unknown set of global parameters $\theta$ and an unobserved, time-varying state space $\mathbf{x} = (x_1, \ldots x_T)$.
 
-**Problem**: I need $x$ to be indexed by iteration, particle, and time.
+Particle Markov chain Monte Carlo methods use the Metropolis-Hastings (MH) algorithm to draw samples from the posterior distribution on the parameters. In each MH step, a sequential Monte Carlo (SMC) is used to draw samples, called "particles," from the state space," conditional on the data and the proposal parameters. These particles allow an approximation of the likelihood $p(\mathbf{y} \mid \theta)$ that determines the MH proposal acceptance probability.
 
-### Notation
+### MH algorithm
 
-- subscripts indicate the time steps in the data
-- superscripts indicate inference iterations
-- perturbation distribution: $q\left(\theta^{(i)} | \theta^{(i-1)}\right)$, which I'm assuming is symmetric
+Known things:
 
-### Algorithm
+- Prior distribution on parameters: $p(\theta)$
+- Proposal distribution on parameters: $p(\theta_i \mid \theta_{i-1})$
 
-Initialize:
+Initialize (where "initial" refers to the first inference iteration):
 
-1. Draw $\theta^{(0)}$ from prior distribution. (Andrieu et al. say to set it "arbitrarily.")
-1. Generate particles $X^{(0)}_j$ using $\theta^{(0)}$
+1. Draw $\theta_1$ from the prior distribution.
+1. Generate $N$ particles $x_{tk1}$ using $\theta_1$, according to the SMC algorithm.
 
-Then, for each iteration $i \geq 1$:
+Then, for each iteration $i \geq 2$:
 
-1. Perturb parameters to generate proposal parameters $\theta^\star$
-1. Generate proposal particles $X^\star_j$ using $\theta^\star$
-1. Estimate marginal likelihood $\hat{p}(\mathbf{y} \mid \theta^\star)$ by summing over the particles
-1. Compute estimated posterior probability ratio; see below
-1. With that probability, set $X^{(i)} \leftarrow X^\star$ and $\theta^{(i)} \leftarrow \theta^\star$
+1. Generate proposal parameters $\theta^\star$ using the parameter proposal distribution and previous parameter sample $\theta_{i-1}$.
+1. Generate proposal particles $x^\star_{tk}$ using $\theta^\star$, and the marginal likelihood $\hat{p}(\mathbf{y} \mid \theta^\star)$ using those particles, according to the SMC algorithm.
+1. Compute estimated posterior probability ratio $r$; see below.
+1. With probability $r$, use the proposal parameters and states as the next samples, setting $x_{tki} \leftarrow x^\star_{tk}$ and $\theta_i \leftarrow \theta^\star$. Otherwise, discard the proposals.
 
 $$
-\min\left\{ 1, \frac{
-    \hat{p}(\mathbf{y} \mid \theta^\star) p(\theta^\star)
-}{
-    \hat{p}(\mathbf{y} \mid \theta^{(i)}) p(\theta^{(i)})
-}
+r \equiv \min\left\{ 1,
+\frac{\hat{p}(\mathbf{y} \mid \theta^\star)}{\hat{p}(\mathbf{y} \mid \theta_{i-1})}
+\frac{p(\theta^\star)}{p(\theta_{i-1})}
+\frac{p(\theta_{i-1} | \theta^\star)}{p(\theta^\star | \theta_{i-1})}
 \right\}
 $$
 
-### Generating particles
+### SMC algorithm
 
-All of this assumes some parameterization $\theta$.
+The following are known distributions from which we can directly sample:
 
-- importance density: $q(x_t \mid y_t, x_{t-1})$, with a special case $q(x_1 | y_1)$ for the initial state
-- prior on state: $p(\mathbf{x})$
-- observation probability: $p(\mathbf{y} | \mathbf{x})$
-- transition prbability: $p(x_t | x_{t-1})$
-- index $j$ over particles: $j = 1, \ldots, N$
+- Proposal distribution for states: $p(x_t \mid y_t, x_{t-1})$, with a special case $p(x_1 \mid y_1)$ for the first time step. We can directly draw samples from this distribution.
+- Prior distribution for states: $p(x_t)$
+- Transition distribution: $p(x_t \mid x_{t-1})$
+- Observation distribution: $p(\mathbf{y} \mid \mathbf{x})$
 
-Initialize:
+All of these depend on parameters $\theta$, which are fixed for purposes of this algorithm.
 
-1. Generate initial particles from the initial importance density: $x_1^{(j)} \sim q(\cdot | y_1)$
-1. Generate unnormalized weights: $\tilde{w}_1^{(j)}$, see below
-1. Generate normalized weights $w_1^{(j)}$, see below
+Initialize (where "initial" now refers to the first time step):
+
+1. Draw states $x_{1k}$ from the initial proposal distribution for each particle $k$.
+1. Compute unnormalized weights $\tilde{w}_{1k}$ for each particle, using the observation probability, prior on states, and proposal distribution; see below.
+1. Generate normalized weights $w_{1k}$; see below.
 
 $$
-\tilde{w}^{(j)}_1 = \frac{
-    p{\left(y_1 \middle| x_1^{(j)} \right)} p{\left(x_1^{(j)}\right)}
+\tilde{w}_{1k} = \frac{p(y_1 \mid x_{1k}) p(x_{1k})}{p(x_{1k} \mid y_1)}
+$$
+
+$$
+w_{1k} = \frac{\tilde{w}_{1k}}{\sum_k \tilde{w}_{1k}}
+$$
+
+For each time step $t = 2, \ldots, T$ and particle $k$:
+
+1. Draw the index of its parent: $a_{tk} \sim \mathrm{Multinomial}(\mathbf{w}_{t-1})$. Write $\xi_{tk} \equiv x_{t-1,a_{tk}}$ as the state of parent of the $k$-th particle in the previous time step.
+1. Draw the state at this time step $x_{tk}$ using the proposal distribution $p(\cdot \mid y_t, \xi_{tk})$.
+1. Generate unnormalized weights $\tilde{w}_{tk}$ using the transition distribution, observation distribution, and proposal distribution; see below.
+1. Normalize weights.
+
+$$
+\tilde{w}_{tk} = \frac{
+    p(x_{tk} \mid \xi_{tk})
+    p(y_t \mid x_{tk})
 }{
-    q{\left(x_1^{(j)} \middle| y_1\right)}
+    p(x_{tk} \mid y_t, \xi_{tk})
 }
 $$
 
-$$
-w_1^{(j)} = \frac{\tilde{w}_1^{(j)}}{\sum_k \tilde{w}_1^{(k)}}
-$$
-
-For each time step $t = 2, \ldots, T$:
-
-1. For each particle $j$, draw the index of its parent: $a_t^{(j)} \sim \mathrm{Multinomial}(\mathbf{w}_{t-1})$. Write $z^{(j)}_{t-1} \equiv x_t^{\left(a^{(j)}_t \right)}$ as the state of parent of the $j$-th particle in the previous time step.
-1. Generate the state at this time step for each particle: $x_t^{(j)} \sim q {\left(\cdot \middle| y_t, z^{(j)}_{t-1} \right)}$
-1. Extend each particle by taking its parent and putting $x_t$ onto it
-1. Generate weights, then normalize
+Each particle $\mathbf{x}_k = (x_{1k}, \ldots x_{Tk})$ and weight $w_{Tk}$, we approximate the marginal likelihood
 
 $$
-\tilde{w}_t^{(j)} = \frac{
-    p{\left(x_t^{(j)} \middle| z_{t-1}^{(j)} \right)}
-    p{\left(y_t \middle| x_t^{(j)} \right)}
-}{
-    q{\left(x^{(j)}_t \middle| y_t, z^{(j)}_{t-1} \right)}
-}
-$$
-
-### Estimating marginal likelihood
-
-The final weights are $w^{(j)}_T$. The complete particles are $\mathbf{x}^{(j)} = \left( x_1^{(j)}, \ldots x_T^{(j)} \right)$.
-
-We then approximate the marginal likelihood
-
-$$
-p(y|\theta) = \int_X p(y| \mathbf{x}, \theta) p(\mathbf{x}) \,\mathrm{d}\mathbf{x}
+p(\mathbf{y} \mid \theta) = \int_\mathbf{x} p(\mathbf{y} \mid \mathbf{x}, \theta) p(\mathbf{x}) \,\mathrm{d}\mathbf{x}
 $$
 
 with a weighted sum over the particles:
 
 $$
-\hat{p}(\mathbf{y}|\theta) = \frac{1}{N} \sum_{j=1}^N p(\mathbf{y} | \mathbf{x}^{(j)}, \theta) \cdot w_T^{(j)}
+\hat{p}(\mathbf{y} \mid \theta) = \frac{1}{N} \sum_{k=1}^N p(\mathbf{y} \mid \mathbf{x}_k, \theta) \cdot w_{Tk}
 $$
