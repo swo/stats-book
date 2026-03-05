@@ -2,7 +2,7 @@
 
 ## Particle marginal Metropolis-Hastings sampler
 
-See [Andrieu et al. (2010)](https://dx.doi.org/10.1111/j.1467-9868.2009.00736.x), especially sections 2.2.1 and 2.4.2.
+See [Andrieu et al. (2010)](https://dx.doi.org/10.1111/j.1467-9868.2009.00736.x), especially sections 2.2.1 and 2.4.2. And also [Doucet](https://www.stats.ox.ac.uk/~doucet/doucet_defreitas_gordon_smcbookintro.pdf).
 
 ### Overview
 
@@ -38,20 +38,24 @@ r \equiv
 \frac{q(\theta_{i-1} | \theta^\star)}{q(\theta^\star | \theta_{i-1})}
 $$
 
-### SMC algorithm
+If the proposal distribution is symmetric, the last term drops.
 
-See Andrieu et al. section 2.2.1. Briefly, we wish to approximate the marginal likelihood $p(\mathbf{y} \mid \theta)$ by summing over a finite sample, rather than integrating over all state space $\mathbf{x}$.
+### Bootstrap filter SMC algorithm
+
+See Andrieu et al. section 2.2.1. and Doucet. Briefly, we wish to approximate the marginal likelihood $p(\mathbf{y} \mid \theta)$ by summing over a finite sample, rather than integrating over all state space $\mathbf{x}$.
 
 The following are known distributions from which we can directly sample:
 
-- Proposal distribution for states: $q(x_t \mid y_t, x_{t-1})$, with a special case $q(x_1 \mid y_1)$ for the first time step
 - Prior distribution for states: $p(x_t)$, although in practice we may have a prior only on the initial state $x_1$
 - Transition distribution: $p(x_t \mid x_{t-1})$
+- Proposal distribution for states: $q(x_t \mid y_t, x_{t-1})$, with a special case $q(x_1 \mid y_1)$ for the first time step. In the simplest case, these distributions do not depend on $y_t$ and are equivalent to the prior on states and the transition distribution.
 - Observation distribution: $p(\mathbf{y} \mid \mathbf{x})$
 
 All of these distributions depend on the parameters $\theta$, which are fixed for purposes of this algorithm.
 
-Initialize (where "initial" now refers to the first time step):
+#### Initialization
+
+Where "initial" now refers to the first time step:
 
 1. Draw state $x_{1k}$ from the initial proposal distribution, for each particle $k$.
 1. Compute unnormalized weights $\tilde{w}_{1k}$ for each particle, using the observation probability, prior on states, and proposal distribution; see below.
@@ -65,6 +69,10 @@ $$
 w_{1k} = \frac{\tilde{w}_{1k}}{\sum_k \tilde{w}_{1k}}
 $$
 
+In the simple case where the initial proposal distribution $q(x_{1k} \mid y_1)$ is equal to the prior $p(x_{1k})$, then the unnormalized weights are just the observation probabilities.
+
+#### Iteration
+
 For each time step $t = 2, \ldots, T$:
 
 1. For each particle $k$, draw the index $j \sim \mathrm{Multinomial}(\mathbf{w}_{t-1})$ of this particle's "parent." Create the new particle $x^\star_{sk} \leftarrow x_{sj}$ for $s=1,\ldots,t-1$.
@@ -75,8 +83,8 @@ For each time step $t = 2, \ldots, T$:
 
 $$
 \tilde{w}_{tk} = \frac{
-    p(x_{tk} \mid x_{t-1,k})
     p(y_t \mid x_{tk})
+    p(x_{tk} \mid x_{t-1,k})
 }{
     q(x_{tk} \mid y_t, x_{t-1,k})
 }
@@ -88,16 +96,34 @@ $$
 \hat{p}(\mathbf{y}) = \prod_{t=1}^T \left( \frac{1}{N} \sum_{k=1}^N \tilde{w}_{tk} \right)
 $$
 
-Note that the dependence on the parameters is implicit; this value is written more explicitly as $\hat{p}(\mathbf{y} \mid \theta)$. Note also that this is an approximation of:
+Note that the dependence on the parameters is implicit; this value is written more explicitly as $\hat{p}(\mathbf{y} \mid \theta)$.
+
+### Interpretation and intuition
+
+#### Particle weights
+
+Each particle's weight $\tilde{w}_{tk}$ reflects only the transition from $x_{t-1,k}$ to $x_{tk}$ and the observation $y_t$. The transitions and observations from previous time steps are encoded in the numbers of the particles themselves, as more probable paths have more particles.
+
+#### Approximate marginal likelihood
+
+Note also that $\hat{p}(\mathbf{y})$ above is an approximation of:
 
 $$
 p(\mathbf{y}) = p(y_1) \prod_{t=2}^T p(y_t \mid y_1, \ldots, y_{t-1})
 $$
 
-where, for example,
+Note that:
 
 $$
-p(y_1) = \int p(y_1 | x_1) p(x_1) \,\mathrm{d}x_1
+\begin{align*}
+p(y_t \mid y_1, \ldots, y_{t-1}) &= \int p(y_t \mid y_1, \ldots, y_{t-1}, x_1, \ldots, x_{t-1}) p(x_1, \ldots, x_1) \,\mathrm{d}x_1 \ldots \mathrm{d}x_t \\
+&= \int p(y_t \mid x_t) p(x_t) \,\mathrm{d}x_t \\
+&\approx \frac{1}{N} \sum_{k=1}^N p(y_t \mid x_{tk})
+\end{align*}
 $$
+
+The unnormalized weights $\tilde{w}_{tk}$ reflect the observation probability $p(y_t \mid x_t)$, and the numbers of the particles themselves reflect $p(x_t)$.
+
+#### Posterior state space samples
 
 Posterior samples can be drawn from the state space by drawing indices from $\mathrm{Multinomial}(\mathbf{w}_T)$ and using the corresponding particles.
