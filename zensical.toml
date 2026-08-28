@@ -1,0 +1,65 @@
+[project]
+site_name = "A short introduction to advanced statistics for scientists"
+site_url = "https://scottolesen.com/stats-book/"
+repo_url = "https://github.com/swo/stats-book"
+repo_name = "stats-book"
+
+nav = [
+  "index.md",
+  { "Probability" = [
+    "functions.md",
+    "probability.md",
+    "random_variables.md",
+  ] },
+  { "Descriptive statistics" = [
+    "statistics.md",
+    "estimators.md",
+    "confidence_intervals.md",
+  ] },
+  { "Inferential statistics" = [
+    "inference.md",
+    "tests.md",
+    "regression.md",
+  ] },
+  "generating_functions.md",
+  "mcmc.md",
+  "appendix.md",
+
+]
+
+extra_javascript = [
+  "javascripts/mathjax.js",
+  "https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js",
+]
+
+features = ["navigation.sections"]
+
+[project.markdown_extensions.toc]
+permalink = true
+
+[[project.theme.palette]]
+scheme = "slate"
+toggle.icon = "lucide/sun"
+toggle.name = "Switch to light mode"
+
+[[project.theme.palette]]
+scheme = "default"
+toggle.icon = "lucide/moon"
+toggle.name = "Switch to dark mode"
+
+[project.markdown_extensions.admonition]
+
+[project.markdown_extensions.pymdownx.arithmatex]
+generic = true
+
+[project.markdown_extensions.pymdownx.highlight]
+anchor_linenums = true
+line_spans = "__span"
+pygments_lang_class = true
+
+[project.markdown_extensions.mdx_truly_sane_lists]
+
+[project.markdown_extensions.pymdownx.superfences]
+custom_fences = [
+  { name = "mermaid", class = "mermaid", format = "pymdownx.superfences.fence_code_format" },
+]
