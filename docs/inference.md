@@ -33,7 +33,7 @@ Not only is the conceptual basis of statistical testing not fully refined, we ha
 ## Statistical inference is philosophically confusing
 
 Not only is statistical testing a relatively young idea, but statistical inference as a conceptual approach is deeply entwined with some of the fundamental philosophical questions that underly probability theory.
-In my experience, the students and practitioners that are my target audience for this book are challenged by these philosophical problems of statistical inference just as much as they stuggle with the mathematical aspects of statistical testing!
+In my experience, the students and practitioners that are my target audience for this book are challenged by these philosophical problems of statistical inference just as much as they struggle with the mathematical aspects of statistical testing!
 
 Rather than sweep those philosophical questions under the rug, I will lay them out, to avoid confusion later.
 
@@ -146,8 +146,8 @@ In the example from the previous section, I showed that we can use data to compu
 In the language of Bayesian statistics, $\mathbb{P}[\theta]$ is called the *prior probability* of $\theta$, and $\mathbb{P}[\theta | X]$ is the *posterior probability*.
 In other words, the data "updated" the prior, pre-data-collection probability.
 
-The blood type example worked because the choice of $\mathbb{P}[\theta]$ was pretty clear: if we picked an Amercian at random, what's the chance they are innocent of this particular crime?
-(Or, conversely, what's the chance that a randomly-selected person is the perpretrator?)
+The blood type example worked because the choice of $\mathbb{P}[\theta]$ was pretty clear: if we picked an American at random, what's the chance they are innocent of this particular crime?
+(Or, conversely, what's the chance that a randomly-selected person is the perpetrator?)
 
 In other cases, when $\theta$ is a hypothesis, $\mathbb{P}[\theta]$ becomes extremely problematic.
 Take the Socrates example: what's the probability, if you hadn't observed the lives and deaths of any human, that all humans are mortal?
@@ -165,7 +165,7 @@ Do you make a guess?
 "Well, Einstein was smart, so that's a plus, but his theory sounds complicated, so that's a minus, and so I think maybe fifty-fifty?"
 
 There's no mathematically sound answer to this question because there is no philosophically sound answer to this question.
-In other words, frequentist statistics and Bayesian statistics are both rigorous mathematical systems, and there is clear link between experimental science and the proportion-probabilities of frequentist statistics, but the link betwen Bayesian degree-of-confidence probabilities and what we have in our heads is not so clear.
+In other words, frequentist statistics and Bayesian statistics are both rigorous mathematical systems, and there is a clear link between experimental science and the proportion-probabilities of frequentist statistics, but the link between Bayesian degree-of-confidence probabilities and what we have in our heads is not so clear.
 
 Having filled your mind with this philosophical cloud, let's get down to the nuts and bolts of statistical inference.
 

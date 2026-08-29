@@ -9,7 +9,7 @@ Moving away from counting individual outcomes and events to looking at numbers w
 
 ## A random variable is a function
 
-A *random variable* is a function, common written $X$, that maps from the sample space, the set of all possible outcomes of an experiment, to the real numbers:
+A *random variable* is a function, commonly written $X$, that maps from the sample space, the set of all possible outcomes of an experiment, to the real numbers:
 
 $$
   X : \Omega \to \mathbb{R}
@@ -184,7 +184,7 @@ $$
 and so on.
 We normally don't say that $\mathbb{P}[X = 0.500\ldots] = 0$, since that makes it sound like it's impossible for $X$ to take on the value $0.5$.
 Nevertheless, it should be clear that, from any practical point of view, the probability of getting exactly $0.500\ldots$ from your experiment is essentially zero.
-On the other hand, It does make sense to write ask about the *density* of $X$ at 0.5, i.e., $f_X(0.5)$.
+On the other hand, it does make sense to ask about the *density* of $X$ at 0.5, i.e., $f_X(0.5)$.
 
 The word "density" in probability density function emphasizes that the pdf, when integrated, gives a probability:
 
@@ -376,7 +376,7 @@ $$
 where $\mathrm{Cov}[X, Y]$, the *covariance* of $X$ and $Y$ is
 
 $$
-  \mathrm{Cov}[X, Y] \equiv \mathbb{E}[(X - \mathbb{E}[X])(Y - \mathbb{E][Y])}.
+  \mathrm{Cov}[X, Y] \equiv \mathbb{E}[(X - \mathbb{E}[X])(Y - \mathbb{E}[Y])].
 $$
 
 To avoid the nested brackets, this is sometimes written
@@ -398,7 +398,7 @@ Some algebra will also show that
 $$
   \mathbb{E}[XY] = \mathbb{E}[X] \, \mathbb{E}[Y] + \mathrm{Cov}[X, Y].
 $$
-Thus, for independent random variables, which we will deal with a lot, the expected value of the produce of two random variables is simply the product of their expectation values.
+Thus, for independent random variables, which we will deal with a lot, the expected value of the product of two random variables is simply the product of their expectation values.
 These properties of the expected value will come in very handy in future sections.
 
 You may be more familiar with *correlation* than covariance.

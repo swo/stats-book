@@ -29,14 +29,14 @@ For better or worse, frequentist is the default; Bayesian is the exception.
 ## A frequentist interpretation cannot assign probabilities to states of nature
 
 A problem with the frequentist definition is that probabilities can only be assigned to experiments or situations that can be repeated infinitely many times.
-It does not make sense to ask about the probability that it will rain tomorrow any more than it makes sense to ask about the probability than it makes sense to ask about the probability that it rained yesterday: it either rained or it didn't, either it will rain or it won't.
+It does not make sense to ask about the probability that it will rain tomorrow any more than it makes sense to ask about the probability that it rained yesterday: it either rained or it didn't, either it will rain or it won't.
 
 The fact that we live in just one universe means that, under the frequentist interpretation, you cannot ask about the probability of a state of nature.
 Critically, you cannot ask about the probability your hypothesis is correct.
 Your hypothesis is either correct or not, so the probability that it is correct is either zero or one.
 You just don't know which of those two possibilities is right!
 
-As a scientist, this is deeply dissatisying.
+As a scientist, this is deeply dissatisfying.
 The whole point of statistical inference is to figure out what's going on in the world.
 I don't want to feed my hard-won experimental data into a statistical algorithm that says, "If your hypothesis is true, then it is; and if it's not, it's not."
 
@@ -62,7 +62,7 @@ In other words, outcomes are individual, real things that might happen, while ev
 The sample space is the set of all events, which includes outcomes.
 
 In the context of flipping a coin, "flipped heads" is an outcome and an event.
-The empty set $\varnothing$ ("nothing happened") and the set of all outcomes $\Omega$ event ("something happened") are both events, but they are not outcomes.
+The empty set $\varnothing$ ("nothing happened") and the set of all outcomes $\Omega$ ("something happened") are both events, but they are not outcomes.
 Some other examples of outcomes, events, and sample spaces are in the table.
 
   | Situation                                    | Outcomes                                                          | Events                                                                                                                                                                                                                      |
@@ -149,7 +149,7 @@ In other words, the chance that one of $A_1$ or $A_2$ happens is the probability
 
 If you had $n = 3$ and $r = 1$, then you would need to start with the probabilities like $\mathbb{P}[A_1]$ that any of the three events happened, then subtract the three 2-way overlaps like $\mathbb{P}[A_1 \cap A_2]$, but then add back in the single 3-way overlap $\mathbb{P}[A_1 \cap A_2 \cap A_3]$.
 
-Extending this logic arrives *Waring's theorem*, which gives the generalized probability of exactly $r$ events occurring as:
+Extending this logic arrives at *Waring's theorem*, which gives the generalized probability of exactly $r$ events occurring as:
 
 $$
   \sum_{t=0}^{n-r} (-1)^t \binom{r+t}{t} S_{r+t}
@@ -183,7 +183,7 @@ $$
 where $\mathbb{P}[A | B]$ is pronounced "the probability of $A$ given $B$".
 
 Although the definition of conditional probability is a mathematical axiom that cannot be proven or disproven, it is easy to get an intuitive picture of why it is chosen as an axiom.
-In a frequentist interpretation of probability, $\mathbb{P}\[A \| B\]$ is, on a denominator of the trials in which $B$ happened, the proportion of trials in which $A$ also happened.
+In a frequentist interpretation of probability, $\mathbb{P}[A | B]$ is, on a denominator of the trials in which $B$ happened, the proportion of trials in which $A$ also happened.
 Say $n_B$ is the number of trials in which $B$ happened, $n_{AB}$ is the number of trials in which $A$ and $B$ happened, and $n$ is the total number of trials.
 Then the proportion we're talking about is $n_{AB} / n_B$, which corresponds to $\mathbb{P}[A \cap B] / \mathbb{P}[B]$.
 
@@ -201,14 +201,14 @@ Many problems become much easier with *partitions.* A partition is a set of mutu
 $$
 \begin{gather*}
   B_i \cap B_j = \varnothing \text{ for } i \neq j \\
-  \cup_{i=1}^nB_n = \Omega
+  \cup_{i=1}^n B_i = \Omega
 \end{gather*}
 $$
 
 Then you can break down any event based on this partition:
 
 $$
-  \mathbb{P}[A] = \sum_{i=1}^n \mathbb{P}[A|B_i] P[B_i]
+  \mathbb{P}[A] = \sum_{i=1}^n \mathbb{P}[A|B_i] \mathbb{P}[B_i]
 $$
 
 The proof is elementary, but the impacts are very useful.

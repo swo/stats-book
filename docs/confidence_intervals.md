@@ -8,7 +8,7 @@ This presents a problem, because statistics and probability are all about uncert
 In the frequentist framework, the approach for expressing uncertainty is using *confidence intervals*.
 A confidence interval for a parameter $\theta$ with estimator $\hat{\theta}$ at *level* $1-\alpha$ is a pair of estimators $\hat{\theta}_-$ and $\hat{\theta}_+$ defined such that, for any parameter value $\theta$, it holds that:
 $$
-  \mathbb{P}[\hat{\theta]_- \leq \theta \leq \hat{\theta}_+} \geq 1 - \alpha.
+  \mathbb{P}[\hat{\theta}_- \leq \theta \leq \hat{\theta}_+] \geq 1 - \alpha.
 $$
 A typical value for $\alpha$ is 5%, or $0.05$, which yields 95% confidence intervals.
 A higher $\alpha$ corresponds to a lower probability of error, and thus wider confidence intervals, for which we are more sure that the interval actually contains the true value.
@@ -49,25 +49,25 @@ To show how confidence intervals are constructed, consider the German tank probl
 Our unbiased point estimate is $\hat{B} = \tfrac{n+1}{n} \max_i X_i$.
 We will design a *symmetric* confidence interval, which means that:
 $$
-  \mathbb{P}[\hat{B]_- \leq B} = \mathbb{P}[\hat{B]_+ \geq B} = 1 - \frac{\alpha}{2}
+  \mathbb{P}[\hat{B}_- \leq B] = \mathbb{P}[\hat{B}_+ \geq B] = 1 - \frac{\alpha}{2}
 $$
 This confidence interval is symmetric because the probability that the confidence interval will not include $B$ because it is too low is equal to the probability that it will not include $B$ because it is too high.
 For a 95% confidence interval, the probability of the confidence interval being wrong on either side is $2.5\%$, for a 5% total probability of error.
 
-To construct $\hat{B}_-$ and $\hat{B}_+$, we will find the range of values in which the point estimator $\hat{B}$ is to expected fall, given $B$.
+To construct $\hat{B}_-$ and $\hat{B}_+$, we will find the range of values in which the point estimator $\hat{B}$ is expected to fall, given $B$.
 We found that the cdf for the biased estimator $\max_i X_i$ was $(x/B)^n$, so the cdf for the unbiased point estimator is:
 $$
-  \mathbb{P}[\hat{B] \leq x} = \frac{n+1}{n} \left(\frac{x}{B}\right)^n
+  \mathbb{P}[\hat{B} \leq x] = \frac{n+1}{n} \left(\frac{x}{B}\right)^n
 $$
 First, we use this cdf to find the value of $x$ such that $\hat{B}$ will fall below it with probability $1-\frac{\alpha}{2}$:
 $$
-  \mathbb{P}[\hat{B] \leq x} = 1 - \frac{\alpha}{2} \implies x = \left( \frac{\alpha}{2} \frac{n}{n+1}\right)^{1/n} B
+  \mathbb{P}[\hat{B} \leq x] = 1 - \frac{\alpha}{2} \implies x = \left( \frac{\alpha}{2} \frac{n}{n+1}\right)^{1/n} B
 $$
 Next, we "invert" this relationship:
 $$
   1 - \frac{\alpha}{2}
-      = \mathbb{P}[\hat{B] \leq \left( \frac{\alpha}{2} \frac{n}{n+1}\right)^{1/n} B}
-      = \mathbb{P}[\left( \frac{\alpha]{2} \frac{n}{n+1}\right)^{-1/n} \hat{B} \leq B}
+      = \mathbb{P}[\hat{B} \leq \left( \frac{\alpha}{2} \frac{n}{n+1}\right)^{1/n} B]
+      = \mathbb{P}[\left( \frac{\alpha}{2} \frac{n}{n+1}\right)^{-1/n} \hat{B} \leq B]
 $$
 And thus, we have found our lower confidence interval:
 $$
@@ -88,9 +88,9 @@ We only know that, regardless of what $B$ is, there is a 95% probability that th
 We could have been much lazier with our confidence intervals.
 For example, I could have defined $\hat{B}_- = 0$.
 Because we know *a priori* that $B>0$, this lower end of the confidence interval will always be correct.
-In fact, it means that the confidence intervals will be contain $B$ with a probability greater than $1-\alpha$.
+In fact, it means that the confidence intervals will contain $B$ with a probability greater than $1-\alpha$.
 This is an undesirable feature.
-Confidence intervals with the desirable property that they have a error probability of exactly $\alpha$ and no more are termed *valid* confidence intervals.
+Confidence intervals with the desirable property that they have an error probability of exactly $\alpha$ and no more are termed *valid* confidence intervals.
 
 You might imagine that we could have constructed different confidence intervals.
 For example, if we relaxed the symmetry requirement, then we might be able to produce confidence intervals that are overall narrower.
@@ -106,10 +106,10 @@ In these situations, we turn to resampling methods like the *bootstrap* or the *
 
 ### Bootstrap
 
-In the bootstrap approach, we do no assert that we know the statistical distribution that the data were drawn from.
+In the bootstrap approach, we do not assert that we know the statistical distribution that the data were drawn from.
 Instead, we assume that the data we collected is the best approximation we have for the true, underlying distribution of the data.
 In statistics jargon, this means we use the sampling distribution as if it were the population distribution.
-In other words, we sampled some number $n$ of data points $x_i$ from the true distribution $F_X$ of some i.i.d. random variables $X$, and from those observed data points we construct a new set of i.d.d. random variables $\hat{X}$, which are discrete random variables with probability mass function:
+In other words, we sampled some number $n$ of data points $x_i$ from the true distribution $F_X$ of some i.i.d. random variables $X$, and from those observed data points we construct a new set of i.i.d. random variables $\hat{X}$, which are discrete random variables with probability mass function:
 $$
   f_{\hat{X}}(x') = \frac{\#\{x' \in x_i\}}{n},
 $$
@@ -140,7 +140,7 @@ For $n=10$, this yields $92,378$ possible resamples.
 For $n=25$, this yields more than $10^{13}$ possible resamples.
 Thus, for all but the smallest data sets, it is not feasible to consider all possible resamples.
 A scientific study might perform $1,000$ or 1 million bootstraps, randomly resampling the original data $1,000$ or 1 million times, and then stop.
-Very few studies exhaustively considering all the possible combinations.
+Very few studies exhaustively consider all the possible combinations.
 This means there is some stochasticity in practical applications of the bootstrap.
 In practice, the number of bootstraps is chosen to be quite large in order to minimize any of these stochastic effects.
 
@@ -177,7 +177,7 @@ Starting from the observed data, the jackknife moves a little bit in every "dire
 The bootstrap, on the other hand, moves about in every direction at once, wildly exploring the large but ultimately finite space of possible resamples.
 
 The jackknife has some notable flaws.
-For example, the jackknife performs badly when estimating used to estimate confidence intervals for the sample median.
+For example, the jackknife performs badly when used to estimate confidence intervals for the sample median.
 In these cases, one needs to resort to the bootstrap or to other resampling methods, such as delete-$d$ resampling, which yields $\binom{n}{d}$ possible resamples.
 
 ## Profile method

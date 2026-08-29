@@ -1,6 +1,6 @@
-Before diving into that equation, note that the $X_i$ and $e{X}$ are random variables, and note that they are not independent: the value of $\overline{X}$ certainly depends on each of the $X_i$.
+Before diving into that equation, note that the $X_i$ and $\overline{X}$ are random variables, and note that they are not independent: the value of $\overline{X}$ certainly depends on each of the $X_i$.
 So first let's imagine a simpler case, where we're in a universe where happen to know the expected value of the distribution we're trying to determine the variance of.
-To make the equations simpler to read, I'll use the standard notation $\mu \equiv \mathbb{E}\[X\]$.[^1] In this case, having known expected value ("kEV"), our estimator will be a little simpler:
+To make the equations simpler to read, I'll use the standard notation $\mu \equiv \mathbb{E}[X]$.[^1] In this case, having known expected value ("kEV"), our estimator will be a little simpler:
 $$
   \hat{\mathbb{V}}\_{X,\mathrm{kEV}} = \frac{1}{N} \sum_i ( X_i - \mu )^2
 $$
@@ -9,8 +9,8 @@ $$
 
 The known-expected-value estimator is unbiased:
 $$\begin{aligned}
-\mathbb{E}[\hat{\mathbb{V]}_{X,\mathrm{kEV}}}
-  &= \mathbb{E}[\frac{1]{N} \sum_i ( X_i - \mu )^2} \\
+\mathbb{E}[\hat{\mathbb{V}}_{X,\mathrm{kEV}}]
+  &= \mathbb{E}\left[\frac{1}{N} \sum_i ( X_i - \mu )^2\right] \\
   &= \frac{1}{N} \sum_i \mathbb{E}[X_i^2 - 2\mu X_i + \mu^2] \\
   &= \mathbb{E}[X^2] - 2 \mu \mathbb{E}[X] + \mu^2 \quad\text{(since $X_i$ are identic. distrib.)} \\
   &= \mathbb{E}[X^2] - \mu^2 \\
@@ -25,7 +25,7 @@ $$
   Z_i = \frac{X_i - \mu}{\sqrt{\mathbb{V}[X]}}
       \implies X_i = \sqrt{\mathbb{V}[X]} Z_i + \mu
 $$
-It should be easy to see that $Z_i$ has expected value 0 and variance $\mathbb{E}[Z_i^2] = 1$, and $\overline{Z}$ has expected value 0 and variance $\mathbb{E}[\overline{Z]^2} = 1/n$.
+It should be easy to see that $Z_i$ has expected value 0 and variance $\mathbb{E}[Z_i^2] = 1$, and $\overline{Z}$ has expected value 0 and variance $\mathbb{E}[\overline{Z}^2] = 1/n$.
 Now I'll rewrite (vx1 equation) so it has $Z_i$ instead of $X_i$:
 
 $$
@@ -43,10 +43,10 @@ $$
 Thus, the expected value of this estimator is
 $$
   \begin{aligned}
-  \mathbb{E}[\hat{\mathbb{V]}_X}
-    &= \mathbb{E}[\frac{\mathbb{V}[X]]{n} \sum_i \left( Z_i - \overline{Z} \right)^2} \\
-    &= \frac{\mathbb{V}[X]}{n} \mathbb{E}[\sum_i Z_i^2 - n \overline{Z]^2} \\
-    &= \frac{\mathbb{V}[X]}{n} \left( \sum_i \mathbb{E}[Z_i^2] - n \mathbb{E}[\overline{Z]^2} \right)\\
+  \mathbb{E}[\hat{\mathbb{V}}_X]
+    &= \mathbb{E}\left[\frac{\mathbb{V}[X]}{n} \sum_i \left( Z_i - \overline{Z} \right)^2\right] \\
+    &= \frac{\mathbb{V}[X]}{n} \mathbb{E}[\sum_i Z_i^2 - n \overline{Z}^2] \\
+    &= \frac{\mathbb{V}[X]}{n} \left( \sum_i \mathbb{E}[Z_i^2] - n \mathbb{E}[\overline{Z}^2] \right)\\
     &= \frac{\mathbb{V}[X]}{n} (n - 1) \quad\text{(using the little identities)} \\
     &= \frac{n-1}{n} \mathbb{V}[X].
   \end{aligned}

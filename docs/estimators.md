@@ -2,7 +2,7 @@
 
 ## Parameters, populations, and samples
 
-Some people refer to statistics (the functions) as *sample statistics* to emphasize that they are functions of a sample of data that was drawn from some larger *population*, which has some fixed an unknowable *parameters* that describe it.
+Some people refer to statistics (the functions) as *sample statistics* to emphasize that they are functions of a sample of data that was drawn from some larger *population*, which has some fixed and unknowable *parameters* that describe it.
 For example, if you draw many data points $x_i$ from a distribution and compute the mean of the drawn data points, you do not expect that the *sample* mean that you compute will be exactly equal to the true *population* mean.
 
 In mathematical terms, we say that a random variable $X$ has some expected value $\mathbb{E}[X]$ that is fixed.
@@ -24,7 +24,7 @@ The new approach was to use statistics on serial numbers, which turned out to be
 A serial number is a unique number written on a manufactured part.
 Serial numbers are usually assigned in sequential order, so that older parts have lower serial numbers and newer parts have higher numbers.
 German tanks had serial numbers.
-When the Allies captured German tanks, they took note of those numbers, which gave them a clue about how may thanks there were.
+When the Allies captured German tanks, they took note of those numbers, which gave them a clue about how many tanks there were.
 For example, if you captured three tanks and found serial numbers 1, 3, and 5, you know there are at least 5 tanks total, and there probably aren't more than 10 or so.
 If you find serial numbers 100, 300, and 500, then you know there are at least 500 tanks, and there are probably more like 1,000.
 
@@ -157,7 +157,7 @@ But can we do something to figure out, mathematically, what that factor should b
 We do this by examining the expected value of the estimator:
 
 $$
-  \mathbb{E}[\hat{B]} = \int_0^B x \, f_{\hat{B}}(x) \, dx.
+  \mathbb{E}[\hat{B}] = \int_0^B x \, f_{\hat{B}}(x) \, dx.
 $$
 
 We said above that $F_{\hat{B}} = (x/B)^n$, from which it follows that
@@ -169,7 +169,7 @@ $$
 Plugging this definition of $f_{\hat{B}}$ into the integral gives
 
 $$
-  \mathbb{E}[\hat{B]} = \int_0^B \frac{n}{B^n} x^n \, dx = \frac{n}{n+1} B.
+  \mathbb{E}[\hat{B}] = \int_0^B \frac{n}{B^n} x^n \, dx = \frac{n}{n+1} B.
 $$
 
 This result accords exactly with our intuition above: for $n=1$, the expected value of $\hat{B}$ is $\tfrac{1}{2}B$.
@@ -251,7 +251,7 @@ This makes the maximum likelihood computation relatively simple: we cannot choos
 If $B$ were actually much, much higher than $\max_i x_i$, the observed data would be rare, being clustered very close to zero, relative to that very large $B$.
 
 Note also that the maximum likelihood approach for the German tank problem gave us a consistent estimator, but not an unbiased one.
-Given certain mathematical necessities that are probably true for your applications, maximum likelihood estimators are consistent, but they are in general not biased.
+Given certain mathematical necessities that are probably true for your applications, maximum likelihood estimators are consistent, but they are in general not unbiased.
 
 Again, a key practical advantage of maximum likelihood estimation is that it requires only a computer and an articulation of how the data are generated.
 

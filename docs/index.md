@@ -4,14 +4,14 @@ Welcome to the stats book!
 
 ## Why this book?
 
-As a graduate student and postdoc in the life sciences, I saw that many of my colleauges had substantial training and experience in quantitative methods.
+As a graduate student and postdoc in the life sciences, I saw that many of my colleagues had substantial training and experience in quantitative methods.
 They were very able to hack together sensible ways to approach their statistical problems.
 I found, however, that there was often a steep drop-off in their ability to apply statistical rigor to these *ad hoc* methods.
 
 I think this gap between the ability to hack something together and the understanding to make something rigorous is partly born out of a gap in educational materials.
 There are plenty of introductory statistics textbooks that explain what a mean is.
-There are also plenty of statistical test cookbooks that well you what assumptions are made when using a $t$-test.
-And finally, there are plenty of books and articles on statistics meants for people with a graduate-level education in statistics or math.
+There are also plenty of statistical test cookbooks that tell you what assumptions are made when using a $t$-test.
+And finally, there are plenty of books and articles on statistics meant for people with a graduate-level education in statistics or math.
 However, there are few resources for people who are mature and shrewd quantitative thinkers but who do not have a half dozen statistics courses under their belt.
 
 To me, this situation is analogous to when I tried to learn a foreign language as an adult.

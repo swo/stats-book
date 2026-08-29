@@ -40,7 +40,7 @@ $$
   \end{align*}
 $$
 
-Make a chance of variables $y=\lambda x$ so that:
+Make a change of variables $y=\lambda x$ so that:
 
 $$
   \mathbb{E}[X^\mathrm{s}] = \frac{1}{\lambda} \int_0^\infty y^2 e^{-y} \,dy = \frac{2}{\lambda} = 2 \mathbb{E}[X]
@@ -82,7 +82,7 @@ $$
   \phi_{X^\mathrm{s}}(u) = \frac{1}{i \mathbb{E}[X]} \phi_X'(u)
 $$
 
-Given the characteristic function for an exponential is $\phi(u) = (1 - i \lambda^{-1} u)^{-1}$, it is relatively straigthforward to compute the mean of the size biased exponential:
+Given the characteristic function for an exponential is $\phi(u) = (1 - i \lambda^{-1} u)^{-1}$, it is relatively straightforward to compute the mean of the size biased exponential:
 
 $$
   \begin{align*}

@@ -10,7 +10,7 @@ If this sounds incredibly bewildering, I agree, and helping unpack that is the p
 
 ## Functions map things to other things
 
-In mathematical terms, a *function* is relationship between sets, linking each element of one set to an element of another set.
+In mathematical terms, a *function* is a relationship between sets, linking each element of one set to an element of another set.
 For example, say I have a function $f$ that links each number to that number plus one: $f(1) = 2$, $f(2) = 3$, and so on.
 Take careful note: the equation $f(1) = 2$, when translated into words, means that the function $f$ maps the input $1$ to the output $2$.
 It does not mean that the function equals $2$.
@@ -18,7 +18,7 @@ A function is a relationship between sets, not a number.
 
 In computer programming, a "function" refers to a sort of computational factory that takes some input and returns some output.
 This kind of "function" is not necessarily a mapping like a mathematical function is.
-For example, a random number generator "function" is designed to return a different, unpredictable number every time is it called.
+For example, a random number generator "function" is designed to return a different, unpredictable number every time it is called.
 Some programming languages define *pure* functions, which are analogous to mathematical functions in that they are guaranteed to deliver the same output whenever given the same input, but this is unusual.
 Do not confuse mathematical functions with the conceptually distinct computer programming concept that happens to have the same name.
 
@@ -26,7 +26,7 @@ Do not confuse mathematical functions with the conceptually distinct computer pr
 
 The function $f$ above is relatively simple: it takes a single real number as input and returns another real number.
 We characterize the function $f$ like this: $f : \mathbb{R} \to \mathbb{R},$ where $\mathbb{R}$ represents the set of real numbers.
-A slightly more complex function adds two numbers: $\mathrm{add}(1, 2) = 3$ Technically, this function still takes a single thing as input, only now that "thing" is an ordered pair of numbers.
+A slightly more complex function adds two numbers: $\mathrm{add}(1, 2) = 3$. Technically, this function still takes a single thing as input, only now that "thing" is an ordered pair of numbers.
 Ordered pairs of real numbers are also called the *Cartesian product* of the set of real numbers with itself, that is, $\mathbb{R} \times \mathbb{R}$, or just $\mathbb{R}^2$.
 We characterize this function like: $\mathrm{add} : \mathbb{R}^2 \to \mathbb{R}$.
 
@@ -73,6 +73,6 @@ In statistics, we will encounter this situation often, where a series of symbols
 The most important example of this confusion comes from the meaning of the equal sign ($=$).
 If I write $x=2$, it is most likely a definition: I'm asserting that the value of $x$ is $2$.
 But if I write $1=2$, and ask you, "Is this true?", you will say no.
-Many programming languages distinguish between the assignment operator `=` and the equality test operator `==`, so that `x=1` is a command "set $x$ to $1$!", while `x==2` is a question "is $x$ equal to 2?", to which the program will response `TRUE` or `FALSE`.
+Many programming languages distinguish between the assignment operator `=` and the equality test operator `==`, so that `x=1` is a command "set $x$ to $1$!", while `x==2` is a question "is $x$ equal to 2?", to which the program will respond `TRUE` or `FALSE`.
 
 I'll use $\equiv$ to mean "equals as a matter of definition" and the normal $=$ for "equals as a matter of assertion."
